@@ -15,7 +15,7 @@ addons:
 
 script:
   - ./mvnw clean install -DskipTests=false -B
-  - ./mvnw sonar:sonar -Dsonar.projectKey=Team30-ISA_apoteka-isa -Dsonar.organization=Team30-ISA -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=ce7510347ae572b6e1bdc0830510ecb30fddc2b3
+  - ./mvnw sonar:sonar -Dsonar.projectKey=tim30 -Dsonar.organization=Team30-ISA -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=ce7510347ae572b6e1bdc0830510ecb30fddc2b3
 
 dist: trusty
 
