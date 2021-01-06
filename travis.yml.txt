@@ -8,8 +8,14 @@ services:
 before_install:
   - chmod +x mvnw
 
+addons:
+  sonarcloud:
+  organization: Team30-ISA
+  token: ce7510347ae572b6e1bdc0830510ecb30fddc2b3
+
 script:
   - ./mvnw clean install -DskipTests=false -B
+  - ./mvnw sonar:sonar -Dsonar.projectKey=$PROJECT_KEY -Dsonar.organization=<naziv_organizacije> -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONAR_TOKEN
 
 dist: trusty
 
