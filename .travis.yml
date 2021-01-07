@@ -23,4 +23,7 @@ deploy:
   provider: heroku
   api_key: 5f3d1fec-e045-4b17-8356-29dcd21c2cb4
   app: apoteka-isa
+  on:
+    branch: main
+
 
