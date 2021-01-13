@@ -7,6 +7,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import isa.apoteka.domain.Dermatologist;
+import isa.apoteka.domain.Pharmacist;
 import isa.apoteka.domain.Pharmacy;
 import isa.apoteka.repository.PharmacyRepository;
 
@@ -30,6 +32,18 @@ public class PharmacyService {
 
 	public void remove(Long id) {
 		pharmacyRepository.deleteById(id);
+	}
+	
+	public Pharmacy findByName(String name) {
+		return pharmacyRepository.findOneByName(name);
+	}
+	
+	public List<Dermatologist> findAllDermsWorkingInPharmacy(Long id){
+		return pharmacyRepository.findAllDermsWorkingInPharmacy(id);
+	}
+	
+	public List<Pharmacist> findAllPharmsWorkingInPharmacy(Long id){
+		return pharmacyRepository.findAllPharmsWorkingInPharmacy(id);
 	}
 	
 }

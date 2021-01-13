@@ -37,7 +37,7 @@
 </head>
 
 <body id="body">
-<div id="pharmacies">
+<div id="pharmacy">
   <!--==========================
     Top Bar
   ============================-->
@@ -106,9 +106,17 @@
     <section id="services">
       <div class="container">
         <div class="section-header">
-          <h2>Spisak apoteka</h2>
-          <div v-for="pharmacy in pharmacies">
-          	<div><a href="pharmacy.html?name={{pharmacy.name}}">{{pharmacy.name}}</a></div>
+          <h2>{{pharmacy.name}}</h2>
+          <h6>{{pharmacy.address}}</h6>
+          </br>
+          <h4>Spisak farmaceuta:</h4>
+          <div v-for="p in pharms">
+          	<h6>{{p.firstName}}&nbsp{{p.lastName}}</h6>
+          </div>
+          </br>
+          <h4>Spisak dermatologa:</h4>
+          <div v-for="d in derms">
+          	<h6>{{d.firstName}}&nbsp{{d.lastName}}</h6>
           </div>
         </div>
       </div>
@@ -137,7 +145,7 @@
   <!-- Template Main Javascript File -->
   <script src="js/main.js"></script>
   <script src="axios.js"></script>
-  <script src="index.js"></script>
+  <script src="pharmacy.js"></script>
 
 </body>
 </html>
