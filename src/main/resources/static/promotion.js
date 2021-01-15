@@ -7,26 +7,27 @@ var app = new Vue({
 		content: "",
 	},
 	methods: {
-		submit:
+		submit: function (){
 			axios
-	        .post('/api/newPromotion',
+	        .post('/api/promotion',
 	
 	            {
-	                Title: this.title,
-	                StartOfPromotion: this.startOfPromotion,
-	                EndOfPromotion: this.endOfPromotion,
-	                Content: this.content	
+	                title: this.title,
+	                startOfPromotion: this.startOfPromotion,
+	                endOfPromotion: this.endOfPromotion,
+	                content: this.content	
 	            })
 	        .then(response => {
 	            JSAlert.alert("You have successfully published a new promotion!");
 	        })
 	        .catch(error => {
 	            console.log(error)
-	            if (error.response.status == 400) {
-	                JSAlert.alert("There is already an account with this email adress");
+	            if (error.response.status == 401) {
+	                JSAlert.alert("Publishing is incorrect!");
 	            } 
 	            
 	        })
+		}
 
 	},
 	created() {

@@ -114,8 +114,8 @@
         <div class="form">
           <div id="sendmessage">Your message has been sent. Thank you!</div>
           <div id="errormessage"></div>
-          <form action="" method="post" role="form" class="contactForm">
-          <div style="border:3px solid #0c2e8a; margin-left: 16rem; margin-right: 16rem; ">
+          <form method="POST" novalidate="novalidate" v-on:submit.prevent="submit()">
+          <div style="border:3px solid #0c2e8a; margin-left: 16rem; margin-right: 16rem; " class="contactForm">
           <h3 class="text-center"  style="color:#50d8af; margin-top:3rem">Publish New Promotion</h3>
           <table style=" margin-left: auto; margin-right: auto; margin-top:3rem; margin-bottom:1.5rem">
           	<tr>
@@ -169,11 +169,10 @@
           		</td>
           	</tr>
           </table>
-            <div class="text-center col-md-24"><button style="margin-bottom:3rem" type="submit">Publish Promotion</button></div>
+            <div class="text-center col-md-24"><input style="margin-bottom:3rem" type="submit" value="Publish Promotion"/></div>
             <div>
-          </form>
         </div>
-
+		</form>
       </div>
     </section><!-- #contact -->
 
@@ -193,6 +192,7 @@
   <script src="lib/owlcarousel/owl.carousel.min.js"></script>
   <script src="lib/magnific-popup/magnific-popup.min.js"></script>
   <script src="lib/sticky/sticky.js"></script>
+  <script src="https://npmcdn.com/js-alert/dist/jsalert.min.js"></script>
 
   <!-- Contact Form JavaScript File -->
   <script src="contactform/contactform.js"></script>
@@ -200,7 +200,7 @@
   <!-- Template Main Javascript File -->
   <script src="js/main.js"></script>
   <script src="axios.js"></script>
-  <script src="pharmacy.js"></script>
+  <script src="promotion.js"></script>
 
 </body>
 </html>
