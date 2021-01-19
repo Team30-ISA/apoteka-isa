@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,6 +34,15 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 
+	
+	@RequestMapping("/currentUser")
+    @PreAuthorize("hasRole('ROLE_PATIENT') or hasRole('ROLE_PHARM_ADMIN') or hasRole('ROLE_SYSTEM_ADMIN') or hasRole('ROLE_SUPPLIER') or hasRole('ROLE_PHARM') or hasRole('ROLE_DERM')")
+    public User user() {
+        Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
+        String email = currentUser.getName();
+        return this.userService.findByEmail(email);
+    }
+	
 	// Za pristup ovoj metodi neophodno je da ulogovani korisnik ima ADMIN ulogu
 	// Ukoliko nema, server ce vratiti gresku 403 Forbidden
 	// Korisnik jeste autentifikovan, ali nije autorizovan da pristupi resursu
@@ -50,7 +61,7 @@ public class UserController {
 	@GetMapping("/whoami")
 	@PreAuthorize("hasRole('USER')")
 	public User user(Principal user) {
-		return this.userService.findByUsername(user.getName());
+		return this.userService.findByEmail(user.getName());
 	}
 	
 	@GetMapping("/foo")

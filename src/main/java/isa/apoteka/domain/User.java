@@ -5,6 +5,7 @@ import static javax.persistence.InheritanceType.JOINED;
 import static javax.persistence.InheritanceType.SINGLE_TABLE;
 import static javax.persistence.InheritanceType.TABLE_PER_CLASS;
 
+
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Date;
@@ -19,8 +20,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -31,6 +35,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 // POJO koji implementira Spring Security UserDetails interfejs koji specificira
 // osnovne osobine Spring korisnika (koje role ima, da li je nalog zakljucan, istekao, da li su kredencijali istekli)
+
+
 @Entity
 @Table(name="USERS")
 @Inheritance(strategy=TABLE_PER_CLASS)
@@ -42,31 +48,59 @@ public class User implements UserDetails {
 	@SequenceGenerator(name = "mySeqGenV3", sequenceName = "mySeqV3", initialValue = 1, allocationSize = 1)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mySeqGenV3")
     @Column(name = "id", unique=true, nullable=false)
-    private Long id;
-
-    @Column(name = "username")
-    private String username;
+	protected Long id;
+	
+	@Column(name = "email", unique = false, nullable = false)
+    protected String email;
 
     @JsonIgnore
-    @Column(name = "password")
-    private String password;
+    @Column(name = "password", unique = false, nullable = false)
+    protected String password;
 
-    @Column(name = "first_name")
-    private String firstName;
+    @Column(name = "first_name", unique = false, nullable = false)
+    protected String firstName;
 
-    @Column(name = "last_name")
-    private String lastName;
+    @Column(name = "last_name", unique = false, nullable = false)
+    protected String lastName;
 
-    @Column(name = "email")
-    private String email;
-
-    @Column(name = "enabled")
-    private boolean enabled;
+    @Column(name = "enabled", unique = false, nullable = false)
+    protected boolean enabled = false;
+    
+    @Column(name = "telephone", unique = false, nullable = false)
+    protected String telephone;
 
     @Column(name = "last_password_reset_date")
-    private Timestamp lastPasswordResetDate;
+    protected Timestamp lastPasswordResetDate;
+    
+    @OneToOne
+	@JoinColumn(name = "address_id", referencedColumnName = "address_id", nullable = false, unique = false)	
+	protected Address address;
+    
+    @ManyToOne
+    @JoinColumn(name = "country_id", referencedColumnName = "country_id", nullable = false, unique = false)
+    protected Country country;
+    
+    @ManyToOne
+    @JoinColumn(name = "city_id", referencedColumnName = "city_id", nullable = false, unique = false)
+    protected City city;
+    
+    public City getCity() {
+		return city;
+	}
 
-    @ManyToMany(fetch = FetchType.EAGER)
+	public void setCity(City city) {
+		this.city = city;
+	}
+
+	public Country getCountry() {
+		return country;
+	}
+
+	public void setCountry(Country country) {
+		this.country = country;
+	}
+
+	@ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_authority",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id"))
@@ -79,15 +113,8 @@ public class User implements UserDetails {
     public void setId(Long id) {
         this.id = id;
     }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
+    
+    @JsonIgnore
     public String getPassword() {
         return password;
     }
@@ -114,15 +141,31 @@ public class User implements UserDetails {
         this.lastName = lastName;
     }
 
-    public void setAuthorities(List<Authority> authorities) {
-        this.authorities = authorities;
-    }
+    public String getTelephone() {
+		return telephone;
+	}
+
+	public void setTelephone(String telephone) {
+		this.telephone = telephone;
+	}
+
+	public Address getAddress() {
+		return address;
+	}
+
+	public void setAddress(Address address) {
+		this.address = address;
+	}
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.authorities;
     }
 
+    public void setAuthorities(List<Authority> authorities) {
+        this.authorities = authorities;
+    }
+    
     public String getEmail() {
         return email;
     }
@@ -166,4 +209,30 @@ public class User implements UserDetails {
         return true;
     }
 
+	@Override
+	public String getUsername() {
+		return email;
+	}
+
+	public User(Long id, String email, String password, String firstName, String lastName, String telephone) {
+		this.id = id;
+		this.email = email;
+		this.password = password;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.telephone = telephone;
+	}
+
+	public User(String email, String password, String firstName, String lastName, String telephone) {
+		this.email = email;
+		this.password = password;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.telephone = telephone;
+	}
+
+	public User() {
+		
+	}
+	
 }

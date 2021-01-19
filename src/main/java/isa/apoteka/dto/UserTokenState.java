@@ -1,9 +1,7 @@
-package isa.apoteka.domain;
+package isa.apoteka.dto;
 
-// DTO koji enkapsulira generisani JWT i njegovo trajanje koji se vracaju klijentu
 public class UserTokenState {
-	
-    private String accessToken;
+	private String accessToken;
     private Long expiresIn;
 
     public UserTokenState() {

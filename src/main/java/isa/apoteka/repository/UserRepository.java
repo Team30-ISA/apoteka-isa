@@ -10,7 +10,9 @@ import isa.apoteka.domain.User;
 
 
 public interface UserRepository extends JpaRepository<User, Long> {
-    User findByUsername( String username );
+    
+	@Query("from User u join u.authorities a where a.id=5")
+	User findByEmail(String email);
     
     @Query("from User u join u.authorities a where a.id=3")
 	List<User> findAllDerms();
