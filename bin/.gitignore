@@ -31,4 +31,12 @@ build/
 
 ### VS Code ###
 .vscode/
+/.gitignore
+/.mvn/
+/.travis.yml
+/Procfile
+/README.md
+/mvnw
+/mvnw.cmd
+/pom.xml
 /src/

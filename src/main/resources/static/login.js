@@ -2,19 +2,31 @@ var app = new Vue({
 	el: '#login',
 	data: {
 		username: "",
-		password: ""
+		password: "",
+		info: ""
 	},
 	methods: {
 		submit: function (){
 			axios
 	        .post('/auth/login',
-	
 	            {
 	                username: this.username,
 	                password: this.password
 	            })
 	        .then(response => {
-	            JSAlert.alert("You have successfully signed in!");
+	            window.localStorage.setItem('access_token', response.data.accessToken);
+	            axios
+	            .get('auth/getRole',{
+	  			  headers: {
+					    'Authorization': "Bearer " + localStorage.getItem('access_token')
+	  			  }
+	            })
+	            .then(response => {
+	            	if(response.data == "DERM"){
+	            		window.location.href = 'dermatologist/dermatologistHome.html';
+	            	}
+	            })
+	            
 	        })
 	        .catch(error => {
 	            console.log(error)
@@ -25,8 +37,5 @@ var app = new Vue({
 	        })
 		}
 
-	},
-	created() {
-		
 	}
 })
