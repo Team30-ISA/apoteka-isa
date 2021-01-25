@@ -22,7 +22,7 @@ public class DermatologistServiceImpl implements DermatologistService {
 	
 	@Override
 	public Dermatologist findById(Long id) {
-		Dermatologist derm = dermatologistRepository.findById(id).orElseGet(null);
+		Dermatologist derm = dermatologistRepository.findById(id).orElse(null);
 		return derm;
 	}
 
