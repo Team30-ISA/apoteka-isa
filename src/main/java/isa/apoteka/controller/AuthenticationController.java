@@ -16,6 +16,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,7 +33,6 @@ import isa.apoteka.security.TokenUtils;
 import isa.apoteka.service.UserService;
 import isa.apoteka.service.impl.CustomUserDetailsService;
 
-
 //Kontroler zaduzen za autentifikaciju korisnika
 @RestController
 @RequestMapping(value = "/auth", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -46,20 +46,19 @@ public class AuthenticationController {
 
 	@Autowired
 	private CustomUserDetailsService userDetailsService;
-	
+
 	@Autowired
 	private UserService userService;
 
 	// Prvi endpoint koji pogadja korisnik kada se loguje.
 	// Tada zna samo svoje korisnicko ime i lozinku i to prosledjuje na backend.
 	@PostMapping("/login")
-	public ResponseEntity<UserTokenState> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest,
-			HttpServletResponse response) {
+	public ResponseEntity<UserTokenState> createAuthenticationToken(
+			@RequestBody JwtAuthenticationRequest authenticationRequest, HttpServletResponse response) {
 
-		// 
-		Authentication authentication = authenticationManager
-				.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(),
-						authenticationRequest.getPassword()));
+		//
+		Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+				authenticationRequest.getUsername(), authenticationRequest.getPassword()));
 
 		// Ubaci korisnika u trenutni security kontekst
 		SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -88,7 +87,8 @@ public class AuthenticationController {
 		return new ResponseEntity<>(user, HttpStatus.CREATED);
 	}
 
-	// U slucaju isteka vazenja JWT tokena, endpoint koji se poziva da se token osvezi
+	// U slucaju isteka vazenja JWT tokena, endpoint koji se poziva da se token
+	// osvezi
 	@PostMapping(value = "/refresh")
 	public ResponseEntity<UserTokenState> refreshAuthenticationToken(HttpServletRequest request) {
 
@@ -115,6 +115,21 @@ public class AuthenticationController {
 		Map<String, String> result = new HashMap<>();
 		result.put("result", "success");
 		return ResponseEntity.accepted().body(result);
+	}
+
+	@PostMapping("/logout")
+	// @ResponseStatus(HttpStatus.OK)
+	public void logout() {
+		SecurityContextHolder.clearContext();
+	}
+
+	@GetMapping("/getRole")
+	public ResponseEntity<String> getRole() {
+		if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
+				.anyMatch(a -> a.getAuthority().equals("ROLE_DERM"))) {
+			return ResponseEntity.ok("DERM");
+		}
+		return ResponseEntity.ok("NONE");
 	}
 
 	static class PasswordChanger {

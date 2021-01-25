@@ -24,7 +24,6 @@ import isa.apoteka.service.impl.CustomUserDetailsService;
 
 @EnableWebSecurity
 @Configuration
-// Ukljucivanje podrske za anotacije "@Pre*" i "@Post*" koje ce aktivirati autorizacione provere za svaki pristup metodi
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -72,20 +71,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint).and()
 
 				// svim korisnicima dopusti da pristupe putanjama /auth/**, (/h2-console/** ako se koristi H2 baza) i /api/foo
-				.authorizeRequests().antMatchers("/auth/**").permitAll().antMatchers("/h2-console/**").permitAll().antMatchers("/api/foo").permitAll()
-				.antMatchers("/login.html").permitAll()
+				.authorizeRequests().antMatchers("/login.html").permitAll()
 				
 				// za svaki drugi zahtev korisnik mora biti autentifikovan
 				.anyRequest().authenticated().and()
 				// za development svrhe ukljuci konfiguraciju za CORS iz WebConfig klase
+				.httpBasic().and()
 				.cors().and()
 
 				
 				// umetni custom filter TokenAuthenticationFilter kako bi se vrsila provera JWT tokena umesto cistih korisnickog imena i lozinke (koje radi BasicAuthenticationFilter)
 				.addFilterBefore(new TokenAuthenticationFilter(tokenUtils, jwtUserDetailsService),
 						BasicAuthenticationFilter.class);
-		// zbog jednostavnosti primera
-		http.csrf().disable();
 	}
 	
 	
@@ -94,7 +91,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	public void configure(WebSecurity web) throws Exception {
 		// TokenAuthenticationFilter ce ignorisati sve ispod navedene putanje
-		web.ignoring().antMatchers(HttpMethod.POST, "/auth/login", "/api/promotion","/api/promotion/sendEmail");
+		web.ignoring().antMatchers(HttpMethod.POST, "/auth/login", "/auth/logout", "/api/promotion","/api/promotion/sendEmail");
 		web.ignoring().antMatchers(HttpMethod.GET, "/", "/webjars/**", "/favicon.ico",
 				"/**/*.css", "/**/*.js", "/**/*.woff2",  "/**/*.woff", "/**/*.html", "/*.html");
 		web.ignoring().antMatchers(HttpMethod.GET, "/api/pharmacy/**");

@@ -14,8 +14,18 @@ var app = new Vue({
 	                password: this.password
 	            })
 	        .then(response => {
-	            JSAlert.alert("You have successfully signed in!");
 	            window.localStorage.setItem('access_token', response.data.accessToken);
+	            axios
+	            .get('auth/getRole',{
+	  			  headers: {
+					    'Authorization': "Bearer " + localStorage.getItem('access_token')
+	  			  }
+	            })
+	            .then(response => {
+	            	if(response.data == "DERM"){
+	            		window.location.href = 'dermatologist/dermatologistHome.html';
+	            	}
+	            })
 	            
 	        })
 	        .catch(error => {
@@ -27,8 +37,5 @@ var app = new Vue({
 	        })
 		}
 
-	},
-	created() {
-		
 	}
 })
