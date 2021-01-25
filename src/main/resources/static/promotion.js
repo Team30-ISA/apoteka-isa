@@ -4,7 +4,7 @@ var app = new Vue({
 		title: "",
 		startOfPromotion: null,
 		endOfPromotion: null,
-		content: "",
+		content: ""
 	},
 	methods: {
 		submit: function (){
