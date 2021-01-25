@@ -19,7 +19,7 @@ public class PharmacyService {
 	private PharmacyRepository pharmacyRepository;
 	
 	public Pharmacy findOne(Long id) {
-		return pharmacyRepository.findById(id).orElseGet(null);
+		return pharmacyRepository.findById(id).orElse(null);
 	}
 
 	public List<Pharmacy> findAll() {
