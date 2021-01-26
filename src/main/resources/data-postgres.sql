@@ -26,3 +26,29 @@ insert into pharmacy_dermatologist (user_id, pharmacy_id) values (3,1);
 insert into pharmacy_dermatologist (user_id, pharmacy_id) values (5,2);
 insert into pharmacy_dermatologist (user_id, pharmacy_id) values (6,2);
 insert into pharmacy_dermatologist (user_id, pharmacy_id) values (3,2);
+
+insert into drug_form (name) VALUES ('antibiotic');
+insert into drug_form (name) VALUES ('anesthetic');
+insert into drug_form (name) VALUES ('antihistamine');
+insert into drug_form (name) VALUES ('analgesic');
+
+insert into drug_type (name) VALUES ('powder');
+insert into drug_type (name) VALUES ('capsule');
+insert into drug_type (name) VALUES ('tablet');
+insert into drug_type (name) VALUES ('ointment');
+insert into drug_type (name) VALUES ('paste');
+insert into drug_type (name) VALUES ('gel');
+insert into drug_type (name) VALUES ('solution');
+insert into drug_type (name) VALUES ('syrup');
+
+insert into medicine (name, type_id, form_id, contraindications, composition, recommended_intake_per_day, manufacturer, regime) VALUES ('Brufen', 4, 3, 'nausea', '500mg ibuprofen', 'Po potrebi, ali ne više od 3', 'Galenika', 0);
+insert into medicine (name, type_id, form_id, contraindications, composition, recommended_intake_per_day, manufacturer, regime) VALUES ('Metafex', 4, 3, 'allergy', '200mg ibuprofen, 325mg paracetamol', 'Po potrebi, ali ne više od 2', 'GOODWILL', 0);
+
+insert into medicine_substitutes (medicine_id, sub_medicine_id) VALUES (1, 2);
+insert into medicine_substitutes (medicine_id, sub_medicine_id) VALUES (2, 1);
+
+insert into medicine_in_pharmacy (quantity, pharmacy_id, medicine_id) VALUES (10, 2, 1);
+insert into medicine_in_pharmacy (quantity, pharmacy_id, medicine_id) VALUES (6, 2, 2);
+
+
+

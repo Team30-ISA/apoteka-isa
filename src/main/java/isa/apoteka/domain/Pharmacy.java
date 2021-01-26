@@ -32,6 +32,9 @@ public class Pharmacy {
             inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
     private List<Dermatologist> dermatologists;
 	
+	@OneToMany(mappedBy = "medicine")
+	private List<MedicineInPharmacy> medicineInpharmacy;
+	
 	@OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Pharmacist> pharmacists;
 
@@ -128,9 +131,4 @@ public class Pharmacy {
 	public String toString() {
 		return "Pharmacy [id=" + id + ", name=" + name + ", address=" + address + "]";
 	}
-
-
-
-	
-	
 }
