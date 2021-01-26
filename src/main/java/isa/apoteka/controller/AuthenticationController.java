@@ -133,6 +133,10 @@ public class AuthenticationController {
 				.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_PHARM"))) {
 			return ResponseEntity.ok("PHARM");
 		}
+		else if(SecurityContextHolder.getContext().getAuthentication()
+				.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
+			return ResponseEntity.ok("ADMIN");
+		}
 		return ResponseEntity.ok("NONE");
 	}
 

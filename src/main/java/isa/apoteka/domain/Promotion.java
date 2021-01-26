@@ -1,12 +1,23 @@
 package isa.apoteka.domain;
 
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Future;
+import javax.validation.constraints.FutureOrPresent;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.sun.istack.NotNull;
 
 @Entity
 public class Promotion {
@@ -15,17 +26,25 @@ public class Promotion {
 	private Long id;
 
 	@Column(unique = false, nullable = false)
+	@NotNull
 	String title;
 	
+	@NotNull
 	@Column(unique = false, nullable = false)
 	String content;
-	
+
+	@FutureOrPresent
 	@Column(unique = false, nullable = false)
 	Date startOfPromotion;
 	
+	@Future
 	@Column(unique = false, nullable = false)
 	Date endOfPromotion;
 
+	@NotNull
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	private Pharmacy pharmacy;
+	
 	public Long getId() {
 		return id;
 	}
@@ -71,14 +90,27 @@ public class Promotion {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Promotion(Long id, String title, String content, Date startOfPromotion, Date endOfPromotion) {
+	public Pharmacy getPharmacy() {
+		return pharmacy;
+	}
+
+	public void setPharmacy(Pharmacy pharmacy) {
+		this.pharmacy = pharmacy;
+	}
+
+	public Promotion(Long id, String title, String content, Date startOfPromotion, Date endOfPromotion,
+			Pharmacy pharmacy) {
 		super();
 		this.id = id;
 		this.title = title;
 		this.content = content;
 		this.startOfPromotion = startOfPromotion;
 		this.endOfPromotion = endOfPromotion;
+		this.pharmacy = pharmacy;
 	}
+
+
+	
 	
 	 
 }

@@ -14,6 +14,11 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Pharmacy {
 	@Id
@@ -26,14 +31,22 @@ public class Pharmacy {
 	@Column(unique = true, nullable = false)
 	String address;
 	
+	@JsonIgnore
 	@ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "pharmacy_dermatologist",
             joinColumns = @JoinColumn(name = "pharmacy_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
     private List<Dermatologist> dermatologists;
 	
-	@OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "pharmacy", cascade = CascadeType.MERGE)
+	@LazyCollection(LazyCollectionOption.FALSE)
 	private List<Pharmacist> pharmacists;
+	
+	@OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+	private List<PharmacyAdmin> pharmacyAdmins;
+	
+	@OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+	private List<Promotion> promotions;
 
 	public Pharmacy(Long id, String name, String address) {
 		super();

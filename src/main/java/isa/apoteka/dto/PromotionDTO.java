@@ -16,20 +16,30 @@ public class PromotionDTO {
 	private String content;
 	private Date startOfPromotion;
 	private Date endOfPromotion;
+	private Long pharmacyId;
 	
-	public PromotionDTO(String title, String content, Date startOfPromotion, Date endOfPromotion) {
+	public PromotionDTO(String title, String content, Date startOfPromotion, Date endOfPromotion, Pharmacy pharmacy, Long pharmacyId) {
+		this.title = title;
+		this.content = content;
+		this.startOfPromotion = startOfPromotion;
+		this.endOfPromotion = endOfPromotion;
+		this.pharmacyId = pharmacyId;
+	}
+	
+	public PromotionDTO(String title, String content, Date startOfPromotion, Date endOfPromotion, Pharmacy pharmacy) {
 		this.title = title;
 		this.content = content;
 		this.startOfPromotion = startOfPromotion;
 		this.endOfPromotion = endOfPromotion;
 	}
+	
 	public PromotionDTO() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 	
 	public PromotionDTO(Promotion promotion) {
-		this(promotion.getTitle(), promotion.getContent(),promotion.getStartOfPromotion(), promotion.getEndOfPromotion());
+		this(promotion.getTitle(), promotion.getContent(),promotion.getStartOfPromotion(), promotion.getEndOfPromotion(), promotion.getPharmacy());
 	}
 	
 	public String getTitle() {
@@ -56,6 +66,16 @@ public class PromotionDTO {
 	public void setEndOfPromotion(Date endOfPromotion) {
 		this.endOfPromotion = endOfPromotion;
 	}
+
+	public Long getPharmacyId() {
+		return pharmacyId;
+	}
+
+	public void setPharmacyId(Long pharmacyId) {
+		this.pharmacyId = pharmacyId;
+	}
+
+	
 	
 	
 }

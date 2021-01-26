@@ -16,6 +16,7 @@ import isa.apoteka.async.service.EmailService;
 import isa.apoteka.domain.Promotion;
 import isa.apoteka.domain.User;
 import isa.apoteka.dto.PromotionDTO;
+import isa.apoteka.service.PharmacyService;
 import isa.apoteka.service.PromotionService;
 import isa.apoteka.service.UserService;
 
@@ -30,6 +31,9 @@ public class PromotionController {
 	@Autowired
 	private UserService userService;
 	
+	@Autowired
+	private PharmacyService pharmacyService;
+	
 	private Logger logger = LoggerFactory.getLogger(UserController.class);
 
 	@Autowired
@@ -38,12 +42,15 @@ public class PromotionController {
 	@PostMapping(consumes = "application/json")
 	public ResponseEntity<PromotionDTO> savePromotion(@RequestBody PromotionDTO promotionDTO) {
 
+		if(promotionDTO.getStartOfPromotion().after(promotionDTO.getEndOfPromotion())) {
+			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+		}
 		Promotion promotion = new Promotion();
 		promotion.setTitle(promotionDTO.getTitle());
 		promotion.setContent(promotionDTO.getContent());
 		promotion.setStartOfPromotion(promotionDTO.getStartOfPromotion());
 		promotion.setEndOfPromotion(promotionDTO.getEndOfPromotion());
-
+		promotion.setPharmacy(pharmacyService.findOne(promotionDTO.getPharmacyId()));
 		promotion = promotionService.save(promotion);
 		
 		List<User> users = userService.findAll();

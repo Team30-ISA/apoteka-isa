@@ -96,5 +96,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				"/**/*.css", "/**/*.js", "/**/*.woff2",  "/**/*.woff", "/**/*.html", "/*.html");
 		web.ignoring().antMatchers(HttpMethod.GET, "/api/pharmacy/**");
 	}
+	
+
 
 }
