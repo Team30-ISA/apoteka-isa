@@ -25,6 +25,9 @@ var app = new Vue({
 	            	if(response.data == "DERM"){
 	            		window.location.href = 'dermatologist/dermatologistHome.html';
 	            	}
+	            	else if(response.data == "PHARM"){
+	            		window.location.href = 'pharmacist/pharmacistHome.html';
+	            	}
 	            })
 	            
 	        })

@@ -18,6 +18,9 @@ INSERT INTO AUTHORITY (name) VALUES ('ROLE_PHARM');
 
 INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (3, 3);
 INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (4, 4);
+INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (7, 4);
+INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (8, 4);
+INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (9, 4);
 
 insert into pharmacy_dermatologist (user_id, pharmacy_id) values (3,1);
 insert into pharmacy_dermatologist (user_id, pharmacy_id) values (5,2);
