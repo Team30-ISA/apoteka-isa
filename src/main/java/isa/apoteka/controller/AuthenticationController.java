@@ -5,7 +5,9 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -16,10 +18,13 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -116,6 +121,26 @@ public class AuthenticationController {
 		result.put("result", "success");
 		return ResponseEntity.accepted().body(result);
 	}
+	
+	@PostMapping("/logout")
+	//@ResponseStatus(HttpStatus.OK)
+	public void logout() {
+		SecurityContextHolder.clearContext();
+	}
+	
+	@GetMapping("/getRole")
+	public ResponseEntity<String> getRole() {
+		if(SecurityContextHolder.getContext().getAuthentication()
+				.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_DERM"))) {
+			return ResponseEntity.ok("DERM");
+		}
+		else if(SecurityContextHolder.getContext().getAuthentication()
+				.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_PHARM"))) {
+			return ResponseEntity.ok("PHARM");
+		}
+		return ResponseEntity.ok("NONE");
+	}
+	
 
 	static class PasswordChanger {
 		public String oldPassword;
