@@ -39,7 +39,7 @@ public class PatientServiceImpl implements PatientService {
 	}
 
 	public Patient findById(Long id) throws AccessDeniedException {
-		Patient p = patientRepository.findById(id).orElseGet(null);
+		Patient p = patientRepository.findById(id).orElse(null);
 		return p;
 	}
 	
