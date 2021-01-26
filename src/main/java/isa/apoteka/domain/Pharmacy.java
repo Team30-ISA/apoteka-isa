@@ -14,9 +14,6 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -38,8 +35,12 @@ public class Pharmacy {
             inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
     private List<Dermatologist> dermatologists;
 	
-	@OneToMany(mappedBy = "pharmacy", cascade = CascadeType.MERGE)
-	@LazyCollection(LazyCollectionOption.FALSE)
+
+
+	@OneToMany(mappedBy = "medicine")
+	private List<MedicineInPharmacy> medicineInpharmacy;
+	
+	@OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Pharmacist> pharmacists;
 	
 	@OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
@@ -141,9 +142,4 @@ public class Pharmacy {
 	public String toString() {
 		return "Pharmacy [id=" + id + ", name=" + name + ", address=" + address + "]";
 	}
-
-
-
-	
-	
 }

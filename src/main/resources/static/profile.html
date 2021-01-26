@@ -37,7 +37,7 @@
 </head>
 
 <body id="body">
-<div id="login">
+<div id="profile">
   <!--==========================
     Top Bar
   ============================-->
@@ -103,52 +103,27 @@
     <!--==========================
       Services Section
     ============================-->
-    <section id="contact" class="wow fadeInUp">
-       <div class="container">
-        <div class="form">
-          <div id="sendmessage">Your message has been sent. Thank you!</div>
-          <div id="errormessage"></div>
-          <form method="POST" novalidate="novalidate" v-on:submit.prevent="submit()">
-          <div style="border:3px solid #0c2e8a; margin-left: 16rem; margin-right: 16rem; " class="contactForm">
-          <h3 class="text-center"  style="color:#50d8af; margin-top:3rem">Login</h3>
-          <table style=" margin-left: auto; margin-right: auto; margin-top:3rem; margin-bottom:1.5rem">
-          	<tr>
-          		<td>
-          			<h6 style="color:#50d8af;">Username</h6>
-          		</td>
-          	</tr>
-          	<tr>
-          		<td colspan="2">
-          			<div class="form-row">
-             			<div class="form-group col-md-12">             	
-                			<input v-model="username" type="text" name="name" class="form-control" id="name" data-rule="minlen:4" data-msg="Please enter at least 4 chars" />
-                			<div class="validation"></div>
-             			</div>
-            		</div>
-          		</td>
-          	</tr>
-          	<tr>
-          		<td>
-          			<h6 style="color:#50d8af;">Password</h6>
-          		</td>
-          	</tr>
-          	<tr>
-          		<td colspan="2">
-          			<div class="form-row">
-             			<div class="form-group col-md-12">             	
-                			<input v-model="password" type="password" name="name" class="form-control" id="name" data-rule="minlen:4" data-msg="Please enter at least 4 chars" />
-                			<div class="validation"></div>
-             			</div>
-            		</div>
-          		</td>
-          	</tr>         	
-          </table>
-            <div class="text-center col-md-24"><input style="margin-bottom:3rem" type="submit" value="Login"/></div>
-            <div>
+    <section id="services">
+      <div class="container" id="patients">
+        <div class="section-header">
+          <h2>Korisnicki profil:</h4>
+          	<h6>Ime:&emsp;&emsp;&emsp;{{patients.firstName}}</h6>
+          	<h6>Prezime:&emsp;{{patients.lastName}}</h6>
+          	<h6>Email:&emsp;&emsp;&nbsp;{{patients.email}}</h6>
+          	<br>
+          	<input type="text" id="patient-name" v-model = "name">
+          	<br><br>
+          	<input type="text" id="patient-surname" v-model = "surname">
+          	<br><br>
+          	<button id = "change-data" type="submit" @click="changedata">Izmeni podatke</button>
+          	<br><br>
+          	<input type="password" id="patient-password-old" v-model = "oldpass">
+          	<input type="password" id="patient-password-new" v-model = "newpass">
+          	<br><br>
+          	<button id = "change-pass" type="submit" @click="changepass">Izmeni lozinku</button>
         </div>
-		</form>
       </div>
-    </section><!-- #contact -->
+    </section><!-- #services -->
 
     
   </main>
@@ -166,13 +141,14 @@
   <script src="lib/owlcarousel/owl.carousel.min.js"></script>
   <script src="lib/magnific-popup/magnific-popup.min.js"></script>
   <script src="lib/sticky/sticky.js"></script>
-  <script src="https://npmcdn.com/js-alert/dist/jsalert.min.js"></script>
 
   <!-- Contact Form JavaScript File -->
+  <script src="contactform/contactform.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.18/vue.min.js"></script>
   <!-- Template Main Javascript File -->
   <script src="js/main.js"></script>
   <script src="axios.js"></script>
-  <script src="login.js"></script>
+  <script src="profile.js"></script>
 
 </body>
+</html>

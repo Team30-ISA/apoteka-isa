@@ -134,8 +134,13 @@ public class AuthenticationController {
 			return ResponseEntity.ok("PHARM");
 		}
 		else if(SecurityContextHolder.getContext().getAuthentication()
+
 				.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
 			return ResponseEntity.ok("ADMIN");
+		}
+		else if(SecurityContextHolder.getContext().getAuthentication()
+				.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_PATIENT"))) {
+			return ResponseEntity.ok("PATIENT");
 		}
 		return ResponseEntity.ok("NONE");
 	}
