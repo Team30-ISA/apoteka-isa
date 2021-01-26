@@ -41,7 +41,7 @@
   ======================================================= -->
 </head>
 <body id="body">
-	<div id="dermatologist">
+	<div id="pharmacist">
 		<!--==========================
     Top Bar
   ============================-->
@@ -83,13 +83,14 @@
 						<li class="menu-has-children"><a href="#">Tools</a>
 							<ul>
 								<li><a href="#">List of examined clients</a></li>
-								<li><a href="#">Start examination</a></li>
+								<li><a href="#">Start counseling</a></li>
 								<li><a href="#">Work calendar</a></li>
 								<li><a href="#">Create a leave request</a></li>
-								<li><a href="#">Scheduling a new examination</a></li>
+								<li><a href="#">Scheduling a new counseling</a></li>
+								<li><a href="#">Issue a drug</a></li>
 							</ul></li>
-						<li class="menu-has-children"><a href="#">{{derm.firstName}}
-								{{derm.lastName}}</a>
+						<li class="menu-has-children"><a href="#">{{pharm.firstName}}
+								{{pharm.lastName}}</a>
 							<ul>
 								<li><a href="#"><i class="icon fa-user"></i>&nbsp&nbsp&nbspProfile</a></li>
 								<li @click="logout"><a href="#"><i
@@ -119,10 +120,10 @@
 			<section id="wrapper">
 				<div class="inner">
 					<header class="special">
-						<h2>Welcome {{derm.firstName}} {{derm.lastName}}</h2>
+						<h2>Welcome {{pharm.firstName}} {{pharm.lastName}}</h2>
 						<p>View and manage your profile information, schedule
-							examinations, start examination, view your work calendar, create
-							a leave request ...</p>
+							counseling, start counseling, view your work calendar, create a
+							leave request ...</p>
 					</header>
 					<div class="highlights">
 						<section>
@@ -138,9 +139,9 @@
 							<div class="content">
 								<header>
 									<a href="#" class="icon fa-clock-o"><span class="label">Icon</span></a>
-									<h3>Start examination</h3>
+									<h3>Start counseling</h3>
 								</header>
-								<p>Start the examination and enter examination information.</p>
+								<p>Start the counseling and enter counseling information.</p>
 							</div>
 						</section>
 						<section>
@@ -149,7 +150,7 @@
 									<a href="#" class="icon fa-calendar"><span class="label">Icon</span></a>
 									<h3>Work calendar</h3>
 								</header>
-								<p>View scheduled examinations.</p>
+								<p>View scheduled counselings.</p>
 							</div>
 						</section>
 						<section>
@@ -165,9 +166,18 @@
 							<div class="content">
 								<header>
 									<a href="#" class="icon fa-plus"><span class="label">Icon</span></a>
-									<h3>Scheduling a new examination</h3>
+									<h3>Scheduling a new counseling</h3>
 								</header>
-								<p>Scheduling a new examination.</p>
+								<p>Scheduling a new counseling.</p>
+							</div>
+						</section>
+						<section>
+							<div class="content">
+								<header>
+									<a href="#" class="icon fa-hospital-o"><span class="label">Icon</span></a>
+									<h3>Issue a drug</h3>
+								</header>
+								<p>Issue a drug to patients.</p>
 							</div>
 						</section>
 						<section>
@@ -207,7 +217,7 @@
 	<!-- Template Main Javascript File -->
 	<script src="../js/main.js"></script>
 	<script src="../axios.js"></script>
-	<script src="dermatologistHome.js"></script>
+	<script src="pharmacistHome.js"></script>
 
 </body>
 </html>
