@@ -3,6 +3,7 @@ package isa.apoteka.service;
 import java.util.List;
 
 import isa.apoteka.domain.Patient;
+import isa.apoteka.domain.PatientUpdateForm;
 import isa.apoteka.domain.UserRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +19,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 public interface PatientService {
+	String getLogged();
 	Patient findById(Long id);
     Patient findByUsername(String username);
     List<Patient> findAll ();
-	Patient save(UserRequest userRequest);
+	void update(PatientUpdateForm puf);
+	void updatePassword(PatientUpdateForm puf);
 	List<Patient> findAllPatients();
 }
