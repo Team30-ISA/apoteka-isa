@@ -28,6 +28,9 @@ var app = new Vue({
 	            	else if(response.data == "PHARM"){
 	            		window.location.href = 'pharmacist/pharmacistHome.html';
 	            	}
+	            	else if(response.data == "PATIENT"){
+	            		window.location.href = 'profile.html';
+	            	}
 	            })
 	            
 	        })

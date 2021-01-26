@@ -10,14 +10,18 @@ INSERT INTO dermatologist (id, username, password, first_name, last_name, email,
 INSERT INTO pharmacist (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, pharmacy_id) VALUES (7,'a', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', 'Mila', 'Peric', 'jeca@example.com', true, '2017-10-01 18:57:58.508-07',1);
 INSERT INTO pharmacist (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, pharmacy_id) VALUES (8,'b', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', 'Vasa', 'Vasic', 'jeca@example.com', true, '2017-10-01 18:57:58.508-07',2);
 INSERT INTO pharmacist (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, pharmacy_id) VALUES (9,'c', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', 'Nenad', 'Milic', 'jeca@example.com', true, '2017-10-01 18:57:58.508-07',3);
+INSERT INTO patient (id, username, password, first_name, last_name, email, enabled, last_password_reset_date) VALUES (10,'pacijent123', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', 'Mirko', 'Vracar', 'mirkov@example.com', true, '2017-10-01 18:57:58.508-07');
 
 INSERT INTO AUTHORITY (name) VALUES ('ROLE_USER');
 INSERT INTO AUTHORITY (name) VALUES ('ROLE_ADMIN');
 INSERT INTO AUTHORITY (name) VALUES ('ROLE_DERM');
 INSERT INTO AUTHORITY (name) VALUES ('ROLE_PHARM');
+INSERT INTO AUTHORITY (name) VALUES ('ROLE_PATIENT');
 
 INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (3, 3);
 INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (4, 4);
+INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (10, 5);
+
 INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (7, 4);
 INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (8, 4);
 INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (9, 4);

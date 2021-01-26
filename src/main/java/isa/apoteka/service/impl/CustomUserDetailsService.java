@@ -13,7 +13,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import isa.apoteka.domain.Patient;
 import isa.apoteka.domain.User;
+import isa.apoteka.repository.PatientRepository;
 import isa.apoteka.repository.UserRepository;
 
 
@@ -26,6 +28,10 @@ public class CustomUserDetailsService implements UserDetailsService {
 
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private PatientRepository patientRepository;
+
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -44,7 +50,6 @@ public class CustomUserDetailsService implements UserDetailsService {
 		}
 	}
 
-	// Funkcija pomocu koje korisnik menja svoju lozinku
 	public void changePassword(String oldPassword, String newPassword) {
 
 		// Ocitavamo trenutno ulogovanog korisnika
