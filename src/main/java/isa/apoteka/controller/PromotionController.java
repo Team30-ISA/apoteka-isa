@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import isa.apoteka.async.service.EmailService;
+import isa.apoteka.domain.Patient;
 import isa.apoteka.domain.Promotion;
 import isa.apoteka.domain.User;
 import isa.apoteka.dto.PromotionDTO;
+import isa.apoteka.service.PatientService;
 import isa.apoteka.service.PharmacyService;
 import isa.apoteka.service.PromotionService;
 import isa.apoteka.service.UserService;
@@ -29,7 +31,7 @@ public class PromotionController {
 	private PromotionService promotionService;
 	
 	@Autowired
-	private UserService userService;
+	private PatientService patientService;
 	
 	@Autowired
 	private PharmacyService pharmacyService;
@@ -53,11 +55,11 @@ public class PromotionController {
 		promotion.setPharmacy(pharmacyService.findOne(promotionDTO.getPharmacyId()));
 		promotion = promotionService.save(promotion);
 		
-		List<User> users = userService.findAll();
-		for(User u : users) {
+		List<Patient> patients = patientService.findAllPatientsNotification(promotionDTO.getPharmacyId());
+		for(Patient p : patients) {
 			try {
 				System.out.println("Thread id: " + Thread.currentThread().getId());
-				emailService.sendPromotionNotificaitionAsync(u,promotion);
+				emailService.sendPromotionNotificaitionAsync(p,promotion);
 			}catch( Exception e ){
 				logger.info("Greska prilikom slanja emaila: " + e.getMessage());
 			}

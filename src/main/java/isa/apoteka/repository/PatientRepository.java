@@ -26,4 +26,7 @@ public interface PatientRepository extends JpaRepository<Patient, Long> {
     @Transactional
     @Query("update Patient p set p.password = ?1 where p.id = ?2")
     void updatePassword(String password, Long id);
+    
+    @Query("from Patient p join p.pharmacies pp where pp.id=:id")
+	List<Patient> findAllPatientsNotification(Long id);
 }

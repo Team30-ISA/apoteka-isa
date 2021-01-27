@@ -9,6 +9,18 @@ var app = new Vue({
 		pharmacyId: null
 	},
 	methods: {
+		logout(){
+			axios
+	        .post('/auth/logout', null, {
+				  headers: {
+					    'Authorization': "Bearer " + localStorage.getItem('access_token')
+					  }
+		        })
+	        .then(function() {
+	        	localStorage.clear();
+	        	window.location.href = '/login.html';
+	        })
+		},
 		submit: function (){
 			console.log(new Date());
 			if((this.startOfPromotion > this.endOfPromotion) || this.startOfPromotion < new Date() || this.endOfPromotion <= new Date){

@@ -35,7 +35,11 @@ public class Pharmacy {
             inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
     private List<Dermatologist> dermatologists;
 	
-
+	@ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "promotion_notification",
+            joinColumns = @JoinColumn(name = "pharmacy_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "patient_id", referencedColumnName = "id"))
+    private List<Patient> patients;
 
 	@OneToMany(mappedBy = "medicine")
 	private List<MedicineInPharmacy> medicineInpharmacy;
