@@ -26,4 +26,5 @@ public interface PatientService {
 	void update(PatientUpdateForm puf);
 	void updatePassword(PatientUpdateForm puf);
 	List<Patient> findAllPatients();
+	List<Patient> findAllPatientsNotification(Long id);
 }
