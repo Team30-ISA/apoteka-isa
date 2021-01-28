@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import isa.apoteka.domain.Address;
 import isa.apoteka.domain.City;
 import isa.apoteka.domain.Country;
+import isa.apoteka.dto.CountryDTO;
 import isa.apoteka.service.AddressService;
 import isa.apoteka.service.CityService;
 
@@ -23,7 +24,7 @@ public class CityController {
 	
 	@GetMapping("/getAllCitiesForCountry")
 	//@PreAuthorize("hasRole('PATIENT')")
-	public List<City> loadAll(Country country) {
+	public List<City> loadAll(CountryDTO country) {
 		return this.cityService.findAllCitiesForCountry(country);
 	}
 }

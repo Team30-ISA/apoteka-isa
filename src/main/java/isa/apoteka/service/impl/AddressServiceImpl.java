@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import isa.apoteka.domain.Address;
 import isa.apoteka.domain.City;
 import isa.apoteka.domain.Country;
+import isa.apoteka.dto.CityDTO;
 import isa.apoteka.repository.AddressRepository;
 import isa.apoteka.service.AddressService;
 import isa.apoteka.service.AuthorityService;
@@ -20,7 +21,7 @@ public class AddressServiceImpl implements AddressService {
 	private AddressRepository addressRepository;
 	
 	@Override
-	public List<Address> findAllAddressesForCity(City city) throws AccessDeniedException {
+	public List<Address> findAllAddressesForCity(CityDTO city) throws AccessDeniedException {
 		Long id = city.getId();
 		List<Address> result = addressRepository.findAllAddressesForCity(id);
 		return result;
