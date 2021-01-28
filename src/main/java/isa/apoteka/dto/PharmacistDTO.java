@@ -1,5 +1,6 @@
 package isa.apoteka.dto;
 
+import isa.apoteka.domain.Address;
 import isa.apoteka.domain.User;
 
 public class PharmacistDTO extends UserDTO{
@@ -9,8 +10,8 @@ public class PharmacistDTO extends UserDTO{
 		// TODO Auto-generated constructor stub
 	}
 
-	public PharmacistDTO(Long id, String firstName, String lastName) {
-		super(id, firstName, lastName);
+	public PharmacistDTO(Long id, String username, String firstName, String lastName, String email, Address address, String phonenumber) {
+		super(id, username, firstName, lastName, email, address, phonenumber);
 		// TODO Auto-generated constructor stub
 	}
 

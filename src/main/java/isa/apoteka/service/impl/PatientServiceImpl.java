@@ -54,16 +54,17 @@ public class PatientServiceImpl implements PatientService {
 		Patient p = findById(puf.getId());
 		p.setFirstName(puf.getName());
 		p.setLastName(puf.getSurname());
+		p.setEmail(puf.getEmail());
 		
-		this.patientRepository.update(p.getFirstName(), p.getLastName(), p.getId());
+		this.patientRepository.update(p.getFirstName(), p.getLastName(), p.getEmail(), p.getId());
 	}
 	
 	@Override
 	public void updatePassword(PatientUpdateForm puf) {
 		Patient p = findById(puf.getId());
-		p.setPassword(passwordEncoder.encode(puf.getNewpass()));
+		p.setPassword(passwordEncoder.encode(puf.getNewPass()));
 		
-		this.patientRepository.updatePassword(passwordEncoder.encode(puf.getNewpass()), p.getId());
+		this.patientRepository.updatePassword(passwordEncoder.encode(puf.getNewPass()), p.getId());
 	}
 	
 	@Override
