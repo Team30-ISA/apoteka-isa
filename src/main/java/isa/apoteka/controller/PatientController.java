@@ -90,7 +90,7 @@ public class PatientController {
 	@PreAuthorize("hasRole('PATIENT')")
 	public String updatePassword(PatientUpdateForm puf) {
 		this.patientService.updatePassword(puf);
-		return puf.getNewpass();
+		return puf.getNewPass();
 	}
 	
 
