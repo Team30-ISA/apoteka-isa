@@ -3,6 +3,7 @@ insert into pharmacy (name, address) values ('Nikolina Apoteka', 'Njegoševa 8')
 insert into pharmacy (name, address) values ('Milanova Apoteka', 'Petra Konjovica 1');
 insert into pharmacy (name, address) values ('Aleksandrova Apoteka', 'Laze Lazarevica 234');
 
+
 INSERT INTO Country (id, country) VALUES (1, 'Srbija');
 INSERT INTO Country (id, country) VALUES (2, 'Bosna i Hercegovina');
 INSERT INTO Country (id, country) VALUES (3, 'Tanzanija');
@@ -74,5 +75,3 @@ insert into medicine_substitutes (medicine_id, sub_medicine_id) VALUES (2, 1);
 
 insert into medicine_in_pharmacy (quantity, pharmacy_id, medicine_id) VALUES (10, 2, 1);
 insert into medicine_in_pharmacy (quantity, pharmacy_id, medicine_id) VALUES (6, 2, 2);
-
-

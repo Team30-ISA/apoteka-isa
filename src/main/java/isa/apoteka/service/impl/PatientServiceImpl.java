@@ -78,4 +78,10 @@ public class PatientServiceImpl implements PatientService {
 		return SecurityContextHolder.getContext().getAuthentication().toString();
 	}
 
+	@Override
+	public List<Patient> findAllPatientsNotification(Long id) {
+		List<Patient> result = patientRepository.findAllPatientsNotification(id);
+		return result;
+	}
+
 }

@@ -5,9 +5,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
-import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -18,13 +16,11 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -36,7 +32,6 @@ import isa.apoteka.exception.ResourceConflictException;
 import isa.apoteka.security.TokenUtils;
 import isa.apoteka.service.UserService;
 import isa.apoteka.service.impl.CustomUserDetailsService;
-
 
 //Kontroler zaduzen za autentifikaciju korisnika
 @RestController
@@ -51,20 +46,19 @@ public class AuthenticationController {
 
 	@Autowired
 	private CustomUserDetailsService userDetailsService;
-	
+
 	@Autowired
 	private UserService userService;
 
 	// Prvi endpoint koji pogadja korisnik kada se loguje.
 	// Tada zna samo svoje korisnicko ime i lozinku i to prosledjuje na backend.
 	@PostMapping("/login")
-	public ResponseEntity<UserTokenState> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest,
-			HttpServletResponse response) {
+	public ResponseEntity<UserTokenState> createAuthenticationToken(
+			@RequestBody JwtAuthenticationRequest authenticationRequest, HttpServletResponse response) {
 
-		// 
-		Authentication authentication = authenticationManager
-				.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(),
-						authenticationRequest.getPassword()));
+		//
+		Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+				authenticationRequest.getUsername(), authenticationRequest.getPassword()));
 
 		// Ubaci korisnika u trenutni security kontekst
 		SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -93,7 +87,8 @@ public class AuthenticationController {
 		return new ResponseEntity<>(user, HttpStatus.CREATED);
 	}
 
-	// U slucaju isteka vazenja JWT tokena, endpoint koji se poziva da se token osvezi
+	// U slucaju isteka vazenja JWT tokena, endpoint koji se poziva da se token
+	// osvezi
 	@PostMapping(value = "/refresh")
 	public ResponseEntity<UserTokenState> refreshAuthenticationToken(HttpServletRequest request) {
 
@@ -121,17 +116,17 @@ public class AuthenticationController {
 		result.put("result", "success");
 		return ResponseEntity.accepted().body(result);
 	}
-	
+
 	@PostMapping("/logout")
-	//@ResponseStatus(HttpStatus.OK)
+	// @ResponseStatus(HttpStatus.OK)
 	public void logout() {
 		SecurityContextHolder.clearContext();
 	}
-	
+
 	@GetMapping("/getRole")
 	public ResponseEntity<String> getRole() {
-		if(SecurityContextHolder.getContext().getAuthentication()
-				.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_DERM"))) {
+		if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
+				.anyMatch(a -> a.getAuthority().equals("ROLE_DERM"))) {
 			return ResponseEntity.ok("DERM");
 		}
 		else if(SecurityContextHolder.getContext().getAuthentication()
@@ -139,12 +134,16 @@ public class AuthenticationController {
 			return ResponseEntity.ok("PHARM");
 		}
 		else if(SecurityContextHolder.getContext().getAuthentication()
+
+				.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
+			return ResponseEntity.ok("ADMIN");
+		}
+		else if(SecurityContextHolder.getContext().getAuthentication()
 				.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_PATIENT"))) {
 			return ResponseEntity.ok("PATIENT");
 		}
 		return ResponseEntity.ok("NONE");
 	}
-	
 
 	static class PasswordChanger {
 		public String oldPassword;

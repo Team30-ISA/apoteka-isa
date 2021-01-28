@@ -14,6 +14,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Pharmacy {
 	@Id
@@ -26,17 +28,30 @@ public class Pharmacy {
 	@Column(unique = true, nullable = false)
 	String address;
 	
+	@JsonIgnore
 	@ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "pharmacy_dermatologist",
             joinColumns = @JoinColumn(name = "pharmacy_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
     private List<Dermatologist> dermatologists;
 	
+	@ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "promotion_notification",
+            joinColumns = @JoinColumn(name = "pharmacy_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "patient_id", referencedColumnName = "id"))
+    private List<Patient> patients;
+
 	@OneToMany(mappedBy = "medicine")
 	private List<MedicineInPharmacy> medicineInpharmacy;
 	
 	@OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Pharmacist> pharmacists;
+	
+	@OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+	private List<PharmacyAdmin> pharmacyAdmins;
+	
+	@OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+	private List<Promotion> promotions;
 
 	public Pharmacy(Long id, String name, String address) {
 		super();
