@@ -38,6 +38,11 @@ public class User implements UserDetails {
 
 	private static final long serialVersionUID = 1L;
 
+	public enum Gender {
+        FEMALE,
+        MALE;
+    }
+	
 	@Id
 	@SequenceGenerator(name = "mySeqGenV3", sequenceName = "mySeqV3", initialValue = 1, allocationSize = 1)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mySeqGenV3")
@@ -62,6 +67,9 @@ public class User implements UserDetails {
 
     @Column(name = "enabled")
     private boolean enabled;
+    
+    @Column(name = "gender")
+    private Gender gender;
 
     @Column(name = "last_password_reset_date")
     private Timestamp lastPasswordResetDate;
@@ -166,4 +174,13 @@ public class User implements UserDetails {
         return true;
     }
 
+	public Gender getGender() {
+		return gender;
+	}
+
+	public void setGender(Gender gender) {
+		this.gender = gender;
+	}
+
+    
 }

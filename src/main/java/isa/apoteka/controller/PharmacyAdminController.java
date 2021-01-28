@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import isa.apoteka.domain.PatientUpdateForm;
 import isa.apoteka.domain.Pharmacy;
 import isa.apoteka.domain.PharmacyAdmin;
 
@@ -26,4 +27,5 @@ public class PharmacyAdminController {
 		PharmacyAdmin admin = (PharmacyAdmin) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		return admin.getPharmacy().getId();
 	}
+	
 }
