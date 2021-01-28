@@ -41,7 +41,7 @@
   ======================================================= -->
 </head>
 <body id="body">
-	<div id="pharmacyAdmin">
+	<div id="manageDerm">
 		<!--==========================
     Top Bar
   ============================-->
@@ -116,8 +116,25 @@
 			<section id="wrapper">
 				<div class="inner">
 					<header class="special">
-						<h2>Welcome {{admin.firstName}} {{admin.lastName}}</h2>
+						<h2>MANAGE DERMATOLOGISTS</h2>
 					</header>
+						<div class="highlight">
+						<section>
+							<table style="width: 50%; margin-left:25rem;margin-right:25rem ">
+								<tr v-for="derm in derms">
+									<td style="width: 50%; font-size:1.5rem">
+										{{derm.firstName}}&nbsp{{derm.lastName}}
+									</td>
+									<td style="width: 10%;">
+									<a href="#" class="icon fa-ban" style="font-size:20px; color:red" ><span class="label">Icon</span></a>
+									</td>
+									<td style="width: 50%;">
+									<a href="dermatologistCalendar.html" class="icon fa-clock-o" style="font-size:20px;" @click="dermCal(derm.id)"><span class="label">Icon</span></a>
+									</td>
+								</tr>
+							</table>
+						</section>
+						</div>
 				</div>
 			</section>
 			<!-- #services -->
@@ -145,7 +162,7 @@
 	<!-- Template Main Javascript File -->
 	<script src="../js/main.js"></script>
 	<script src="../axios.js"></script>
-	<script src="pharmacyAdminHome.js"></script>
+	<script src="managingDermatologists.js"></script>
 
 </body>
 </html>
