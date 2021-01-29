@@ -6,13 +6,15 @@ public class PatientUpdateForm {
 	
 	private String username;
 
-	private String oldpass;
+	private String oldPass;
 	
-	private String newpass;
+	private String newPass;
 
 	private String name;
 
 	private String surname;
+	
+	private String email;
 
 	public String getUsername() {
 		return username;
@@ -23,18 +25,18 @@ public class PatientUpdateForm {
 	}
 
 	public String getOldpass() {
-		return oldpass;
+		return oldPass;
 	}
-	public void setOldpass(String password) {
-		this.oldpass = password;
+	public void setOldPass(String password) {
+		this.oldPass = password;
 	}
 
-	public void setNewpass(String password) {
-		this.newpass = password;
+	public void setNewPass(String password) {
+		this.newPass = password;
 	}
 	
-	public String getNewpass() {
-		return newpass;
+	public String getNewPass() {
+		return newPass;
 	}
 
 	public String getName() {
@@ -51,6 +53,14 @@ public class PatientUpdateForm {
 
 	public void setSurname(String lastname) {
 		this.surname = lastname;
+	}
+	
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	
 	public Long getId() {

@@ -10,6 +10,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
@@ -21,6 +22,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -37,6 +39,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class User implements UserDetails {
 
 	private static final long serialVersionUID = 1L;
+	
+	public enum Gender {
+        FEMALE,
+        MALE;
+    }
 
 	public enum Gender {
         FEMALE,
@@ -64,6 +71,13 @@ public class User implements UserDetails {
 
     @Column(name = "email")
     private String email;
+    
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id", referencedColumnName = "id")
+    private Address address;
+    
+    @Column(name = "phonenumber")
+    private String phonenumber;
 
     @Column(name = "enabled")
     private boolean enabled;
@@ -138,6 +152,22 @@ public class User implements UserDetails {
     public void setEmail(String email) {
         this.email = email;
     }
+    
+    public String getPhonenumber() {
+        return phonenumber;
+    }
+
+    public void setPhonenumber(String phonenumber) {
+        this.phonenumber = phonenumber;
+    }
+    
+    public Address getAddress() {
+    	return address;
+    }
+    
+    public void setAddress(Address address) {
+    	this.address = address;
+    }
 
     @Override
     public boolean isEnabled() {
@@ -173,6 +203,14 @@ public class User implements UserDetails {
     public boolean isCredentialsNonExpired() {
         return true;
     }
+    
+    public Gender getGender() {
+		return gender;
+	}
+
+	public void setGender(Gender gender) {
+		this.gender = gender;
+	}
 
 	public Gender getGender() {
 		return gender;

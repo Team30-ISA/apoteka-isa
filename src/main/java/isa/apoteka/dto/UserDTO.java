@@ -1,25 +1,34 @@
 package isa.apoteka.dto;
 
+import isa.apoteka.domain.Address;
 import isa.apoteka.domain.User;
 
 public class UserDTO {
 	private Long id;
+	private String username;
 	private String firstName;
 	private String lastName;
+	private String email;
+	private Address address;
+	private String phonenumber;
 	
 	public UserDTO() {
 
 	}
 
-	public UserDTO(Long id, String firstName, String lastName) {
+	public UserDTO(Long id, String username, String firstName, String lastName, String email, Address address, String phonenumber) {
 		super();
 		this.id = id;
+		this.username = username;
 		this.firstName = firstName;
 		this.lastName = lastName;
+		this.email = email;
+		this.address = address;
+		this.phonenumber = phonenumber;
 	}
 	
 	public UserDTO(User user) {
-		this(user.getId(), user.getFirstName(), user.getLastName());
+		this(user.getId(), user.getUsername(), user.getFirstName(), user.getLastName(), user.getEmail(), user.getAddress(), user.getPhonenumber());
 	}
 
 	public Long getId() {
@@ -28,6 +37,14 @@ public class UserDTO {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+	
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public String getFirstName() {
@@ -46,5 +63,20 @@ public class UserDTO {
 		this.lastName = lastName;
 	}
 	
+	public Address getAddress() {
+		return address;
+	}
+
+	public void setAddress(Address address) {
+		this.address = address;
+	}
+	
+	public String getPhonenumber() {
+		return phonenumber;
+	}
+
+	public void setPhonenumber(String phonenumber) {
+		this.phonenumber = phonenumber;
+	}
 	
 }
