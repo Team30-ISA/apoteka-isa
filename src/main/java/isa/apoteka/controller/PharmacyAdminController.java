@@ -1,19 +1,33 @@
 package isa.apoteka.controller;
 
+
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import isa.apoteka.domain.PatientUpdateForm;
-import isa.apoteka.domain.Pharmacy;
 import isa.apoteka.domain.PharmacyAdmin;
+import isa.apoteka.dto.ChangeDataDTO;
+import isa.apoteka.dto.PromotionDTO;
+import isa.apoteka.service.AddressService;
+import isa.apoteka.service.PharmacyAdminService;
 
 @RestController
 @RequestMapping(value = "api/pharmacyAdmin")
 public class PharmacyAdminController {
 
+	@Autowired
+	private PharmacyAdminService pharmacyAdminService;
+	@Autowired
+	private AddressService addressService;
 	
 	@GetMapping("/getLoggedUser")
 	@PreAuthorize("hasRole('ADMIN')")
@@ -26,6 +40,16 @@ public class PharmacyAdminController {
 	public Long getPharmacy() {
 		PharmacyAdmin admin = (PharmacyAdmin) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		return admin.getPharmacy().getId();
+	}
+	
+	@PostMapping(value= "/save", consumes = "application/json")
+	@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<ChangeDataDTO> save(@RequestBody @Valid ChangeDataDTO changeDataDTO) {
+		PharmacyAdmin admin = (PharmacyAdmin) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		pharmacyAdminService.update(changeDataDTO.getFirstName(), changeDataDTO.getLastName(), admin.getId());
+		addressService.update(changeDataDTO.getStreet(), changeDataDTO.getCityId(), admin.getAddress().getId());
+		return new ResponseEntity<>(changeDataDTO, HttpStatus.CREATED);
+		
 	}
 	
 }

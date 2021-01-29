@@ -7,7 +7,10 @@ var app = new Vue({
 		oldPass: "",
 		newPass: "",
 		repeatPass: "",
-		info: null
+		info: null,
+		countries: null,
+		cities: null,
+		selC: null
 	},
 	methods: {
 		logout(){
@@ -70,7 +73,64 @@ var app = new Vue({
 		chData(){
 			if(this.changeData == true){
 				this.changeData = false;
-				//axios za izmenu podataka
+				if(this.admin.firstName != "" && this.admin.lastName != "" && this.admin.address != ""){
+		     	axios
+		        .post('/api/pharmacyAdmin/save',
+		        	
+		        	{
+		        		firstName: this.admin.firstName,
+		        		lastName: this.admin.lastName,
+		        		street: this.admin.address.street,
+		        		cityId: this.selectedCity.id
+		            },{
+		        	
+		    		headers: {
+						'Authorization': "Bearer " + localStorage.getItem('access_token'),
+					    "Content-Type": "application/json"
+					  }
+					  
+		        })
+		        .then(response => {
+	        		JSAlert.alert("You have successfully updated your profile!");
+	        		axios
+	        		.get('/api/pharmacyAdmin/getLoggedUser',{
+	        			  headers: {
+	        				    'Authorization': "Bearer " + localStorage.getItem('access_token')
+	        			  }
+	        	     })
+	        	     .then(response => {
+	        	     	this.admin = response.data
+	        	     })
+		            
+		        })
+		        .catch(error => {
+		            console.log(error)
+		            if (error.response.status == 401 || error.response.status == 400 || error.response.status == 500) {
+		                JSAlert.alert("Fields cannot be empty. Please try again.");
+		                axios
+		        		.get('/api/pharmacyAdmin/getLoggedUser',{
+		        			  headers: {
+		        				    'Authorization': "Bearer " + localStorage.getItem('access_token')
+		        			  }
+		        	     })
+		        	     .then(response => {
+		        	     	this.admin = response.data
+		        	     })
+		            } 
+		            
+		        })
+				}else{
+					JSAlert.alert("Fields cannot be empty. Please try again.");
+					 axios
+		        		.get('/api/pharmacyAdmin/getLoggedUser',{
+		        			  headers: {
+		        				    'Authorization': "Bearer " + localStorage.getItem('access_token')
+		        			  }
+		        	     })
+		        	     .then(response => {
+		        	     	this.admin = response.data
+		        	     })
+				}
 				}
 			else{
 				this.changeData = true;
@@ -88,6 +148,22 @@ var app = new Vue({
 		     .then(response => {
 		     	this.admin = response.data
 		     })
+		},
+		findCity(){
+			console.log
+			axios
+			.get('/api/city/getAllCitiesForCountry',{
+				headers: {
+				 'Authorization': "Bearer " + localStorage.getItem('access_token')
+				},
+				params:{
+					id: this.selectedCountry.id,
+				}
+	     })
+	     .then(response => {
+	     	console.log(response.data)
+	     	this.cities = response.data	
+	     })
 		}
 	},
 	created() {
@@ -112,7 +188,33 @@ var app = new Vue({
 			  }
 	     })
 	     .then(response => {
-	     	this.admin = response.data
+	     	this.admin = response.data;
+	     	this.selC = this.admin.address.city.country.country;
+	     })
+	     axios
+		.get('/api/country/getAllCountries',{
+			headers: {
+				 'Authorization': "Bearer " + localStorage.getItem('access_token')
+			}
+	     })
+	     .then(response => {
+	     	console.log(response.data)
+	     	this.countries = response.data
+				console.log
+				axios
+				.get('/api/city/getAllCitiesForCountry',{
+					headers: {
+					 'Authorization': "Bearer " + localStorage.getItem('access_token')
+					},
+					params:{
+						id: this.admin.address.city.id,
+					}
+		     })
+		     .then(response => {
+		     	console.log(response.data)
+		     	this.cities = response.data	
+		     	console.log(this.cities)
+		     })
 	     })
 	}
 })

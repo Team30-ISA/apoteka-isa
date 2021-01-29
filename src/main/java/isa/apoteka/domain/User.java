@@ -1,8 +1,5 @@
 package isa.apoteka.domain;
 
-import static javax.persistence.DiscriminatorType.STRING;
-import static javax.persistence.InheritanceType.JOINED;
-import static javax.persistence.InheritanceType.SINGLE_TABLE;
 import static javax.persistence.InheritanceType.TABLE_PER_CLASS;
 
 import java.sql.Timestamp;
@@ -12,7 +9,6 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -25,11 +21,13 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.sun.istack.NotNull;
 
 // POJO koji implementira Spring Security UserDetails interfejs koji specificira
 // osnovne osobine Spring korisnika (koje role ima, da li je nalog zakljucan, istekao, da li su kredencijali istekli)
@@ -45,10 +43,6 @@ public class User implements UserDetails {
         MALE;
     }
 
-	public enum Gender {
-        FEMALE,
-        MALE;
-    }
 	
 	@Id
 	@SequenceGenerator(name = "mySeqGenV3", sequenceName = "mySeqV3", initialValue = 1, allocationSize = 1)
@@ -63,9 +57,11 @@ public class User implements UserDetails {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "first_name")
+    @Size(min=2, max=50)
+    @Column(name = "first_name", nullable = false)
     private String firstName;
 
+    @Size(min=2, max=50)
     @Column(name = "last_name")
     private String lastName;
 
@@ -204,13 +200,6 @@ public class User implements UserDetails {
         return true;
     }
     
-    public Gender getGender() {
-		return gender;
-	}
-
-	public void setGender(Gender gender) {
-		this.gender = gender;
-	}
 
 	public Gender getGender() {
 		return gender;

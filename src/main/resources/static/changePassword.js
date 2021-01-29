@@ -7,7 +7,8 @@ var app = new Vue({
 		newPass: "",
 		repeatPass: "",
 		info: null,
-		role: null
+		role: null,
+		admin: null
 	},
 	methods: {
 		changeState(){
@@ -28,12 +29,13 @@ var app = new Vue({
 			        	console.log(this.info)
 			        	if(this.info.result == 'success'){
 			        		JSAlert.alert("You have successfully updated your password!");
-			        		if(this.role == 'ADMIN'){
-			        			setTimeout(function () {
-										window.location.href = 'pharmacyAdmin/pharmacyAdminHome.html';
-									
-								}, 3000);
-			        		}
+			        		console.log(localStorage.getItem('access_token'));			        	
+				        		if(this.role == 'ADMIN'){
+				        			setTimeout(function () {
+											window.location.href = 'pharmacyAdmin/pharmacyAdminHome.html';
+										
+									}, 3000);
+				        		}
 			        	}
 			            
 			        })
@@ -50,6 +52,7 @@ var app = new Vue({
 		},
 	},
 	created() {
+		console.log(localStorage.getItem('access_token'));
 		axios
         .get('/auth/getRole',{
 			  headers: {
