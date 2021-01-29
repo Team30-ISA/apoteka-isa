@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -54,6 +55,7 @@ public class PharmacyController {
 	}
 	
 	@GetMapping(value = "/findAllDermsInPharmacy")
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<List<DermatologistDTO>> findAllDermsWorkingInPharmacy(@RequestParam Long id) {
 
 		List<Dermatologist> derms = pharmacyService.findAllDermsWorkingInPharmacy(id);
