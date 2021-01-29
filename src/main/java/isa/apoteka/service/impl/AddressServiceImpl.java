@@ -26,4 +26,9 @@ public class AddressServiceImpl implements AddressService {
 		List<Address> result = addressRepository.findAllAddressesForCity(id);
 		return result;
 	}
+
+	@Override
+	public void update(String street, Long cityId, Long addressId) {
+		addressRepository.update(street, cityId, addressId);
+	}
 }
