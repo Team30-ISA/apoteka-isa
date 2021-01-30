@@ -7,7 +7,7 @@ var app = new Vue({
         current: new Date(),
         today: new Date(),
         calendarMode: "month",
-        counselings: [],
+        examinations: [],
         sun: [],
         mon: [],
         tue: [],
@@ -201,7 +201,7 @@ var app = new Vue({
     			  }
             })
             .then(response => {
-            	this.counselings = response.data
+            	this.examinations = response.data
             })
         },
         returnTerms(date){
