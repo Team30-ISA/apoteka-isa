@@ -15,11 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 import isa.apoteka.domain.Dermatologist;
 import isa.apoteka.domain.Pharmacist;
 import isa.apoteka.domain.Pharmacy;
-import isa.apoteka.domain.User;
 import isa.apoteka.dto.DermatologistDTO;
 import isa.apoteka.dto.PharmacistDTO;
 import isa.apoteka.dto.PharmacyDTO;
-import isa.apoteka.dto.UserDTO;
 import isa.apoteka.service.PharmacyService;
 
 
@@ -79,5 +77,19 @@ public class PharmacyController {
 		}
 
 		return new ResponseEntity<>(pharmDTO, HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/findAllDermsNotInPharmacy")
+	@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<List<DermatologistDTO>> findAllDermsNotWorkingInPharmacy(@RequestParam Long id) {
+
+		List<Dermatologist> derms = pharmacyService.findAllDermsNotWorkingInPharmacy(id);
+
+		List<DermatologistDTO> dermDTO = new ArrayList<>();
+		for (Dermatologist d : derms) {
+			dermDTO.add(new DermatologistDTO(d));
+		}
+
+		return new ResponseEntity<>(dermDTO, HttpStatus.OK);
 	}
 }

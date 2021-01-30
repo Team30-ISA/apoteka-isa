@@ -1,8 +1,8 @@
 package isa.apoteka.dto;
 
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import com.sun.istack.NotNull;
 
 public class ChangeDataDTO {
 	@Size(min=2, max=50)
@@ -12,14 +12,14 @@ public class ChangeDataDTO {
 	@Size(min=2, max=50)
 	private String street;
 	@NotNull
-	private Long CityId;
+	private Long cityId;
 	
 	public ChangeDataDTO(String firstName, String lastName, String street, Long cityId) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.street = street;
-		CityId = cityId;
+		this.cityId = cityId;
 	}
 
 	public ChangeDataDTO() {
@@ -52,11 +52,11 @@ public class ChangeDataDTO {
 	}
 
 	public Long getCityId() {
-		return CityId;
+		return cityId;
 	}
 
 	public void setCityId(Long cityId) {
-		CityId = cityId;
+		this.cityId = cityId;
 	}
 
 	

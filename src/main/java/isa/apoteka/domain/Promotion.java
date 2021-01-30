@@ -11,8 +11,9 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.FutureOrPresent;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import com.sun.istack.NotNull;
+
 
 @Entity
 public class Promotion {
@@ -82,7 +83,6 @@ public class Promotion {
 
 	public Promotion() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public Pharmacy getPharmacy() {
