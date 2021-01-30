@@ -1,7 +1,6 @@
 package isa.apoteka.domain;
 
 import javax.persistence.CascadeType;
-import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
@@ -13,13 +12,16 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(name="pharmacist")
 public class Pharmacist extends User{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3373281718733941809L;
 	@JsonIgnore
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Pharmacy pharmacy;
 	
 	public Pharmacist() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public Pharmacy getPharmacy() {

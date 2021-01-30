@@ -15,11 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 import isa.apoteka.domain.Dermatologist;
 import isa.apoteka.domain.Pharmacist;
 import isa.apoteka.domain.Pharmacy;
-import isa.apoteka.domain.User;
 import isa.apoteka.dto.DermatologistDTO;
 import isa.apoteka.dto.PharmacistDTO;
 import isa.apoteka.dto.PharmacyDTO;
-import isa.apoteka.dto.UserDTO;
 import isa.apoteka.service.PharmacyService;
 
 
