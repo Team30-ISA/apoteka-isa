@@ -29,12 +29,14 @@ var app = new Vue({
 	            		window.location.href = 'pharmacist/pharmacistHome.html';
 	            	}
 
-	            	else if(response.data == "ADMIN"){
+	            	else if(response.data == "ADMIN" && this.username != this.password){
 	            		window.location.href = 'pharmacyAdmin/pharmacyAdminHome.html';
 	            	}
 	            	else if(response.data == "PATIENT"){
 	            		window.location.href = 'profile.html';
 
+	            	}else{
+	            		window.location.href = 'changePassword.html';
 	            	}
 	            })
 	            

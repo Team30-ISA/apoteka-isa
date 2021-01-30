@@ -9,4 +9,5 @@ import isa.apoteka.dto.CityDTO;
 
 public interface AddressService {
     List<Address> findAllAddressesForCity (CityDTO city);
+    void update(String street, Long cityId, Long addressId);
 }

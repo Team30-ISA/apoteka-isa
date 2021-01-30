@@ -4,7 +4,10 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,6 +15,8 @@ import isa.apoteka.domain.Address;
 import isa.apoteka.domain.City;
 import isa.apoteka.domain.Country;
 import isa.apoteka.dto.CityDTO;
+import isa.apoteka.dto.ChangeDataDTO;
+import isa.apoteka.dto.PromotionDTO;
 import isa.apoteka.service.AddressService;
 
 @RestController
@@ -26,4 +31,5 @@ public class AddressController {
 	public List<Address> loadAll(CityDTO city) {
 		return this.addressService.findAllAddressesForCity(city);
 	}
+	
 }

@@ -171,7 +171,7 @@
 										<b>EMAIL &nbsp</b>
 									</td>
 									<td style="width: 100%;">
-										<input type="text" v-model="admin.email" :class="[changeData ? 'txtEnabled' : 'txtDisabled']"  :disabled="!changeData" style="width:170%">
+										<input type="text" v-model="admin.email" style="border: 0;  background-color: #ffffff; width: 170%;" disabled>
 									</td>
 								</tr>
 								<tr>
@@ -179,11 +179,12 @@
 										<b>COUNTRY</b>
 									</td>
 									<td style="width: 100%;">
-										<select class="txtEnabled" v-if="changeData" style="width: 170%;">
-											<option>Srbija</option>
-											<option>Makedonija</option>
+										<select class="txtEnabled" v-if="changeData" v-model="selectedCountry" @change="findCity" style="width: 170%;">
+											<option v-for="country in countries" : value="country.value" v-bind:value="{ id: country.id }" :selected="country.country==admin.address.city.country.country">{{country.country}}</option>
+											
 										</select>
-										<input v-else type="text" value="Serbia" :class="[changeData ? 'txtEnabled' : 'txtDisabled']"  :disabled="!changeData">
+										<!-- <h1>{{selected.id}}</h1> -->
+										<input v-else type="text" v-model="admin.address.city.country.country" :class="[changeData ? 'txtEnabled' : 'txtDisabled']"  :disabled="!changeData">
 									</td>
 								</tr>
 								<tr>
@@ -191,11 +192,10 @@
 										<b>CITY</b>
 									</td>
 									<td style="width: 100%;">
-										<select class="txtEnabled" v-if="changeData" style="width: 170%;">
-											<option>Subotica</option>
-											<option>Beograd</option>
+										<select class="txtEnabled" v-if="changeData" v-model="selectedCity" @change="findAddresses" style="width: 170%;">
+											<option v-for="city in cities" : value="city.value" v-bind:value="{ id: city.id }" :selected="city.city==admin.address.city.city">{{city.city}}</option>									
 										</select>
-										<input v-else type="text" value="Subotica" :class="[changeData ? 'txtEnabled' : 'txtDisabled']"  :disabled="!changeData">
+										<input v-else type="text" v-model="admin.address.city.city" :class="[changeData ? 'txtEnabled' : 'txtDisabled']"  :disabled="!changeData">
 									</td>
 								</tr>
 								<tr>
@@ -203,7 +203,7 @@
 										<b>ADDRESS</b>
 									</td>
 									<td style="width: 100%;">
-										<input type="text" value="Address 11" :class="[changeData ? 'txtEnabled' : 'txtDisabled']"  :disabled="!changeData">
+										<input type="text" v-model="admin.address.street" :class="[changeData ? 'txtEnabled' : 'txtDisabled']"  :disabled="!changeData">
 									</td>
 								</tr>
 								<tr>
@@ -226,7 +226,7 @@
 										<b>OLD PASSWORD</b>
 									</td>
 									<td  style="width: 50%; padding-bottom: 30px;">
-										<input class="txtEnabled" type="password" style="margin-right: 20px; width:80%">
+										<input v-model="oldPass" class="txtEnabled" type="password" style="margin-right: 20px; width:80%">
 									</td>
 								</tr>
 								<tr>
@@ -234,7 +234,7 @@
 										<b>NEW PASSWORD</b>
 									</td>
 									<td style="width: 50%; padding-bottom:30px;">
-										<input class="txtEnabled" type="password" style="width:80%">
+										<input v-model="newPass" class="txtEnabled" type="password" style="width:80%">
 									</td>
 								</tr>
 								<tr>
@@ -242,7 +242,7 @@
 										<b>REPEAT PASSWORD</b>
 									</td>
 									<td style="width: 50%; padding-bottom:30px;">
-										<input class="txtEnabled" type="password" style="width:80%">
+										<input v-model="repeatPass" class="txtEnabled" type="password" style="width:80%">
 									</td>
 								</tr>
 								<tr>
@@ -271,6 +271,7 @@
 	<script src="../lib/owlcarousel/owl.carousel.min.js"></script>
 	<script src="../lib/magnific-popup/magnific-popup.min.js"></script>
 	<script src="../lib/sticky/sticky.js"></script>
+	<script src="https://npmcdn.com/js-alert/dist/jsalert.min.js"></script>
 
 	<!-- Contact Form JavaScript File -->
 	<script

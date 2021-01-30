@@ -30,31 +30,40 @@ var app = new Vue({
 			.get('/api/pharmacyAdmin/getPharmacy',{
 				  headers: {
 					    'Authorization': "Bearer " + localStorage.getItem('access_token')
-				  }
+			            }
 		     })
 		     .then(response => {
 		     	this.pharmacyId = response.data
 		     	axios
-		        .post('/api/promotion',
-		
-		            {
+		        .post('/api/promotion/save',
+		        	
+		        	{
 		                title: this.title,
 		                startOfPromotion: this.startOfPromotion,
 		                endOfPromotion: this.endOfPromotion,
 		                content: this.content,
 		                pharmacyId: this.pharmacyId
-		            })
+		            },{
+		        	
+		    		headers: {
+						'Authorization': "Bearer " + localStorage.getItem('access_token'),
+					    "Content-Type": "application/json"
+					  }
+					  
+		        })
 		        .then(response => {
-		        	JSAlert.stop();
 	        		JSAlert.alert("You have successfully published a new promotion!");
-		        	window.onload = setTimeout(function(){
-		        	   locatio.reload();
-		        	}, 5000);
+	        		setTimeout(function () {
+						if (window.location.hash != '#r') {
+							window.location.hash = 'r';
+							window.location.reload(1);
+						}
+					}, 3000);
 		            
 		        })
 		        .catch(error => {
 		            console.log(error)
-		            if (error.response.status == 401 || error.response.status == 400) {
+		            if (error.response.status == 401 || error.response.status == 400 || error.response.status == 500) {
 		                JSAlert.alert("Publishing is incorrect! Please check the data you have entered.");
 		            } 
 		            

@@ -1,8 +1,6 @@
 package isa.apoteka.domain;
 
 import java.util.Date;
-import java.util.List;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,13 +8,10 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.validation.constraints.Email;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.FutureOrPresent;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import javax.validation.constraints.Size;
 import com.sun.istack.NotNull;
 
 @Entity
@@ -26,10 +21,10 @@ public class Promotion {
 	private Long id;
 
 	@Column(unique = false, nullable = false)
-	@NotNull
+	@Size(min=2, max=240)
 	String title;
 	
-	@NotNull
+	@Size(min=2, max=240)
 	@Column(unique = false, nullable = false)
 	String content;
 
