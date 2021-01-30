@@ -80,4 +80,18 @@ public class PharmacyController {
 
 		return new ResponseEntity<>(pharmDTO, HttpStatus.OK);
 	}
+	
+	@GetMapping(value = "/findAllDermsNotInPharmacy")
+	@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<List<DermatologistDTO>> findAllDermsNotWorkingInPharmacy(@RequestParam Long id) {
+
+		List<Dermatologist> derms = pharmacyService.findAllDermsNotWorkingInPharmacy(id);
+
+		List<DermatologistDTO> dermDTO = new ArrayList<>();
+		for (Dermatologist d : derms) {
+			dermDTO.add(new DermatologistDTO(d));
+		}
+
+		return new ResponseEntity<>(dermDTO, HttpStatus.OK);
+	}
 }

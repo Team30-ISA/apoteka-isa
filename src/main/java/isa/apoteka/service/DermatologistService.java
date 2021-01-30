@@ -6,4 +6,6 @@ public interface DermatologistService {
 	String getLogged();
 	Dermatologist findById(Long id);
 	Dermatologist findByName(String name);
+	void hireDerm(Long dermId, Long pharmacyId);
+	void fireDerm(Long dermId, Long pharmacyId);
 }

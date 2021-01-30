@@ -15,6 +15,10 @@ public interface PharmacyRepository extends JpaRepository<Pharmacy, Long>{
     @Query("from Dermatologist d join d.pharmacies p where p.id=:id")
 	List<Dermatologist> findAllDermsWorkingInPharmacy(Long id);
     
+    @Query("from Dermatologist d left join d.pharmacies p where ((not p.id=:id) or p.id=null) and d.id not in (select derm.id from Dermatologist as derm join derm.pharmacies pp where pp.id=:id)")
+	List<Dermatologist> findAllDermsNotWorkingInPharmacy(Long id);
+
+    
     @Query("from Pharmacist p join p.pharmacy pp where pp.id=:id")
 	List<Pharmacist> findAllPharmsWorkingInPharmacy(Long id);
 }

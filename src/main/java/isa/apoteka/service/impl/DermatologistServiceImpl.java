@@ -31,6 +31,17 @@ public class DermatologistServiceImpl implements DermatologistService {
 		Dermatologist derm = dermatologistRepository.findOneByfirstName(name);
 		return derm;
 	}
+
+	@Override
+	public void hireDerm(Long dermId, Long pharmacyId) {
+		dermatologistRepository.hireDerm(dermId, pharmacyId);
+		
+	}
 	
+	@Override
+	public void fireDerm(Long dermId, Long pharmacyId) {
+		dermatologistRepository.fireDerm(dermId, pharmacyId);
+		
+	}
 	
 }
