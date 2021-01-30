@@ -23,19 +23,18 @@ public class EmailService {
 	private Environment env;
 	
 	@Async
-	public void sendPromotionNotificaitionAsync(User user, Promotion promotion) throws MailException, InterruptedException {
-		System.out.println("Async metoda se izvrsava u drugom Threadu u odnosu na prihvaceni zahtev. Thread id: " + Thread.currentThread().getId());
-		//Simulacija duze aktivnosti da bi se uocila razlika
-		System.out.println("Slanje emaila...");
+	public void sendPromotionNotificaitionAsync(User user, Promotion promotion) throws MailException{
 		SimpleMailMessage mail = new SimpleMailMessage();
 		mail.setTo(user.getEmail());
+		if(env.getProperty("spring.mail.username") == null) {
+			return;
+		}
 		mail.setFrom(env.getProperty("spring.mail.username"));
 		mail.setSubject(promotion.getTitle());
 		mail.setText("Pozdrav " + user.getFirstName() + ",\n" + "\nPočetak promocije: " + new SimpleDateFormat("dd. MMM yyyy.").format(promotion.getStartOfPromotion())
 				+ "\nKraj promocije: " + new SimpleDateFormat("dd. MMM yyyy.").format(promotion.getEndOfPromotion()) + "\n\n" + promotion.getContent());
 		javaMailSender.send(mail);
 
-		System.out.println("Email poslat!");
 	}
 
 }
