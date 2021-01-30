@@ -11,9 +11,6 @@ import isa.apoteka.domain.Pharmacist;
 @RestController
 @RequestMapping(value = "api/pharmacist")
 public class PharmacistController {
-
-	//@Autowired
-	//private PharmacistService pharmacistService;
 	
 	@GetMapping("/getLoggedUser")
 	@PreAuthorize("hasRole('PHARM')")

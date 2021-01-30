@@ -1,12 +1,13 @@
 package isa.apoteka.service.impl;
 
-import javax.servlet.http.HttpSession;
-
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-
 import isa.apoteka.domain.Dermatologist;
+import isa.apoteka.domain.Pharmacy;
+import isa.apoteka.dto.PharmacyDTO;
 import isa.apoteka.repository.DermatologistRepository;
 import isa.apoteka.service.DermatologistService;
 
@@ -22,14 +23,24 @@ public class DermatologistServiceImpl implements DermatologistService {
 	
 	@Override
 	public Dermatologist findById(Long id) {
-		Dermatologist derm = dermatologistRepository.findById(id).orElse(null);
-		return derm;
+		return dermatologistRepository.findById(id).orElse(null);
 	}
 
 	@Override
 	public Dermatologist findByName(String name) {
-		Dermatologist derm = dermatologistRepository.findOneByfirstName(name);
-		return derm;
+		return dermatologistRepository.findOneByfirstName(name);
+	}
+
+	@Override
+	public List<PharmacyDTO> getDermPharmacies(Long dermatologistId) {
+		return pharmacyListToPharmacyDTOlist(dermatologistRepository.getDermPharmacies(dermatologistId));
+	}
+	
+	public List<PharmacyDTO> pharmacyListToPharmacyDTOlist(List<Pharmacy> pharmacies){
+		List<PharmacyDTO> dtos = new ArrayList<>();
+		for(Pharmacy p : pharmacies)
+			dtos.add(new PharmacyDTO(p));
+		return dtos;
 	}
 
 	@Override
