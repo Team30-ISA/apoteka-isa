@@ -1,18 +1,14 @@
 package isa.apoteka.service.impl;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import isa.apoteka.domain.Counseling;
 import isa.apoteka.domain.Pharmacy;
 import isa.apoteka.dto.CounselingDTO;
@@ -53,12 +49,11 @@ public class CounselingServiceImpl implements CounselingService {
 			return null;
 		if(counseling.getPatient() != null)
 			patientName = counseling.getPatient().getFirstName() + counseling.getPatient().getLastName();
-		CounselingDTO dto = new CounselingDTO(counseling.getId(), counseling.getStartDate(), counseling.getDuration(), counseling.getDermatologistWorkCalendar().getPharmacy().getName(), patientName, counseling.getPrice());
-		return dto;
+		return new CounselingDTO(counseling.getId(), counseling.getStartDate(), counseling.getDuration(), counseling.getDermatologistWorkCalendar().getPharmacy().getName(), patientName, counseling.getPrice());
 	}
 	
 	public List<CounselingDTO> mapListCounselingToListCounselingDTO(List<Counseling> counselings) {
-		List<CounselingDTO> counselingDTOs = new ArrayList<CounselingDTO>();
+		List<CounselingDTO> counselingDTOs = new ArrayList<>();
 		for(Counseling c : counselings) {
 			CounselingDTO dto = mapCounselingToCounselingDTO(c);
 			if(dto == null)
@@ -70,7 +65,7 @@ public class CounselingServiceImpl implements CounselingService {
 
 	@Override
 	public List<Long> countTermsByDays(Long pharmacyId, Long dermatologistId, Date start, int num) {
-		List<Long> ret = new ArrayList<Long>();
+		List<Long> ret = new ArrayList<>();
 		Calendar calendar = new GregorianCalendar();
 		calendar.setTime(start);
 		calendar.set(Calendar.HOUR_OF_DAY, 0);
@@ -91,7 +86,7 @@ public class CounselingServiceImpl implements CounselingService {
 	
 	@Override
 	public List<Long> countTermsByMonths(Long pharmacyId, Long dermatologistId, Date start) {
-		List<Long> ret = new ArrayList<Long>();
+		List<Long> ret = new ArrayList<>();
 		Calendar calendar = new GregorianCalendar();
 		calendar.setTime(start);
 		calendar.set(Calendar.MONTH, 0);
@@ -103,7 +98,6 @@ public class CounselingServiceImpl implements CounselingService {
 		calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
 		Date endDate = calendar.getTime();
 		for(int i = 0; i < 12; i++) {
-			System.out.println(startDate);
 			Long n = counselingRepository.countTerms(pharmacyId, dermatologistId, startDate, endDate);
 			ret.add(n);
 			calendar.add(Calendar.DATE, 1);

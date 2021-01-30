@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import isa.apoteka.domain.Counseling;
-import isa.apoteka.domain.Pharmacy;
 
 public interface CounselingRepository extends JpaRepository<Counseling, Long>{
 	

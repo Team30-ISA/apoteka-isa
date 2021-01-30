@@ -2,13 +2,9 @@ package isa.apoteka.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-
 import isa.apoteka.domain.Dermatologist;
 import isa.apoteka.domain.Pharmacy;
 import isa.apoteka.dto.PharmacyDTO;
@@ -27,14 +23,12 @@ public class DermatologistServiceImpl implements DermatologistService {
 	
 	@Override
 	public Dermatologist findById(Long id) {
-		Dermatologist derm = dermatologistRepository.findById(id).orElse(null);
-		return derm;
+		return dermatologistRepository.findById(id).orElse(null);
 	}
 
 	@Override
 	public Dermatologist findByName(String name) {
-		Dermatologist derm = dermatologistRepository.findOneByfirstName(name);
-		return derm;
+		return dermatologistRepository.findOneByfirstName(name);
 	}
 
 	@Override
@@ -43,7 +37,7 @@ public class DermatologistServiceImpl implements DermatologistService {
 	}
 	
 	public List<PharmacyDTO> pharmacyListToPharmacyDTOlist(List<Pharmacy> pharmacies){
-		List<PharmacyDTO> dtos = new ArrayList<PharmacyDTO>();
+		List<PharmacyDTO> dtos = new ArrayList<>();
 		for(Pharmacy p : pharmacies)
 			dtos.add(new PharmacyDTO(p));
 		return dtos;
