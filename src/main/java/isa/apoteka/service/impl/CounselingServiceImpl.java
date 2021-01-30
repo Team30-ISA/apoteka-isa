@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import isa.apoteka.domain.Counseling;
 import isa.apoteka.domain.Pharmacy;
-import isa.apoteka.dto.CounselingDTO;
+import isa.apoteka.dto.ExaminationDTO;
 import isa.apoteka.repository.CounselingRepository;
 import isa.apoteka.repository.DermatologistRepository;
 import isa.apoteka.service.CounselingService;
@@ -26,7 +26,7 @@ public class CounselingServiceImpl implements CounselingService {
 	private DermatologistRepository dermatologistRepository;
 
 	@Override
-	public List<CounselingDTO> findAllTermsByDay(Long pharmacyId, Long dermatologistId, Date start) {
+	public List<ExaminationDTO> findAllTermsByDay(Long pharmacyId, Long dermatologistId, Date start) {
 		Calendar calendar = new GregorianCalendar();
 		calendar.setTime(start);
 		calendar.set(Calendar.HOUR_OF_DAY, 0);
@@ -36,12 +36,12 @@ public class CounselingServiceImpl implements CounselingService {
 		calendar.add(Calendar.DATE, 1);
 		Date endDate = calendar.getTime();
 		List<Counseling> counseling = counselingRepository.findAllTerms(pharmacyId, dermatologistId, startDate, endDate);
-		List<CounselingDTO> dtos = mapListCounselingToListCounselingDTO(counseling);
+		List<ExaminationDTO> dtos = mapListCounselingToListCounselingDTO(counseling);
 		Collections.sort(dtos, new Sortbyroll());
 		return dtos;
 	}
 	
-	public CounselingDTO mapCounselingToCounselingDTO(Counseling counseling) {
+	public ExaminationDTO mapCounselingToCounselingDTO(Counseling counseling) {
 		String patientName = "";
 		if(counseling.getDermatologistWorkCalendar() == null)
 			return null;
@@ -49,13 +49,13 @@ public class CounselingServiceImpl implements CounselingService {
 			return null;
 		if(counseling.getPatient() != null)
 			patientName = counseling.getPatient().getFirstName() + counseling.getPatient().getLastName();
-		return new CounselingDTO(counseling.getId(), counseling.getStartDate(), counseling.getDuration(), counseling.getDermatologistWorkCalendar().getPharmacy().getName(), patientName, counseling.getPrice());
+		return new ExaminationDTO(counseling.getId(), counseling.getStartDate(), counseling.getDuration(), counseling.getDermatologistWorkCalendar().getPharmacy().getName(), patientName, counseling.getPrice());
 	}
 	
-	public List<CounselingDTO> mapListCounselingToListCounselingDTO(List<Counseling> counselings) {
-		List<CounselingDTO> counselingDTOs = new ArrayList<>();
+	public List<ExaminationDTO> mapListCounselingToListCounselingDTO(List<Counseling> counselings) {
+		List<ExaminationDTO> counselingDTOs = new ArrayList<>();
 		for(Counseling c : counselings) {
-			CounselingDTO dto = mapCounselingToCounselingDTO(c);
+			ExaminationDTO dto = mapCounselingToCounselingDTO(c);
 			if(dto == null)
 				continue;
 			counselingDTOs.add(dto);
@@ -113,10 +113,10 @@ public class CounselingServiceImpl implements CounselingService {
 		return dermatologistRepository.getDermPharmacies(dermatologistId);
 	}
 	
-	class Sortbyroll implements Comparator<CounselingDTO>
+	class Sortbyroll implements Comparator<ExaminationDTO>
 	{
 		@Override
-		public int compare(CounselingDTO o1, CounselingDTO o2) {
+		public int compare(ExaminationDTO o1, ExaminationDTO o2) {
 			if (o1.getStartDate().before(o1.getStartDate()))
 	            return -1;
 	        else if (o1.getStartDate().after(o2.getStartDate()))
