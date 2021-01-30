@@ -17,8 +17,8 @@ var app = new Vue({
         sat: [],
         counts: [],
         pharmacies: [],
-        pharm: null,
-        derm: null
+        pharmacits: null,
+        pharm: null
         
 	},
 	methods: {
@@ -196,7 +196,7 @@ var app = new Vue({
     			    'Authorization': "Bearer " + localStorage.getItem('access_token')
     			  },
     			  params: {
-    				  pharmacyId: this.pharm,
+    				  pharmacyId: this.pharm.id,
     				  start: date.getTime()
     			  }
             })
@@ -212,7 +212,7 @@ var app = new Vue({
 	    			    'Authorization': "Bearer " + localStorage.getItem('access_token')
 	    			  },
 	    			  params: {
-	    				  pharmacyId: this.pharm,
+	    				  pharmacyId: this.pharm.id,
 	    				  start: date.getTime()
 	    			  }
 	            })
@@ -252,7 +252,7 @@ var app = new Vue({
     			    'Authorization': "Bearer " + localStorage.getItem('access_token')
     			  },
     			  params: {
-    				  pharmacyId: this.pharm,
+    				  pharmacyId: this.pharm.id,
     				  start: date.getTime(),
     				  num: 42
     			  }
@@ -268,7 +268,7 @@ var app = new Vue({
     			    'Authorization': "Bearer " + localStorage.getItem('access_token')
     			  },
     			  params: {
-    				  pharmacyId: this.pharm,
+    				  pharmacyId: this.pharm.id,
     				  start: date.getTime()
     			  }
             })
@@ -317,35 +317,34 @@ var app = new Vue({
 			  }
         })
         .then(response => {
-        	if(response.data != "DERM"){
+        	if(response.data != "PHARM"){
         		window.location.href = '/login.html';
         	}
         })
         .catch(function() {
         	window.location.href = '/login.html';
 	    })
-    	axios
-        .get('/api/dermatologist/getDermPharmacies',{
-			  headers: {
-			    'Authorization': "Bearer " + localStorage.getItem('access_token')
-			  }
-        })
-        .then(response => {
-        	this.pharmacies = response.data
-        	this.pharm = this.pharmacies[0].id
-        	axios
-    		.get('/api/dermatologist/getLoggedUser',{
+        axios
+    	.get('/api/pharmacist/getPharmacy',{
+    		  headers: {
+    			    'Authorization': "Bearer " + localStorage.getItem('access_token')
+    		  }
+    	})
+    	.then(response => {
+    	  	this.pharm = response.data
+    	  	axios
+    		.get('/api/pharmacist/getLoggedUser',{
     			  headers: {
     				    'Authorization': "Bearer " + localStorage.getItem('access_token')
     			  }
     	     })
     	     .then(response => {
-    	     	this.derm = response.data
+    	     	this.pharmacist = response.data
     	        this.current = new Date(this.current.getFullYear(), this.current.getMonth(), this.current.getDate());
     	        this.today = new Date(this.today.getFullYear(), this.today.getMonth(), this.today.getDate());
     	        this.getTerms(this.today);
     	        this.getDaysInMonth(this.current.getMonth(), this.current.getFullYear());
     	     })
-        })
+    	})
     }
 })
