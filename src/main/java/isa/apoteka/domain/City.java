@@ -42,7 +42,18 @@ public class City {
     @JoinColumn(name = "country_id", referencedColumnName = "id")
     private Country country;
     
-    public Long getId() {
+    
+    
+    public City() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public City(Long id) {
+		this.id = id;
+	}
+
+	public Long getId() {
         return id;
     }
 

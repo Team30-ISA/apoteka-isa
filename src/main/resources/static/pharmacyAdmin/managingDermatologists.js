@@ -35,7 +35,7 @@ var app = new Vue({
 	        .post('/api/dermatologist/hire',
 	        	
 	        	{
-	        		dermId: 120
+	        		dermId: window.localStorage.getItem('dermId')
 	            },{
 	        	
 	    		headers: {
@@ -53,7 +53,7 @@ var app = new Vue({
 			window.localStorage.setItem('dermId', dermId);
 			this.dermId = window.localStorage.getItem('dermId');
 			axios
-	        .delete('/api/dermatologist/fire/' + 120,{
+	        .delete('/api/dermatologist/fire/' + dermId,{
 
 	    		headers: {
 					'Authorization': "Bearer " + localStorage.getItem('access_token'),
