@@ -15,7 +15,7 @@ import com.sun.istack.Nullable;
 
 import isa.apoteka.domain.Dermatologist;
 import isa.apoteka.domain.Pharmacy;
-import isa.apoteka.dto.CounselingDTO;
+import isa.apoteka.dto.ExaminationDTO;
 import isa.apoteka.service.CounselingService;
 
 @RestController
@@ -28,7 +28,7 @@ public class CounselingController {
 	@Nullable
 	@GetMapping("/findAllTermsByDay")
 	@PreAuthorize("hasRole('DERM')")
-	public ResponseEntity<List<CounselingDTO>> findAllTermsByDay(Long pharmacyId, Long start) {
+	public ResponseEntity<List<ExaminationDTO>> findAllTermsByDay(Long pharmacyId, Long start) {
 		Dermatologist derm = (Dermatologist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		Long dermatologistId = derm.getId();
 		if(Boolean.FALSE.equals(isDermInPharmacy(dermatologistId, pharmacyId))) {

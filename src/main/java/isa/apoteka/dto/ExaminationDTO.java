@@ -2,7 +2,7 @@ package isa.apoteka.dto;
 
 import java.util.Date;
 
-public class CounselingDTO {
+public class ExaminationDTO {
 	private Long id;
 	private Date startDate;
 	private int duration;
@@ -10,11 +10,11 @@ public class CounselingDTO {
 	private String patientName;
 	private float price;
 	
-	public CounselingDTO() {
+	public ExaminationDTO() {
 		super();
 	}
 
-	public CounselingDTO(Long id, Date startDate, int duration, String pharmacyName, String patientName, float price) {
+	public ExaminationDTO(Long id, Date startDate, int duration, String pharmacyName, String patientName, float price) {
 		this.id = id;
 		this.startDate = startDate;
 		this.duration = duration;

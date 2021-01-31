@@ -13,4 +13,7 @@ public interface PharmacistRepository extends JpaRepository<Pharmacist, Long> {
     @Transactional
     @Query("update Pharmacist p set p.firstName = ?1, p.lastName = ?2 where p.id = ?3")
     void update(String firstName, String lastName, Long id);
+	
+	@Query("from Pharmacist p where p.id= :pharmacistId")
+	Pharmacist getPharmacist(Long pharmacistId);
 }

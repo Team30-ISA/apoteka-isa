@@ -1,5 +1,6 @@
 package isa.apoteka.controller;
 
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import isa.apoteka.domain.Pharmacist;
 import isa.apoteka.dto.ChangeDataDTO;
+import isa.apoteka.dto.PharmacyDTO;
 import isa.apoteka.service.AddressService;
 import isa.apoteka.service.PharmacistService;
 
@@ -41,6 +43,12 @@ public class PharmacistController {
 		pharmacistService.update(changeDataDTO.getFirstName(), changeDataDTO.getLastName(), pharm.getId());
 		addressService.update(changeDataDTO.getStreet(), changeDataDTO.getCityId(), pharm.getAddress().getId());
 		return new ResponseEntity<>(changeDataDTO, HttpStatus.CREATED);
+	}
 		
+	@GetMapping("/getPharmacy")
+	@PreAuthorize("hasRole('PHARM')")
+	public PharmacyDTO getPharmacy() {
+		Pharmacist pharmacist = (Pharmacist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		return new PharmacyDTO(pharmacistService.getPharmPharmacy(pharmacist.getId()));
 	}
 }

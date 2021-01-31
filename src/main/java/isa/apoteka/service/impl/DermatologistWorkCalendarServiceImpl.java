@@ -20,8 +20,6 @@ public class DermatologistWorkCalendarServiceImpl implements DermatologistWorkCa
 	
 	@Override
 	public Boolean save(DermatologistWorkCalendar derm) {
-		//provera da li se poklapa dermatolog=>apoteka
-		//da ne radi slucajno dermatolog u tom terminu u nekoj drugoj apoteci
 		DermatologistWorkCalendar d = dermWCRepository.save(derm);
 		if(d != null)
 			return true;
@@ -49,7 +47,6 @@ public class DermatologistWorkCalendarServiceImpl implements DermatologistWorkCa
 
 	@Override
 	public void deleteDermWorkCalendarByDate(Date start) {
-		// ako ima zakazanih termina, ne moze da se obrise smena
 		Calendar calendar = new GregorianCalendar();
 		calendar.setTime(start);
 		calendar.set(Calendar.HOUR_OF_DAY, 0);
@@ -58,8 +55,6 @@ public class DermatologistWorkCalendarServiceImpl implements DermatologistWorkCa
 		Date startDate = calendar.getTime();
 		calendar.add(Calendar.DATE, 1);
 		Date endDate = calendar.getTime();
-		System.out.println("****************************");
-		System.out.println(startDate);
 		dermWCRepository.deleteDermWorkCalendarByDate(startDate, endDate);
 	}
 
