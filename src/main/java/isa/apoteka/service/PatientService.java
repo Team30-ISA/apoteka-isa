@@ -5,6 +5,7 @@ import java.util.List;
 import isa.apoteka.domain.Patient;
 import isa.apoteka.domain.PatientUpdateForm;
 import isa.apoteka.domain.UserRequest;
+import isa.apoteka.dto.RegistrationDTO;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,9 +23,11 @@ public interface PatientService {
 	String getLogged();
 	Patient findById(Long id);
     Patient findByUsername(String username);
+    Patient findByEmail(String email);
     List<Patient> findAll ();
 	void update(PatientUpdateForm puf);
 	void updatePassword(PatientUpdateForm puf);
 	List<Patient> findAllPatients();
 	List<Patient> findAllPatientsNotification(Long id);
+	Patient save(RegistrationDTO patient);
 }

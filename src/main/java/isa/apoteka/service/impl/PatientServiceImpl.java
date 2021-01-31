@@ -14,6 +14,7 @@ import isa.apoteka.domain.Patient;
 import isa.apoteka.domain.PatientUpdateForm;
 import isa.apoteka.domain.User;
 import isa.apoteka.domain.UserRequest;
+import isa.apoteka.dto.RegistrationDTO;
 import isa.apoteka.repository.PatientRepository;
 import isa.apoteka.repository.UserRepository;
 import isa.apoteka.service.AuthorityService;
@@ -82,6 +83,32 @@ public class PatientServiceImpl implements PatientService {
 	public List<Patient> findAllPatientsNotification(Long id) {
 		List<Patient> result = patientRepository.findAllPatientsNotification(id);
 		return result;
+	}
+
+	@Override
+	public Patient save(RegistrationDTO patient) {
+		Patient p = new Patient();
+		p.setUsername(patient.getUsername());
+		p.setFirstName(patient.getFirstname());
+		p.setLastName(patient.getLastname());
+		p.setPhonenumber(patient.getPhonenumber());
+		p.setEmail(patient.getEmail());
+		p.setPassword(passwordEncoder.encode(patient.getPassword()));
+		p.setEnabled(true);
+		
+		List<Authority> auth = authService.findByname("ROLE_PATIENT");
+		p.setAuthorities(auth);
+		
+		p = this.patientRepository.save(p);
+		
+		
+		return p;
+	}
+
+	@Override
+	public Patient findByEmail(String email) throws UsernameNotFoundException {
+		Patient p = patientRepository.findByEmail(email);
+		return p;
 	}
 
 }

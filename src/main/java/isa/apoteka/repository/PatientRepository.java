@@ -14,6 +14,8 @@ import isa.apoteka.domain.PatientUpdateForm;
 public interface PatientRepository extends JpaRepository<Patient, Long> {
     Patient findByUsername( String username );
     
+    Patient findByEmail(String email);
+    
     @Query("from User u join u.authorities a where a.id=10")
 	List<Patient> findAllPatients();
     
@@ -29,4 +31,6 @@ public interface PatientRepository extends JpaRepository<Patient, Long> {
     
     @Query("from Patient p join p.pharmacies pp where pp.id=:id")
 	List<Patient> findAllPatientsNotification(Long id);
+    
+    Patient save(Patient patient);
 }

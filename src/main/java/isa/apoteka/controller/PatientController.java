@@ -6,7 +6,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +17,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,10 +27,15 @@ import isa.apoteka.domain.Dermatologist;
 import isa.apoteka.domain.Patient;
 import isa.apoteka.domain.PatientUpdateForm;
 import isa.apoteka.domain.Pharmacy;
+import isa.apoteka.domain.PharmacyAdmin;
 import isa.apoteka.domain.User;
+import isa.apoteka.dto.ChangeDataDTO;
 import isa.apoteka.dto.PatientDTO;
 import isa.apoteka.dto.PharmacyDTO;
+import isa.apoteka.dto.PromotionDTO;
+import isa.apoteka.dto.RegistrationDTO;
 import isa.apoteka.dto.UserDTO;
+import isa.apoteka.exception.ResourceConflictException;
 import isa.apoteka.service.PatientService;
 import isa.apoteka.service.UserService;
 import isa.apoteka.service.impl.CustomUserDetailsService;
@@ -84,6 +94,21 @@ public class PatientController {
 	public String updatePatient(PatientUpdateForm puf) {
 		this.patientService.update(puf);
 		return puf.getName();
+	}
+	
+	@PostMapping(value= "/patient/save", consumes = "application/json")
+	@PreAuthorize("hasRole('PATIENT')")
+	public ResponseEntity<RegistrationDTO> save(@RequestBody @Valid RegistrationDTO registrationDTO) {
+		Patient existPatient = this.patientService.findByEmail(registrationDTO.getEmail());
+		if (existPatient != null) {
+			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+		}
+
+		Patient user = this.patientService.save(registrationDTO);
+		//HttpHeaders headers = new HttpHeaders();
+		//headers.setLocation(ucBuilder.path("/api/user/{userId}").buildAndExpand(user.getId()).toUri());
+		return new ResponseEntity<>(HttpStatus.CREATED);
+		
 	}
 	
 	@GetMapping("/patient/updatePassword")
