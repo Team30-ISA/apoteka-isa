@@ -29,8 +29,7 @@ public class PharmacistWorkCalendar {
 		super();
 	}
 
-	public PharmacistWorkCalendar(Long id, Pharmacist pharmacist, Pharmacy pharmacy, Date startDate, Date endDate) {
-		this.id = id;
+	public PharmacistWorkCalendar(Pharmacist pharmacist, Pharmacy pharmacy, Date startDate, Date endDate) {
 		this.pharmacist = pharmacist;
 		this.pharmacy = pharmacy;
 		this.startDate = startDate;

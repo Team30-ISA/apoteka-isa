@@ -27,7 +27,7 @@ public class DermatologistController {
 	}
 	
 	@GetMapping("/derm")
-	@PreAuthorize("hasRole('ADMIN')")
+	@PreAuthorize("hasRole('DERM')")
 	public User loadById(Long dermId) {
 		return this.dermatologistService.findById(dermId);
 	}

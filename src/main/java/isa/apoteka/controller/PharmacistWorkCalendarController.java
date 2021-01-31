@@ -15,55 +15,50 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import isa.apoteka.domain.Dermatologist;
-import isa.apoteka.domain.DermatologistWorkCalendar;
-import isa.apoteka.domain.Pharmacy;
+import isa.apoteka.domain.Pharmacist;
+import isa.apoteka.domain.PharmacistWorkCalendar;
 import isa.apoteka.domain.PharmacyAdmin;
 import isa.apoteka.dto.PeriodDTO;
-import isa.apoteka.service.DermatologistService;
-import isa.apoteka.service.DermatologistWorkCalendarService;
-import isa.apoteka.service.PharmacyService;
+import isa.apoteka.service.PharmacistService;
+import isa.apoteka.service.PharmacistWorkCalendarService;
 
 @RestController
-@RequestMapping(value = "api/dermWP")
-public class DermatologistWorkCalendarController {
+@RequestMapping(value = "api/pharmWP")
+public class PharmacistWorkCalendarController {
 	
 	@Autowired
-	private DermatologistWorkCalendarService dermWCService;
+	private PharmacistWorkCalendarService pharmWCService;
 	
 	@Autowired
-	private DermatologistService dermatologistService;
+	private PharmacistService pharmacistService;
 	
-	@Autowired
-	private PharmacyService pharmacyService;
 	
 	@PostMapping("/save")
 	@PreAuthorize("hasRole('ADMIN')")
 	public Boolean save(@RequestBody Map<String, Object> params) throws ParseException {
 		PharmacyAdmin admin = (PharmacyAdmin) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		Long pharmacyId = admin.getPharmacy().getId();
-		Pharmacy pharmacy = pharmacyService.findOne(pharmacyId);
-		Dermatologist dermatologist = dermatologistService.findById(Long.parseLong(params.get("dermatologistId").toString()));		
-		DermatologistWorkCalendar dwc = new DermatologistWorkCalendar(dermatologist, pharmacy, new Date(Long.parseLong(params.get("startDate").toString())), new Date(Long.parseLong(params.get("endDate").toString())));
-		return dermWCService.save(dwc);
+		Pharmacist pharmacist = pharmacistService.findById(Long.parseLong(params.get("pharmacistId").toString()));		
+		PharmacistWorkCalendar pwc = new PharmacistWorkCalendar(pharmacist, pharmacist.getPharmacy(), new Date(Long.parseLong(params.get("startDate").toString())), new Date(Long.parseLong(params.get("endDate").toString())));
+		return pharmWCService.save(pwc);
 	}
 	
-	@GetMapping("/findAllDermWorkCalendarByDermIdAndPeriod")
+	@GetMapping("/findAllPharmWorkCalendarByPharmIdAndPeriod")
 	//@PreAuthorize("hasRole('ADMIN')")
-	public List<PeriodDTO> findAllDermWorkCalendarByDermIdAndPeriod(Long dermatologistId, Long startDate, Long endDate) {
+	public List<PeriodDTO> findAllPharmWorkCalendarByPharmIdAndPeriod(Long pharmacistId, Long startDate, Long endDate) {
 		PharmacyAdmin admin = (PharmacyAdmin) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		Long pharmacyId = admin.getPharmacy().getId();
-		return dermWCService.findAllDermWorkCalendarByDermIdAndPeriod(pharmacyId, dermatologistId, new Date(startDate), new Date(endDate));
+		return pharmWCService.findAllPharmWorkCalendarByPharmIdAndPeriod(pharmacistId, new Date(startDate), new Date(endDate));
 	}
 	
-	@PostMapping("/deleteDermWorkCalendarByDate")
+	@PostMapping("/deletePharmWorkCalendarByDate")
 	//@PreAuthorize("hasRole('ADMIN')")
-	public void deleteDermWorkCalendarByDate(@RequestBody Map<String, Object> params) throws ParseException {
+	public void deletePharmWorkCalendarByDate(@RequestBody Map<String, Object> params) throws ParseException {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 		Date startDate = new Date(Long.parseLong(params.get("startDate").toString()));
-		Long dermatologistId = Long.parseLong(params.get("dermatologistId").toString());
+		Long pharmacistId = Long.parseLong(params.get("pharmacistId").toString());
 		PharmacyAdmin admin = (PharmacyAdmin) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		Long pharmacyId = admin.getPharmacy().getId();
-		dermWCService.deleteDermWorkCalendarByDate(startDate);
+		pharmWCService.deletePharmWorkCalendarByDate(startDate);
 	}
 }

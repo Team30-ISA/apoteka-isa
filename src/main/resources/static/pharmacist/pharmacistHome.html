@@ -84,7 +84,7 @@
 							<ul>
 								<li><a href="#">List of examined clients</a></li>
 								<li><a href="#">Start counseling</a></li>
-								<li><a href="#">Work calendar</a></li>
+								<li><a href="/pharmacist/workCalendar.html">Work calendar</a></li>
 								<li><a href="#">Create a leave request</a></li>
 								<li><a href="#">Scheduling a new counseling</a></li>
 								<li><a href="#">Issue a drug</a></li>
@@ -145,7 +145,7 @@
 							</div>
 						</section>
 						<section>
-							<div class="content">
+							<div class="content"  @click="redirect('/pharmacist/workCalendar.html')">
 								<header>
 									<a href="#" class="icon fa-calendar"><span class="label">Icon</span></a>
 									<h3>Work calendar</h3>

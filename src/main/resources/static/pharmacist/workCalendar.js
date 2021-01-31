@@ -17,7 +17,7 @@ var app = new Vue({
         sat: [],
         counts: [],
         pharmacies: [],
-        pharmacits: null,
+        pharmacist: null,
         pharm: null
         
 	},
@@ -191,12 +191,11 @@ var app = new Vue({
         },
         getTerms(date){
         	axios
-            .get('/api/counseling/findAllTermsByDay',{
+            .get('/api/examination/findAllTermsByDay',{
     			  headers: {
     			    'Authorization': "Bearer " + localStorage.getItem('access_token')
     			  },
     			  params: {
-    				  pharmacyId: this.pharm.id,
     				  start: date.getTime()
     			  }
             })
@@ -207,12 +206,11 @@ var app = new Vue({
         returnTerms(date){
         	for(let index = 0; index < 7; index++){
 	        	axios
-	            .get('/api/counseling/findAllTermsByDay',{
+	            .get('/api/examination/findAllTermsByDay',{
 	    			  headers: {
 	    			    'Authorization': "Bearer " + localStorage.getItem('access_token')
 	    			  },
 	    			  params: {
-	    				  pharmacyId: this.pharm.id,
 	    				  start: date.getTime()
 	    			  }
 	            })
@@ -247,12 +245,11 @@ var app = new Vue({
         },
         getCounts(date){
         	axios
-            .get('/api/counseling/countTerms',{
+            .get('/api/examination/countTerms',{
     			  headers: {
     			    'Authorization': "Bearer " + localStorage.getItem('access_token')
     			  },
     			  params: {
-    				  pharmacyId: this.pharm.id,
     				  start: date.getTime(),
     				  num: 42
     			  }
@@ -263,12 +260,11 @@ var app = new Vue({
         },
         getCountsByMonths(date){
         	axios
-            .get('/api/counseling/countTermsByMonths',{
+            .get('/api/examination/countTermsByMonths',{
     			  headers: {
     			    'Authorization': "Bearer " + localStorage.getItem('access_token')
     			  },
     			  params: {
-    				  pharmacyId: this.pharm.id,
     				  start: date.getTime()
     			  }
             })

@@ -16,7 +16,7 @@ public interface PharmacistWorkCalendarRepository extends JpaRepository<Pharmaci
 	List<PharmacistWorkCalendar> findAllPharmWorkCalendarByPharmId(Long id);
     
     @Query("from PharmacistWorkCalendar p join p.pharmacist pp where pp.id=:pharmacistId and p.startDate >= :start and p.endDate <= :end")
-	List<PharmacistWorkCalendar> findAllPharmWorkCalendarByDermIdAndPeriod(Long pharmacistId, Date start, Date end);
+	List<PharmacistWorkCalendar> findAllPharmWorkCalendarByPharmIdAndPeriod(Long pharmacistId, Date start, Date end);
     
     @Transactional
     @Modifying
