@@ -42,6 +42,17 @@ public class DermatologistServiceImpl implements DermatologistService {
 			dtos.add(new PharmacyDTO(p));
 		return dtos;
 	}
+
+	@Override
+	public void hireDerm(Long dermId, Long pharmacyId) {
+		dermatologistRepository.hireDerm(dermId, pharmacyId);
+		
+	}
 	
+	@Override
+	public void fireDerm(Long dermId, Long pharmacyId) {
+		dermatologistRepository.fireDerm(dermId, pharmacyId);
+		
+	}
 	
 }

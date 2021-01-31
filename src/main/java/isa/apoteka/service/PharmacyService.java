@@ -12,38 +12,24 @@ import isa.apoteka.domain.Pharmacist;
 import isa.apoteka.domain.Pharmacy;
 import isa.apoteka.repository.PharmacyRepository;
 
-@Service
-public class PharmacyService {
 
-	@Autowired
-	private PharmacyRepository pharmacyRepository;
-	
-	public Pharmacy findOne(Long id) {
-		return pharmacyRepository.findById(id).orElse(null);
-	}
+public interface PharmacyService {
 
-	public List<Pharmacy> findAll() {
-		return pharmacyRepository.findAll();
-	}
+	
+	public Pharmacy findOne(Long id);
 
-	public Pharmacy save(Pharmacy pharmacy) {
-		return pharmacyRepository.save(pharmacy);
-	}
+	public List<Pharmacy> findAll();
 
-	public void remove(Long id) {
-		pharmacyRepository.deleteById(id);
-	}
+	public Pharmacy save(Pharmacy pharmacy);
+
+	public void remove(Long id);
 	
-	public Pharmacy findByName(String name) {
-		return pharmacyRepository.findOneByName(name);
-	}
+	public Pharmacy findByName(String name);
 	
-	public List<Dermatologist> findAllDermsWorkingInPharmacy(Long id){
-		return pharmacyRepository.findAllDermsWorkingInPharmacy(id);
-	}
+	public List<Dermatologist> findAllDermsWorkingInPharmacy(Long id);
 	
-	public List<Pharmacist> findAllPharmsWorkingInPharmacy(Long id){
-		return pharmacyRepository.findAllPharmsWorkingInPharmacy(id);
-	}
+	public List<Dermatologist> findAllDermsNotWorkingInPharmacy(Long id);
+	
+	public List<Pharmacist> findAllPharmsWorkingInPharmacy(Long id);
 	
 }

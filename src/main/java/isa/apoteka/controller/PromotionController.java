@@ -8,21 +8,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import isa.apoteka.async.service.EmailService;
 import isa.apoteka.domain.Patient;
 import isa.apoteka.domain.Promotion;
-import isa.apoteka.domain.User;
 import isa.apoteka.dto.PromotionDTO;
 import isa.apoteka.service.PatientService;
 import isa.apoteka.service.PharmacyService;
 import isa.apoteka.service.PromotionService;
-import isa.apoteka.service.UserService;
 
 
 @RestController
@@ -38,7 +34,7 @@ public class PromotionController {
 	@Autowired
 	private PharmacyService pharmacyService;
 	
-	private Logger logger = LoggerFactory.getLogger(UserController.class);
+	private Logger logger = LoggerFactory.getLogger(PromotionController.class);
 
 	@Autowired
 	private EmailService emailService;
@@ -61,10 +57,9 @@ public class PromotionController {
 		List<Patient> patients = patientService.findAllPatientsNotification(promotionDTO.getPharmacyId());
 		for(Patient p : patients) {
 			try {
-				System.out.println("Thread id: " + Thread.currentThread().getId());
 				emailService.sendPromotionNotificaitionAsync(p,promotion);
 			}catch( Exception e ){
-				logger.info("Greska prilikom slanja emaila: " + e.getMessage());
+				logger.info("Greska prilikom slanja emaila: {0} ", e.getMessage());
 			}
 		}
 		return new ResponseEntity<>(new PromotionDTO(promotion), HttpStatus.CREATED);

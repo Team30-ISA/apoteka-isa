@@ -62,7 +62,6 @@ public class Pharmacy {
 
 	public Pharmacy() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public Long getId() {

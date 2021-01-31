@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import isa.apoteka.domain.PharmacyAdmin;
 import isa.apoteka.dto.ChangeDataDTO;
-import isa.apoteka.dto.PromotionDTO;
 import isa.apoteka.service.AddressService;
 import isa.apoteka.service.PharmacyAdminService;
 

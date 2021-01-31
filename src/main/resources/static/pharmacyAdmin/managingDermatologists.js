@@ -3,7 +3,13 @@ var app = new Vue({
 	data: {
 		derms: [],
 		pharmacyId: "",
-		admin: null
+		admin: null,
+		changePass: false,
+		changeData: false,
+		oldPass: "",
+		newPass: "",
+		newDerms: [],
+		dermId: null
 	},
 	methods: {
 		logout(){
@@ -21,6 +27,55 @@ var app = new Vue({
 		
 		dermCal(dermId){
 			window.localStorage.setItem('dermId', dermId);
+		},
+		
+		newDerm(dermId){
+			window.localStorage.setItem('dermId', dermId);
+			axios
+	        .post('/api/dermatologist/hire',
+	        	
+	        	{
+	        		dermId: 120
+	            },{
+	        	
+	    		headers: {
+					'Authorization': "Bearer " + localStorage.getItem('access_token'),
+				    "Content-Type": "application/json"
+				  }
+				  
+	        })
+	        .then(response => {
+	            
+	        })
+		},
+		
+		fireDerm(dermId){
+			window.localStorage.setItem('dermId', dermId);
+			this.dermId = window.localStorage.getItem('dermId');
+			axios
+	        .delete('/api/dermatologist/fire/' + 120,{
+
+	    		headers: {
+					'Authorization': "Bearer " + localStorage.getItem('access_token'),
+				    "Content-Type": "application/json"
+				  }
+				  
+	        })
+	        .then(response => {
+	            
+	        })
+		},
+		
+		changeState(){
+			if(this.changePass == true){
+				this.changePass = false;
+				
+			}
+			else
+				this.changePass = true;
+		},
+		discardPassCh(){
+			this.changePass = false;
 		}
 	},
 	created() {
@@ -68,6 +123,20 @@ var app = new Vue({
 					})
 					.then(response => {
 						this.derms = response.data
+						axios
+						.get('/api/pharmacy/findAllDermsNotInPharmacy',
+								{
+									params:{
+										id: this.pharmacyId
+									},
+								headers: {
+								    'Authorization': "Bearer " + localStorage.getItem('access_token')
+								  }
+							
+						})
+						.then(response => {
+							this.newDerms = response.data
+						})
 					})
 		     })	    
 	}
