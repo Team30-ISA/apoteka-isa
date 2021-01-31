@@ -2,7 +2,6 @@ package isa.apoteka.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import isa.apoteka.domain.Pharmacist;
 import isa.apoteka.domain.Pharmacy;
 import isa.apoteka.repository.PharmacistRepository;
@@ -10,9 +9,13 @@ import isa.apoteka.service.PharmacistService;
 
 @Service
 public class PharmacistServiceImpl implements PharmacistService {
-	
 	@Autowired
 	private PharmacistRepository pharmacistRepository;
+	
+	@Override
+	public void update(String firstName, String lastName, Long id) {		
+		pharmacistRepository.update(firstName, lastName,id);
+	}
 
 	@Override
 	public Pharmacy getPharmPharmacy(Long pharmacistId) {
@@ -23,5 +26,4 @@ public class PharmacistServiceImpl implements PharmacistService {
 	public Pharmacist findById(Long id) {
 		return pharmacistRepository.findById(id).orElse(null);
 	}
-
 }

@@ -17,7 +17,6 @@ var app = new Vue({
 	        })
 		},
 		redirect(p){
-			console.log("usao")
 			window.location.href = p;
 		}
 	},

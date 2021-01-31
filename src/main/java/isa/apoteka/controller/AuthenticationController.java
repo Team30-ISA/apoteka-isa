@@ -107,7 +107,6 @@ public class AuthenticationController {
 	}
 
 	@PostMapping(value = "/change-password",consumes = "application/json")
-	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<?> changePassword(@RequestBody PasswordChanger passwordChanger) {
 		userDetailsService.changePassword(passwordChanger.oldPassword, passwordChanger.newPassword);
 
