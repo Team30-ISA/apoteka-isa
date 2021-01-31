@@ -40,7 +40,6 @@ INSERT INTO dermatologist (id, username, password, first_name, last_name, email,
 INSERT INTO dermatologist (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, gender) VALUES (23, 'admin7', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', 'Strahinja', 'Gojkovic', 'apoteka.isa2021+strale@gmail.com', true, '2017-10-01 18:57:58.508-07', 1);
 INSERT INTO dermatologist (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, gender) VALUES (24, 'admin8', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', 'Strahinja', 'Gojkovic', 'apoteka.isa2021+strale@gmail.com', true, '2017-10-01 18:57:58.508-07', 1);
 
-
 INSERT INTO AUTHORITY (name) VALUES ('ROLE_USER');
 INSERT INTO AUTHORITY (name) VALUES ('ROLE_ADMIN');
 INSERT INTO AUTHORITY (name) VALUES ('ROLE_DERM');
@@ -105,3 +104,17 @@ insert into counseling (start_date, duration, dermatologist_work_calendar_id, pr
 insert into counseling (start_date, duration, dermatologist_work_calendar_id, price) VALUES ('20210220 03:30:00 PM', 25, 1, 899.99);
 insert into counseling (start_date, duration, dermatologist_work_calendar_id, price) VALUES ('20210220 03:55:00 PM', 5, 1, 99.99);
 insert into counseling (start_date, duration, dermatologist_work_calendar_id, price) VALUES ('20210220 05:00:00 PM', 15, 1, 999.99);
+
+
+insert into pharmacist_work_calendar (pharmacist_id, pharmacy_id, start_date, end_date) VALUES (4, 1, '20210215 10:00:00 AM', '20210215 08:00:00 PM');
+insert into pharmacist_work_calendar (pharmacist_id, pharmacy_id, start_date, end_date) VALUES (4, 1, '20210216 08:00:00 AM', '20210216 08:00:00 PM');
+insert into pharmacist_work_calendar (pharmacist_id, pharmacy_id, start_date, end_date) VALUES (4, 1, '20210217 04:00:00 PM', '20210218 04:00:00 AM');
+
+insert into examination (start_date, duration, pharmacist_work_calendar_id, price) VALUES ('20210215 11:00:00 AM', 5, 1, 99.99);
+insert into examination (start_date, duration, pharmacist_work_calendar_id, price) VALUES ('20210215 11:05:00 AM', 15, 1, 999.99);
+insert into examination (start_date, duration, pharmacist_work_calendar_id, price) VALUES ('20210215 02:20:00 PM', 30, 1, 699.99);
+insert into examination (start_date, duration, pharmacist_work_calendar_id, price) VALUES ('20210216 01:50:00 PM', 10, 2, 599.99);
+insert into examination (start_date, duration, pharmacist_work_calendar_id, price) VALUES ('20210216 02:00:00 PM', 20, 2, 799.99);
+insert into examination (start_date, duration, pharmacist_work_calendar_id, price) VALUES ('20210217 05:30:00 PM', 25, 3, 899.99);
+insert into examination (start_date, duration, pharmacist_work_calendar_id, price) VALUES ('20210217 05:55:00 PM', 5, 3, 99.99);
+insert into examination (start_date, duration, pharmacist_work_calendar_id, price) VALUES ('20210218 03:00:00 AM', 15, 3, 999.99);
