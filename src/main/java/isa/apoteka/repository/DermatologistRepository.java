@@ -30,5 +30,10 @@ public interface DermatologistRepository extends JpaRepository<Dermatologist, Lo
 
 	@Query("from Pharmacy p join p.dermatologists d where d.id= :dermatologistId")
 	List<Pharmacy> getDermPharmacies(Long dermatologistId);
+	
+	@Modifying
+    @Transactional
+    @Query("update Dermatologist p set p.firstName = ?1, p.lastName = ?2 where p.id = ?3")
+    void update(String firstName, String lastName, Long id);
 
 }

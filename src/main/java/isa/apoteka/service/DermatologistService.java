@@ -11,4 +11,5 @@ public interface DermatologistService {
 	void hireDerm(Long dermId, Long pharmacyId);
 	void fireDerm(Long dermId, Long pharmacyId);
 	List<PharmacyDTO> getDermPharmacies(Long dermatologistId);
+	void update(String firstName, String lastName, Long id);
 }

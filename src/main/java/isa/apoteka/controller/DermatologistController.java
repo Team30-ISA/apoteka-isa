@@ -21,8 +21,10 @@ import org.springframework.web.bind.annotation.RestController;
 import isa.apoteka.domain.Dermatologist;
 import isa.apoteka.domain.PharmacyAdmin;
 import isa.apoteka.domain.User;
+import isa.apoteka.dto.ChangeDataDTO;
 import isa.apoteka.dto.HireDermDTO;
 import isa.apoteka.dto.PharmacyDTO;
+import isa.apoteka.service.AddressService;
 import isa.apoteka.service.DermatologistService;
 
 @RestController
@@ -31,6 +33,8 @@ public class DermatologistController {
 	
 	@Autowired
 	private DermatologistService dermatologistService;
+	@Autowired
+	private AddressService addressService;
 	
 	@GetMapping("/getLoggedUser")
 	@PreAuthorize("hasRole('DERM')")
@@ -73,6 +77,16 @@ public class DermatologistController {
 			return new ArrayList<PharmacyDTO>();
 		return this.dermatologistService.getDermPharmacies(derm.getId());
 
+	}
+	
+	@PostMapping(value= "/save", consumes = "application/json")
+	@PreAuthorize("hasRole('DERM')")
+	public ResponseEntity<ChangeDataDTO> save(@RequestBody @Valid ChangeDataDTO changeDataDTO) {
+		Dermatologist derm = (Dermatologist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		dermatologistService.update(changeDataDTO.getFirstName(), changeDataDTO.getLastName(), derm.getId());
+		addressService.update(changeDataDTO.getStreet(), changeDataDTO.getCityId(), derm.getAddress().getId());
+		return new ResponseEntity<>(changeDataDTO, HttpStatus.CREATED);
+		
 	}
 }
 

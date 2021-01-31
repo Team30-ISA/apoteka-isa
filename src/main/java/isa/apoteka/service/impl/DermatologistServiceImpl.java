@@ -55,4 +55,9 @@ public class DermatologistServiceImpl implements DermatologistService {
 		
 	}
 	
+	@Override
+	public void update(String firstName, String lastName, Long id) {		
+		dermatologistRepository.update(firstName, lastName,id);
+	}
+	
 }

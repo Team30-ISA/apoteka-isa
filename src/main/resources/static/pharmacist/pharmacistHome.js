@@ -15,6 +15,9 @@ var app = new Vue({
 	        	localStorage.clear();
 	        	window.location.href = '/login.html';
 	        })
+		},
+		redirect(p){
+			window.location.href = p;
 		}
 	},
 	created() {

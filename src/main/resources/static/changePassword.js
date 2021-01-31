@@ -8,11 +8,14 @@ var app = new Vue({
 		repeatPass: "",
 		info: null,
 		role: null,
-		admin: null
+		user: null
 	},
 	methods: {
 		changeState(){
-				if(this.newPass == this.repeatPass){
+				if(this.user.username == this.newPass){
+					JSAlert.alert("Password must not be the same as the username!");
+				}
+				else if(this.newPass == this.repeatPass){
 					axios
 			        .post('/auth/change-password',
 			            {
@@ -28,14 +31,10 @@ var app = new Vue({
 			        	this.info = response.data;
 			        	console.log(this.info)
 			        	if(this.info.result == 'success'){
-			        		JSAlert.alert("You have successfully updated your password!");
-			        		console.log(localStorage.getItem('access_token'));			        	
-				        		if(this.role == 'ADMIN'){
-				        			setTimeout(function () {
-											window.location.href = 'pharmacyAdmin/pharmacyAdminHome.html';
-										
-									}, 3000);
-				        		}
+			        		JSAlert.alert("You have successfully updated your password!");		        	
+				        	setTimeout(function () {
+								window.location.href = '/login.html';
+							}, 3000);
 			        	}
 			            
 			        })
@@ -46,13 +45,13 @@ var app = new Vue({
 			            } 
 			            
 			        })
-				}else{
+				}
+				else{
 					JSAlert.alert("New password and confirmed password are not the same!");
 				}
-		},
+		}
 	},
 	created() {
-		console.log(localStorage.getItem('access_token'));
 		axios
         .get('/auth/getRole',{
 			  headers: {
@@ -61,21 +60,45 @@ var app = new Vue({
         })
         .then(response => {
         	this.role = response.data;
-        	if(response.data != "ADMIN"){
+        	if(response.data != "ADMIN" && response.data != "DERM" && response.data != "PHARM"){
         		window.location.href = '/login.html';
+        	}
+        	if(this.role == "ADMIN"){
+        		axios
+        		.get('/api/pharmacyAdmin/getLoggedUser',{
+        			  headers: {
+        				    'Authorization': "Bearer " + localStorage.getItem('access_token')
+        			  }
+        	     })
+        	     .then(response => {
+        	     	this.user = response.data
+        	     })
+        	}
+        	else if(this.role == "DERM"){
+        		axios
+        		.get('/api/dermatologist/getLoggedUser',{
+        			  headers: {
+        				    'Authorization': "Bearer " + localStorage.getItem('access_token')
+        			  }
+        	     })
+        	     .then(response => {
+        	     	this.user = response.data
+        	     })
+        	}
+        	else if(this.role == "PHARM"){
+        		axios
+        		.get('/api/pharmacist/getLoggedUser',{
+        			  headers: {
+        				    'Authorization': "Bearer " + localStorage.getItem('access_token')
+        			  }
+        	     })
+        	     .then(response => {
+        	     	this.user = response.data
+        	     })
         	}
         })
         .catch(function() {
         	window.location.href = '/login.html';
 	    })
-		axios
-		.get('/api/pharmacyAdmin/getLoggedUser',{
-			  headers: {
-				    'Authorization': "Bearer " + localStorage.getItem('access_token')
-			  }
-	     })
-	     .then(response => {
-	     	this.admin = response.data
-	     })
 	}
 })

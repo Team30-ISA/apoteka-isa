@@ -22,10 +22,10 @@ var app = new Vue({
 	  			  }
 	            })
 	            .then(response => {
-	            	if(response.data == "DERM"){
+	            	if(response.data == "DERM"  && this.username != this.password){
 	            		window.location.href = 'dermatologist/dermatologistHome.html';
 	            	}
-	            	else if(response.data == "PHARM"){
+	            	else if(response.data == "PHARM"  && this.username != this.password){
 	            		window.location.href = 'pharmacist/pharmacistHome.html';
 	            	}
 
