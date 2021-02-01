@@ -165,16 +165,28 @@ main ::-webkit-scrollbar-thumb:hover {
 					</header>
 						<div class="highlight">
 						<section>
+						    <table style="width: 40%; margin-left:30%; margin-bottom:7.5%">
+								<tr width="100%">
+									<td width="40%">First Name: </td>
+									<td width="40%">&nbsp&nbspLast Name:</td>
+									<td width="20%">&nbsp</td>
+								</tr>
+								<tr width="100%">
+									<td width="10%"><input type="text" v-model="searchPharmFirst" style=" width: 100%;" class="txtEnabled"></td>
+									<td width="10%"><input type="text" v-model="searchPharmLast" style=" width: 100%; margin-left:5%" class="txtEnabled"></td>							
+									<td width="80%"><input type="button" @click="search" value="Search" style="background: #50d8af; border: 0; width:100%;border-radius: 3px; padding: 10px 30px; color: #fff; transition: 0.4s; cursor: pointer; margin-left:15%"></td>
+								</tr>
+							</table>
 							<table style="width: 50%; margin-left:25rem;margin-right:25rem; margin-bottom:2rem">
 								<tr v-for="pharm in pharms">
 									<td style="width: 50%; font-size:1.5rem">
 										{{pharm.firstName}}&nbsp{{pharm.lastName}}
 									</td>
 									<td style="width: 10%;">
-									<a href="" class="icon fa-ban" style="font-size:20px; color:red" @click="firePharm(pharm.id)"><span class="label">Icon</span></a>
+									<a href="#" class="icon fa-ban" style="font-size:20px; color:red" @click="firePharm(pharm.id)"><span class="label">Icon</span></a>
 									</td>
 									<td style="width: 50%;">
-									<a href="dermatologistCalendar.html" class="icon fa-clock-o" style="font-size:20px;" @click="dermCal(derm.id)"><span class="label">Icon</span></a>
+									<a href="pharmacistCalendar.html" class="icon fa-clock-o" style="font-size:20px;" @click="pharmCal(pharm.id)"><span class="label">Icon</span></a>
 									</td>
 								</tr>
 							</table>
@@ -247,7 +259,16 @@ main ::-webkit-scrollbar-thumb:hover {
 										<b>ADDRESS</b>
 									</td>
 									<td style="width: 60%;">
-										<input type="text" v-model="newPharm.address.street" style=" width: 100%;" class="txtEnabled">
+										<input type="text" v-model="newPharm.street" style=" width: 100%;" class="txtEnabled">
+									</td>
+								</tr>
+								<tr width="100%">
+									<td style="width: 40%;">
+										<b>GENDER</b>
+									</td>
+									<td style="width: 60%;" align="center">
+										<input checked="checked" v-model="newPharm.gender" type="radio" value="0" >Female</input>
+                                        <input v-model="newPharm.gender" type="radio" value="1" style="margin-left:10%">Male</input>
 									</td>
 								</tr>
 								<tr width="100%">

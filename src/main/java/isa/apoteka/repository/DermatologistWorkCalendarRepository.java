@@ -22,6 +22,6 @@ public interface DermatologistWorkCalendarRepository extends JpaRepository<Derma
     
     @Transactional
     @Modifying
-    @Query(value="delete from Dermatologist_Work_Calendar d where d.start_Date >= :start and d.start_Date <= :end", nativeQuery = true)
-	void deleteDermWorkCalendarByDate(Date start, Date end);
+    @Query(value="delete from Dermatologist_Work_Calendar d where d.start_Date >= :start and d.start_Date <= :end and d.dermatologist_id=:dermId", nativeQuery = true)
+	void deleteDermWorkCalendarByDate(Date start, Date end, Long dermId);
 }

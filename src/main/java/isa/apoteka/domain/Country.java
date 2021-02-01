@@ -7,7 +7,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
@@ -16,8 +15,7 @@ import javax.persistence.Table;
 public class Country {
 
 	@Id
-	@SequenceGenerator(name = "mySeqGenV3", sequenceName = "mySeqV3", initialValue = 1, allocationSize = 1)
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mySeqGenV3")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique=true, nullable=false)
     private Long id;
 

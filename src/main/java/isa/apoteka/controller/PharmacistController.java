@@ -101,6 +101,7 @@ public class PharmacistController {
 		pharmacist.setAuthorities(auth);
 		pharmacist.setAddress(newAddress);
 		pharmacist.setPharmacy(admin.getPharmacy());
+		pharmacist.setGender(newPharmacistDTO.getGender());
 		try {
 			pharmacistService.hire(pharmacist);
 			return new ResponseEntity<>(HttpStatus.OK);
@@ -111,7 +112,7 @@ public class PharmacistController {
 	}
 	
 
-	@PostMapping(value= "/save", consumes = "application/json")
+	@PostMapping(value= "/update", consumes = "application/json")
 	@PreAuthorize("hasRole('PHARM')")
 	public ResponseEntity<ChangeDataDTO> update(@RequestBody @Valid ChangeDataDTO changeDataDTO) {
 		Pharmacist pharm = (Pharmacist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -127,4 +128,9 @@ public class PharmacistController {
 		return new PharmacyDTO(pharmacistService.getPharmPharmacy(pharmacist.getId()));
 	}
 
+	@GetMapping("/pharm")
+	@PreAuthorize("hasRole('PHARM') || hasRole('ADMIN')")
+	public User loadById(Long pharmId) {
+		return this.pharmacistService.findById(pharmId);
+	}
 }

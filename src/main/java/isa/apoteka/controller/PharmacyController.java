@@ -92,4 +92,33 @@ public class PharmacyController {
 
 		return new ResponseEntity<>(dermDTO, HttpStatus.OK);
 	}
+	
+	@GetMapping(value = "/searchDermsInPharmacy")
+	@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<List<DermatologistDTO>> searchDermsWorkingInPharmacy(@RequestParam Long id, String firstName, String lastName) {
+
+		List<Dermatologist> derms = pharmacyService.searchDermsWorkingInPharmacy(id, firstName, lastName);
+		System.out.println("************");
+		System.out.println(firstName);
+		System.out.println(lastName);
+		List<DermatologistDTO> dermDTO = new ArrayList<>();
+		for (Dermatologist d : derms) {
+			dermDTO.add(new DermatologistDTO(d));
+		}
+
+		return new ResponseEntity<>(dermDTO, HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/searchPharmsInPharmacy")
+	@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<List<PharmacistDTO>> searchPharmsWorkingInPharmacy(@RequestParam Long id, String firstName, String lastName) {
+
+		List<Pharmacist> pharms = pharmacyService.searchPharmsWorkingInPharmacy(id, firstName, lastName);
+		List<PharmacistDTO> pharmDTO = new ArrayList<>();
+		for (Pharmacist p : pharms) {
+			pharmDTO.add(new PharmacistDTO(p));
+		}
+
+		return new ResponseEntity<>(pharmDTO, HttpStatus.OK);
+	}
 }

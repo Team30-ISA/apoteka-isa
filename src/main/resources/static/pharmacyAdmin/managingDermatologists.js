@@ -9,7 +9,9 @@ var app = new Vue({
 		oldPass: "",
 		newPass: "",
 		newDerms: [],
-		dermId: null
+		dermId: null,
+		searchDermFirst: "",
+		searchDermLast: ""
 	},
 	methods: {
 		logout(){
@@ -76,6 +78,25 @@ var app = new Vue({
 		},
 		discardPassCh(){
 			this.changePass = false;
+		},
+		
+		search(){
+			axios
+			.get('/api/pharmacy/searchDermsInPharmacy',
+					{
+						params:{
+							id: this.pharmacyId,
+							firstName: this.searchDermFirst,
+							lastName: this.searchDermLast
+						},
+					headers: {
+					    'Authorization': "Bearer " + localStorage.getItem('access_token')
+					  }
+				
+			})
+			.then(response => {
+				this.derms = response.data
+			})
 		}
 	},
 	created() {

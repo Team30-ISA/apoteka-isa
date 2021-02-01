@@ -81,7 +81,7 @@ var app = new Vue({
 				if(this.user.firstName != "" && this.user.lastName != "" && this.user.address.street != "" && this.selectedCity != null){
 					if(this.role == "DERM"){
 						axios
-				        .post('/api/dermatologist/save',
+				        .post('/api/dermatologist/update',
 				        	{
 				        		firstName: this.user.firstName,
 				        		lastName: this.user.lastName,
@@ -111,7 +111,7 @@ var app = new Vue({
 					}
 					else{
 						axios
-				        .post('/api/pharmacist/save',
+				        .post('/api/pharmacist/update',
 				        	
 				        	{
 				        		firstName: this.user.firstName,

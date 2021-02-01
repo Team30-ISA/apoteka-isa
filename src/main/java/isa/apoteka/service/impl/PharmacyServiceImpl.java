@@ -48,4 +48,12 @@ public class PharmacyServiceImpl implements PharmacyService{
 	public List<Dermatologist> findAllDermsNotWorkingInPharmacy(Long id) {
 		return pharmacyRepository.findAllDermsNotWorkingInPharmacy(id);
 	}
+		
+	public List<Dermatologist> searchDermsWorkingInPharmacy(Long id, String firstName, String lastName){
+		return pharmacyRepository.searchDermsWorkingInPharmacy(id, firstName, lastName);
+	}
+	
+	public List<Pharmacist> searchPharmsWorkingInPharmacy(Long id, String firstName, String lastName){
+		return pharmacyRepository.searchPharmsWorkingInPharmacy(id, firstName, lastName);
+	}
 }

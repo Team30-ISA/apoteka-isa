@@ -38,14 +38,8 @@ public class User implements UserDetails {
 
 	private static final long serialVersionUID = 1L;
 	
-	public enum Gender {
-        FEMALE,
-        MALE;
-    }
-
-	
 	@Id
-	@SequenceGenerator(name = "mySeqGenV3", sequenceName = "mySeqV3", initialValue = 1, allocationSize = 1)
+	@SequenceGenerator(name = "mySeqGenV3", sequenceName = "mySeqV3", initialValue = 200, allocationSize = 1)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mySeqGenV3")
     @Column(name = "id", unique=true, nullable=false)
     private Long id;

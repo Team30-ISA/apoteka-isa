@@ -21,8 +21,11 @@ public interface PharmacyService {
 	
 	public List<Dermatologist> findAllDermsWorkingInPharmacy(Long id);
 	
+	public List<Dermatologist> searchDermsWorkingInPharmacy(Long id, String firstName, String lastName);
+	
 	public List<Dermatologist> findAllDermsNotWorkingInPharmacy(Long id);
 	
 	public List<Pharmacist> findAllPharmsWorkingInPharmacy(Long id);
 	
+	public List<Pharmacist> searchPharmsWorkingInPharmacy(Long id, String firstName, String lastName);
 }

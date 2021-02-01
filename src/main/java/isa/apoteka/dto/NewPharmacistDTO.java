@@ -1,18 +1,31 @@
 package isa.apoteka.dto;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import isa.apoteka.domain.Gender;
+
 public class NewPharmacistDTO {
 
+	@Size(min=2, max=50, message = "First Name has to have min 2 letters and max 50.")
 	private String firstName;
+	@Size(min=2, max=50, message = "Last Name has to have min 2 letters and max 50.")
 	private String lastName;
+	@Size(min=2, max=50, message = "Username has to have min 2 letters and max 50.")
 	private String username;
+	@Email(message = "Email is not in the correct format.")
 	private String email;
+	@Size(min=2, max=50, message = "Address has to have min 2 letters and max 50.")
 	private String address;
+	@NotNull(message = "You have to choose a city.")
 	private Long cityId;
+	private Gender gender;
 	public NewPharmacistDTO() {
 		super();
 	}
 	public NewPharmacistDTO(String firstName, String lastName, String username, String email, String address,
-			Long cityId) {
+			Long cityId, Gender gender) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -20,6 +33,7 @@ public class NewPharmacistDTO {
 		this.email = email;
 		this.address = address;
 		this.cityId = cityId;
+		this.gender = gender;
 	}
 	public String getFirstName() {
 		return firstName;
@@ -56,6 +70,12 @@ public class NewPharmacistDTO {
 	}
 	public void setCityId(Long cityId) {
 		this.cityId = cityId;
+	}
+	public Gender getGender() {
+		return gender;
+	}
+	public void setGender(Gender gender) {
+		this.gender = gender;
 	}
 	
 	

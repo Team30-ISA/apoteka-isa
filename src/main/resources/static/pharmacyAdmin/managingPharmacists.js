@@ -12,7 +12,11 @@ var app = new Vue({
 		pharmId: null,
 		newPharm: null,
 		countries: [],
-		cities: []
+		cities: [],
+		searchPharmFirst: "",
+		searchPharmLast: "",
+		selectedCity: "",
+		selectedCountry: ""
 		
 	},
 	methods: {
@@ -29,8 +33,8 @@ var app = new Vue({
 	        })
 		},
 		
-		dermCal(dermId){
-			window.localStorage.setItem('dermId', dermId);
+		pharmCal(pharmId){
+			window.localStorage.setItem('pharmId', pharmId);
 		},
 		
 		
@@ -48,13 +52,22 @@ var app = new Vue({
 				  
 	        })
 	        .then(response => {
-	            
+	        	window.location.href = '/pharmacyAdmin/managingPharmacists.html';
 	        })
+	        .catch(error => {
+		            console.log(error)
+		            if (error.response.status == 401 || error.response.status == 400 || error.response.status == 500) {
+		                JSAlert.alert("Pharmacist has appointments scheduled. He cannot be deleted.");
+		                setTimeout(function () {
+							window.location.href = '/pharmacyAdmin/managingPharmacists.html';
+						}, 3000);
+		            }
+		            
+		    })
 		},
 		
 		changeState(){
 			if(this.changePass == true){
-				this.changePass = false;
 				axios
 		        .post('/api/pharmacist/save',
 		        	
@@ -62,9 +75,10 @@ var app = new Vue({
 		        		firstName: this.newPharm.firstName,
 		        		lastName: this.newPharm.lastName,
 		        		email: this.newPharm.email,
-		        		address: this.newPharm.address.street,
+		        		address: this.newPharm.street,
 		        		cityId: this.selectedCity.id,
-		        		username: this.newPharm.username
+		        		username: this.newPharm.username,
+		        		gender: this.newPharm.gender
 		            },{
 		        	
 		    		headers: {
@@ -75,6 +89,11 @@ var app = new Vue({
 		        })
 		        .then(response => {
 	        		JSAlert.alert("You have successfully registered a new pharmacist!");
+					this.changePass = false;
+					this.newPharm = null;
+					this.selectedCity = "";
+					this.selectedCountry = "";
+					this.cities = []
 	        		axios
 					.get('/api/pharmacy/findAllPharmsInPharmacy',
 							{
@@ -92,11 +111,12 @@ var app = new Vue({
 		            
 		        })
 		        .catch(error => {
-		            console.log(error)
 		            if (error.response.status == 401 || error.response.status == 400 || error.response.status == 500) {
-		                JSAlert.alert("Fields cannot be empty. Please try again.");
+		                JSAlert.alert(error.response.data.errors[0].defaultMessage);
+		                this.changePass = true;
 		            }else if(error.response.status == 406){
 		            	JSAlert.alert("This username is already in use. Please try another one!");
+						this.changePass = true;
 		            }
 		            
 		        })
@@ -108,7 +128,7 @@ var app = new Vue({
 			this.changePass = false;
 		},
 		findCity(){
-			console.log
+			this.selectedCity = ""
 			axios
 			.get('/api/city/getAllCitiesForCountry',{
 				headers: {
@@ -122,6 +142,25 @@ var app = new Vue({
 	     	console.log(response.data)
 	     	this.cities = response.data	
 	     })
+		},
+		
+		search(){
+			axios
+			.get('/api/pharmacy/searchPharmsInPharmacy',
+					{
+						params:{
+							id: this.pharmacyId,
+							firstName: this.searchPharmFirst,
+							lastName: this.searchPharmLast
+						},
+					headers: {
+					    'Authorization': "Bearer " + localStorage.getItem('access_token')
+					  }
+				
+			})
+			.then(response => {
+				this.pharms = response.data
+			})
 		}
 	},
 	created() {
@@ -180,21 +219,7 @@ var app = new Vue({
 			     .then(response => {
 			     	console.log(response.data)
 			     	this.countries = response.data
-						console.log
-						axios
-						.get('/api/city/getAllCitiesForCountry',{
-							headers: {
-							 'Authorization': "Bearer " + localStorage.getItem('access_token')
-							},
-							params:{
-								id: this.admin.address.city.id,
-							}
-				     })
-				     .then(response => {
-				     	console.log(response.data)
-				     	this.cities = response.data	
-				     	console.log(this.cities)
-				     })
+				
 			     })
 	}
 })
