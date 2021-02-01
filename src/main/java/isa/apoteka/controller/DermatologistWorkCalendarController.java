@@ -64,6 +64,6 @@ public class DermatologistWorkCalendarController {
 		Long dermatologistId = Long.parseLong(params.get("dermatologistId").toString());
 		PharmacyAdmin admin = (PharmacyAdmin) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		Long pharmacyId = admin.getPharmacy().getId();
-		dermWCService.deleteDermWorkCalendarByDate(startDate);
+		dermWCService.deleteDermWorkCalendarByDate(startDate,dermatologistId);
 	}
 }

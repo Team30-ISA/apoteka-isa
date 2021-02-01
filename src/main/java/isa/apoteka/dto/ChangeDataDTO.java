@@ -24,7 +24,6 @@ public class ChangeDataDTO {
 
 	public ChangeDataDTO() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public String getFirstName() {

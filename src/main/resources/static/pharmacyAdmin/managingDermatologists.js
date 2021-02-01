@@ -9,7 +9,9 @@ var app = new Vue({
 		oldPass: "",
 		newPass: "",
 		newDerms: [],
-		dermId: null
+		dermId: null,
+		searchDermFirst: "",
+		searchDermLast: ""
 	},
 	methods: {
 		logout(){
@@ -35,7 +37,7 @@ var app = new Vue({
 	        .post('/api/dermatologist/hire',
 	        	
 	        	{
-	        		dermId: 120
+	        		dermId: window.localStorage.getItem('dermId')
 	            },{
 	        	
 	    		headers: {
@@ -53,7 +55,7 @@ var app = new Vue({
 			window.localStorage.setItem('dermId', dermId);
 			this.dermId = window.localStorage.getItem('dermId');
 			axios
-	        .delete('/api/dermatologist/fire/' + 120,{
+	        .delete('/api/dermatologist/fire/' + dermId,{
 
 	    		headers: {
 					'Authorization': "Bearer " + localStorage.getItem('access_token'),
@@ -76,6 +78,25 @@ var app = new Vue({
 		},
 		discardPassCh(){
 			this.changePass = false;
+		},
+		
+		search(){
+			axios
+			.get('/api/pharmacy/searchDermsInPharmacy',
+					{
+						params:{
+							id: this.pharmacyId,
+							firstName: this.searchDermFirst,
+							lastName: this.searchDermLast
+						},
+					headers: {
+					    'Authorization': "Bearer " + localStorage.getItem('access_token')
+					  }
+				
+			})
+			.then(response => {
+				this.derms = response.data
+			})
 		}
 	},
 	created() {

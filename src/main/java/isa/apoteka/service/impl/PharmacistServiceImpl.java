@@ -8,9 +8,22 @@ import isa.apoteka.repository.PharmacistRepository;
 import isa.apoteka.service.PharmacistService;
 
 @Service
-public class PharmacistServiceImpl implements PharmacistService {
+public class PharmacistServiceImpl implements PharmacistService{
+
 	@Autowired
 	private PharmacistRepository pharmacistRepository;
+	@Override
+	public void firePharm(Long pharmId) {
+		pharmacistRepository.firePharm(pharmId);		
+	}
+	@Override
+	public Pharmacist hire(Pharmacist pharmacist) {
+		return pharmacistRepository.save(pharmacist);
+	}
+	@Override
+	public Pharmacist findByUsername(String username) {
+		return pharmacistRepository.findByUsername(username);
+	}
 	
 	@Override
 	public void update(String firstName, String lastName, Long id) {		
@@ -26,4 +39,5 @@ public class PharmacistServiceImpl implements PharmacistService {
 	public Pharmacist findById(Long id) {
 		return pharmacistRepository.findById(id).orElse(null);
 	}
+
 }

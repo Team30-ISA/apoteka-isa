@@ -48,7 +48,7 @@ public class PharmacistWorkCalendarServiceImpl implements PharmacistWorkCalendar
 	}
 
 	@Override
-	public void deletePharmWorkCalendarByDate(Date start) {
+	public void deletePharmWorkCalendarByDate(Date start, Long pharmId) {
 		Calendar calendar = new GregorianCalendar();
 		calendar.setTime(start);
 		calendar.set(Calendar.HOUR_OF_DAY, 0);
@@ -57,6 +57,6 @@ public class PharmacistWorkCalendarServiceImpl implements PharmacistWorkCalendar
 		Date startDate = calendar.getTime();
 		calendar.add(Calendar.DATE, 1);
 		Date endDate = calendar.getTime();
-		pharmWCRepository.deletePharmWorkCalendarByDate(startDate, endDate);
+		pharmWCRepository.deletePharmWorkCalendarByDate(startDate, endDate, pharmId);
 	}
 }

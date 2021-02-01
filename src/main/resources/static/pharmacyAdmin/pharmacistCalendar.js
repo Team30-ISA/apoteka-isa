@@ -10,11 +10,11 @@ var app = new Vue({
         endTime: null,
         startDate: null,
         endDate: null,
-        dermWC: null,
+        pharmWC: null,
         periods: [],
         admin: null,
-        dermId: null,
-        derm:null
+        pharmId: null,
+        pharm:null
 	},
 	methods: {
 		logout(){
@@ -110,9 +110,9 @@ var app = new Vue({
 		    this.endDate = new Date(this.endDate)
 		    console.log(this.startDate)
         	axios
-	        .post('/api/dermWP/save',
+	        .post('/api/pharmWP/save',
 	            {
-	        		dermatologistId: this.dermId,
+	        		pharmacistId: this.pharmId,
 	        		startDate: this.startDate.getTime(),
 	        		endDate: this.endDate.getTime()
 	            },
@@ -122,7 +122,7 @@ var app = new Vue({
 		  			  }
 		        })
 	        .then(response => {
-	        	this.dermWC = response.data
+	        	this.pharmWC = response.data
 	        	this.periods = []
 	        	this.reloadData()
 	        })
@@ -130,9 +130,9 @@ var app = new Vue({
         reloadPeriods(){
         	for(let j = 0; j < this.days.length; j++){
         		let added = false;
-	        	for(let i = 0; i < this.dermWC.length; i++){
-	        		let da = new Date(this.dermWC[i].startDate)
-	        		let da1 = new Date(this.dermWC[i].endDate)
+	        	for(let i = 0; i < this.pharmWC.length; i++){
+	        		let da = new Date(this.pharmWC[i].startDate)
+	        		let da1 = new Date(this.pharmWC[i].endDate)
 	        		if(da.getFullYear() == this.days[j].getFullYear() && da.getMonth() == this.days[j].getMonth() && da.getDate() == this.days[j].getDate()){
 	        			let startHour = ""
 	        			if(da.getHours() < 10)
@@ -165,18 +165,18 @@ var app = new Vue({
         },
         reloadData(){
         	axios
-            .get('/api/dermWP/findAllDermWorkCalendarByDermIdAndPeriod',{
+            .get('/api/pharmWP/findAllPharmWorkCalendarByPharmIdAndPeriod',{
         		headers: {
     			    'Authorization': "Bearer " + localStorage.getItem('access_token')
     		  },
     		params:{
-    			dermatologistId: this.dermId,
+    			pharmacistId: this.pharmId,
     			startDate: this.days[0].getTime(),
         		endDate: this.days[41].getTime()
     			}
     		})
             .then(response => {
-            	this.dermWC = response.data
+            	this.pharmWC = response.data
             	this.reloadPeriods()
             })
         },
@@ -198,9 +198,9 @@ var app = new Vue({
         },
         deleteWP(current){
         	axios
-	        .post('/api/dermWP/deleteDermWorkCalendarByDate',
+	        .post('/api/pharmWP/deletePharmWorkCalendarByDate',
 	            {
-	        		dermatologistId: this.dermId,
+	        		pharmacistId: this.pharmId,
 	        		startDate: current.getTime()
 	            },
 	            {
@@ -211,6 +211,12 @@ var app = new Vue({
 	        .then(response => {
 	        	this.periods = []
 	        	this.reloadData();
+	        }) .catch(error => {
+	            console.log(error)
+	            if (error.response.status == 401 || error.response.status == 400 || error.response.status == 500) {
+	                JSAlert.alert("Pharmacist has appointments that day. You can't change the work schedule.");
+	            }   	
+	            
 	        })
         }
     },
@@ -218,19 +224,19 @@ var app = new Vue({
         this.current = new Date(this.current.getFullYear(), this.current.getMonth(), this.current.getDate());
         this.today = new Date(this.today.getFullYear(), this.today.getMonth(), this.today.getDate());
         this.getDaysInMonth(this.current.getMonth(), this.current.getFullYear());
-        this.dermId = localStorage.getItem('dermId');
-        localStorage.removeItem('dermId');
+        this.pharmId = localStorage.getItem('pharmId');
+        localStorage.removeItem('pharmId');
         axios
-        .get('/api/dermatologist/derm',{
+        .get('/api/pharmacist/pharm',{
 			  headers: {
 				    'Authorization': "Bearer " + localStorage.getItem('access_token')
 			  },
 			  params:{
-				  dermId: this.dermId
+				  pharmId: this.pharmId
 			  }
 	     })
 	     .then(response => {
-	     	this.derm = response.data
+	     	this.pharm = response.data
 	     })
         axios
         .get('/auth/getRole',{
@@ -256,18 +262,18 @@ var app = new Vue({
 	     	this.admin = response.data
 	     	
 	        	axios
-	            .get('/api/dermWP/findAllDermWorkCalendarByDermIdAndPeriod',{
+	            .get('/api/pharmWP/findAllPharmWorkCalendarByPharmIdAndPeriod',{
 	        		headers: {
 	    			    'Authorization': "Bearer " + localStorage.getItem('access_token')
 	    		  },
 	    		params:{
-	    			dermatologistId: this.dermId,
+	    			pharmacistId: this.pharmId,
 	    			startDate: this.days[0].getTime(),
 	        		endDate: this.days[41].getTime()
 	    			}
 	    		})
 	            .then(response => {
-	            	this.dermWC = response.data
+	            	this.pharmWC = response.data
 	            	this.reloadPeriods()
 	            })
 	        

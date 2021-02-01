@@ -59,6 +59,6 @@ public class PharmacistWorkCalendarController {
 		Long pharmacistId = Long.parseLong(params.get("pharmacistId").toString());
 		PharmacyAdmin admin = (PharmacyAdmin) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		Long pharmacyId = admin.getPharmacy().getId();
-		pharmWCService.deletePharmWorkCalendarByDate(startDate);
+		pharmWCService.deletePharmWorkCalendarByDate(startDate, pharmacistId);
 	}
 }
