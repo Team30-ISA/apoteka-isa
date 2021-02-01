@@ -11,4 +11,5 @@ public interface CounselingService {
 	List<Long> countTermsByDays(Long pharmacyId, Long dermatologistId, Date start, int num);
 	List<Long> countTermsByMonths(Long pharmacyId, Long dermatologistId, Date start);
 	public List<Pharmacy> findAllPharmaciesByDermatologist(Long dermatologistId);
+	ExaminationDTO findOne(Long id);
 }

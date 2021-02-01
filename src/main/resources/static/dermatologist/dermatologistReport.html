@@ -111,6 +111,8 @@
   ============================-->
 
 		<main id="main">
+			<a style="left: 50px;" class="arrow left" @click="goLeft()"></a>
+			<a style="right: 50px;" class="arrow right" @click="goRight()"></a>
 			<div class="progressbar-wrapper">
 				<ul class="progressbar">
 					<li
@@ -127,19 +129,20 @@
 					<table>
 						<tr>
 							<td><b>Start time</b></td>
-							<td>10 Nov 2021, 12:00</td>
+							<td>{{formatDate(examination.startDate)}}</td>
 						</tr>
 						<tr>
 							<td><b>Duration</b></td>
-							<td>40min</td>
+							<td>{{examination.duration}}min</td>
 						</tr>
 						<tr>
 							<td><b>Pharmacy name</b></td>
-							<td>Nikolina apoteka</td>
+							<td>{{examination.pharmacyName}}</td>
 						</tr>
 						<tr>
 							<td><b>Patient name</b></td>
-							<td>Petar petrovic</td>
+							<td v-if="examination.patientName == null">{{examination.patientName}}</td>
+							<td v-else>Free term</td>
 						</tr>
 					</table>
 				</div>
@@ -151,13 +154,7 @@
 			</div>
 			<div class="report" v-if="currentStep == 'REPORT'">
 				<p style="margin-left: 10px;">Report:</p>
-				<textarea class="report_info"></textarea>
-				<div style="position: absolute; bottom: 0px; width: 100%;">
-					<input type="button" class="buttonR" value="Back"
-						@click="currentStep = 'START'"> <input type="button"
-						class="buttonR" value="Next" @click="currentStep = 'PRESCRIPT'"
-						style="float: right;">
-				</div>
+				<textarea class="report_info" v-model="report"></textarea>
 			</div>
 			<div class="report" v-if="currentStep == 'PRESCRIPT'">
 				<div class="drugs">
@@ -169,39 +166,29 @@
 					</div>
 					<div
 						style="position: absolute; width: 100%; overflow-y: auto; height: calc(100% - 120px);">
-						<div class="drug" v-for="i in 10">
-							<table>
+						<div class="drug" v-for="d in medicines" style="position: relative">
+							<table style="width: 70%; left: 5%; position: relative">
 								<tr>
-									<td><b>Name</b></td>
-									<td>Brufen</td>
+									<td style="width: 40%"><b>Name</b></td>
+									<td>{{d.name}}</td>
 								</tr>
 								<tr>
-									<td><b>Manufacturer</b></td>
-									<td>Galenika</td>
+									<td style="width: 40%"><b>Manufacturer</b></td>
+									<td>{{d.manufacturer}}</td>
 								</tr>
 								<tr>
-									<td><b>Type</b></td>
-									<td>Antibiotik</td>
+									<td style="width: 40%"><b>Type</b></td>
+									<td>{{d.type.name}}</td>
 								</tr>
 								<tr>
-									<td><b>Form</b></td>
-									<td>Tableta</td>
+									<td style="width: 40%"><b>Form</b></td>
+									<td>{{d.form.name}}</td>
 								</tr>
 							</table>
+							<i class="fa fa-eye" style="position: absolute; top: 20px; right: 20px;"></i>
 						</div>
 					</div>
 				</div>
-				<div style="position: absolute; bottom: 0px; width: 100%;">
-					<input type="button" class="buttonR" value="Back"
-						@click="currentStep = 'REPORT'"> <input type="button"
-						class="buttonR" value="Next" @click="currentStep = 'SCHEDULE'"
-						style="float: right;">
-				</div>
-			</div>
-			<div class="report" v-if="currentStep == 'SCHEDULE'">
-				<input type="button" class="buttonR" value="Back"
-					@click="currentStep = 'PRESCRIPT'"> <input type="button"
-					class="buttonR" value="Finish" style="float: right;">
 			</div>
 		</main>
 

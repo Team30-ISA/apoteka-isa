@@ -46,7 +46,7 @@ public class ExaminationServiceImpl implements ExaminationService {
 			return null;
 		if(examination.getPatient() != null)
 			patientName = examination.getPatient().getFirstName() + examination.getPatient().getLastName();
-		return new ExaminationDTO(examination.getId(), examination.getStartDate(), examination.getDuration(), examination.getPharmacistWorkCalendar().getPharmacy().getName(), patientName, examination.getPrice());
+		return new ExaminationDTO(examination.getId(), examination.getStartDate(), examination.getDuration(), examination.getPharmacistWorkCalendar().getPharmacy().getName(), patientName, examination.getPrice(), examination.getReport());
 	}
 	
 	public List<ExaminationDTO> mapListExamintaionToListExamintaionDTO(List<Examination> examintaions) {

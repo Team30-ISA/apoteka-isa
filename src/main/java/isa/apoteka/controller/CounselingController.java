@@ -61,6 +61,12 @@ public class CounselingController {
 		return new ResponseEntity<>(counselingService.countTermsByMonths(pharmacyId, dermatologistId, new Date(start)), HttpStatus.OK);
 	}
 	
+	@GetMapping("/getById")
+	@PreAuthorize("hasRole('DERM')")
+	public ExaminationDTO getById(Long id) {
+		return counselingService.findOne(id);
+	}
+	
 	public List<Pharmacy> findAllPharmaciesByDermatologist(Long dermatologistId) {
 		return counselingService.findAllPharmaciesByDermatologist(dermatologistId);
 	}

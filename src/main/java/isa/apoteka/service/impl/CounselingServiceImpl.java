@@ -49,7 +49,7 @@ public class CounselingServiceImpl implements CounselingService {
 			return null;
 		if(counseling.getPatient() != null)
 			patientName = counseling.getPatient().getFirstName() + counseling.getPatient().getLastName();
-		return new ExaminationDTO(counseling.getId(), counseling.getStartDate(), counseling.getDuration(), counseling.getDermatologistWorkCalendar().getPharmacy().getName(), patientName, counseling.getPrice());
+		return new ExaminationDTO(counseling.getId(), counseling.getStartDate(), counseling.getDuration(), counseling.getDermatologistWorkCalendar().getPharmacy().getName(), patientName, counseling.getPrice(), counseling.getReport());
 	}
 	
 	public List<ExaminationDTO> mapListCounselingToListCounselingDTO(List<Counseling> counselings) {
@@ -111,6 +111,11 @@ public class CounselingServiceImpl implements CounselingService {
 	@Override
 	public List<Pharmacy> findAllPharmaciesByDermatologist(Long dermatologistId) {
 		return dermatologistRepository.getDermPharmacies(dermatologistId);
+	}
+	
+	@Override
+	public ExaminationDTO findOne(Long id) {
+		return mapCounselingToCounselingDTO(counselingRepository.findById(id).orElse(null));
 	}
 	
 	class Sortbyroll implements Comparator<ExaminationDTO>
