@@ -31,12 +31,13 @@ import isa.apoteka.service.AuthorityService;
 import isa.apoteka.service.CityService;
 import isa.apoteka.service.PharmacistService;
 import isa.apoteka.service.UserService;
+import isa.apoteka.dto.ChangeDataDTO;
+import isa.apoteka.dto.PharmacyDTO;
 
 
 @RestController
 @RequestMapping(value = "api/pharmacist")
 public class PharmacistController {
-	
 	
 	private PharmacistService pharmacistService;
 	private AddressService addressService;
@@ -62,6 +63,7 @@ public class PharmacistController {
 		return (Pharmacist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 	}
 	
+
 	@DeleteMapping(value= "/fire/{id}")
 	@PreAuthorize("hasRole('ADMIN')")
 	public Map<String, Boolean> fire(@PathVariable(value = "id") Long pharmId) {
@@ -108,4 +110,21 @@ public class PharmacistController {
 		
 	}
 	
+
+	@PostMapping(value= "/save", consumes = "application/json")
+	@PreAuthorize("hasRole('PHARM')")
+	public ResponseEntity<ChangeDataDTO> update(@RequestBody @Valid ChangeDataDTO changeDataDTO) {
+		Pharmacist pharm = (Pharmacist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		pharmacistService.update(changeDataDTO.getFirstName(), changeDataDTO.getLastName(), pharm.getId());
+		addressService.update(changeDataDTO.getStreet(), changeDataDTO.getCityId(), pharm.getAddress().getId());
+		return new ResponseEntity<>(changeDataDTO, HttpStatus.CREATED);
+	}
+		
+	@GetMapping("/getPharmacy")
+	@PreAuthorize("hasRole('PHARM')")
+	public PharmacyDTO getPharmacy() {
+		Pharmacist pharmacist = (Pharmacist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		return new PharmacyDTO(pharmacistService.getPharmPharmacy(pharmacist.getId()));
+	}
+
 }

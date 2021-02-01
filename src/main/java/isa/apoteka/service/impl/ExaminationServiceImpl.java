@@ -7,26 +7,23 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import isa.apoteka.domain.Counseling;
-import isa.apoteka.domain.Pharmacy;
+
+import isa.apoteka.domain.Examination;
 import isa.apoteka.dto.ExaminationDTO;
-import isa.apoteka.repository.CounselingRepository;
-import isa.apoteka.repository.DermatologistRepository;
-import isa.apoteka.service.CounselingService;
+import isa.apoteka.repository.ExamintaionRepository;
+import isa.apoteka.service.ExaminationService;
 
 @Service
-public class CounselingServiceImpl implements CounselingService {
+public class ExaminationServiceImpl implements ExaminationService {
 	
 	@Autowired
-	private CounselingRepository counselingRepository;
-	
-	@Autowired
-	private DermatologistRepository dermatologistRepository;
+	private ExamintaionRepository examinationRepository;
 
 	@Override
-	public List<ExaminationDTO> findAllTermsByDay(Long pharmacyId, Long dermatologistId, Date start) {
+	public List<ExaminationDTO> findAllTermsByDay(Long dermatologistId, Date start) {
 		Calendar calendar = new GregorianCalendar();
 		calendar.setTime(start);
 		calendar.set(Calendar.HOUR_OF_DAY, 0);
@@ -35,36 +32,36 @@ public class CounselingServiceImpl implements CounselingService {
 		Date startDate = calendar.getTime();
 		calendar.add(Calendar.DATE, 1);
 		Date endDate = calendar.getTime();
-		List<Counseling> counseling = counselingRepository.findAllTerms(pharmacyId, dermatologistId, startDate, endDate);
-		List<ExaminationDTO> dtos = mapListCounselingToListCounselingDTO(counseling);
+		List<Examination> examintaions = examinationRepository.findAllTerms(dermatologistId, startDate, endDate);
+		List<ExaminationDTO> dtos = mapListExamintaionToListExamintaionDTO(examintaions);
 		Collections.sort(dtos, new Sortbyroll());
 		return dtos;
 	}
 	
-	public ExaminationDTO mapCounselingToCounselingDTO(Counseling counseling) {
+	public ExaminationDTO mapExaminationToExaminationDTO(Examination examination) {
 		String patientName = "";
-		if(counseling.getDermatologistWorkCalendar() == null)
+		if(examination.getPharmacistWorkCalendar() == null)
 			return null;
-		if(counseling.getDermatologistWorkCalendar().getPharmacy() == null)
+		if(examination.getPharmacistWorkCalendar().getPharmacy() == null)
 			return null;
-		if(counseling.getPatient() != null)
-			patientName = counseling.getPatient().getFirstName() + counseling.getPatient().getLastName();
-		return new ExaminationDTO(counseling.getId(), counseling.getStartDate(), counseling.getDuration(), counseling.getDermatologistWorkCalendar().getPharmacy().getName(), patientName, counseling.getPrice());
+		if(examination.getPatient() != null)
+			patientName = examination.getPatient().getFirstName() + examination.getPatient().getLastName();
+		return new ExaminationDTO(examination.getId(), examination.getStartDate(), examination.getDuration(), examination.getPharmacistWorkCalendar().getPharmacy().getName(), patientName, examination.getPrice());
 	}
 	
-	public List<ExaminationDTO> mapListCounselingToListCounselingDTO(List<Counseling> counselings) {
-		List<ExaminationDTO> counselingDTOs = new ArrayList<>();
-		for(Counseling c : counselings) {
-			ExaminationDTO dto = mapCounselingToCounselingDTO(c);
+	public List<ExaminationDTO> mapListExamintaionToListExamintaionDTO(List<Examination> examintaions) {
+		List<ExaminationDTO> examinationDTOs = new ArrayList<>();
+		for(Examination e : examintaions) {
+			ExaminationDTO dto = mapExaminationToExaminationDTO(e);
 			if(dto == null)
 				continue;
-			counselingDTOs.add(dto);
+			examinationDTOs.add(dto);
 		}
-		return counselingDTOs;
+		return examinationDTOs;
 	}
 
 	@Override
-	public List<Long> countTermsByDays(Long pharmacyId, Long dermatologistId, Date start, int num) {
+	public List<Long> countTermsByDays(Long dermatologistId, Date start, int num) {
 		List<Long> ret = new ArrayList<>();
 		Calendar calendar = new GregorianCalendar();
 		calendar.setTime(start);
@@ -75,7 +72,7 @@ public class CounselingServiceImpl implements CounselingService {
 		calendar.add(Calendar.DATE, 1);
 		Date endDate = calendar.getTime();
 		for(int i = 0; i < num; i++) {
-			Long n = counselingRepository.countTerms(pharmacyId, dermatologistId, startDate, endDate);
+			Long n = examinationRepository.countTerms(dermatologistId, startDate, endDate);
 			ret.add(n);
 			startDate = calendar.getTime();
 			calendar.add(Calendar.DATE, 1);
@@ -85,7 +82,7 @@ public class CounselingServiceImpl implements CounselingService {
 	}
 	
 	@Override
-	public List<Long> countTermsByMonths(Long pharmacyId, Long dermatologistId, Date start) {
+	public List<Long> countTermsByMonths(Long dermatologistId, Date start) {
 		List<Long> ret = new ArrayList<>();
 		Calendar calendar = new GregorianCalendar();
 		calendar.setTime(start);
@@ -98,7 +95,7 @@ public class CounselingServiceImpl implements CounselingService {
 		calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
 		Date endDate = calendar.getTime();
 		for(int i = 0; i < 12; i++) {
-			Long n = counselingRepository.countTerms(pharmacyId, dermatologistId, startDate, endDate);
+			Long n = examinationRepository.countTerms(dermatologistId, startDate, endDate);
 			ret.add(n);
 			calendar.add(Calendar.DATE, 1);
 			startDate = calendar.getTime();
@@ -106,11 +103,6 @@ public class CounselingServiceImpl implements CounselingService {
 			endDate = calendar.getTime();
 		}
 		return ret;
-	}
-
-	@Override
-	public List<Pharmacy> findAllPharmaciesByDermatologist(Long dermatologistId) {
-		return dermatologistRepository.getDermPharmacies(dermatologistId);
 	}
 	
 	class Sortbyroll implements Comparator<ExaminationDTO>

@@ -91,7 +91,7 @@
 						<li class="menu-has-children"><a href="#">{{derm.firstName}}
 								{{derm.lastName}}</a>
 							<ul>
-								<li><a href="#"><i class="icon fa-user"></i>&nbsp&nbsp&nbspProfile</a></li>
+								<li><a href="/employeeProfile.html"><i class="icon fa-user"></i>&nbsp&nbsp&nbspProfile</a></li>
 								<li @click="logout"><a href="#"><i
 										class="icon fa-sign-out"></i>&nbsp&nbspLog out</a></li>
 							</ul></li>
@@ -171,7 +171,7 @@
 							</div>
 						</section>
 						<section>
-							<div class="content">
+							<div class="content"  @click="redirect('/employeeProfile.html')">
 								<header>
 									<a href="#" class="icon fa-user"><span class="label">Icon</span></a>
 									<h3>Profile</h3>
