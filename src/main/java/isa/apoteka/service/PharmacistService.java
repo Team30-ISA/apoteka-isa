@@ -6,4 +6,5 @@ public interface PharmacistService {
 
 	void firePharm(Long pharmId);
 	Pharmacist hire(Pharmacist pharmacist);
+	Pharmacist findByUsername(String username);
 }

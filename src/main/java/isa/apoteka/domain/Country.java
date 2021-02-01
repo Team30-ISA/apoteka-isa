@@ -1,17 +1,12 @@
 package isa.apoteka.domain;
 
-import static javax.persistence.DiscriminatorType.STRING;
-import static javax.persistence.InheritanceType.JOINED;
-import static javax.persistence.InheritanceType.SINGLE_TABLE;
 import static javax.persistence.InheritanceType.TABLE_PER_CLASS;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
-import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -19,8 +14,6 @@ import javax.persistence.Table;
 @Table(name="Country")
 @Inheritance(strategy=TABLE_PER_CLASS)
 public class Country {
-
-	private static final long serialVersionUID = 1L;
 
 	@Id
 	@SequenceGenerator(name = "mySeqGenV3", sequenceName = "mySeqV3", initialValue = 1, allocationSize = 1)

@@ -18,7 +18,6 @@ import javax.persistence.Table;
 @Inheritance(strategy=TABLE_PER_CLASS)
 public class Address {
 
-	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

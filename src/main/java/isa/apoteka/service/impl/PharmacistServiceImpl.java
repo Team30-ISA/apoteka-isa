@@ -20,5 +20,9 @@ public class PharmacistServiceImpl implements PharmacistService{
 	public Pharmacist hire(Pharmacist pharmacist) {
 		return pharmacistRepository.save(pharmacist);
 	}
+	@Override
+	public Pharmacist findByUsername(String username) {
+		return pharmacistRepository.findByUsername(username);
+	}
 
 }

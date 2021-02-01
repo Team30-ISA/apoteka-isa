@@ -10,7 +10,6 @@ public class NewPharmacistDTO {
 	private Long cityId;
 	public NewPharmacistDTO() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 	public NewPharmacistDTO(String firstName, String lastName, String username, String email, String address,
 			Long cityId) {

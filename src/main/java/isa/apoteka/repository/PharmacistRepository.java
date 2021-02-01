@@ -13,4 +13,6 @@ public interface PharmacistRepository extends JpaRepository<Pharmacist, Long>{
 	    @Transactional
 		@Query("delete from Pharmacist p where p.id=:pharmId")
 		void firePharm(Long pharmId);
+
+		Pharmacist findByUsername(String username);
 }

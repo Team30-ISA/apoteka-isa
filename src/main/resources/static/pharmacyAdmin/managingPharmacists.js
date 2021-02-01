@@ -95,16 +95,9 @@ var app = new Vue({
 		            console.log(error)
 		            if (error.response.status == 401 || error.response.status == 400 || error.response.status == 500) {
 		                JSAlert.alert("Fields cannot be empty. Please try again.");
-		                axios
-		        		.get('/api/pharmacyAdmin/getLoggedUser',{
-		        			  headers: {
-		        				    'Authorization': "Bearer " + localStorage.getItem('access_token')
-		        			  }
-		        	     })
-		        	     .then(response => {
-		        	     	this.admin = response.data
-		        	     })
-		            } 
+		            }else if(error.response.status == 406){
+		            	JSAlert.alert("This username is already in use. Please try another one!");
+		            }
 		            
 		        })
 			}
