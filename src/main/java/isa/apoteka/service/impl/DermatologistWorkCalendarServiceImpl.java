@@ -46,7 +46,7 @@ public class DermatologistWorkCalendarServiceImpl implements DermatologistWorkCa
 	}
 
 	@Override
-	public void deleteDermWorkCalendarByDate(Date start) {
+	public void deleteDermWorkCalendarByDate(Date start, Long dermId) {
 		Calendar calendar = new GregorianCalendar();
 		calendar.setTime(start);
 		calendar.set(Calendar.HOUR_OF_DAY, 0);
@@ -55,7 +55,7 @@ public class DermatologistWorkCalendarServiceImpl implements DermatologistWorkCa
 		Date startDate = calendar.getTime();
 		calendar.add(Calendar.DATE, 1);
 		Date endDate = calendar.getTime();
-		dermWCRepository.deleteDermWorkCalendarByDate(startDate, endDate);
+		dermWCRepository.deleteDermWorkCalendarByDate(startDate, endDate, dermId);
 	}
 
 }

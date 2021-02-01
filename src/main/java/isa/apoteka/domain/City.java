@@ -1,25 +1,15 @@
 package isa.apoteka.domain;
 
-import static javax.persistence.DiscriminatorType.STRING;
-import static javax.persistence.InheritanceType.JOINED;
-import static javax.persistence.InheritanceType.SINGLE_TABLE;
 import static javax.persistence.InheritanceType.TABLE_PER_CLASS;
-
-import java.util.List;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
@@ -27,11 +17,8 @@ import javax.persistence.Table;
 @Inheritance(strategy=TABLE_PER_CLASS)
 public class City {
 
-	private static final long serialVersionUID = 1L;
-
 	@Id
-	@SequenceGenerator(name = "mySeqGenV3", sequenceName = "mySeqV3", initialValue = 1, allocationSize = 1)
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mySeqGenV3")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique=true, nullable=false)
     private Long id;
 
@@ -42,7 +29,17 @@ public class City {
     @JoinColumn(name = "country_id", referencedColumnName = "id")
     private Country country;
     
-    public Long getId() {
+    
+    
+    public City() {
+		super();
+	}
+
+	public City(Long id) {
+		this.id = id;
+	}
+
+	public Long getId() {
         return id;
     }
 

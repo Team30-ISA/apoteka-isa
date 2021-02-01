@@ -1,3 +1,4 @@
+
 var app = new Vue({
 	el: '#changePass',
 	data: {

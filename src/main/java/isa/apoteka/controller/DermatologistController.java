@@ -43,7 +43,7 @@ public class DermatologistController {
 	}
 	
 	@GetMapping("/derm")
-	@PreAuthorize("hasRole('DERM')")
+	@PreAuthorize("hasRole('DERM') || hasRole('ADMIN')")
 	public User loadById(Long dermId) {
 		return this.dermatologistService.findById(dermId);
 	}
@@ -79,9 +79,9 @@ public class DermatologistController {
 
 	}
 	
-	@PostMapping(value= "/save", consumes = "application/json")
+	@PostMapping(value= "/update", consumes = "application/json")
 	@PreAuthorize("hasRole('DERM')")
-	public ResponseEntity<ChangeDataDTO> save(@RequestBody @Valid ChangeDataDTO changeDataDTO) {
+	public ResponseEntity<ChangeDataDTO> update(@RequestBody @Valid ChangeDataDTO changeDataDTO) {
 		Dermatologist derm = (Dermatologist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		dermatologistService.update(changeDataDTO.getFirstName(), changeDataDTO.getLastName(), derm.getId());
 		addressService.update(changeDataDTO.getStreet(), changeDataDTO.getCityId(), derm.getAddress().getId());

@@ -11,7 +11,6 @@ public class HireDermDTO {
 
 	public HireDermDTO() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 	public HireDermDTO(Long dermId) {
 		super();
