@@ -9,7 +9,6 @@ import isa.apoteka.domain.Pharmacist;
 public interface PharmacistRepository extends JpaRepository<Pharmacist, Long>{
 
 	 	@Modifying
-	    @Transactional
 		@Query("delete from Pharmacist p where p.id=:pharmId")
 		void firePharm(Long pharmId);
 

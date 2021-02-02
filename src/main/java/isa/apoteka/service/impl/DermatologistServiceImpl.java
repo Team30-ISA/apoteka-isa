@@ -5,17 +5,27 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import isa.apoteka.domain.Dermatologist;
 import isa.apoteka.domain.Pharmacy;
 import isa.apoteka.dto.PharmacyDTO;
 import isa.apoteka.repository.DermatologistRepository;
 import isa.apoteka.service.DermatologistService;
+import isa.apoteka.service.DermatologistWorkCalendarService;
 
 @Service
+@Transactional(readOnly = true)
 public class DermatologistServiceImpl implements DermatologistService {
-	@Autowired
+	
 	private DermatologistRepository dermatologistRepository;
-
+	private DermatologistWorkCalendarService dermWCService;
+	
+	@Autowired
+	public DermatologistServiceImpl(DermatologistRepository dermatologistRepository, DermatologistWorkCalendarService dermWCService) {
+		this.dermatologistRepository = dermatologistRepository;
+		this.dermWCService = dermWCService;
+	}
 	@Override
 	public String getLogged() {
 		return SecurityContextHolder.getContext().getAuthentication().toString();
@@ -44,18 +54,23 @@ public class DermatologistServiceImpl implements DermatologistService {
 	}
 
 	@Override
+	@Transactional(readOnly = false)
 	public void hireDerm(Long dermId, Long pharmacyId) {
 		dermatologistRepository.hireDerm(dermId, pharmacyId);
 		
 	}
 	
 	@Override
+	@Transactional(readOnly = false)
 	public void fireDerm(Long dermId, Long pharmacyId) {
+		
+		dermWCService.deleteDermWorkCalendarByDerm(dermId);
 		dermatologistRepository.fireDerm(dermId, pharmacyId);
 		
 	}
 	
 	@Override
+	@Transactional(readOnly = false)
 	public void update(String firstName, String lastName, Long id) {		
 		dermatologistRepository.update(firstName, lastName,id);
 	}
