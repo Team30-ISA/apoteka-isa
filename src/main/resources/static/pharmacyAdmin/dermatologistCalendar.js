@@ -122,6 +122,10 @@ var app = new Vue({
 		  			  }
 		        })
 	        .then(response => {
+	        	console.log(response.data)
+	        	if(response.data == false){
+	        		JSAlert.alert("Dermatologist is unavailable in that period.");
+	        	}
 	        	this.dermWC = response.data
 	        	this.periods = []
 	        	this.reloadData()
@@ -211,6 +215,12 @@ var app = new Vue({
 	        .then(response => {
 	        	this.periods = []
 	        	this.reloadData();
+	        }) .catch(error => {
+	            console.log(error)
+	            if (error.response.status == 401 || error.response.status == 400 || error.response.status == 500) {
+	                JSAlert.alert("Dermatologist has appointments that day. You can't change the work schedule.");
+	            }   	
+	            
 	        })
         }
     },

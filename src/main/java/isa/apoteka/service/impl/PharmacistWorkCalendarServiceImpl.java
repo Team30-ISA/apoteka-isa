@@ -17,8 +17,13 @@ import isa.apoteka.service.PharmacistWorkCalendarService;
 @Service
 public class PharmacistWorkCalendarServiceImpl implements PharmacistWorkCalendarService {
 
-	@Autowired
+	
 	private PharmacistWorkCalendarRepository pharmWCRepository;
+	
+	@Autowired
+	private PharmacistWorkCalendarServiceImpl(PharmacistWorkCalendarRepository pharmWCRepository){
+		this.pharmWCRepository = pharmWCRepository;
+	}
 	
 	@Override
 	public Boolean save(PharmacistWorkCalendar derm) {
@@ -58,5 +63,11 @@ public class PharmacistWorkCalendarServiceImpl implements PharmacistWorkCalendar
 		calendar.add(Calendar.DATE, 1);
 		Date endDate = calendar.getTime();
 		pharmWCRepository.deletePharmWorkCalendarByDate(startDate, endDate, pharmId);
+	}
+
+	@Override
+	public void deletePharmWorkCalendarByPharm(Long id) {
+		pharmWCRepository.deletePharmWorkCalendarByPharm(id);
+		
 	}
 }

@@ -1,7 +1,6 @@
 package isa.apoteka.controller;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -28,14 +27,16 @@ import isa.apoteka.service.PharmacyService;
 @RequestMapping(value = "api/dermWP")
 public class DermatologistWorkCalendarController {
 	
-	@Autowired
 	private DermatologistWorkCalendarService dermWCService;
-	
-	@Autowired
 	private DermatologistService dermatologistService;
+	private PharmacyService pharmacyService;
 	
 	@Autowired
-	private PharmacyService pharmacyService;
+	public DermatologistWorkCalendarController(DermatologistWorkCalendarService dermWCService, DermatologistService dermatologistService, PharmacyService pharmacyService) {
+		this.dermatologistService = dermatologistService;
+		this.dermWCService = dermWCService;
+		this.pharmacyService = pharmacyService;
+	}
 	
 	@PostMapping("/save")
 	@PreAuthorize("hasRole('ADMIN')")
@@ -44,8 +45,7 @@ public class DermatologistWorkCalendarController {
 		Long pharmacyId = admin.getPharmacy().getId();
 		Pharmacy pharmacy = pharmacyService.findOne(pharmacyId);
 		Dermatologist dermatologist = dermatologistService.findById(Long.parseLong(params.get("dermatologistId").toString()));		
-		DermatologistWorkCalendar dwc = new DermatologistWorkCalendar(dermatologist, pharmacy, new Date(Long.parseLong(params.get("startDate").toString())), new Date(Long.parseLong(params.get("endDate").toString())));
-		return dermWCService.save(dwc);
+		return dermWCService.save(dermatologist, pharmacy, new Date(Long.parseLong(params.get("startDate").toString())), new Date(Long.parseLong(params.get("endDate").toString())));
 	}
 	
 	@GetMapping("/findAllDermWorkCalendarByDermIdAndPeriod")
@@ -59,11 +59,8 @@ public class DermatologistWorkCalendarController {
 	@PostMapping("/deleteDermWorkCalendarByDate")
 	//@PreAuthorize("hasRole('ADMIN')")
 	public void deleteDermWorkCalendarByDate(@RequestBody Map<String, Object> params) throws ParseException {
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 		Date startDate = new Date(Long.parseLong(params.get("startDate").toString()));
 		Long dermatologistId = Long.parseLong(params.get("dermatologistId").toString());
-		PharmacyAdmin admin = (PharmacyAdmin) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		Long pharmacyId = admin.getPharmacy().getId();
 		dermWCService.deleteDermWorkCalendarByDate(startDate,dermatologistId);
 	}
 }

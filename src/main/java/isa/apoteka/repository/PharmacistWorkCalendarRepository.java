@@ -22,4 +22,9 @@ public interface PharmacistWorkCalendarRepository extends JpaRepository<Pharmaci
     @Modifying
     @Query(value="delete from Pharmacist_Work_Calendar p where p.start_Date >= :start and p.start_Date <= :end and p.pharmacist_id=:pharmId", nativeQuery = true)
 	void deletePharmWorkCalendarByDate(Date start, Date end, Long pharmId);
+    
+    @Transactional
+    @Modifying
+    @Query(value="delete from Pharmacist_Work_Calendar p where p.pharmacist_id=:id", nativeQuery = true)
+	void deletePharmWorkCalendarByPharm(Long id);
 }
