@@ -78,11 +78,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				// za development svrhe ukljuci konfiguraciju za CORS iz WebConfig klase
 				.httpBasic().and()
 				.cors().and()
-
+				
 				
 				// umetni custom filter TokenAuthenticationFilter kako bi se vrsila provera JWT tokena umesto cistih korisnickog imena i lozinke (koje radi BasicAuthenticationFilter)
 				.addFilterBefore(new TokenAuthenticationFilter(tokenUtils, jwtUserDetailsService),
 						BasicAuthenticationFilter.class);
+				http.cors();
+				http.csrf().disable();
+
 	}
 	
 	
@@ -91,10 +94,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	public void configure(WebSecurity web) throws Exception {
 		// TokenAuthenticationFilter ce ignorisati sve ispod navedene putanje
-		web.ignoring().antMatchers(HttpMethod.POST, "/auth/login", "/auth/logout", "/api/promotion","/api/promotion/sendEmail");
-		web.ignoring().antMatchers(HttpMethod.GET, "/", "/webjars/**", "/favicon.ico",
+		web.ignoring().antMatchers(HttpMethod.POST, "/auth/login", "/auth/logout");
+		web.ignoring().antMatchers(HttpMethod.GET, "/", "/webjars/**", "/favicon.ico", "/**/*.png",
 				"/**/*.css", "/**/*.js", "/**/*.woff2",  "/**/*.woff", "/**/*.html", "/*.html", "/img/zena.jpg", "/img/musko.jpg");
-		web.ignoring().antMatchers(HttpMethod.GET, "/api/pharmacy/**");
 	}
 	
 

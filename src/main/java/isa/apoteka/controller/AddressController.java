@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import isa.apoteka.domain.Address;
-import isa.apoteka.domain.City;
-import isa.apoteka.domain.Country;
 import isa.apoteka.dto.CityDTO;
 import isa.apoteka.service.AddressService;
 
@@ -26,4 +24,5 @@ public class AddressController {
 	public List<Address> loadAll(CityDTO city) {
 		return this.addressService.findAllAddressesForCity(city);
 	}
+	
 }

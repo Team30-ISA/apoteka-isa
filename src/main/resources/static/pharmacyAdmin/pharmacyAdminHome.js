@@ -18,6 +18,7 @@ var app = new Vue({
 		}
 	},
 	created() {
+		 window.localStorage.getItem('access_token');
 		axios
         .get('/auth/getRole',{
 			  headers: {

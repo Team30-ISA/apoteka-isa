@@ -1,9 +1,6 @@
 package isa.apoteka.dto;
 
-import isa.apoteka.domain.Address;
-import isa.apoteka.domain.City;
 import isa.apoteka.domain.Country;
-import isa.apoteka.domain.User;
 
 public class CountryDTO {
 	private Long id;

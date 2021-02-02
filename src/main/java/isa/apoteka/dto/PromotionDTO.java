@@ -1,12 +1,6 @@
 package isa.apoteka.dto;
 
 import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-
 import isa.apoteka.domain.Pharmacy;
 import isa.apoteka.domain.Promotion;
 
@@ -35,7 +29,6 @@ public class PromotionDTO {
 	
 	public PromotionDTO() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 	
 	public PromotionDTO(Promotion promotion) {

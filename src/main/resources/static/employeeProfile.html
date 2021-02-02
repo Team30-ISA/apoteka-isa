@@ -64,7 +64,7 @@
 	}
 </style>
 <body id="body">
-	<div id="adminProfile">
+	<div id="employeeProfile">
 		<!--==========================
     Top Bar
   ============================-->
@@ -106,9 +106,10 @@
 						<li class="menu-has-children"><a href="#">Tools</a>
 							<ul>
 								<li><a href="promotion.html">New Promotion</a></li>
+								<li><a href="managingDermatologists.html">Manage Dermatologists</a></li>
 							</ul></li>
-						<li class="menu-has-children"><a href="#">{{admin.firstName}}
-								{{admin.lastName}}</a>
+						<li class="menu-has-children"><a href="#">{{user.firstName}}
+								{{user.lastName}}</a>
 							<ul>
 								<li><a href="#"><i class="icon fa-user"></i>&nbsp&nbsp&nbspProfile</a></li>
 								<li @click="logout"><a href="#"><i
@@ -136,7 +137,7 @@
 					<div class="highlights">
 						<section >
 						    <div style="border:3px solid #0c2e8a; width:130; height:100; margin-left:9rem">
-							<img v-if="admin.gender == 'FEMALE'" alt="" src="../img/zena.jpg" width="150" height="160" style="margin-left:2rem; margin-top:1rem; margin-bottom:1rem">
+							<img v-if="user.gender == 'FEMALE'" alt="" src="../img/zena.jpg" width="150" height="160" style="margin-left:2rem; margin-top:1rem; margin-bottom:1rem">
 							<img v-else alt="" src="../img/musko.jpg" width="150" height="160" style="margin-left:2rem; margin-top:1rem; margin-bottom:1rem">
 							</div>
 						</section>
@@ -147,7 +148,7 @@
 										<b>USERNAME</b>
 									</td>
 									<td style="width: 100%;  background-color: #ffffff";>
-										<input type="text" v-model="admin.username" style="border: 0;  background-color: #ffffff;" disabled>
+										<input type="text" v-model="user.username" style="border: 0;  background-color: #ffffff;" disabled>
 									</td>
 								</tr>
 								<tr>
@@ -155,7 +156,7 @@
 										<b>FIRST NAME</b>
 									</td>
 									<td style="width: 100%;">
-										<input type="text" v-model="admin.firstName" :class="[changeData ? 'txtEnabled' : 'txtDisabled']"  :disabled="!changeData">
+										<input type="text" v-model="user.firstName" :class="[changeData ? 'txtEnabled' : 'txtDisabled']"  :disabled="!changeData">
 									</td>
 								</tr>
 								<tr>
@@ -163,7 +164,7 @@
 										<b>LAST NAME</b>
 									</td>
 									<td style="width: 100%;">
-										<input type="text" v-model="admin.lastName" :class="[changeData ? 'txtEnabled' : 'txtDisabled']"  :disabled="!changeData">
+										<input type="text" v-model="user.lastName" :class="[changeData ? 'txtEnabled' : 'txtDisabled']"  :disabled="!changeData">
 									</td>
 								</tr>
 								<tr>
@@ -171,7 +172,7 @@
 										<b>EMAIL &nbsp</b>
 									</td>
 									<td style="width: 100%;">
-										<input type="text" v-model="admin.email" :class="[changeData ? 'txtEnabled' : 'txtDisabled']"  :disabled="!changeData" style="width:170%">
+										<input type="text" v-model="user.email" style="border: 0;  background-color: #ffffff; width: 170%;" disabled>
 									</td>
 								</tr>
 								<tr>
@@ -179,11 +180,12 @@
 										<b>COUNTRY</b>
 									</td>
 									<td style="width: 100%;">
-										<select class="txtEnabled" v-if="changeData" style="width: 170%;">
-											<option>Srbija</option>
-											<option>Makedonija</option>
+										<select class="txtEnabled" v-if="changeData" v-model="selectedCountry" @change="findCity" style="width: 170%;">
+											<option v-for="country in countries" : value="country.value" v-bind:value="{ id: country.id }" :selected="country.country==user.address.city.country.country">{{country.country}}</option>
+											
 										</select>
-										<input v-else type="text" value="Serbia" :class="[changeData ? 'txtEnabled' : 'txtDisabled']"  :disabled="!changeData">
+										<!-- <h1>{{selected.id}}</h1> -->
+										<input v-else type="text" v-model="user.address.city.country.country" :class="[changeData ? 'txtEnabled' : 'txtDisabled']"  :disabled="!changeData">
 									</td>
 								</tr>
 								<tr>
@@ -191,11 +193,10 @@
 										<b>CITY</b>
 									</td>
 									<td style="width: 100%;">
-										<select class="txtEnabled" v-if="changeData" style="width: 170%;">
-											<option>Subotica</option>
-											<option>Beograd</option>
+										<select class="txtEnabled" v-if="changeData" v-model="selectedCity" @change="findAddresses" style="width: 170%;">
+											<option v-for="city in cities" : value="city.value" v-bind:value="{ id: city.id }" :selected="city.city==user.address.city.city">{{city.city}}</option>									
 										</select>
-										<input v-else type="text" value="Subotica" :class="[changeData ? 'txtEnabled' : 'txtDisabled']"  :disabled="!changeData">
+										<input v-else type="text" v-model="user.address.city.city" :class="[changeData ? 'txtEnabled' : 'txtDisabled']"  :disabled="!changeData">
 									</td>
 								</tr>
 								<tr>
@@ -203,7 +204,7 @@
 										<b>ADDRESS</b>
 									</td>
 									<td style="width: 100%;">
-										<input type="text" value="Address 11" :class="[changeData ? 'txtEnabled' : 'txtDisabled']"  :disabled="!changeData">
+										<input type="text" v-model="user.address.street" :class="[changeData ? 'txtEnabled' : 'txtDisabled']"  :disabled="!changeData">
 									</td>
 								</tr>
 								<tr>
@@ -226,7 +227,7 @@
 										<b>OLD PASSWORD</b>
 									</td>
 									<td  style="width: 50%; padding-bottom: 30px;">
-										<input class="txtEnabled" type="password" style="margin-right: 20px; width:80%">
+										<input v-model="oldPass" class="txtEnabled" type="password" style="margin-right: 20px; width:80%">
 									</td>
 								</tr>
 								<tr>
@@ -234,7 +235,7 @@
 										<b>NEW PASSWORD</b>
 									</td>
 									<td style="width: 50%; padding-bottom:30px;">
-										<input class="txtEnabled" type="password" style="width:80%">
+										<input v-model="newPass" class="txtEnabled" type="password" style="width:80%">
 									</td>
 								</tr>
 								<tr>
@@ -242,7 +243,7 @@
 										<b>REPEAT PASSWORD</b>
 									</td>
 									<td style="width: 50%; padding-bottom:30px;">
-										<input class="txtEnabled" type="password" style="width:80%">
+										<input v-model="repeatPass" class="txtEnabled" type="password" style="width:80%">
 									</td>
 								</tr>
 								<tr>
@@ -271,6 +272,7 @@
 	<script src="../lib/owlcarousel/owl.carousel.min.js"></script>
 	<script src="../lib/magnific-popup/magnific-popup.min.js"></script>
 	<script src="../lib/sticky/sticky.js"></script>
+	<script src="https://npmcdn.com/js-alert/dist/jsalert.min.js"></script>
 
 	<!-- Contact Form JavaScript File -->
 	<script
@@ -278,7 +280,7 @@
 	<!-- Template Main Javascript File -->
 	<script src="../js/main.js"></script>
 	<script src="../axios.js"></script>
-	<script src="pharmacyAdminProfile.js"></script>
+	<script src="employeeProfile.js"></script>
 
 </body>
 </html>

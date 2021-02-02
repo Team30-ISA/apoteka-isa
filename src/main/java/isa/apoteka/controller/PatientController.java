@@ -2,9 +2,7 @@ package isa.apoteka.controller;
 
 import java.security.Principal;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,20 +13,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import isa.apoteka.domain.Dermatologist;
 import isa.apoteka.domain.Patient;
 import isa.apoteka.domain.PatientUpdateForm;
-import isa.apoteka.domain.Pharmacy;
 import isa.apoteka.domain.User;
 import isa.apoteka.dto.PatientDTO;
-import isa.apoteka.dto.PharmacyDTO;
-import isa.apoteka.dto.UserDTO;
 import isa.apoteka.service.PatientService;
-import isa.apoteka.service.UserService;
-import isa.apoteka.service.impl.CustomUserDetailsService;
 
 
 // Primer kontrolera cijim metodama mogu pristupiti samo autorizovani korisnici
