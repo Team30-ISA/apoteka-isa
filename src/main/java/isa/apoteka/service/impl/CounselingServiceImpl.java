@@ -10,6 +10,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import isa.apoteka.domain.Counseling;
+import isa.apoteka.domain.Patient;
 import isa.apoteka.domain.Pharmacy;
 import isa.apoteka.dto.ExaminationDTO;
 import isa.apoteka.repository.CounselingRepository;
@@ -48,7 +49,7 @@ public class CounselingServiceImpl implements CounselingService {
 		if(counseling.getDermatologistWorkCalendar().getPharmacy() == null)
 			return null;
 		if(counseling.getPatient() != null)
-			patientName = counseling.getPatient().getFirstName() + counseling.getPatient().getLastName();
+			patientName = counseling.getPatient().getFirstName() + " " + counseling.getPatient().getLastName();
 		return new ExaminationDTO(counseling.getId(), counseling.getStartDate(), counseling.getDuration(), counseling.getDermatologistWorkCalendar().getPharmacy().getName(), patientName, counseling.getPrice(), counseling.getReport());
 	}
 	
@@ -116,6 +117,22 @@ public class CounselingServiceImpl implements CounselingService {
 	@Override
 	public ExaminationDTO findOne(Long id) {
 		return mapCounselingToCounselingDTO(counselingRepository.findById(id).orElse(null));
+	}
+	
+	@Override
+	public Patient getPatientInCounseling(Long id) {
+		Counseling counseling = counselingRepository.findById(id).orElse(null);
+		if(counseling == null)
+			return null;
+		return counseling.getPatient();
+	}
+	
+	@Override
+	public Pharmacy getPharmacyInCounseling(Long id) {
+		Counseling counseling = counselingRepository.findById(id).orElse(null);
+		if(counseling == null)
+			return null;
+		return counseling.getDermatologistWorkCalendar().getPharmacy();
 	}
 	
 	class Sortbyroll implements Comparator<ExaminationDTO>

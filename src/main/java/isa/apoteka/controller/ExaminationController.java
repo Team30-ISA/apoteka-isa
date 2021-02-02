@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sun.istack.Nullable;
 
-import isa.apoteka.domain.Dermatologist;
 import isa.apoteka.domain.Pharmacist;
 import isa.apoteka.dto.ExaminationDTO;
 import isa.apoteka.service.ExaminationService;
