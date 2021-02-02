@@ -98,7 +98,7 @@ public class CounselingController {
 		Counseling counseling = counselingService.findOne(counselingId);
 		try {
 			Dermatologist dermatologist = (Dermatologist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-			if(counseling.getDermatologistWorkCalendar().getDermatologist().getId() != dermatologist.getId())
+			if(!counseling.getDermatologistWorkCalendar().getDermatologist().getId().equals(dermatologist.getId()))
 				return false;
 		} catch(Exception e){
 			return false;
