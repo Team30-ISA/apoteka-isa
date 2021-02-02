@@ -64,8 +64,14 @@ var app = new Vue({
 				  
 	        })
 	        .then(response => {
+	        	window.location.href = '/pharmacyAdmin/managingDermatologists.html';
+	        }).catch(error => {
+	            console.log(error)
+	            if (error.response.status == 401 || error.response.status == 400 || error.response.status == 500) {
+	                JSAlert.alert("Dermatologist has appointments scheduled. He cannot be deleted.");
+	            }
 	            
-	        })
+	    })
 		},
 		
 		changeState(){

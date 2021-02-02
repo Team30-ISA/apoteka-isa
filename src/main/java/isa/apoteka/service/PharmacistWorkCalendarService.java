@@ -11,4 +11,5 @@ public interface PharmacistWorkCalendarService {
 	List<PharmacistWorkCalendar> findAllPharmWorkCalendarByPharmId(Long id);
 	List<PeriodDTO> findAllPharmWorkCalendarByPharmIdAndPeriod(Long pharmacistId, Date start, Date end);
 	void deletePharmWorkCalendarByDate(Date start, Long pharmId);
+	void deletePharmWorkCalendarByPharm(Long id);
 }
