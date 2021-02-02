@@ -1,8 +1,8 @@
 var app = new Vue({
 	el: '#page',
 	data: {
-        //currentStep: "START",
-		currentStep: "PRESCRIPT",
+        currentStep: "START",
+		derm: null,
         examination: null,
         monthNames: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
         report: "",
@@ -14,7 +14,10 @@ var app = new Vue({
         showSubs: false,
         subDrug: null,
         therapies: [],
-        showTherapies: false
+        showTherapies: false,
+        canStart: false,
+        currentExam: null,
+        waitingTime: ""
 	},
 	methods: {
         formatDate(date){
@@ -119,26 +122,39 @@ var app = new Vue({
     	     })
     	     .then(response => {
     	    	 let th = this;
-    	    	 JSAlert.prompt("Unesite trajanje terapije u danima?").then(function(result) {
- 	     		    if (!result)
- 	     		        return;
- 	     		  axios
- 	     		  .get('/api/therapy/save',{
- 	     			  headers: {
- 	     				  'Authorization': "Bearer " + localStorage.getItem('access_token')
- 	     			  },
- 	     			  params:{
- 	     				duration: result,
-		    			medicineId: th.selectedDrug.id,
-		    			counselingId: th.examination.id 
- 	     			  }
-		    	   })
-		    	   .then(response => {
-		    	     	th.therapies.push(response.data)
-		    	     	console.log(th.therapies)
-		    	     	JSAlert.alert("Terapija uspesno upisana!")
-		    	   })
- 	     		});
+    	    	 if(response.data == false){
+    	    		 JSAlert.confirm("Lek nije dostupan u apoteci, prikazi zamene?").then(function(av) {
+     	     		    if (!av)
+     	     		        return;
+     	     		   th.subDrug = th.selectedDrug
+     	     		   th.getSubstitutes(th.selectedDrug);
+     	     		   return;
+     	     		});
+    	    	 }
+    	    	 else{
+    	    		 JSAlert.prompt("Unesite trajanje terapije u danima?").then(function(result) {
+	 	     		    if (!result)
+	 	     		        return;
+	 	     		  if(isNaN(parseInt(result))){
+	 	     			JSAlert.alert("Neispravan unos!");
+	 	     			return;
+	 	     		  }
+		 	     	  axios
+		 	     	  .post('/api/therapy/save',
+		 	     			  {
+		 	     			  	duration: parseInt(result),
+		 	     			  	medicineId: th.selectedDrug.id,
+				    			counselingId: th.examination.id 
+			     			  },{
+			     				 headers: {
+			     					 'Authorization': "Bearer " + localStorage.getItem('access_token')
+			 	     			 }
+				    	   })
+					    .then(response => {
+					    	     	th.therapies.push(response.data)
+					    })
+	 	     		});
+    	    	 }
     	     })
         },
         changeShowTherapiesStatus(){
@@ -146,21 +162,78 @@ var app = new Vue({
         		this.showTherapies = true;
         	else
         		this.showTherapies = false;
+        },
+        calc(){
+        	let now = new Date();
+        	let endOfExam = new Date(this.examination.startDate.getTime() + 60000*this.examination.duration);
+        	if(this.examination.startDate <= now && now <= endOfExam)
+        		this.canStart = true;
+        	else{
+        		this.dateDistance(now, this.examination.startDate)
+        		setTimeout(this.calc, 60000);
+        	}
+        	
+        },
+        dateDistance(date1, date2){
+        	let ret = ""
+        	let diffTime = Math.abs(date2 - date1);
+        	let diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+        	let diffHrs = Math.floor((diffTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        	let diffMins = Math.floor((diffTime % (1000 * 60 * 60)) / (1000 * 60));
+        	if(diffDays == 1)
+        		ret = diffDays + " day ";
+        	else if(diffDays > 1)
+            	ret = diffDays + " days ";
+        	
+        	if(diffDays == 0 && diffHrs == 0){}
+        	else if(diffHrs <= 1)
+        		ret += diffHrs + " hour ";
+        	else if(diffDays > 1)
+            	ret += diffHrs + " hours ";
+        	if(diffDays == 0 && diffHrs == 0 && diffMins < 1)
+        		ret = "less than one minute";
+        	else
+        		ret += diffMins + " min ";
+        	this.waitingTime = ret;
         }
 	},
 	created() {
 		axios
-		.get('/api/counseling/getById',{
+        .get('/auth/getRole',{
+			  headers: {
+			    'Authorization': "Bearer " + localStorage.getItem('access_token')
+			  }
+        })
+        .then(response => {
+        	if(response.data != "DERM"){
+        		window.location.href = '/login.html';
+        	}
+        })
+        .catch(function() {
+        	window.location.href = '/login.html';
+	    })
+		axios
+		.get('/api/dermatologist/getLoggedUser',{
+			  headers: {
+				    'Authorization': "Bearer " + localStorage.getItem('access_token')
+			  }
+	     })
+	     .then(response => {
+	     	this.derm = response.data
+	     })
+	     axios
+		.get('/api/counseling/getNearestCounseling',{
 			headers: {
 			 'Authorization': "Bearer " + localStorage.getItem('access_token')
 			},
 			params:{
-				id: 1,
+				start: (new Date).getTime(),
 			}
 	     })
 	     .then(response => {
-	     	this.examination = response.data
-	     	this.examination.startDate = new Date(this.examination.startDate)
+	    	 this.examination = response.data
+	 	     this.examination.startDate = new Date(this.examination.startDate)
+	    	 this.calc();
 	     })
 	     axios
 		.get('/api/medicine/getAll',{

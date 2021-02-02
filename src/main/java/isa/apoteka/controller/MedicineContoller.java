@@ -3,11 +3,16 @@ package isa.apoteka.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import isa.apoteka.domain.Counseling;
+import isa.apoteka.domain.Dermatologist;
 import isa.apoteka.domain.Medicine;
 import isa.apoteka.domain.Patient;
 import isa.apoteka.domain.Pharmacy;
@@ -38,12 +43,14 @@ public class MedicineContoller {
 	
 	@GetMapping("/isPatientAllergic")
 	@PreAuthorize("hasRole('DERM')")	
-	public Boolean isPatientAllergic(Long medicineId, Long counselingId){
+	public ResponseEntity<Boolean> isPatientAllergic(Long medicineId, Long counselingId){
+		if(!dermAuthorizationForCounseling(counselingId))
+			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
 		Patient patient = counselingService.getPatientInCounseling(counselingId);
 		if(patient == null)
-			return null;
+			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		Long patientId = patient.getId();
-		return medicineService.isPatientAllergic(patientId, medicineId);
+		return new ResponseEntity<>(medicineService.isPatientAllergic(patientId, medicineId), HttpStatus.OK);
 	}
 	
 	@GetMapping("/getSubstitutesOfMedicine")
@@ -54,13 +61,27 @@ public class MedicineContoller {
 	
 	@GetMapping("/isMedicineAvailableInPharmacy")
 	@PreAuthorize("hasRole('DERM')")
-	public Boolean isMedicineAvailableInPharmacy(Long medicineId, Long counselingId) {
+	public ResponseEntity<Boolean> isMedicineAvailableInPharmacy(Long medicineId, Long counselingId) {
+		if(!dermAuthorizationForCounseling(counselingId))
+			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
 		Pharmacy pharmacy = counselingService.getPharmacyInCounseling(counselingId);
 		if(pharmacy == null)
 			return null;
 		Long pharmacyId = pharmacy.getId();
-		return medicineService.isMedicineAvailableInPharmacy(medicineId, pharmacyId);
+		return new ResponseEntity<>(medicineService.isMedicineAvailableInPharmacy(medicineId, pharmacyId), HttpStatus.OK);
 		
+	}
+	
+	public Boolean dermAuthorizationForCounseling(Long counselingId) {
+		Counseling counseling = counselingService.findOne(counselingId);
+		try {
+			Dermatologist dermatologist = (Dermatologist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			if(counseling.getDermatologistWorkCalendar().getDermatologist().getId() != dermatologist.getId())
+				return false;
+		} catch(Exception e){
+			return false;
+		}
+		return true;
 	}
 
 }
