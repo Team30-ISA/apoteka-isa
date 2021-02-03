@@ -166,7 +166,7 @@ main ::-webkit-scrollbar-thumb:hover {
 				<div class="inner">
 				<div class="highlight">
 					<header class="special">
-						<h2>DERMATOLOGISTS</h2>
+						<h2>PHARMACISTS</h2>
 					</header>
 					<div style="position: absolute; width: 80%; left:10%; height: 50%">
 						<div  style="border:3px solid #0c2e8a; width:30%; position: absolute; ">
@@ -181,8 +181,8 @@ main ::-webkit-scrollbar-thumb:hover {
 									<td width="50%">Last Name:</td>
 								</tr>
 								<tr width="100%">
-									<td width="50%"><input type="text" v-model="searchDermFirst" style=" width: 100%;" class="txtEnabled"></td>
-									<td width="50%"><input type="text" v-model="searchDermLast" style=" width: 100%;"  class="txtEnabled"></td>									
+									<td width="50%"><input type="text" v-model="searchPharmFirst" style=" width: 100%;" class="txtEnabled"></td>
+									<td width="50%"><input type="text" v-model="searchPharmLast" style=" width: 100%;"  class="txtEnabled"></td>									
 								</tr>
 								<tr width="100%">
 									<td width="50%">&nbsp</td>
@@ -222,7 +222,7 @@ main ::-webkit-scrollbar-thumb:hover {
 									<td width="50%">&nbsp</td>
 									<td width="50%">&nbsp</td>
 								</tr>
-								<tr width="100%" >
+								<tr width="100%" v-if="role != 'ADMIN'">
 									<td width="50%" colspan="2"><h6>Filter by Pharmacy:</h6>
 									<a  class="icon fa-plus-circle" style="font-size:25px; color:#50d8af;   cursor:pointer; margin-left:45%; " @click="changeState"><span class="label">Icon</span></a></td>
 									<td width="50%"></td>
@@ -248,19 +248,19 @@ main ::-webkit-scrollbar-thumb:hover {
 						</section>
 						</div>
 						<div style=" overflow-y: auto; margin-left:40%; width:50%; position: absolute; height: 100%">
-							<div class="drug" v-for="derm in filteredDerms" style="position: relative; background-color:#efefef; margin-bottom:10px; border-radius: 10px;">
+							<div class="drug" v-for="pharm in filteredPharms" style="position: relative; background-color:#efefef; margin-bottom:10px; border-radius: 10px;">
 								<table style="width: 70%; left: 5%; position: relative; ">
 									<tr>
 										<td style="width: 40%; "><b>Name</b></td>
-										<td style = "color:#0c2e8a";><b>{{derm.firstName}}&nbsp{{derm.lastName}}</b></td>
+										<td style = "color:#0c2e8a";><b>{{pharm.firstName}}&nbsp{{pharm.lastName}}</b></td>
 									</tr>
 									<tr>
 										<td style="width: 40%"><b>Grade</b></td>
-										<td v-if="derm.grade != 0">{{derm.grade}}</td>
+										<td v-if="pharm.grade != 0">{{pharm.grade}}</td>
 										<td v-else>not graded yet</td>
-									<tr v-for="dp in derm.pharmacyNames">
+									<tr v-for="pp in pharm.pharmacyNames">
 										<td><b>Pharmacy</b></td>
-										<td>{{dp}}</td>
+										<td>{{pp}}</td>
 									</tr>
 								</table>
 							</div>
@@ -315,7 +315,7 @@ main ::-webkit-scrollbar-thumb:hover {
 	<!-- Template Main Javascript File -->
 	<script src="../js/main.js"></script>
 	<script src="../axios.js"></script>
-	<script src="filterDermatologist.js"></script>
+	<script src="filterPharmacist.js"></script>
 
 </body>
 </html>

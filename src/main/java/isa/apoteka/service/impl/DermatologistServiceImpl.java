@@ -10,9 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 import isa.apoteka.domain.Dermatologist;
 import isa.apoteka.domain.Pharmacy;
 import isa.apoteka.domain.PharmacyAdmin;
-import isa.apoteka.dto.FilteredDermDTO;
+import isa.apoteka.dto.FilteredDTO;
 import isa.apoteka.dto.PharmacyDTO;
-import isa.apoteka.dto.SearchDermFilterDTO;
+import isa.apoteka.dto.SearchFilterDTO;
 import isa.apoteka.repository.DermatologistRepository;
 import isa.apoteka.service.DermatologistGradeService;
 import isa.apoteka.service.DermatologistService;
@@ -85,7 +85,7 @@ public class DermatologistServiceImpl implements DermatologistService {
 		return dermatologistRepository.findAll();
 	}
 	
-	public List<FilteredDermDTO> searchDerms(SearchDermFilterDTO searchDerm){
+	public List<FilteredDTO> searchDerms(SearchFilterDTO searchDerm){
 		PharmacyAdmin admin = null;
 		if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
 				.anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
@@ -94,7 +94,7 @@ public class DermatologistServiceImpl implements DermatologistService {
 	     
 		List<Dermatologist> derms = new ArrayList<Dermatologist>();
 		List<Dermatologist> dermsGrades = new ArrayList<Dermatologist>();
-		List<FilteredDermDTO>  filteredDerms = new ArrayList<FilteredDermDTO>();
+		List<FilteredDTO>  filteredDerms = new ArrayList<FilteredDTO>();
 		List<String> pharmacyNames = new ArrayList<String>();
 		if(admin!=null) {
 			 derms = dermatologistRepository.searchDermsForAdmin(searchDerm.getFirstName(), searchDerm.getLastName(), admin.getPharmacy().getId());
@@ -132,7 +132,7 @@ public class DermatologistServiceImpl implements DermatologistService {
 					pharmacyNames.add(p.getName());
 				}
 				System.out.println(pharmacyNames.size());
-				filteredDerms.add(new FilteredDermDTO(d.getFirstName(), d.getLastName(), ocena, new ArrayList<String>(pharmacyNames)));
+				filteredDerms.add(new FilteredDTO(d.getFirstName(), d.getLastName(), ocena, new ArrayList<String>(pharmacyNames)));
 				
 			}
 		}

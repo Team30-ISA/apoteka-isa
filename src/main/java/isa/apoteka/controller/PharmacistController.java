@@ -32,7 +32,9 @@ import isa.apoteka.service.CityService;
 import isa.apoteka.service.PharmacistService;
 import isa.apoteka.service.UserService;
 import isa.apoteka.dto.ChangeDataDTO;
+import isa.apoteka.dto.FilteredDTO;
 import isa.apoteka.dto.PharmacyDTO;
+import isa.apoteka.dto.SearchFilterDTO;
 
 
 @RestController
@@ -132,5 +134,16 @@ public class PharmacistController {
 	@PreAuthorize("hasRole('PHARM') || hasRole('ADMIN')")
 	public User loadById(Long pharmId) {
 		return this.pharmacistService.findById(pharmId);
+	}
+	
+	@PostMapping(value = "/searchPharms")
+	@PreAuthorize("hasRole('ADMIN') || hasRole('PATIENT')")
+	public ResponseEntity<List<FilteredDTO>> searchPharmsWorkingInPharmacy(@RequestBody SearchFilterDTO searchPharm) {
+		List<FilteredDTO> pharms = pharmacistService.searchPharms(searchPharm);
+		
+		for(FilteredDTO d : pharms){
+			System.out.println(d.getPharmacyNames().size());
+		}
+		return new ResponseEntity<>(pharms, HttpStatus.OK);
 	}
 }

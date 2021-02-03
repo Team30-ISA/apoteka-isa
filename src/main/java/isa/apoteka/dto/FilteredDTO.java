@@ -3,15 +3,15 @@ package isa.apoteka.dto;
 import java.util.List;
 
 
-public class FilteredDermDTO {
+public class FilteredDTO {
 	private String firstName;
 	private String lastName;
 	private double grade;
 	private List<String> pharmacyNames;
-	public FilteredDermDTO() {
+	public FilteredDTO() {
 		super();
 	}
-	public FilteredDermDTO(String firstName, String lastName, double grade, List<String> pharmacyNames) {
+	public FilteredDTO(String firstName, String lastName, double grade, List<String> pharmacyNames) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;

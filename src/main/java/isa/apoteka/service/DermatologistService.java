@@ -2,9 +2,9 @@ package isa.apoteka.service;
 
 import java.util.List;
 import isa.apoteka.domain.Dermatologist;
-import isa.apoteka.dto.FilteredDermDTO;
+import isa.apoteka.dto.FilteredDTO;
 import isa.apoteka.dto.PharmacyDTO;
-import isa.apoteka.dto.SearchDermFilterDTO;
+import isa.apoteka.dto.SearchFilterDTO;
 
 public interface DermatologistService {
 	String getLogged();
@@ -15,5 +15,5 @@ public interface DermatologistService {
 	List<PharmacyDTO> getDermPharmacies(Long dermatologistId);
 	void update(String firstName, String lastName, Long id);
 	List<Dermatologist> findAll();
-	List<FilteredDermDTO> searchDerms(SearchDermFilterDTO derms);
+	List<FilteredDTO> searchDerms(SearchFilterDTO derms);
 }
