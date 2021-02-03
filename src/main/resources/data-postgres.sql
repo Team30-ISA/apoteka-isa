@@ -136,3 +136,9 @@ insert into dermatologist_grade (id, grade, dermatologist_id, patient_id) values
 insert into dermatologist_grade (id, grade, dermatologist_id, patient_id) values (2, 5, 5, 13);
 insert into dermatologist_grade (id, grade, dermatologist_id, patient_id) values (3, 4, 6, 13);
 insert into dermatologist_grade (id, grade, dermatologist_id, patient_id) values (4, 3, 3, 13);
+
+
+insert into pharmacist_grade (id, grade, pharmacist_id, patient_id) values (1, 2, 4, 13);
+insert into pharmacist_grade (id, grade, pharmacist_id, patient_id) values (2, 5, 4, 13);
+insert into pharmacist_grade (id, grade, pharmacist_id, patient_id) values (3, 4, 7, 13);
+insert into pharmacist_grade (id, grade, pharmacist_id, patient_id) values (4, 3, 7, 13);

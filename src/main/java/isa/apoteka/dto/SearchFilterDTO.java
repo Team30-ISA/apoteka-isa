@@ -6,16 +6,16 @@ import javax.validation.constraints.Size;
 
 import isa.apoteka.domain.Pharmacy;
 
-public class SearchDermFilterDTO {
+public class SearchFilterDTO {
 	private String firstName;
 	private String lastName;
 	private int minGrade;
 	private int maxGrade;
 	private List<Long> pharmacies;
-	public SearchDermFilterDTO() {
+	public SearchFilterDTO() {
 		super();
 	}
-	public SearchDermFilterDTO(String firstName, String lastName, int minGrade, int maxGrade,
+	public SearchFilterDTO(String firstName, String lastName, int minGrade, int maxGrade,
 			List<Long> pharmacies) {
 		super();
 		this.firstName = firstName;

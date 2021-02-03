@@ -4,6 +4,8 @@ import java.util.List;
 import isa.apoteka.domain.Dermatologist;
 import isa.apoteka.domain.Pharmacist;
 import isa.apoteka.domain.Pharmacy;
+import isa.apoteka.dto.FilteredDTO;
+import isa.apoteka.dto.SearchFilterDTO;
 
 
 public interface PharmacyService {
@@ -28,4 +30,5 @@ public interface PharmacyService {
 	public List<Pharmacist> findAllPharmsWorkingInPharmacy(Long id);
 	
 	public List<Pharmacist> searchPharmsWorkingInPharmacy(Long id, String firstName, String lastName);
+	
 }

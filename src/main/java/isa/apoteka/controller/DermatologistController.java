@@ -25,10 +25,10 @@ import isa.apoteka.domain.PharmacyAdmin;
 import isa.apoteka.domain.User;
 import isa.apoteka.dto.ChangeDataDTO;
 import isa.apoteka.dto.DermatologistDTO;
-import isa.apoteka.dto.FilteredDermDTO;
+import isa.apoteka.dto.FilteredDTO;
 import isa.apoteka.dto.HireDermDTO;
 import isa.apoteka.dto.PharmacyDTO;
-import isa.apoteka.dto.SearchDermFilterDTO;
+import isa.apoteka.dto.SearchFilterDTO;
 import isa.apoteka.service.AddressService;
 import isa.apoteka.service.DermatologistService;
 
@@ -103,10 +103,10 @@ public class DermatologistController {
 	
 	@PostMapping(value = "/searchDerms")
 	@PreAuthorize("hasRole('ADMIN') || hasRole('PATIENT')")
-	public ResponseEntity<List<FilteredDermDTO>> searchDermsWorkingInPharmacy(@RequestBody SearchDermFilterDTO searchDerm) {
-		List<FilteredDermDTO> derms = dermatologistService.searchDerms(searchDerm);
+	public ResponseEntity<List<FilteredDTO>> searchDermsWorkingInPharmacy(@RequestBody SearchFilterDTO searchDerm) {
+		List<FilteredDTO> derms = dermatologistService.searchDerms(searchDerm);
 		
-		for(FilteredDermDTO d : derms){
+		for(FilteredDTO d : derms){
 			System.out.println(d.getPharmacyNames().size());
 		}
 		return new ResponseEntity<>(derms, HttpStatus.OK);
