@@ -12,5 +12,8 @@ public interface CounselingRepository extends JpaRepository<Counseling, Long>{
 	List<Counseling> findAllTerms(Long pharmacyId, Long dermatologistId, Date start, Date end);
 	
 	@Query("select count(c) from Counseling c join c.dermatologistWorkCalendar d where d.dermatologist.id=:dermatologistId and d.pharmacy.id=:pharmacyId and c.startDate >= :start and c.startDate <= :end")
-	Long countTerms(Long pharmacyId, Long dermatologistId, Date start, Date end);	
+	Long countTerms(Long pharmacyId, Long dermatologistId, Date start, Date end);
+	
+	@Query("from Counseling c join c.dermatologistWorkCalendar d where d.dermatologist.id=:dermatologistId and c.startDate >= :start order by c.startDate ASC")
+	List<Counseling> findAllByDermAndStart(Long dermatologistId, Date start);
 }

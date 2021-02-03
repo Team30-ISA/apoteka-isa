@@ -48,6 +48,8 @@ INSERT INTO AUTHORITY (name) VALUES ('ROLE_PHARM');
 INSERT INTO AUTHORITY (name) VALUES ('ROLE_PATIENT');
 
 INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (3, 3);
+INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (5, 3);
+INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (6, 3);
 INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (4, 4);
 INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (16, 5);
 INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (13, 5);
@@ -87,16 +89,19 @@ insert into drug_type (name) VALUES ('syrup');
 insert into medicine (name, type_id, form_id, contraindications, composition, recommended_intake_per_day, manufacturer, regime) VALUES ('Brufen', 4, 3, 'nausea', '500mg ibuprofen', 'Po potrebi, ali ne više od 3', 'Galenika', 0);
 insert into medicine (name, type_id, form_id, contraindications, composition, recommended_intake_per_day, manufacturer, regime) VALUES ('Metafex', 4, 3, 'allergy', '200mg ibuprofen, 325mg paracetamol', 'Po potrebi, ali ne više od 2', 'GOODWILL', 0);
 
+insert into patient_allergies(patient_id, allergies_id) VALUES (13, 1);
+
 insert into medicine_substitutes (medicine_id, sub_medicine_id) VALUES (1, 2);
 insert into medicine_substitutes (medicine_id, sub_medicine_id) VALUES (2, 1);
 
 insert into medicine_in_pharmacy (quantity, pharmacy_id, medicine_id) VALUES (10, 2, 1);
 insert into medicine_in_pharmacy (quantity, pharmacy_id, medicine_id) VALUES (6, 2, 2);
+insert into medicine_in_pharmacy (quantity, pharmacy_id, medicine_id) VALUES (3, 1, 2);
 
 insert into dermatologist_work_calendar (dermatologist_id, pharmacy_id, start_date, end_date) VALUES (3, 1, '20210218 10:00:00 AM', '20210218 10:00:00 PM');
 insert into dermatologist_work_calendar (dermatologist_id, pharmacy_id, start_date, end_date) VALUES (3, 2, '20210219 10:00:00 AM', '20210219 10:00:00 PM');
 
-insert into counseling (start_date, duration, dermatologist_work_calendar_id, price) VALUES ('20210218 10:00:00 AM', 15, 1, 1999.99);
+insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, patient_id) VALUES ('20210202 08:53:00 PM', 5, 1, 1999.99, 13);
 insert into counseling (start_date, duration, dermatologist_work_calendar_id, price) VALUES ('20210219 12:00:00 PM', 30, 2, 999.99);
 insert into counseling (start_date, duration, dermatologist_work_calendar_id, price) VALUES ('20210220 11:00:00 AM', 15, 1, 1999.99);
 insert into counseling (start_date, duration, dermatologist_work_calendar_id, price) VALUES ('20210220 11:15:00 AM', 30, 1, 1999.99);

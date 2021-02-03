@@ -9,18 +9,20 @@ public class ExaminationDTO {
 	private String pharmacyName;
 	private String patientName;
 	private float price;
+	private String report;
 	
 	public ExaminationDTO() {
 		super();
 	}
 
-	public ExaminationDTO(Long id, Date startDate, int duration, String pharmacyName, String patientName, float price) {
+	public ExaminationDTO(Long id, Date startDate, int duration, String pharmacyName, String patientName, float price, String report) {
 		this.id = id;
 		this.startDate = startDate;
 		this.duration = duration;
 		this.pharmacyName = pharmacyName;
 		this.patientName = patientName;
 		this.price = price;
+		this.report = report;
 	}
 
 	public Long getId() {
@@ -69,6 +71,14 @@ public class ExaminationDTO {
 
 	public void setPrice(float price) {
 		this.price = price;
+	}
+
+	public String getReport() {
+		return report;
+	}
+
+	public void setReport(String report) {
+		this.report = report;
 	}
 	
 }

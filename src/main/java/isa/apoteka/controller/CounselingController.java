@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sun.istack.Nullable;
 
+import isa.apoteka.domain.Counseling;
 import isa.apoteka.domain.Dermatologist;
 import isa.apoteka.domain.Pharmacy;
 import isa.apoteka.dto.ExaminationDTO;
@@ -61,6 +62,21 @@ public class CounselingController {
 		return new ResponseEntity<>(counselingService.countTermsByMonths(pharmacyId, dermatologistId, new Date(start)), HttpStatus.OK);
 	}
 	
+	@GetMapping("/getById")
+	@PreAuthorize("hasRole('DERM')")
+	public ResponseEntity<ExaminationDTO> getById(Long id) {
+		if(!dermAuthorizationForCounseling(id))
+			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+		return new ResponseEntity<>(counselingService.findOneDTO(id), HttpStatus.OK);
+	}
+	
+	@GetMapping("/getNearestCounseling")
+	@PreAuthorize("hasRole('DERM')")
+	public ExaminationDTO getNearestCounseling(Long start) {
+		Dermatologist derm = (Dermatologist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		return counselingService.getNearestCounseling(derm.getId(), new Date(start));
+	}
+	
 	public List<Pharmacy> findAllPharmaciesByDermatologist(Long dermatologistId) {
 		return counselingService.findAllPharmaciesByDermatologist(dermatologistId);
 	}
@@ -76,5 +92,17 @@ public class CounselingController {
 			}
 		}
 		return false;
+	}
+	
+	public Boolean dermAuthorizationForCounseling(Long counselingId) {
+		Counseling counseling = counselingService.findOne(counselingId);
+		try {
+			Dermatologist dermatologist = (Dermatologist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			if(!counseling.getDermatologistWorkCalendar().getDermatologist().getId().equals(dermatologist.getId()))
+				return false;
+		} catch(Exception e){
+			return false;
+		}
+		return true;
 	}
 }
