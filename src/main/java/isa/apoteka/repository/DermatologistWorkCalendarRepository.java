@@ -31,4 +31,7 @@ public interface DermatologistWorkCalendarRepository extends JpaRepository<Derma
     
     @Query("from DermatologistWorkCalendar d join d.dermatologist dd where dd.id=:dermatologistId and d.startDate >= :start and d.endDate <= :end")
    	List<DermatologistWorkCalendar> findAllDermWorkCalendarByDermIdInPeriod(Long dermatologistId, Date start, Date end);
+    
+    @Query("from DermatologistWorkCalendar d join d.dermatologist dd join d.pharmacy pp where dd.id=:dermatologistId and pp.id=:pharmacyId and d.startDate >= :start and d.endDate <= :end")
+	DermatologistWorkCalendar findDermWorkCalendarByDermIdAndDate(Long pharmacyId, Long dermatologistId, Date start, Date end);
 }

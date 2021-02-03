@@ -1,7 +1,15 @@
 var app = new Vue({
 	el: '#page',
 	data: {
-        currentStep: "START",
+		weekdays: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+        months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+        days: [],
+        current: new Date(),
+        today: new Date(),
+        counselings: [],
+        counts: [],
+        wp: "",
+        currentStep: "SCHEDULE",
 		derm: null,
         examination: null,
         monthNames: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
@@ -20,6 +28,126 @@ var app = new Vue({
         waitingTime: ""
 	},
 	methods: {
+		getDaysInMonth(month, year) {
+            var date = new Date(year, month, 1);
+            date.setDate(date.getDate() - date.getDay());
+            this.getCounts(date)
+            var days = [];
+            i = 0;
+            while (i != 42) {
+                days.push(new Date(date));
+                date.setDate(date.getDate() + 1);
+                i++;
+            }
+            this.days = days
+            return days;
+        },
+        dateDist(date1, date2){
+            let d = " day"
+            let distance = Math.round((date1-date2)/(1000*60*60*24))
+            if(distance > 1 || distance < -1)
+                d = " days"
+            if(distance == 0)
+                return "Today";
+            else if(distance > 0)
+                return "in " + distance.toString() + d;
+            else{
+                distance = -distance;
+                return distance.toString() + d + " ago";
+            }
+        },
+        nth(d) {
+            if (d > 3 && d < 21) return 'th';
+            switch (d % 10) {
+              case 1:  return "st";
+              case 2:  return "nd";
+              case 3:  return "rd";
+              default: return "th";
+            }
+        },
+        prev(){
+            if(this.current.getMonth() == 0){
+                this.current = new Date(this.current.getFullYear() - 1, 11, 1);}
+            else
+                this.current = new Date(this.current.getFullYear(), this.current.getMonth() - 1, 1);
+            this.getTerms(this.current)
+            this.getDaysInMonth(this.current.getMonth(), this.current.getFullYear());
+        },
+        next(){
+            if(this.current.getMonth() == 11){
+                this.current = new Date(this.current.getFullYear() + 1, 0, 1);}
+            else
+                this.current = new Date(this.current.getFullYear(), this.current.getMonth() + 1, 1);
+            this.getTerms(this.current)
+            this.getDaysInMonth(this.current.getMonth(), this.current.getFullYear());
+        },
+        reset(){
+            this.current = new Date();
+            this.current = new Date(this.current.getFullYear(), this.current.getMonth(), this.current.getDate());
+            this.getTerms(this.current)
+            this.getDaysInMonth(this.current.getMonth(), this.current.getFullYear());
+        },
+        setCurrDate(date){
+            this.current = date
+            this.getTerms(this.current);
+            this.getWorkingPeriod(this.current);
+        },
+        getTerms(date){
+        	axios
+            .get('/api/counseling/findAllTermsByDay',{
+    			  headers: {
+    			    'Authorization': "Bearer " + localStorage.getItem('access_token')
+    			  },
+    			  params: {
+    				  pharmacyId: 1,
+    				  start: date.getTime()
+    			  }
+            })
+            .then(response => {
+            	this.counselings = response.data
+            })
+        },
+        getWorkingPeriod(date){
+        	axios
+            .get('/api/dermWP/findDermWorkCalendarByDermIdAndDate',{
+    			  headers: {
+    			    'Authorization': "Bearer " + localStorage.getItem('access_token')
+    			  },
+    			  params: {
+    				  pharmacyId: 1,
+    				  start: date.getTime()
+    			  }
+            })
+            .then(response => {
+            	this.wp = response.data
+            })
+        },
+        getStartTime(date){
+        	date = new Date(date)
+        	let h = date.getHours();
+        	if(h < 10)
+        		h = "0" + h;
+        	let m =  date.getMinutes();
+        	if(m < 10)
+        		m = "0" + m;
+        	return h + ":" + m;
+        },
+        getCounts(date){
+        	axios
+            .get('/api/counseling/countTerms',{
+    			  headers: {
+    			    'Authorization': "Bearer " + localStorage.getItem('access_token')
+    			  },
+    			  params: {
+    				  pharmacyId: 1,
+    				  start: date.getTime(),
+    				  num: 42
+    			  }
+            })
+            .then(response => {
+            	this.counts = response.data
+            })
+        },
         formatDate(date){
         	return this.monthNames[date.getMonth()] + " " + date.getDate() + " " + date.getFullYear() + ", " + date.toLocaleTimeString('it-IT');
         },
@@ -220,6 +348,10 @@ var app = new Vue({
 	     })
 	     .then(response => {
 	     	this.derm = response.data
+	        this.current = new Date(this.current.getFullYear(), this.current.getMonth(), this.current.getDate());
+	        this.today = new Date(this.today.getFullYear(), this.today.getMonth(), this.today.getDate());
+	        this.getTerms(this.today);
+	        this.getDaysInMonth(this.current.getMonth(), this.current.getFullYear());
 	     })
 	     axios
 		.get('/api/counseling/getNearestCounseling',{
