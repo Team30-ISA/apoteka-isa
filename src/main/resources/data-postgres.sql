@@ -67,6 +67,10 @@ insert into pharmacy_dermatologist (user_id, pharmacy_id) values (3,1);
 insert into pharmacy_dermatologist (user_id, pharmacy_id) values (5,2);
 insert into pharmacy_dermatologist (user_id, pharmacy_id) values (6,2);
 insert into pharmacy_dermatologist (user_id, pharmacy_id) values (3,2);
+insert into pharmacy_dermatologist (user_id, pharmacy_id) values (17,1);
+insert into pharmacy_dermatologist (user_id, pharmacy_id) values (18,1);
+insert into pharmacy_dermatologist (user_id, pharmacy_id) values (19,1);
+insert into pharmacy_dermatologist (user_id, pharmacy_id) values (20,1);
 
 insert into drug_form (name) VALUES ('antibiotic');
 insert into drug_form (name) VALUES ('anesthetic');
@@ -128,3 +132,7 @@ insert into examination (start_date, duration, pharmacist_work_calendar_id, pric
 insert into examination (start_date, duration, pharmacist_work_calendar_id, price) VALUES ('20210217 05:55:00 PM', 5, 3, 99.99);
 insert into examination (start_date, duration, pharmacist_work_calendar_id, price) VALUES ('20210218 03:00:00 AM', 15, 3, 999.99);
 
+insert into dermatologist_grade (id, grade, dermatologist_id, patient_id) values (1, 2, 3, 13);
+insert into dermatologist_grade (id, grade, dermatologist_id, patient_id) values (2, 5, 5, 13);
+insert into dermatologist_grade (id, grade, dermatologist_id, patient_id) values (3, 4, 6, 13);
+insert into dermatologist_grade (id, grade, dermatologist_id, patient_id) values (4, 3, 3, 13);

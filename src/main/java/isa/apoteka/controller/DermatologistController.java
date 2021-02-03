@@ -17,13 +17,18 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import isa.apoteka.domain.Dermatologist;
+import isa.apoteka.domain.Pharmacy;
 import isa.apoteka.domain.PharmacyAdmin;
 import isa.apoteka.domain.User;
 import isa.apoteka.dto.ChangeDataDTO;
+import isa.apoteka.dto.DermatologistDTO;
+import isa.apoteka.dto.FilteredDermDTO;
 import isa.apoteka.dto.HireDermDTO;
 import isa.apoteka.dto.PharmacyDTO;
+import isa.apoteka.dto.SearchDermFilterDTO;
 import isa.apoteka.service.AddressService;
 import isa.apoteka.service.DermatologistService;
 
@@ -87,6 +92,24 @@ public class DermatologistController {
 		addressService.update(changeDataDTO.getStreet(), changeDataDTO.getCityId(), derm.getAddress().getId());
 		return new ResponseEntity<>(changeDataDTO, HttpStatus.CREATED);
 		
+	}
+	
+	@GetMapping
+	public ResponseEntity<List<Dermatologist>> getAllDermatologists() {
+
+		List<Dermatologist> derms = dermatologistService.findAll();
+		return new ResponseEntity<>(derms, HttpStatus.OK);
+	}
+	
+	@PostMapping(value = "/searchDerms")
+	@PreAuthorize("hasRole('ADMIN') || hasRole('PATIENT')")
+	public ResponseEntity<List<FilteredDermDTO>> searchDermsWorkingInPharmacy(@RequestBody SearchDermFilterDTO searchDerm) {
+		List<FilteredDermDTO> derms = dermatologistService.searchDerms(searchDerm);
+		
+		for(FilteredDermDTO d : derms){
+			System.out.println(d.getPharmacyNames().size());
+		}
+		return new ResponseEntity<>(derms, HttpStatus.OK);
 	}
 }
 
