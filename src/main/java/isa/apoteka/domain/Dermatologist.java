@@ -15,10 +15,10 @@ public class Dermatologist extends User{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	@JsonIgnore
 	@ManyToMany(mappedBy = "dermatologists")
 	private List<Pharmacy> pharmacies;
 
+	
 
 	public Dermatologist() {
 		super();
