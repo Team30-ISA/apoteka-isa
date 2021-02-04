@@ -8,8 +8,7 @@ var app = new Vue({
         today: new Date(),
         counselings: [],
         counts: [],
-        wp: "",
-        currentStep: "SCHEDULE",
+        currentStep: "START",
 		derm: null,
         examination: null,
         monthNames: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
@@ -25,7 +24,9 @@ var app = new Vue({
         showTherapies: false,
         canStart: false,
         currentExam: null,
-        waitingTime: ""
+        waitingTime: "",
+        pharmId: null,
+        schedule: false,
 	},
 	methods: {
 		getDaysInMonth(month, year) {
@@ -90,7 +91,6 @@ var app = new Vue({
         setCurrDate(date){
             this.current = date
             this.getTerms(this.current);
-            this.getWorkingPeriod(this.current);
         },
         getTerms(date){
         	axios
@@ -99,7 +99,7 @@ var app = new Vue({
     			    'Authorization': "Bearer " + localStorage.getItem('access_token')
     			  },
     			  params: {
-    				  pharmacyId: 1,
+    				  pharmacyId: this.pharmId,
     				  start: date.getTime()
     			  }
             })
@@ -107,23 +107,7 @@ var app = new Vue({
             	this.counselings = response.data
             })
         },
-        getWorkingPeriod(date){
-        	axios
-            .get('/api/dermWP/findDermWorkCalendarByDermIdAndDate',{
-    			  headers: {
-    			    'Authorization': "Bearer " + localStorage.getItem('access_token')
-    			  },
-    			  params: {
-    				  pharmacyId: 1,
-    				  start: date.getTime()
-    			  }
-            })
-            .then(response => {
-            	this.wp = response.data
-            })
-        },
         getStartTime(date){
-        	date = new Date(date)
         	let h = date.getHours();
         	if(h < 10)
         		h = "0" + h;
@@ -139,7 +123,7 @@ var app = new Vue({
     			    'Authorization': "Bearer " + localStorage.getItem('access_token')
     			  },
     			  params: {
-    				  pharmacyId: 1,
+    				  pharmacyId: this.pharmId,
     				  start: date.getTime(),
     				  num: 42
     			  }
@@ -148,16 +132,69 @@ var app = new Vue({
             	this.counts = response.data
             })
         },
+        reserveTerm(c){
+        	let t = this;
+        	JSAlert.confirm("Da li zelite da zakazete termin?").then(function(result) {
+     		    if (!result)
+     		        return;
+     		   axios
+               .get('/api/patient/isFree',{
+       			  headers: {
+       			    'Authorization': "Bearer " + localStorage.getItem('access_token')
+       			  },
+       			  params: {
+       				  counselingId: t.examination.id,
+       				  startDate: (new Date(c.startDate)).getTime(),
+       				  duration: c.duration 
+       			  }
+               })
+               .then(response => {
+               		if(response.data == false){
+               			JSAlert.alert("Pacijent nije slobodan!");
+               		}
+               		else{
+               			axios
+                        .post('/api/counseling/setPatient',
+                        		{
+                        			currCounselingId: t.examination.id,
+                        			newCounselingId: c.id,
+                        		},
+                        	{
+                			  headers: {
+                			    'Authorization': "Bearer " + localStorage.getItem('access_token')
+                			  }
+                        })
+                        .then(response =>{
+                        	t.getTerms(t.current);
+                        })
+               		}
+               })
+     		    
+     		});
+        },
         formatDate(date){
         	return this.monthNames[date.getMonth()] + " " + date.getDate() + " " + date.getFullYear() + ", " + date.toLocaleTimeString('it-IT');
         },
+        startButton(){
+        	if(this.schedule){
+        		this.currentStep = "SCHEDULE"
+        	}
+        	else{
+        		this.currentStep = 'REPORT'
+        	}
+        },
         goLeft(){
-        	if(this.currentStep == "REPORT")
+        	if(this.schedule){
         		this.currentStep = "START";
-        	else if(this.currentStep == "PRESCRIPT")
-        		this.currentStep = "REPORT";
-        	else if(this.currentStep == "SCHEDULE")
-        		this.currentStep = "PRESCRIPT";
+        	}
+        	else{
+        		if(this.currentStep == "REPORT")
+            		this.currentStep = "START";
+            	else if(this.currentStep == "PRESCRIPT")
+            		this.currentStep = "REPORT";
+            	else if(this.currentStep == "SCHEDULE")
+            		this.currentStep = "PRESCRIPT";
+        	}
         },
         goRight(){
         	if(this.currentStep == "START")
@@ -323,9 +360,61 @@ var app = new Vue({
         	else
         		ret += diffMins + " min ";
         	this.waitingTime = ret;
-        }
-	},
+        },
+        checkTime(date){
+        	if((new Date(date)).getTime() < (new Date()).getTime())
+	        	return false;
+        	return true;
+        },
+        finish(){
+        	if(this.schedule){
+        		window.location.href = "/dermatologist/dermatologistHome.html";
+        		return;
+        	}
+        	let obj = this;
+        	JSAlert.confirm("Da li zelite da zavrsite pregled?")
+        	.then(function(result) {
+     		    if (!result)
+     		        return;
+     		   axios
+               .post('/api/counseling/setReport',
+               		{
+               			counselingId: obj.examination.id,
+               			report: obj.report,
+                       },
+                       {
+                   	  headers: {
+                   	  'Authorization': "Bearer " + localStorage.getItem('access_token')
+                   	}
+                })
+                .then(response =>{
+                	window.location.href = "/dermatologist/dermatologistHome.html";
+                })
+                .catch(error => {
+                	if(error.response.status == 400)
+                		JSAlert.alert("Nije popunjen izvestaj, pregled ne moze biti zavrsen!");
+                })
+        	})        	
+        },
+        logout(){
+			axios
+	        .post('/auth/logout', null, {
+				  headers: {
+					    'Authorization': "Bearer " + localStorage.getItem('access_token')
+					  }
+		        })
+	        .then(function() {
+	        	localStorage.clear();
+	        	window.location.href = '/login.html';
+	        })
+		}
+    },
 	created() {
+    	let url = new URL(window.location.href);
+    	let urlParam = url.searchParams.get("schedule");
+    	console.log(urlParam)
+    	if(urlParam == "true")
+    		this.schedule = true;
 		axios
         .get('/auth/getRole',{
 			  headers: {
@@ -348,24 +437,45 @@ var app = new Vue({
 	     })
 	     .then(response => {
 	     	this.derm = response.data
-	        this.current = new Date(this.current.getFullYear(), this.current.getMonth(), this.current.getDate());
-	        this.today = new Date(this.today.getFullYear(), this.today.getMonth(), this.today.getDate());
-	        this.getTerms(this.today);
-	        this.getDaysInMonth(this.current.getMonth(), this.current.getFullYear());
-	     })
-	     axios
-		.get('/api/counseling/getNearestCounseling',{
-			headers: {
-			 'Authorization': "Bearer " + localStorage.getItem('access_token')
-			},
-			params:{
-				start: (new Date).getTime(),
-			}
-	     })
-	     .then(response => {
-	    	 this.examination = response.data
-	 	     this.examination.startDate = new Date(this.examination.startDate)
-	    	 this.calc();
+	     	axios
+			.get('/api/counseling/getNearestCounseling',{
+				headers: {
+				 'Authorization': "Bearer " + localStorage.getItem('access_token')
+				},
+				params:{
+					start: (new Date).getTime(),
+					finished: !this.schedule
+				}
+		     })
+		     .then(response => {
+		    	 if(!response.data){
+		    		 JSAlert.alert("Nema ni jednog pregleda!");		        	
+			        	setTimeout(function () {
+			        		window.location.href = "/dermatologist/dermatologistHome.html";
+						}, 3000);
+		    	 }
+		    	 else{
+		    		 this.examination = response.data
+		    		 axios
+		 			.get('/api/counseling/getPharmId',{
+		 				headers: {
+		 				 'Authorization': "Bearer " + localStorage.getItem('access_token')
+		 				},
+		 				params:{
+		 					counselingId: this.examination.id,
+		 				}
+		 		     })
+		 		     .then(response =>{
+		 		    	 this.pharmId = response.data;
+		 		    	 this.examination.startDate = new Date(this.examination.startDate)
+				    	 this.calc();
+			    		 this.current = new Date(this.current.getFullYear(), this.current.getMonth(), this.current.getDate());
+			 	         this.today = new Date(this.today.getFullYear(), this.today.getMonth(), this.today.getDate());
+			 	         this.getTerms(this.today);
+			 	         this.getDaysInMonth(this.current.getMonth(), this.current.getFullYear());
+		 		     })
+		    	 }
+		     })
 	     })
 	     axios
 		.get('/api/medicine/getAll',{

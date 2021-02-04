@@ -42,6 +42,33 @@
     License: https://bootstrapmade.com/license/
   ======================================================= -->
 </head>
+<style>
+main ::-webkit-scrollbar {
+    width: 8px;
+}
+main ::-webkit-scrollbar-button {
+    width: 8px;
+    height:5px;
+}
+main ::-webkit-scrollbar-track {
+    background:#eee;
+    border: thin solid lightgray;
+    box-shadow: 0px 0px 3px #dfdfdf inset;
+    border-radius:10px;
+}
+main ::-webkit-scrollbar-thumb {
+    background:#999;
+    border: thin solid gray;
+    border-radius:10px;
+}
+main ::-webkit-scrollbar-thumb:hover {
+    background:#7d7d7d;
+} 
+.selected-calendar-mode {
+	background: #50d8af !important;
+	color: white !important;
+}
+</style>
 <body id="body">
 	<div id="page">
 		<!--==========================
@@ -80,16 +107,16 @@
 
 				<nav id="nav-menu-container">
 					<ul class="nav-menu">
-						<li class="menu-active"><a href="#body">Home</a></li>
+						<li class="menu-active"><a href="/dermatologist/dermatologistHome.html">Home</a></li>
 						<li><a href="#about">About Us</a></li>
 						<li class="menu-has-children"><a href="#">Tools</a>
 							<ul>
 								<li><a href="#">List of examined clients</a></li>
-								<li><a href="#">Start examination</a></li>
+								<li><a href="/dermatologist/dermatologistReport.html">Start examination</a></li>
 								<li><a href="/dermatologist/workCalendar.html">Work
 										calendar</a></li>
 								<li><a href="#">Create a leave request</a></li>
-								<li><a href="#">Scheduling a new examination</a></li>
+								<li><a href="/dermatologist/dermatologistReport.html?schedule=true">Scheduling a new examination</a></li>
 							</ul></li>
 						<li class="menu-has-children"><a href="#">{{derm.firstName}}
 								{{derm.lastName}}</a>
@@ -118,14 +145,15 @@
 				style="right: 50px;" class="arrow right" @click="goRight()"></a>
 			<div class="progressbar-wrapper">
 				<ul class="progressbar">
-					<li
+					<li :style="[schedule ? {'width' : '50%'} : {}]" 
 						:class="[(currentStep === 'REPORT' || currentStep === 'PRESCRIPT' || currentStep === 'SCHEDULE')? 'active' : '']">Start
-						examination</li>
-					<li
+						<span v-if="!schedule">examination</span></li>
+					<li v-if="!schedule"
 						:class="[(currentStep === 'PRESCRIPT' || currentStep === 'SCHEDULE')? 'active' : '']">Report</li>
-					<li :class="[currentStep === 'SCHEDULE'? 'active' : '']">Prescript</li>
-					<li>Schedule examination</li>
+					<li  v-if="!schedule" :class="[currentStep === 'SCHEDULE'? 'active' : '']">Prescript</li>
+					<li :style="[schedule ? {'width' : '50%'} : {}]" >Schedule examination</li>
 				</ul>
+				<input v-if="currentStep == 'SCHEDULE'" @click="finish" type="button" style="position: absolute; height: 40px; width: 100px;" value="Finish" class="buttonR">
 			</div>
 			<div class="start_examintaion" v-if="currentStep == 'START'">
 				<div class="left">
@@ -151,7 +179,7 @@
 				</div>
 				<div class="right">
 					<input type="button" class="buttonS"
-						@click="currentStep = 'REPORT'" value="Start"
+						@click="startButton" :value="[schedule? 'Schedule' : 'Start']"
 						:style="[canStart ? {} : {'background' : 'gray', 'cursor' : 'not-allowed'}]"
 						:disabled="!canStart"> <input type="button"
 						class="buttonS" value="Finish"
@@ -272,7 +300,7 @@
 					style="height: 40px; width: 120px; padding: 0px; position: relative; left: calc(50% - 60px)">
 			</div>
 			<div class="ml-calendar" v-if="currentStep == 'SCHEDULE'"
-				style="max-width: 80% !important; min-height: 600px !important; top: 40px; position:relative; margin-top: 60px; margin-bottom: 40px;">
+				style="max-width: 80% !important; min-height: 600px !important; top: 40px; position: relative; margin-top: 60px; margin-bottom: 40px;">
 				<section class="calendar-left" style="min-height: 600px;">
 					<div class="sidebar">
 						<p class="subheading">{{dateDist(current, today)}}</p>
@@ -288,16 +316,17 @@
 						</h3>
 						<ul class="calendar-events"
 							style="overflow-y: auto; overflow-x: hidden; height: 300px;">
-							<li v-for="c in counselings">
+							<li v-for="c in counselings" style="position: relative"><i
+								v-if="checkTime(c.startDate) && c.patientName == ''"
+								@click="reserveTerm(c)" class="fa fa-check"
+								style="position: absolute; right: 20px; cursor: pointer;"></i>
 								<p>
-									<strong>{{getStartTime(c.startDate)}} AM</strong> <span
+									<strong>{{getStartTime(c.startDate)}}</strong> <span
 										style="font-size: 10px;">{{c.duration}}min</span><br /> <span
 										v-if="c.patientName == ''">Free term</span> <span v-else>{{c.patientName}}</span><br />
 									<span style="text-transform: uppercase; font-size: 10px;">{{c.pharmacyName}}</span>
-								</p>
-							</li>
+								</p></li>
 						</ul>
-						<p><a style="text-align: center;" class="calendar-btn"><i class="fa fa-plus"></i> Add examination</a></p>
 					</div>
 				</section>
 				<section class="calendar-right">

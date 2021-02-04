@@ -78,15 +78,15 @@
 
 				<nav id="nav-menu-container">
 					<ul class="nav-menu">
-						<li class="menu-active"><a href="#body">Home</a></li>
+						<li class="menu-active"><a href="/dermatologist/dermatologistHome.html">Home</a></li>
 						<li><a href="#about">About Us</a></li>
 						<li class="menu-has-children"><a href="#">Tools</a>
 							<ul>
 								<li><a href="#">List of examined clients</a></li>
-								<li><a href="#">Start examination</a></li>
+								<li><a href="/dermatologist/dermatologistReport.html">Start examination</a></li>
 								<li><a href="/dermatologist/workCalendar.html">Work calendar</a></li>
 								<li><a href="#">Create a leave request</a></li>
-								<li><a href="#">Scheduling a new examination</a></li>
+								<li><a href="/dermatologist/dermatologistReport.html?schedule=true">Scheduling a new examination</a></li>
 							</ul></li>
 						<li class="menu-has-children"><a href="#">{{derm.firstName}}
 								{{derm.lastName}}</a>
@@ -135,7 +135,7 @@
 							</div>
 						</section>
 						<section>
-							<div class="content">
+							<div class="content" @click="redirect('/dermatologist/dermatologistReport.html')">
 								<header>
 									<a href="#" class="icon fa-clock-o"><span class="label">Icon</span></a>
 									<h3>Start examination</h3>
@@ -155,16 +155,16 @@
 						<section>
 							<div class="content">
 								<header>
-									<a href="#" class="icon fa-suitcase"><span class="label">Icon</span></a>
+									<a  href="#" class="icon fa-suitcase"><span class="label">Icon</span></a>
 									<h3>Create a leave request</h3>
 								</header>
 								<p>Creating a request for vacation or leave.</p>
 							</div>
 						</section>
 						<section>
-							<div class="content">
+							<div class="content" @click="redirect('/dermatologist/dermatologistReport.html?schedule=true')">
 								<header>
-									<a href="#" class="icon fa-plus"><span class="label">Icon</span></a>
+									<a  href="#" class="icon fa-plus"><span class="label">Icon</span></a>
 									<h3>Scheduling a new examination</h3>
 								</header>
 								<p>Scheduling a new examination.</p>
@@ -173,7 +173,7 @@
 						<section>
 							<div class="content"  @click="redirect('/employeeProfile.html')">
 								<header>
-									<a href="#" class="icon fa-user"><span class="label">Icon</span></a>
+									<a  href="#" class="icon fa-user"><span class="label">Icon</span></a>
 									<h3>Profile</h3>
 								</header>
 								<p>View profile information.</p>

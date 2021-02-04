@@ -1,5 +1,6 @@
 package isa.apoteka.repository;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -7,9 +8,9 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
-import isa.apoteka.domain.User;
+import isa.apoteka.domain.Counseling;
+import isa.apoteka.domain.Examination;
 import isa.apoteka.domain.Patient;
-import isa.apoteka.domain.PatientUpdateForm;
 
 public interface PatientRepository extends JpaRepository<Patient, Long> {
     Patient findByUsername( String username );
@@ -29,4 +30,11 @@ public interface PatientRepository extends JpaRepository<Patient, Long> {
     
     @Query("from Patient p join p.pharmacies pp where pp.id=:id")
 	List<Patient> findAllPatientsNotification(Long id);
+    
+    @Query("from Counseling c join c.patient p where p.id=:patientId and c.startDate >= :start  and c.startDate <= :end")
+	List<Counseling> getPatientCounselings(Long patientId, Date start,  Date end);
+    
+    @Query("from Examination e join e.patient p where p.id=:patientId and e.startDate >= :start  and e.startDate <= :end")
+	List<Examination> getPatientExamintaions(Long patientId, Date start,  Date end);
+    
 }
