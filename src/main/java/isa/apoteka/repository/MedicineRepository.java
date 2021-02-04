@@ -20,4 +20,13 @@ public interface MedicineRepository  extends JpaRepository<Medicine, Long>  {
 	
 	@Query("select m.quantity from MedicineInPharmacy m where m.medicine.id=:medicineId and m.pharmacy.id=:pharmacyId")
 	Integer getQuantityOfMedicineInPharmacy(Long medicineId, Long pharmacyId);
+	
+	@Query("from Medicine m join m.medicineInpharmacy mp join mp.pharmacy p where p.id=:id")
+	List<Medicine> findAllMedicineInPharmacy(Long id);
+	
+	@Query("from Medicine m join m.medicineInpharmacy mp join mp.pharmacy p where p.id=:id and LOWER(m.name) like %:name%")
+	List<Medicine> searchMedicineInPharmacy(String name, Long id);
+	
+	@Query("from Medicine m join m.medicineInpharmacy mp left join mp.pharmacy p where ((not p.id=:id) or p.id=null) and m.id not in (select med.id from Medicine as med join med.medicineInpharmacy mm join mm.pharmacy pp where pp.id=:id)") 
+	List<Medicine> findAllMedicineNotInPharmacy(Long id);
 }

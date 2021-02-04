@@ -27,7 +27,7 @@ public class TokenUtils {
 
 	// Period vazenja
 
-	@Value("1000000")
+	@Value("100000000")
 
 	private int EXPIRES_IN;
 
