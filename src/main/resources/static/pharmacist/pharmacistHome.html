@@ -83,10 +83,10 @@
 						<li class="menu-has-children"><a href="#">Tools</a>
 							<ul>
 								<li><a href="#">List of examined clients</a></li>
-								<li><a href="#">Start counseling</a></li>
+								<li><a href="/pharmacist/pharmacistReport.html">Start counseling</a></li>
 								<li><a href="/pharmacist/workCalendar.html">Work calendar</a></li>
 								<li><a href="#">Create a leave request</a></li>
-								<li><a href="#">Scheduling a new counseling</a></li>
+								<li><a href="/pharmacist/pharmacistReport.html?schedule=true">Scheduling a new counseling</a></li>
 								<li><a href="#">Issue a drug</a></li>
 							</ul></li>
 						<li class="menu-has-children"><a href="#">{{pharm.firstName}}
@@ -136,7 +136,7 @@
 							</div>
 						</section>
 						<section>
-							<div class="content">
+							<div class="content" @click="redirect('/pharmacist/pharmacistReport.html')">
 								<header>
 									<a href="#" class="icon fa-clock-o"><span class="label">Icon</span></a>
 									<h3>Start counseling</h3>
@@ -163,7 +163,7 @@
 							</div>
 						</section>
 						<section>
-							<div class="content">
+							<div class="content" @click="redirect('/pharmacist/pharmacistReport.html?schedule=true')">
 								<header>
 									<a href="#" class="icon fa-plus"><span class="label">Icon</span></a>
 									<h3>Scheduling a new counseling</h3>

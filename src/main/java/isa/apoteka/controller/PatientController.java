@@ -91,7 +91,7 @@ public class PatientController {
 	}
 	
 	@GetMapping("/patient/isFree")
-	@PreAuthorize("hasRole('DERM')")
+	@PreAuthorize("hasRole('DERM') || hasRole('PHARM')")
 	public ResponseEntity<Boolean> isFree(Long counselingId, Long startDate, int duration) {
 		Date start = new Date(startDate);
 		Calendar calendar = new GregorianCalendar();
