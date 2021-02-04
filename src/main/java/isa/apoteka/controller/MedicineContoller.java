@@ -1,5 +1,6 @@
 package isa.apoteka.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,13 +10,19 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import isa.apoteka.domain.Counseling;
 import isa.apoteka.domain.Dermatologist;
 import isa.apoteka.domain.Medicine;
 import isa.apoteka.domain.Patient;
+import isa.apoteka.domain.Pharmacist;
 import isa.apoteka.domain.Pharmacy;
+import isa.apoteka.dto.DermatologistDTO;
+import isa.apoteka.dto.MedicineDTO;
+import isa.apoteka.dto.MedicineNameDTO;
+import isa.apoteka.dto.PharmacistDTO;
 import isa.apoteka.service.CounselingService;
 import isa.apoteka.service.MedicineService;
 
@@ -83,5 +90,28 @@ public class MedicineContoller {
 		}
 		return true;
 	}
+	
+	@GetMapping(value = "/findAllMedicineInPharmacy")
+	public ResponseEntity<List<MedicineDTO>> findAllMedicineInPharmacy() {
+		List<MedicineDTO> med = medicineService.findAllMedicineInPharmacy();
+		return new ResponseEntity<>(med, HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/searchMedicineInPharmacy")
+	@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<List<MedicineDTO>> searchMedicineInPharmacy(@RequestParam String name) {
 
+		List<MedicineDTO> med = medicineService.searchMedicineInPharmacy(name);
+		return new ResponseEntity<>(med, HttpStatus.OK);
+	}
+
+	
+	@GetMapping(value = "/findAllMedicineNotInPharmacy")
+	@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<List<MedicineNameDTO>> findAllMedicineNotInPharmacy() {
+
+		List<MedicineNameDTO> med = medicineService.findAllMedicineNotInPharmacy();
+
+		return new ResponseEntity<>(med, HttpStatus.OK);
+	}
 }
