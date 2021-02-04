@@ -2,6 +2,9 @@ package isa.apoteka.controller;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +22,7 @@ import isa.apoteka.domain.Patient;
 import isa.apoteka.domain.PatientUpdateForm;
 import isa.apoteka.domain.User;
 import isa.apoteka.dto.PatientDTO;
+import isa.apoteka.service.CounselingService;
 import isa.apoteka.service.PatientService;
 
 
@@ -29,6 +33,8 @@ public class PatientController {
 
 	@Autowired
 	private PatientService patientService;
+	@Autowired
+	private CounselingService counselingService;
 
 	// Za pristup ovoj metodi neophodno je da ulogovani korisnik ima ADMIN ulogu
 	// Ukoliko nema, server ce vratiti gresku 403 Forbidden
@@ -82,6 +88,23 @@ public class PatientController {
 	public String updatePassword(PatientUpdateForm puf) {
 		this.patientService.updatePassword(puf);
 		return puf.getNewPass();
+	}
+	
+	@GetMapping("/patient/isFree")
+	@PreAuthorize("hasRole('DERM')")
+	public ResponseEntity<Boolean> isFree(Long counselingId, Long startDate, int duration) {
+		Date start = new Date(startDate);
+		Calendar calendar = new GregorianCalendar();
+		calendar.setTime(start);
+		calendar.add(Calendar.MINUTE, duration);
+		Date end = calendar.getTime();
+		Patient patient = counselingService.getPatientInCounseling(counselingId);
+		if(patient == null)
+			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+		if(patientService.hasCounselings(patient.getId(), start, end) == false && patientService.hasExaminations(patient.getId(), start, end) == false) {
+			return new ResponseEntity<>(true, HttpStatus.OK);
+		}
+		return new ResponseEntity<>(false, HttpStatus.OK);
 	}
 	
 

@@ -102,4 +102,20 @@ public class DermatologistWorkCalendarServiceImpl implements DermatologistWorkCa
 		
 	}
 
+	@Override
+	public PeriodDTO findDermWorkCalendarByDermIdAndDate(Long pharmacyId, Long dermatologistId, Date start) {
+		Calendar calendar = new GregorianCalendar();
+		calendar.setTime(start);
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		Date startDate = calendar.getTime();
+		calendar.add(Calendar.DATE, 1);
+		Date endDate = calendar.getTime();
+		DermatologistWorkCalendar dwc = dermWCRepository.findDermWorkCalendarByDermIdAndDate(pharmacyId, dermatologistId, startDate, endDate);
+		if(dwc == null)
+			return null;
+		return new PeriodDTO(dwc.getStartDate(), dwc.getEndDate());
+	}
+
 }

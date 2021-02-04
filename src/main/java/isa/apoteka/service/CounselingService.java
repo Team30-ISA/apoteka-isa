@@ -17,5 +17,7 @@ public interface CounselingService {
 	Counseling findOne(Long id);
 	Patient getPatientInCounseling(Long id);
 	Pharmacy getPharmacyInCounseling(Long id);
-	ExaminationDTO getNearestCounseling(Long dermatologistId, Date start);
+	ExaminationDTO getNearestCounseling(Long dermatologistId, Date start, boolean finished);
+	void update(Long patientId, Long counselingId);
+	void updateReport(String report, Long counselingId);
 }

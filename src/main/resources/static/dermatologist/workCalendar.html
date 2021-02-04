@@ -130,20 +130,20 @@ h1, h2, h3, h4, h5, h6 {
 
 				<nav id="nav-menu-container">
 					<ul class="nav-menu">
-						<li class="menu-active"><a href="#body">Home</a></li>
+						<li class="menu-active"><a href="/dermatologist/dermatologistHome.html">Home</a></li>
 						<li><a href="#about">About Us</a></li>
 						<li class="menu-has-children"><a href="#">Tools</a>
 							<ul>
 								<li><a href="#">List of examined clients</a></li>
-								<li><a href="#">Start examination</a></li>
-								<li><a href="#">Work calendar</a></li>
+								<li><a href="/dermatologist/dermatologistReport.html">Start examination</a></li>
+								<li><a href="/dermatologist/workCalendar.html">Work calendar</a></li>
 								<li><a href="#">Create a leave request</a></li>
-								<li><a href="#">Scheduling a new examination</a></li>
+								<li><a href="/dermatologist/dermatologistReport.html?schedule=true">Scheduling a new examination</a></li>
 							</ul></li>
 						<li class="menu-has-children"><a href="#">{{derm.firstName}}
 								{{derm.lastName}}</a>
 							<ul>
-								<li><a href="#"><i class="icon fa-user"></i>&nbsp&nbsp&nbspProfile</a></li>
+								<li><a href="/employeeProfile.html"><i class="icon fa-user"></i>&nbsp&nbsp&nbspProfile</a></li>
 								<li @click="logout"><a href="#"><i
 										class="icon fa-sign-out"></i>&nbsp&nbspLog out</a></li>
 							</ul></li>
@@ -177,7 +177,9 @@ h1, h2, h3, h4, h5, h6 {
 								v-if="counselings.length > 1">s</span>
 						</h3>
 						<ul class="calendar-events" style="overflow-y: auto; overflow-x: hidden; height: 300px;">
-							<li v-for="c in counselings">
+							<li v-for="c in counselings" style="position: relative">
+							<i v-if="nearest.id == c.id" @click="redirect('/dermatologist/dermatologistReport.html')" class="fa fa-clock-o"
+								style="position: absolute; right: 20px; cursor: pointer;"></i>
 								<p>
 									<strong>{{getStartTime(c.startDate)}} AM</strong> <span
 										style="font-size: 10px;">{{c.duration}}min</span><br /> <span

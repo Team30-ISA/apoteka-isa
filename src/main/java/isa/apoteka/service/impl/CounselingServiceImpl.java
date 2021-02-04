@@ -146,9 +146,9 @@ public class CounselingServiceImpl implements CounselingService {
 	{
 		@Override
 		public int compare(ExaminationDTO o1, ExaminationDTO o2) {
-			if (o1.getStartDate().before(o1.getStartDate()))
+			if (o1.getStartDate().getTime() <= o2.getStartDate().getTime())
 	            return -1;
-	        else if (o1.getStartDate().after(o2.getStartDate()))
+	        else if (o1.getStartDate().getTime() >= o2.getStartDate().getTime())
 	            return 1;
 	        else
 	            return 0;
@@ -156,7 +156,7 @@ public class CounselingServiceImpl implements CounselingService {
 	}
 
 	@Override
-	public ExaminationDTO getNearestCounseling(Long dermatologistId, Date start) {
+	public ExaminationDTO getNearestCounseling(Long dermatologistId, Date start, boolean finished) {
 		Calendar calendar = new GregorianCalendar();
 		calendar.setTime(start);
 		calendar.add(Calendar.DATE, -1);
@@ -165,9 +165,13 @@ public class CounselingServiceImpl implements CounselingService {
 		calendar.set(Calendar.SECOND, 0);
 		Date startDate = calendar.getTime();
 		List<Counseling> counselings = counselingRepository.findAllByDermAndStart(dermatologistId, startDate);
-		if(counselings == null)
+		if(counselings == null || counselings.size() == 0)
 			return null;
 		for(Counseling c : counselings) {
+			if(finished) {
+				if(c.getReport() != null && !(c.getReport()).equals(""))
+					continue;
+			}
 			if(c.getStartDate().before(start)) {
 				calendar.setTime(c.getStartDate());
 				calendar.add(Calendar.MINUTE, c.getDuration());
@@ -179,11 +183,26 @@ public class CounselingServiceImpl implements CounselingService {
 			}
 		}
 		for(Counseling c : counselings) {
-			if(start.before(c.getStartDate())) {
+			if(finished) {
+				if(c.getReport() != null && !(c.getReport()).equals(""))
+					continue;
+			}
+			if(start.getTime() <= c.getStartDate().getTime()) {
 				return mapCounselingToCounselingDTO(c);
 			}
 		}
-		return mapCounselingToCounselingDTO(counselings.get(0));		
+		return null;		
+	}
+
+	@Override
+	public void update(Long patientId, Long counselingId) {
+		counselingRepository.update(patientId, counselingId);
+		
+	}
+
+	@Override
+	public void updateReport(String report, Long counselingId) {
+		counselingRepository.updateReport(report, counselingId);		
 	}
 
 }
