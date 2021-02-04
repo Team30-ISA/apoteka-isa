@@ -1,6 +1,13 @@
 var app = new Vue({
 	el: '#page',
 	data: {
+		weekdays: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+        months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+        days: [],
+        current: new Date(),
+        today: new Date(),
+        counselings: [],
+        counts: [],
         currentStep: "START",
 		derm: null,
         examination: null,
@@ -17,19 +24,177 @@ var app = new Vue({
         showTherapies: false,
         canStart: false,
         currentExam: null,
-        waitingTime: ""
+        waitingTime: "",
+        pharmId: null,
+        schedule: false,
 	},
 	methods: {
+		getDaysInMonth(month, year) {
+            var date = new Date(year, month, 1);
+            date.setDate(date.getDate() - date.getDay());
+            this.getCounts(date)
+            var days = [];
+            i = 0;
+            while (i != 42) {
+                days.push(new Date(date));
+                date.setDate(date.getDate() + 1);
+                i++;
+            }
+            this.days = days
+            return days;
+        },
+        dateDist(date1, date2){
+            let d = " day"
+            let distance = Math.round((date1-date2)/(1000*60*60*24))
+            if(distance > 1 || distance < -1)
+                d = " days"
+            if(distance == 0)
+                return "Today";
+            else if(distance > 0)
+                return "in " + distance.toString() + d;
+            else{
+                distance = -distance;
+                return distance.toString() + d + " ago";
+            }
+        },
+        nth(d) {
+            if (d > 3 && d < 21) return 'th';
+            switch (d % 10) {
+              case 1:  return "st";
+              case 2:  return "nd";
+              case 3:  return "rd";
+              default: return "th";
+            }
+        },
+        prev(){
+            if(this.current.getMonth() == 0){
+                this.current = new Date(this.current.getFullYear() - 1, 11, 1);}
+            else
+                this.current = new Date(this.current.getFullYear(), this.current.getMonth() - 1, 1);
+            this.getTerms(this.current)
+            this.getDaysInMonth(this.current.getMonth(), this.current.getFullYear());
+        },
+        next(){
+            if(this.current.getMonth() == 11){
+                this.current = new Date(this.current.getFullYear() + 1, 0, 1);}
+            else
+                this.current = new Date(this.current.getFullYear(), this.current.getMonth() + 1, 1);
+            this.getTerms(this.current)
+            this.getDaysInMonth(this.current.getMonth(), this.current.getFullYear());
+        },
+        reset(){
+            this.current = new Date();
+            this.current = new Date(this.current.getFullYear(), this.current.getMonth(), this.current.getDate());
+            this.getTerms(this.current)
+            this.getDaysInMonth(this.current.getMonth(), this.current.getFullYear());
+        },
+        setCurrDate(date){
+            this.current = date
+            this.getTerms(this.current);
+        },
+        getTerms(date){
+        	axios
+            .get('/api/counseling/findAllTermsByDay',{
+    			  headers: {
+    			    'Authorization': "Bearer " + localStorage.getItem('access_token')
+    			  },
+    			  params: {
+    				  pharmacyId: this.pharmId,
+    				  start: date.getTime()
+    			  }
+            })
+            .then(response => {
+            	this.counselings = response.data
+            })
+        },
+        getStartTime(date){
+        	let h = date.getHours();
+        	if(h < 10)
+        		h = "0" + h;
+        	let m =  date.getMinutes();
+        	if(m < 10)
+        		m = "0" + m;
+        	return h + ":" + m;
+        },
+        getCounts(date){
+        	axios
+            .get('/api/counseling/countTerms',{
+    			  headers: {
+    			    'Authorization': "Bearer " + localStorage.getItem('access_token')
+    			  },
+    			  params: {
+    				  pharmacyId: this.pharmId,
+    				  start: date.getTime(),
+    				  num: 42
+    			  }
+            })
+            .then(response => {
+            	this.counts = response.data
+            })
+        },
+        reserveTerm(c){
+        	let t = this;
+        	JSAlert.confirm("Da li zelite da zakazete termin?").then(function(result) {
+     		    if (!result)
+     		        return;
+     		   axios
+               .get('/api/patient/isFree',{
+       			  headers: {
+       			    'Authorization': "Bearer " + localStorage.getItem('access_token')
+       			  },
+       			  params: {
+       				  counselingId: t.examination.id,
+       				  startDate: (new Date(c.startDate)).getTime(),
+       				  duration: c.duration 
+       			  }
+               })
+               .then(response => {
+               		if(response.data == false){
+               			JSAlert.alert("Pacijent nije slobodan!");
+               		}
+               		else{
+               			axios
+                        .post('/api/counseling/setPatient',
+                        		{
+                        			currCounselingId: t.examination.id,
+                        			newCounselingId: c.id,
+                        		},
+                        	{
+                			  headers: {
+                			    'Authorization': "Bearer " + localStorage.getItem('access_token')
+                			  }
+                        })
+                        .then(response =>{
+                        	t.getTerms(t.current);
+                        })
+               		}
+               })
+     		    
+     		});
+        },
         formatDate(date){
         	return this.monthNames[date.getMonth()] + " " + date.getDate() + " " + date.getFullYear() + ", " + date.toLocaleTimeString('it-IT');
         },
+        startButton(){
+        	if(this.schedule){
+        		this.currentStep = "SCHEDULE"
+        	}
+        	else{
+        		this.currentStep = 'REPORT'
+        	}
+        },
         goLeft(){
-        	if(this.currentStep == "REPORT")
+        	if(this.schedule){
         		this.currentStep = "START";
-        	else if(this.currentStep == "PRESCRIPT")
-        		this.currentStep = "REPORT";
-        	else if(this.currentStep == "SCHEDULE")
-        		this.currentStep = "PRESCRIPT";
+        	}
+        	else{
+        		if(this.currentStep == "REPORT")
+            		this.currentStep = "START";
+            	else if(this.currentStep == "PRESCRIPT")
+            		this.currentStep = "REPORT";
+            	else if(this.currentStep == "SCHEDULE")
+            		this.currentStep = "PRESCRIPT";
+        	}
         },
         goRight(){
         	if(this.currentStep == "START")
@@ -195,9 +360,61 @@ var app = new Vue({
         	else
         		ret += diffMins + " min ";
         	this.waitingTime = ret;
-        }
-	},
+        },
+        checkTime(date){
+        	if((new Date(date)).getTime() < (new Date()).getTime())
+	        	return false;
+        	return true;
+        },
+        finish(){
+        	if(this.schedule){
+        		window.location.href = "/dermatologist/dermatologistHome.html";
+        		return;
+        	}
+        	let obj = this;
+        	JSAlert.confirm("Da li zelite da zavrsite pregled?")
+        	.then(function(result) {
+     		    if (!result)
+     		        return;
+     		   axios
+               .post('/api/counseling/setReport',
+               		{
+               			counselingId: obj.examination.id,
+               			report: obj.report,
+                       },
+                       {
+                   	  headers: {
+                   	  'Authorization': "Bearer " + localStorage.getItem('access_token')
+                   	}
+                })
+                .then(response =>{
+                	window.location.href = "/dermatologist/dermatologistHome.html";
+                })
+                .catch(error => {
+                	if(error.response.status == 400)
+                		JSAlert.alert("Nije popunjen izvestaj, pregled ne moze biti zavrsen!");
+                })
+        	})        	
+        },
+        logout(){
+			axios
+	        .post('/auth/logout', null, {
+				  headers: {
+					    'Authorization': "Bearer " + localStorage.getItem('access_token')
+					  }
+		        })
+	        .then(function() {
+	        	localStorage.clear();
+	        	window.location.href = '/login.html';
+	        })
+		}
+    },
 	created() {
+    	let url = new URL(window.location.href);
+    	let urlParam = url.searchParams.get("schedule");
+    	console.log(urlParam)
+    	if(urlParam == "true")
+    		this.schedule = true;
 		axios
         .get('/auth/getRole',{
 			  headers: {
@@ -220,20 +437,45 @@ var app = new Vue({
 	     })
 	     .then(response => {
 	     	this.derm = response.data
-	     })
-	     axios
-		.get('/api/counseling/getNearestCounseling',{
-			headers: {
-			 'Authorization': "Bearer " + localStorage.getItem('access_token')
-			},
-			params:{
-				start: (new Date).getTime(),
-			}
-	     })
-	     .then(response => {
-	    	 this.examination = response.data
-	 	     this.examination.startDate = new Date(this.examination.startDate)
-	    	 this.calc();
+	     	axios
+			.get('/api/counseling/getNearestCounseling',{
+				headers: {
+				 'Authorization': "Bearer " + localStorage.getItem('access_token')
+				},
+				params:{
+					start: (new Date).getTime(),
+					finished: !this.schedule
+				}
+		     })
+		     .then(response => {
+		    	 if(!response.data){
+		    		 JSAlert.alert("Nema ni jednog pregleda!");		        	
+			        	setTimeout(function () {
+			        		window.location.href = "/dermatologist/dermatologistHome.html";
+						}, 3000);
+		    	 }
+		    	 else{
+		    		 this.examination = response.data
+		    		 axios
+		 			.get('/api/counseling/getPharmId',{
+		 				headers: {
+		 				 'Authorization': "Bearer " + localStorage.getItem('access_token')
+		 				},
+		 				params:{
+		 					counselingId: this.examination.id,
+		 				}
+		 		     })
+		 		     .then(response =>{
+		 		    	 this.pharmId = response.data;
+		 		    	 this.examination.startDate = new Date(this.examination.startDate)
+				    	 this.calc();
+			    		 this.current = new Date(this.current.getFullYear(), this.current.getMonth(), this.current.getDate());
+			 	         this.today = new Date(this.today.getFullYear(), this.today.getMonth(), this.today.getDate());
+			 	         this.getTerms(this.today);
+			 	         this.getDaysInMonth(this.current.getMonth(), this.current.getFullYear());
+		 		     })
+		    	 }
+		     })
 	     })
 	     axios
 		.get('/api/medicine/getAll',{

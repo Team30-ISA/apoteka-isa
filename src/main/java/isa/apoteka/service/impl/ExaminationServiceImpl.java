@@ -109,9 +109,9 @@ public class ExaminationServiceImpl implements ExaminationService {
 	{
 		@Override
 		public int compare(ExaminationDTO o1, ExaminationDTO o2) {
-			if (o1.getStartDate().before(o1.getStartDate()))
+			if (o1.getStartDate().getTime() <= o2.getStartDate().getTime())
 	            return -1;
-	        else if (o1.getStartDate().after(o2.getStartDate()))
+	        else if (o1.getStartDate().getTime() >= o2.getStartDate().getTime())
 	            return 1;
 	        else
 	            return 0;

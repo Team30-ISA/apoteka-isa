@@ -1,5 +1,6 @@
 package isa.apoteka.service;
 
+import java.util.Date;
 import java.util.List;
 
 import isa.apoteka.domain.Patient;
@@ -14,4 +15,6 @@ public interface PatientService {
 	void updatePassword(PatientUpdateForm puf);
 	List<Patient> findAllPatients();
 	List<Patient> findAllPatientsNotification(Long id);
+	Boolean hasCounselings(Long patientId, Date start, Date end);
+	Boolean hasExaminations(Long patientId, Date start, Date end);
 }

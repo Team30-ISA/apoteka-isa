@@ -100,11 +100,13 @@ insert into medicine_in_pharmacy (quantity, pharmacy_id, medicine_id) VALUES (3,
 
 insert into dermatologist_work_calendar (dermatologist_id, pharmacy_id, start_date, end_date) VALUES (3, 1, '20210218 10:00:00 AM', '20210218 10:00:00 PM');
 insert into dermatologist_work_calendar (dermatologist_id, pharmacy_id, start_date, end_date) VALUES (3, 2, '20210219 10:00:00 AM', '20210219 10:00:00 PM');
+insert into dermatologist_work_calendar (dermatologist_id, pharmacy_id, start_date, end_date) VALUES (5, 2, '20210220 05:00:00 AM', '20210220 05:00:00 PM');
 
-insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, patient_id) VALUES ('20210202 08:53:00 PM', 5, 1, 1999.99, 13);
-insert into counseling (start_date, duration, dermatologist_work_calendar_id, price) VALUES ('20210219 12:00:00 PM', 30, 2, 999.99);
+insert into counseling (start_date, duration, dermatologist_work_calendar_id, price) VALUES ('20210202 08:53:00 PM', 5, 1, 1999.99);
+insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, patient_id) VALUES ('20210204 11:35:00 AM', 60, 2, 999.99, 13);
+insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, patient_id) VALUES ('20210219 12:00:00 PM', 30, 2, 999.99, 13);
 insert into counseling (start_date, duration, dermatologist_work_calendar_id, price) VALUES ('20210220 11:00:00 AM', 15, 1, 1999.99);
-insert into counseling (start_date, duration, dermatologist_work_calendar_id, price) VALUES ('20210220 11:15:00 AM', 30, 1, 1999.99);
+insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, patient_id) VALUES ('20210220 11:15:00 AM', 30, 1, 1999.99, 13);
 insert into counseling (start_date, duration, dermatologist_work_calendar_id, price) VALUES ('20210220 12:00:00 PM', 60, 1, 2999.99);
 insert into counseling (start_date, duration, dermatologist_work_calendar_id, price) VALUES ('20210220 01:00:00 PM', 5, 1, 99.99);
 insert into counseling (start_date, duration, dermatologist_work_calendar_id, price) VALUES ('20210220 01:05:00 PM', 15, 1, 999.99);
@@ -114,6 +116,8 @@ insert into counseling (start_date, duration, dermatologist_work_calendar_id, pr
 insert into counseling (start_date, duration, dermatologist_work_calendar_id, price) VALUES ('20210220 03:30:00 PM', 25, 1, 899.99);
 insert into counseling (start_date, duration, dermatologist_work_calendar_id, price) VALUES ('20210220 03:55:00 PM', 5, 1, 99.99);
 insert into counseling (start_date, duration, dermatologist_work_calendar_id, price) VALUES ('20210220 05:00:00 PM', 15, 1, 999.99);
+
+insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, patient_id) VALUES ('20210220 11:12:00 AM', 20, 3, 500.00, 13);
 
 insert into promotion_notification (patient_id, pharmacy_id) values (13, 1);
 insert into promotion_notification (patient_id, pharmacy_id) values (14, 2);
