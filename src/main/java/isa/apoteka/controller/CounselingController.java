@@ -107,7 +107,7 @@ public class CounselingController {
 	@PreAuthorize("hasRole('DERM')")
 	public void setReport(@RequestBody Map<String, Object> params, HttpServletResponse response) {
 		String report = params.get("report").toString();
-		if(report == null || report == "") {
+		if(report.equals(null) || report.equals("")) {
 			response.setStatus(400);
 			return;
 		}
