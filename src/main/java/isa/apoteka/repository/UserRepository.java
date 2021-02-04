@@ -18,7 +18,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("from User u join u.authorities a where a.id=4")
 	List<User> findAllPharms();
     
-    
+    User findUserByEmail(String email);
     
 }
 

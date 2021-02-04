@@ -2,6 +2,10 @@ package isa.apoteka.service.impl;
 
 import java.util.List;
 
+import isa.apoteka.async.service.EmailService;
+import isa.apoteka.domain.Patient;
+import isa.apoteka.dto.UserVerificationDTO;
+import isa.apoteka.repository.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -23,10 +27,16 @@ public class UserServiceImpl implements UserService {
 	private UserRepository userRepository;
 
 	@Autowired
+	private PatientRepository patientRepository;
+
+	@Autowired
 	private PasswordEncoder passwordEncoder;
 
 	@Autowired
 	private AuthorityService authService;
+
+	@Autowired
+	private EmailService emailService;
 
 	@Override
 	public User findByUsername(String username) throws UsernameNotFoundException {
@@ -44,22 +54,23 @@ public class UserServiceImpl implements UserService {
 		return result;
 	}
 
+	public User findUserByEmail (String email) {
+		return userRepository.findUserByEmail(email);
+	}
+
 	@Override
 	public User save(UserRequest userRequest) {
-		User u = new User();
-		u.setUsername(userRequest.getUsername());
-		// pre nego sto postavimo lozinku u atribut hesiramo je
-		u.setPassword(passwordEncoder.encode(userRequest.getPassword()));
-		u.setFirstName(userRequest.getFirstname());
-		u.setLastName(userRequest.getLastname());
-		u.setEnabled(true);
+		Patient patient = new Patient(userRequest);
+
+		patient.setPassword(passwordEncoder.encode(userRequest.getPassword()));
 		
 		List<Authority> auth = authService.findByname("ROLE_USER");
-		// u primeru se registruju samo obicni korisnici i u skladu sa tim im se i dodeljuje samo rola USER
-		u.setAuthorities(auth);
-		
-		u = this.userRepository.save(u);
-		return u;
+		patient.setAuthorities(auth);
+		this.patientRepository.save(patient);
+
+		emailService.sendVerificationEmail(patient, passwordEncoder.encode(patient.getEmail()));
+
+		return patient;
 	}
 	
 	public List<User> findAllDerms(){
@@ -72,4 +83,13 @@ public class UserServiceImpl implements UserService {
 		return result;
 	}
 
+	public void verifyUser(UserVerificationDTO verificationData) throws Exception {
+		Patient patient = patientRepository.getOne(verificationData.getUserId());
+
+		if(!passwordEncoder.matches(patient.getEmail(), verificationData.getHash()))
+			throw new Exception("Bad verification token");
+
+		patient.setEnabled(true);
+		patientRepository.save(patient);
+	}
 }

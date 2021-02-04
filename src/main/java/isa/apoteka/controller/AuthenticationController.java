@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import isa.apoteka.dto.UserVerificationDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -71,20 +72,30 @@ public class AuthenticationController {
 		return ResponseEntity.ok(new UserTokenState(jwt, expiresIn));
 	}
 
-	// Endpoint za registraciju novog korisnika
 	@PostMapping("/signup")
-	public ResponseEntity<User> addUser(@RequestBody UserRequest userRequest, UriComponentsBuilder ucBuilder) {
+	public ResponseEntity<?> addUser(@RequestBody UserRequest userRequest) {
+		try {
+			User existUser = this.userService.findUserByEmail(userRequest.getEmail());
+			if (existUser != null)
+				throw new ResourceConflictException(userRequest.getId(), "Username already exists");
 
-		User existUser = this.userService.findByUsername(userRequest.getUsername());
-		if (existUser != null) {
-			throw new ResourceConflictException(userRequest.getId(), "Username already exists");
+			return new ResponseEntity<>(this.userService.save(userRequest), HttpStatus.CREATED);
+		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
-
-		User user = this.userService.save(userRequest);
-		HttpHeaders headers = new HttpHeaders();
-		headers.setLocation(ucBuilder.path("/api/user/{userId}").buildAndExpand(user.getId()).toUri());
-		return new ResponseEntity<>(user, HttpStatus.CREATED);
 	}
+
+	@PostMapping("/verify")
+	public ResponseEntity<Boolean> verifyUser(@RequestBody UserVerificationDTO verificationData) {
+		try {
+			this.userService.verifyUser(verificationData);
+			return new ResponseEntity<>(true, HttpStatus.CREATED);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
+		}
+	}
+
 
 	// U slucaju isteka vazenja JWT tokena, endpoint koji se poziva da se token
 	// osvezi
