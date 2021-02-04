@@ -169,7 +169,7 @@ public class CounselingServiceImpl implements CounselingService {
 			return null;
 		for(Counseling c : counselings) {
 			if(finished) {
-				if(!(c.getReport()).equals(null) && !(c.getReport()).equals(""))
+				if(c.getReport() != null && !(c.getReport()).equals(""))
 					continue;
 			}
 			if(c.getStartDate().before(start)) {
@@ -184,7 +184,7 @@ public class CounselingServiceImpl implements CounselingService {
 		}
 		for(Counseling c : counselings) {
 			if(finished) {
-				if(!(c.getReport()).equals(null) && !(c.getReport()).equals(""))
+				if(c.getReport() != null && !(c.getReport()).equals(""))
 					continue;
 			}
 			if(start.getTime() <= c.getStartDate().getTime()) {
