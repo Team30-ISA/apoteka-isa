@@ -1,8 +1,10 @@
 package isa.apoteka.service.impl;
 
-import java.util.Calendar;
+
 import java.util.Date;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import isa.apoteka.domain.Medicine;
 
 import isa.apoteka.domain.Counseling;
 import isa.apoteka.domain.Examination;
@@ -78,6 +81,15 @@ public class PatientServiceImpl implements PatientService {
 	public List<Patient> findAllPatientsNotification(Long id) {
 		List<Patient> result = patientRepository.findAllPatientsNotification(id);
 		return result;
+	}
+	@Override
+	public List<Medicine> searchReservedMedicineForPatient(Long id) {
+		List<Medicine> result = patientRepository.searchReservedMedicineForPatient(id);
+		return result;
+	}
+	@Override
+	public void updateReservedMedicineForPatient(Long patId, Long medId, int quantity, Date date, String uid) {
+		patientRepository.updateReservedMedicineForPatient(patId, medId, quantity, date, uid);
 	}
 
 	@Override

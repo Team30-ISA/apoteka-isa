@@ -6,6 +6,7 @@
 		newpass: "",
 		name: "",
 		surname: "",
+		reservedMedications: [],
 	},
 	methods: {
 		changepass() {
@@ -67,6 +68,10 @@ var app = new Vue({
 		countries: null,
 		cities: null,
 		addresses: null,
+		idCountry: 0,
+		idCity: 0,
+		idAddress: 0,
+		reservedMedications: [],
 	},
 	methods: {
 		logout(){
@@ -109,6 +114,7 @@ var app = new Vue({
 			
 		},
 		chData(){
+			console.log('CHDATA SC: ' + this.selectedAddress)
 			if(this.changeData == true){
 				this.changeData = false;
 				//axios za izmenu podataka
@@ -143,6 +149,9 @@ var app = new Vue({
 		     	this.patient = response.data
 		     })
 		},
+		setAddress(){
+			console.log('Selektovana adresa: ' + this.selectedAddress)
+		},
 		
 		findCity(){
 			axios
@@ -155,8 +164,21 @@ var app = new Vue({
 				}
 	     })
 	     .then(response => {
-	     	console.log(response.data)
 	     	this.cities = response.data	
+	     	
+	     	axios
+			.get('/api/address/getAllAddressesForCity',{
+				headers: {
+				 'Authorization': "Bearer " + localStorage.getItem('access_token')
+				},
+				params:{
+					id: 0,
+				}
+	     })
+	     .then(response => {
+	     	console.log('Radipromenu' + response.data)
+	     	this.addresses = response.data	
+	     })
 	     })
 		},
 		findAddresses(){
@@ -170,8 +192,7 @@ var app = new Vue({
 				}
 	     })
 	     .then(response => {
-	     	console.log(response.data)
-	     	this.addresses = response.data	
+	     	this.addresses = response.data
 	     })
 		}
 	},
@@ -201,6 +222,25 @@ var app = new Vue({
 	     	this.name = this.patient.firstName
 	     	this.surname = this.patient.lastName
 	     	this.email = this.patient.email
+	     	this.idCountry = this.patient.address.city.country.country
+	     	this.selectedCountry = this.patient.address.city.country.id
+	     	this.selectedCity = this.patient.address.city.id
+	     	this.selectedAddress = this.patient.address.id
+	     	//console.log('Selected Address pri kreiranju str: ' + this.selectedAddress)
+	     	
+	     		     axios
+		.get('/api/patient/findAllReservedMedicine',{
+			  headers: {
+				    'Authorization': "Bearer " + localStorage.getItem('access_token')
+			  },
+			  params:{
+			  	id: this.patient.id,
+			  }
+	     })
+	     .then(response => {
+	     	this.reservedMedications = response.data
+	     	console.log(this.reservedMedications)
+	     })
 	     	
 	     })
 	     axios
@@ -210,8 +250,32 @@ var app = new Vue({
 			}
 	     })
 	     .then(response => {
-	     	console.log(response.data)
 	     	this.countries = response.data
+	     	
+	     	axios
+			.get('/api/city/getAllCitiesForCountry',{
+				headers: {
+				 'Authorization': "Bearer " + localStorage.getItem('access_token')
+				},
+				params:{
+					id: this.selectedCountry,
+				}
+	     })
+	     .then(response => {
+	     	this.cities = response.data	
+	     	axios
+			.get('/api/address/getAllAddressesForCity',{
+				headers: {
+				 'Authorization': "Bearer " + localStorage.getItem('access_token')
+				},
+				params:{
+					id: this.selectedCity,
+				}
+	     })
+	     .then(response => {
+	     	this.addresses = response.data	
+	     })
+	     })
 	     })
 	}
 })

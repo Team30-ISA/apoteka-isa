@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -19,9 +20,15 @@ public class Patient extends User{
 	@ManyToMany(mappedBy = "patients")
 	private List<Pharmacy> pharmacies;
 	
+	//@OneToMany(mappedBy = "patients")
+	//private List<Medicine> reservedMedications;
+	@OneToMany(mappedBy = "medicine")
+	private List<ReservedMedicine> reservedMedicine;
+
 	@JsonIgnore
 	@ManyToMany
 	private List<Medicine> allergies;
+
 	
 	public Patient() {
 		super();
