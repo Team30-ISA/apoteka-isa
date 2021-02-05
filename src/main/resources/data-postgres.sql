@@ -146,3 +146,7 @@ insert into pharmacist_grade (id, grade, pharmacist_id, patient_id) values (1, 2
 insert into pharmacist_grade (id, grade, pharmacist_id, patient_id) values (2, 5, 4, 13);
 insert into pharmacist_grade (id, grade, pharmacist_id, patient_id) values (3, 4, 7, 13);
 insert into pharmacist_grade (id, grade, pharmacist_id, patient_id) values (4, 3, 7, 13);
+
+insert into medicine_price(id, end_of_price, price, start_of_price, medicine_id, pharmacy_id) values (100, '20210216 08:00:00 PM',200, '20210215 10:00:00 AM', 1, 2);
+insert into medicine_price(id, end_of_price, price, start_of_price, medicine_id, pharmacy_id) values (101, '20210216 08:00:00 PM',300, '20210215 10:00:00 AM', 2, 1);
+insert into medicine_price(id, end_of_price, price, start_of_price, medicine_id, pharmacy_id) values (102, '20210216 08:00:00 PM',400, '20210215 10:00:00 AM', 2, 2);
