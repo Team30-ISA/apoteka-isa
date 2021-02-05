@@ -15,6 +15,8 @@ public class PatientUpdateForm {
 	private String surname;
 	
 	private String email;
+	
+	private Address address;
 
 	public String getUsername() {
 		return username;
@@ -61,6 +63,14 @@ public class PatientUpdateForm {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	
+	public Address getAddress() {
+		return address;
+	}
+
+	public void setAddress(Address address) {
+		this.address = address;
 	}
 	
 	public Long getId() {

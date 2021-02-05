@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Home page</title>
+<title>Patient profile page</title>
 <meta content="width=device-width, initial-scale=1.0" name="viewport">
 <meta content="" name="keywords">
 <meta content="" name="description">
@@ -10,6 +10,7 @@
 <!-- Favicons -->
 <link href="../img/favicon.png" rel="icon">
 <link href="../img/apple-touch-icon.png" rel="apple-touch-icon">
+<link href="../img/zena.jpg">
 
 <!-- Google Fonts -->
 <link
@@ -40,8 +41,30 @@
     License: https://bootstrapmade.com/license/
   ======================================================= -->
 </head>
+<style>
+	.txtDisabled{
+		border-color: transparent;
+		background-color: white;
+	}
+	.txtEnabled{
+	 padding: 5px 5px;
+	 border-radius: 0;
+	 box-shadow: none;
+	 font-size: 15px; display: block;
+	 width: 170%;
+	 padding: .275rem .75rem;
+	 font-size: 1rem;
+	 line-height: 2;
+	 color: #495057;
+     background-color: #fff;
+	 background-clip: padding-box;
+	 border: 1px solid #ced4da;
+	 border-radius: .25rem;
+	 transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+	}
+</style>
 <body id="body">
-	<div id="pharmacist">
+	<div id="pharmacies">
 		<!--==========================
     Top Bar
   ============================-->
@@ -70,7 +93,7 @@
 
 				<div id="logo" class="pull-left">
 					<h1>
-						<a href="#body" class="scrollto">Apote<span>ke</span></a>
+						<a href="pharmacyAdminHome.html" class="scrollto">Apote<span>ke</span></a>
 					</h1>
 					<!-- Uncomment below if you prefer to use an image logo -->
 					<!-- <a href="#body"><img src="img/logo.png" alt="" title="" /></a>-->
@@ -78,21 +101,17 @@
 
 				<nav id="nav-menu-container">
 					<ul class="nav-menu">
-						<li class="menu-active"><a href="#body">Home</a></li>
+						<li class="menu-active"><a href="pharmacyAdminHome.html">Home</a></li>
 						<li><a href="#about">About Us</a></li>
 						<li class="menu-has-children"><a href="#">Tools</a>
 							<ul>
-								<li><a href="#">List of examined clients</a></li>
-								<li><a href="/pharmacist/pharmacistReport.html">Start counseling</a></li>
-								<li><a href="/pharmacist/workCalendar.html">Work calendar</a></li>
-								<li><a href="#">Create a leave request</a></li>
-								<li><a href="/pharmacist/pharmacistReport.html?schedule=true">Scheduling a new counseling</a></li>
-								<li><a href="#">Issue a drug</a></li>
+								<li><a href="promotion.html">New Promotion</a></li>
+								<li><a href="drugreservation.html">Reserve drug</a></li>
 							</ul></li>
-						<li class="menu-has-children"><a href="#">{{pharm.firstName}}
-								{{pharm.lastName}}</a>
+						<li class="menu-has-children"><a href="#">{{patient.firstName}}
+								{{patient.lastName}}</a>
 							<ul>
-								<li><a href="/employeeProfile.html"><i class="icon fa-user"></i>&nbsp&nbsp&nbspProfile</a></li>
+								<li><a href="#"><i class="icon fa-user"></i>&nbsp&nbsp&nbspProfile</a></li>
 								<li @click="logout"><a href="#"><i
 										class="icon fa-sign-out"></i>&nbsp&nbspLog out</a></li>
 							</ul></li>
@@ -109,92 +128,36 @@
   ============================-->
 
 		<main id="main">
-
-			<!--==========================
-      About Section
-    ============================-->
-
-			<!--==========================
-      Services Section
-    ============================-->
-			<section id="wrapper">
-				<div class="inner">
-					<header class="special">
-						<h2>Welcome {{pharm.firstName}} {{pharm.lastName}}</h2>
-						<p>View and manage your profile information, schedule
-							counseling, start counseling, view your work calendar, create a
-							leave request ...</p>
-					</header>
-					<div class="highlights">
-						<section>
-							<div class="content">
-								<header>
-									<a href="#" class="icon fa-list-alt"><span class="label">Icon</span></a>
-									<h3>List of examined clients</h3>
-								</header>
-								<p>List of all examined clients.</p>
-							</div>
-						</section>
-						<section>
-							<div class="content" @click="redirect('/pharmacist/pharmacistReport.html')">
-								<header>
-									<a href="#" class="icon fa-clock-o"><span class="label">Icon</span></a>
-									<h3>Start counseling</h3>
-								</header>
-								<p>Start the counseling and enter counseling information.</p>
-							</div>
-						</section>
-						<section>
-							<div class="content"  @click="redirect('/pharmacist/workCalendar.html')">
-								<header>
-									<a href="#" class="icon fa-calendar"><span class="label">Icon</span></a>
-									<h3>Work calendar</h3>
-								</header>
-								<p>View scheduled counselings.</p>
-							</div>
-						</section>
-						<section>
-							<div class="content">
-								<header>
-									<a href="#" class="icon fa-suitcase"><span class="label">Icon</span></a>
-									<h3>Create a leave request</h3>
-								</header>
-								<p>Creating a request for vacation or leave.</p>
-							</div>
-						</section>
-						<section>
-							<div class="content" @click="redirect('/pharmacist/pharmacistReport.html?schedule=true')">
-								<header>
-									<a href="#" class="icon fa-plus"><span class="label">Icon</span></a>
-									<h3>Scheduling a new counseling</h3>
-								</header>
-								<p>Scheduling a new counseling.</p>
-							</div>
-						</section>
-						<section>
-							<div class="content">
-								<header>
-									<a href="#" class="icon fa-hospital-o"><span class="label">Icon</span></a>
-									<h3>Issue a drug</h3>
-								</header>
-								<p>Issue a drug to patients.</p>
-							</div>
-						</section>
-						<section>
-							<div class="content" @click="redirect('/employeeProfile.html')">
-								<header>
-									<a href="#" class="icon fa-user"><span class="label">Icon</span></a>
-									<h3>Profile</h3>
-								</header>
-								<p>View profile information.</p>
-							</div>
-						</section>
-					</div>
-				</div>
-			</section>
-			<!-- #services -->
-
-
+			<section id="services">
+      			<div class="container">
+        			<div class="section-header">
+          				<h2>Spisak apoteka</h2>
+          					<div v-for="pharmacy in pharmacies">
+          						<div>
+          							<input type="radio" value="{{pharmacy.id}}" name="groupPharmacy"  v-model="selectedButtonValue" @change = "changePharmacy">{{pharmacy.name}}</input>
+          						</div>
+          					</div>
+          					<br>
+          				<h3>Unesite naziv leka za pretragu:</h3>
+          				<br>
+          				<div>
+          					<input type="text" v-model="medicationName"></input>
+          					<button @click="searchMedication">Pretrazi</button>
+          				</div>
+          				<br>
+          				<h3>Rezultat pretrage: </h3>
+          				<br>
+          				<div>
+          						<div v-if="medication != null">
+          							<label value="{{madication.id}}">{{medication.name}}</input>
+          							<input type="date" v-model="date">
+          							<button @click="reserveMedication">Rezervisi</button>
+          						</div>
+          				</div>
+        			</div>
+      			</div>
+    		</section><!-- #services --> 
+    		
 		</main>
 
 		<a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
@@ -217,7 +180,7 @@
 	<!-- Template Main Javascript File -->
 	<script src="../js/main.js"></script>
 	<script src="../axios.js"></script>
-	<script src="pharmacistHome.js"></script>
+	<script src="drugreservation.js"></script>
 
 </body>
 </html>
