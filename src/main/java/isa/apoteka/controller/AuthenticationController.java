@@ -75,6 +75,7 @@ public class AuthenticationController {
 	@PostMapping("/signup")
 	public ResponseEntity<?> addUser(@RequestBody UserRequest userRequest) {
 		try {
+			userRequest.registerValidation();
 			User existUser = this.userService.findUserByEmail(userRequest.getEmail());
 			if (existUser != null)
 				throw new ResourceConflictException(userRequest.getId(), "Username already exists");

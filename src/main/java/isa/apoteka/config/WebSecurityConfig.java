@@ -75,7 +75,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 					.antMatchers(
 							"/login.html",
 							"/auth/signup",
-							"/auth/verify"
+							"/auth/verify",
+							"/api/country/getAllCountries",
+							"/api/city/getAllCitiesForCountry"
 					).permitAll()
 				
 				// za svaki drugi zahtev korisnik mora biti autentifikovan

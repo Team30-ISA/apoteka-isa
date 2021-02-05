@@ -56,7 +56,7 @@ public class User implements UserDetails {
     private String firstName;
 
     @Size(min=2, max=50)
-    @Column(name = "last_name")
+    @Column(name = "last_name", nullable = false)
     private String lastName;
 
     @Column(name = "email")

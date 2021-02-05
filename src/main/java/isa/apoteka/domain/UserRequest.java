@@ -1,6 +1,5 @@
 package isa.apoteka.domain;
 
-// DTO koji preuzima podatke iz HTML forme za registraciju
 public class UserRequest {
 
 	private Long id;
@@ -22,6 +21,11 @@ public class UserRequest {
 	private String address;
 
 	private String phoneNumber;
+
+	public void registerValidation() throws Exception {
+		if(email.isEmpty() || password.isEmpty() || firstname.isEmpty() || lastname.isEmpty() || stateId == null || cityId == null || address.isEmpty())
+			throw new Exception("Validation failed");
+	}
 
 	public String getUsername() {
 		return username;
