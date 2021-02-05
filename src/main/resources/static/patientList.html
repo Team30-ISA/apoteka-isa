@@ -243,13 +243,9 @@ main ::-webkit-scrollbar-thumb:hover {
 								<tr v-for="p in patients">
 									<td style="width: 50%; font-size: 1.5rem">
 										{{p.firstName}}&nbsp{{p.lastName}}</td>
-									<td style="width: 10%;"><a href="#" class="icon fa-ban"
-										style="font-size: 20px; color: red" @click="fireDerm(derm.id)"><span
-											class="label">Icon</span></a></td>
-									<td style="width: 50%;"><a
-										href="dermatologistCalendar.html" class="icon fa-clock-o"
-										style="font-size: 20px;" @click="dermCal(derm.id)"><span
-											class="label">Icon</span></a></td>
+									<td style="width: 50%;"><a v-if="patientId == p.id"
+									class="icon fa-clock-o" style="font-size: 20px; color: #50d8af; cursor: pointer;"
+										@click="redirect"><span class="label">Icon</span></a></td>
 								</tr>
 							</table>
 						</section>

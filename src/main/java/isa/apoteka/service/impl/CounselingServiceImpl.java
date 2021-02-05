@@ -156,7 +156,7 @@ public class CounselingServiceImpl implements CounselingService {
 	}
 
 	@Override
-	public ExaminationDTO getNearestCounseling(Long dermatologistId, Date start, boolean finished) {
+	public Counseling getNearestCounseling(Long dermatologistId, Date start, boolean finished) {
 		Calendar calendar = new GregorianCalendar();
 		calendar.setTime(start);
 		calendar.add(Calendar.DATE, -1);
@@ -178,7 +178,7 @@ public class CounselingServiceImpl implements CounselingService {
 				System.out.println(calendar.getTime());
 				System.out.println(start);
 				if(calendar.getTime().after(start)) {
-					return mapCounselingToCounselingDTO(c);
+					return c;
 				}
 			}
 		}
@@ -188,10 +188,18 @@ public class CounselingServiceImpl implements CounselingService {
 					continue;
 			}
 			if(start.getTime() <= c.getStartDate().getTime()) {
-				return mapCounselingToCounselingDTO(c);
+				return c;
 			}
 		}
 		return null;		
+	}
+	
+	@Override
+	public ExaminationDTO getNearestCounselingDTO(Long pharmacistId, Date start, boolean finished) {
+		Counseling counseling = getNearestCounseling(pharmacistId, start, finished);
+		if(counseling == null)
+			return null;
+		return mapCounselingToCounselingDTO(counseling);
 	}
 
 	@Override

@@ -27,7 +27,6 @@ import isa.apoteka.service.ExaminationService;
 import isa.apoteka.service.PatientService;
 
 
-// Primer kontrolera cijim metodama mogu pristupiti samo autorizovani korisnici
 @RestController
 @RequestMapping(value = "/api", produces = MediaType.APPLICATION_JSON_VALUE)
 public class PatientController {
@@ -39,9 +38,6 @@ public class PatientController {
 	@Autowired
 	private ExaminationService examinationService;
 
-	// Za pristup ovoj metodi neophodno je da ulogovani korisnik ima ADMIN ulogu
-	// Ukoliko nema, server ce vratiti gresku 403 Forbidden
-	// Korisnik jeste autentifikovan, ali nije autorizovan da pristupi resursu
 	@GetMapping("/patient/{userId}")
 	//@PreAuthorize("hasRole('PATIENT')")
 	public User loadById(@PathVariable Long userId) {
@@ -117,5 +113,16 @@ public class PatientController {
 		return new ResponseEntity<>(false, HttpStatus.OK);
 	}
 	
+	@GetMapping("/patient/findAllDTO")
+	@PreAuthorize("hasRole('DERM') || hasRole('PHARM')")
+	public List<PatientDTO> findAllDTO() {
+		return this.patientService.findAllDTO();
+	}
+	
+	@GetMapping("/patient/findAllByName")
+	@PreAuthorize("hasRole('DERM') || hasRole('PHARM')")
+	public List<PatientDTO> findAllByName(String firstName, String lastName) {
+		return patientService.findAllByName(firstName, lastName);
+	}
 
 }

@@ -5,7 +5,8 @@ var app = new Vue({
 		searchPharmFirst: "",
 		searchPharmLast: "",
 		role: "",
-		user: null
+		user: null,
+		patientId: null
 	},
 	methods: {
 		logout(){
@@ -22,10 +23,9 @@ var app = new Vue({
 		},		
 		search(){
 			axios
-			.get('/api/pharmacy/searchDermsInPharmacy',
+			.get('/api/patient/findAllByName',
 					{
 						params:{
-							id: this.pharmacyId,
 							firstName: this.searchPharmFirst,
 							lastName: this.searchPharmLast
 						},
@@ -37,6 +37,12 @@ var app = new Vue({
 			.then(response => {
 				this.patients = response.data
 			})
+		},
+		redirect(){
+			if(this.role == "DERM")
+				window.location.href = "/dermatologist/dermatologistReport.html";
+			else if(this.role == "PHARM")
+				window.location.href = "/pharmacist/pharmacistReport.html";
 		}
 	},
 	created() {
@@ -61,6 +67,19 @@ var app = new Vue({
     		     .then(response => {
     		     	this.user = response.data
     		     })
+    		     axios
+    			.get('/api/counseling/getPatientForNearestCounseling',{
+    				params:{
+    					start: (new Date).getTime(),
+    					finished: true
+					},
+    				  headers: {
+    					    'Authorization': "Bearer " + localStorage.getItem('access_token')
+    				  }
+    		     })
+    		     .then(response => {
+    		     	this.patientId = response.data
+    		     })
     		}
     		else{
     			axios
@@ -72,11 +91,34 @@ var app = new Vue({
     		     .then(response => {
     		     	this.user = response.data
     		     })
+    		     axios
+    			.get('/api/examination/getPatientForNearestExamination',{
+    				params:{
+    					start: (new Date).getTime(),
+    					finished: true
+					},
+    				  headers: {
+    					    'Authorization': "Bearer " + localStorage.getItem('access_token')
+    				  }
+    		     })
+    		     .then(response => {
+    		     	this.patientId = response.data
+    		     })
     		}
         })
         .catch(function() {
         	window.location.href = '/login.html';
 	    })
-		//get patients AXIOS
+		axios
+		.get('/api/patient/findAllDTO',
+			{
+				headers: {
+			    'Authorization': "Bearer " + localStorage.getItem('access_token')
+			}
+			
+		})
+		.then(response => {
+			this.patients = response.data
+		})
 	}
 })

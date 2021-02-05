@@ -37,4 +37,7 @@ public interface PatientRepository extends JpaRepository<Patient, Long> {
     @Query("from Examination e join e.patient p where p.id=:patientId and e.startDate >= :start  and e.startDate <= :end")
 	List<Examination> getPatientExamintaions(Long patientId, Date start,  Date end);
     
+    @Query("from Patient p where LOWER(p.firstName) like %:firstName% and LOWER(p.lastName) like %:lastName%")
+	List<Patient> findAllByName(String firstName, String lastName);
+    
 }

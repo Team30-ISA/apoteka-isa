@@ -88,12 +88,11 @@
 		<!--==========================
     Header
   ============================-->
-		<header id="header">
+		<header v-if="role == 'DERM'" id="header">
 			<div class="container">
-
 				<div id="logo" class="pull-left">
 					<h1>
-						<a href="pharmacyAdminHome.html" class="scrollto">Apote<span>ke</span></a>
+						<a href="#body" class="scrollto">Apote<span>ke</span></a>
 					</h1>
 					<!-- Uncomment below if you prefer to use an image logo -->
 					<!-- <a href="#body"><img src="img/logo.png" alt="" title="" /></a>-->
@@ -101,17 +100,68 @@
 
 				<nav id="nav-menu-container">
 					<ul class="nav-menu">
-						<li class="menu-active"><a href="pharmacyAdminHome.html">Home</a></li>
+						<li class="menu-active"><a
+							href="/dermatologist/dermatologistHome.html">Home</a></li>
 						<li><a href="#about">About Us</a></li>
 						<li class="menu-has-children"><a href="#">Tools</a>
 							<ul>
-								<li><a href="promotion.html">New Promotion</a></li>
-								<li><a href="managingDermatologists.html">Manage Dermatologists</a></li>
+								<li><a href="#">List of examined clients</a></li>
+								<li><a href="/dermatologist/dermatologistReport.html">Start
+										examination</a></li>
+								<li><a href="/dermatologist/workCalendar.html">Work
+										calendar</a></li>
+								<li><a href="#">Create a leave request</a></li>
+								<li><a
+									href="/dermatologist/dermatologistReport.html?schedule=true">Scheduling
+										a new examination</a></li>
 							</ul></li>
 						<li class="menu-has-children"><a href="#">{{user.firstName}}
 								{{user.lastName}}</a>
 							<ul>
-								<li><a href="#"><i class="icon fa-user"></i>&nbsp&nbsp&nbspProfile</a></li>
+								<li><a href="/employeeProfile.html"><i
+										class="icon fa-user"></i>&nbsp&nbsp&nbspProfile</a></li>
+								<li @click="logout"><a href="#"><i
+										class="icon fa-sign-out"></i>&nbsp&nbspLog out</a></li>
+							</ul></li>
+						<li><a href="#contact">Contact</a></li>
+					</ul>
+				</nav>
+				<!-- #nav-menu-container -->
+			</div>
+		</header>
+		<header v-else id="header">
+			<div class="container">
+
+				<div id="logo" class="pull-left">
+					<h1>
+						<a href="#body" class="scrollto">Apote<span>ke</span></a>
+					</h1>
+					<!-- Uncomment below if you prefer to use an image logo -->
+					<!-- <a href="#body"><img src="img/logo.png" alt="" title="" /></a>-->
+				</div>
+
+				<nav id="nav-menu-container">
+					<ul class="nav-menu">
+						<li class="menu-active"><a href="#body">Home</a></li>
+						<li><a href="#about">About Us</a></li>
+						<li class="menu-has-children"><a href="#">Tools</a>
+							<ul>
+								<li><a href="#">List of examined clients</a></li>
+								<li><a href="/pharmacist/pharmacistReport.html">Start
+										counseling</a></li>
+								<li><a href="/pharmacist/workCalendar.html">Work
+										calendar</a></li>
+								<li><a href="#">Create a leave request</a></li>
+								<li><a
+									href="/pharmacist/pharmacistReport.html?schedule=true">Scheduling
+										a new counseling</a></li>
+								<li><a href="#">Issue a drug</a></li>
+							</ul></li>
+						<li class="menu-has-children"><a href="#">{{user.firstName}}
+								{{user.lastName}}</a>
+							<ul>
+								<li><a href="/employeeProfile.html"><i
+										class="icon fa-user"></i>&nbsp&nbsp&nbspProfile</a></li>
 								<li @click="logout"><a href="#"><i
 										class="icon fa-sign-out"></i>&nbsp&nbspLog out</a></li>
 							</ul></li>
