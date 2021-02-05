@@ -60,7 +60,7 @@ public class PharmacyServiceImpl implements PharmacyService{
 	}
 	
 	public Medicine searchMedicineInPharmacy(Long id, String name){
-		name.toLowerCase();
+		name = name.toLowerCase();
 		String s = name.substring(0, 1).toUpperCase();
 	    String nameCapitalized = s + name.substring(1);
 		return pharmacyRepository.searchMedicineInPharmacy(id, nameCapitalized);
