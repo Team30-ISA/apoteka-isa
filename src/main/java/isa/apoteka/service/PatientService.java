@@ -1,7 +1,9 @@
 package isa.apoteka.service;
 
+import java.util.Date;
 import java.util.List;
 
+import isa.apoteka.domain.Medicine;
 import isa.apoteka.domain.Patient;
 import isa.apoteka.domain.PatientUpdateForm;
 
@@ -14,4 +16,6 @@ public interface PatientService {
 	void updatePassword(PatientUpdateForm puf);
 	List<Patient> findAllPatients();
 	List<Patient> findAllPatientsNotification(Long id);
+	List<Medicine> searchReservedMedicineForPatient(Long id);
+	void updateReservedMedicineForPatient(Long patId, Long medId, int quantity, Date date, String uid);
 }

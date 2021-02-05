@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import isa.apoteka.domain.Dermatologist;
+import isa.apoteka.domain.Medicine;
+import isa.apoteka.domain.MedicineDisplay;
 import isa.apoteka.domain.Pharmacist;
 import isa.apoteka.domain.Pharmacy;
 import isa.apoteka.repository.PharmacyRepository;
@@ -55,5 +57,16 @@ public class PharmacyServiceImpl implements PharmacyService{
 	
 	public List<Pharmacist> searchPharmsWorkingInPharmacy(Long id, String firstName, String lastName){
 		return pharmacyRepository.searchPharmsWorkingInPharmacy(id, firstName, lastName);
+	}
+	
+	public Medicine searchMedicineInPharmacy(Long id, String name){
+		name.toLowerCase();
+		String s = name.substring(0, 1).toUpperCase();
+	    String nameCapitalized = s + name.substring(1);
+		return pharmacyRepository.searchMedicineInPharmacy(id, nameCapitalized);
+	}
+	
+	public void updateMedicineInPharmacy(Long pharmId, Long medId, int quantity) {
+		pharmacyRepository.updateMedicineInPharmacy(pharmId, medId, quantity);
 	}
 }

@@ -1,5 +1,6 @@
 package isa.apoteka.repository;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -8,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
 import isa.apoteka.domain.User;
+import isa.apoteka.domain.Medicine;
 import isa.apoteka.domain.Patient;
 import isa.apoteka.domain.PatientUpdateForm;
 
@@ -29,4 +31,12 @@ public interface PatientRepository extends JpaRepository<Patient, Long> {
     
     @Query("from Patient p join p.pharmacies pp where pp.id=:id")
 	List<Patient> findAllPatientsNotification(Long id);
+    
+    @Query("from Medicine m join m.reservedMedicine rm where rm.patient.id = ?1")
+   	List<Medicine> searchReservedMedicineForPatient(Long id);
+    
+    @Modifying
+    @Transactional
+    @Query(value="insert into Reserved_Medicine (quantity, date, medicine_id, patient_id, uid) values(?3, ?4, ?2, ?1, ?5)", nativeQuery=true)
+    void updateReservedMedicineForPatient(Long patId, Long medId, int quantity, Date date, String uid);
 }

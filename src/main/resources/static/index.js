@@ -8,7 +8,7 @@ var app = new Vue({
 	},
 	created() {
 		axios
-			.get('/api/pharmacy')
+			.get('/api/pharmacy/findAll')
 			.then(response => {
 				this.pharmacies = response.data
 			})

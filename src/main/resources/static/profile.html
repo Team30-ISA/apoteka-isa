@@ -106,6 +106,7 @@
 						<li class="menu-has-children"><a href="#">Tools</a>
 							<ul>
 								<li><a href="promotion.html">New Promotion</a></li>
+								<li><a href="drugreservation.html">Reserve drug</a></li>
 							</ul></li>
 						<li class="menu-has-children"><a href="#">{{patient.firstName}}
 								{{patient.lastName}}</a>
@@ -257,6 +258,17 @@
 					</div>
 				</div>
 			</section>
+			<div>
+				<h4>Spisak rezervisanih lekova: </h4>
+				<style>
+				.pre-formatted {
+  					white-space: pre-wrap; /* 👈 this is the important part */
+  					border: 1px dotted;
+  					padding: 1rem;
+				}
+				</style>
+				<label v-for="med in reservedMedications" value="med.id">{{med.name}}&#13;&#10;</label>
+			</div>
 		</main>
 
 		<a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>

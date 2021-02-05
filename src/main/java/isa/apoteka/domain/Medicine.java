@@ -15,6 +15,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Medicine {
 	@Id
@@ -22,31 +24,36 @@ public class Medicine {
 	private Long id;
 
 	@Column(nullable = false)
-	String name;
+	private String name;
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private DrugType type;
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private DrugForm form;
 	@Column
-	String contraindications;
+	private String contraindications;
 	@Column
-	String composition;
+	private String composition;
 	@Column
-	String recommendedIntakePerDay;
+	private String recommendedIntakePerDay;
 	@ManyToMany
     @JoinTable(name = "medicine_substitutes",
             joinColumns = @JoinColumn(name = "medicine_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "sub_medicine_id", referencedColumnName = "id"))
 	List<Medicine> substitutes;
 	@Column
-	String manufacturer;
+	private String manufacturer;
 	@Column
-	DrugIssuanceRegime regime;
+	private DrugIssuanceRegime regime;
 	@Column
-	String notes;
+	private String notes;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "medicine")
 	private List<MedicineInPharmacy> medicineInpharmacy;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "medicine")
+	private List<ReservedMedicine> reservedMedicine;
 	
 	
 

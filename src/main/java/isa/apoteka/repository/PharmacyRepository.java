@@ -3,9 +3,13 @@ package isa.apoteka.repository;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.transaction.annotation.Transactional;
 
 import isa.apoteka.domain.Dermatologist;
+import isa.apoteka.domain.Medicine;
+import isa.apoteka.domain.MedicineDisplay;
 import isa.apoteka.domain.Pharmacist;
 import isa.apoteka.domain.Pharmacy;
 
@@ -26,4 +30,12 @@ public interface PharmacyRepository extends JpaRepository<Pharmacy, Long>{
     
     @Query("from Pharmacist p join p.pharmacy pp where p.firstName like %:firstName% and p.lastName like %:lastName% and  pp.id=:id ")
    	List<Pharmacist> searchPharmsWorkingInPharmacy(Long id, String firstName, String lastName);
+    
+    @Query("from Medicine m join m.medicineInpharmacy mp where mp.pharmacy.id = ?1 and m.name = ?2")
+   	Medicine searchMedicineInPharmacy(Long id, String name);
+    
+    @Modifying
+    @Transactional
+    @Query("update MedicineInPharmacy mp set mp.quantity = mp.quantity - ?3 where mp.medicine.id = ?2 and mp.pharmacy.id = ?1")
+    void updateMedicineInPharmacy(Long pharmId, Long medId, int quantity);
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -14,6 +15,11 @@ public class Patient extends User{
 
 	@ManyToMany(mappedBy = "patients")
 	private List<Pharmacy> pharmacies;
+	
+	//@OneToMany(mappedBy = "patients")
+	//private List<Medicine> reservedMedications;
+	@OneToMany(mappedBy = "medicine")
+	private List<ReservedMedicine> reservedMedicine;
 	
 	public Patient() {
 		super();

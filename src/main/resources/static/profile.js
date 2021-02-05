@@ -6,6 +6,7 @@
 		newpass: "",
 		name: "",
 		surname: "",
+		reservedMedications: [],
 	},
 	methods: {
 		changepass() {
@@ -70,6 +71,7 @@ var app = new Vue({
 		idCountry: 0,
 		idCity: 0,
 		idAddress: 0,
+		reservedMedications: [],
 	},
 	methods: {
 		logout(){
@@ -224,7 +226,22 @@ var app = new Vue({
 	     	this.selectedCountry = this.patient.address.city.country.id
 	     	this.selectedCity = this.patient.address.city.id
 	     	this.selectedAddress = this.patient.address.id
-	     	console.log('Selected Address pri kreiranju str: ' + this.selectedAddress)
+	     	//console.log('Selected Address pri kreiranju str: ' + this.selectedAddress)
+	     	
+	     		     axios
+		.get('/api/patient/findAllReservedMedicine',{
+			  headers: {
+				    'Authorization': "Bearer " + localStorage.getItem('access_token')
+			  },
+			  params:{
+			  	id: this.patient.id,
+			  }
+	     })
+	     .then(response => {
+	     	this.reservedMedications = response.data
+	     	console.log(this.reservedMedications)
+	     })
+	     	
 	     })
 	     axios
 		.get('/api/country/getAllCountries',{

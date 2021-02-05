@@ -52,4 +52,12 @@ public class MedicineInPharmacy implements Serializable {
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
+	
+	public boolean reduceQuantity(int quantity) {
+		if(this.quantity >= quantity) {
+			this.quantity -= quantity;
+			return true;
+		}else
+			return false;
+	}
 }
