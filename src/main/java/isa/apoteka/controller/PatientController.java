@@ -6,6 +6,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.UUID;
 
@@ -26,10 +28,14 @@ import isa.apoteka.domain.PatientUpdateForm;
 import isa.apoteka.domain.ReservedMedicine;
 import isa.apoteka.domain.User;
 import isa.apoteka.dto.PatientDTO;
+
 import isa.apoteka.service.MedicineReservationService;
 import isa.apoteka.service.MedicineService;
+
+import isa.apoteka.service.CounselingService;
+import isa.apoteka.service.ExaminationService;
+
 import isa.apoteka.service.PatientService;
-import isa.apoteka.async.service.EmailService;
 
 
 // Primer kontrolera cijim metodama mogu pristupiti samo autorizovani korisnici
@@ -43,6 +49,10 @@ public class PatientController {
 	private MedicineService medicineService;
 	@Autowired
 	private MedicineReservationService mrService;
+	
+	private CounselingService counselingService;
+	@Autowired
+	private ExaminationService examinationService;
 
 	// Za pristup ovoj metodi neophodno je da ulogovani korisnik ima ADMIN ulogu
 	// Ukoliko nema, server ce vratiti gresku 403 Forbidden
@@ -101,7 +111,6 @@ public class PatientController {
 	@GetMapping("/patient/updateReservedMedicine")
 	@PreAuthorize("hasRole('PATIENT')")
 	public void updateReservedMedicineForPatient(Long patId, Long medId, int quantity, String date) {
-		Long a = (Long) patId;
 		String[] s = date.split("-", 3);
 		String s2 = s[2] + "/" + s[1] + "/" + s[0];
 		DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
@@ -116,7 +125,7 @@ public class PatientController {
 		ReservedMedicine rm = new ReservedMedicine();
 		rm.setDate(newDate);
 		rm.setPatient(patientService.findById(patId));
-		rm.setMedicine(medicineService.findById(medId));
+		rm.setMedicine(medicineService.findOne(medId));
 		rm.setQuantity(quantity);
 		rm.setUid(uid);
 		mrService.SendNotification(rm);
@@ -128,6 +137,30 @@ public class PatientController {
 	@PreAuthorize("hasRole('PATIENT')")
 	public List<Medicine> searchReservedMedicineForPatient(Long id) {
 		return this.patientService.searchReservedMedicineForPatient(id);
+	}
+
+	@GetMapping("/patient/isFree")
+	@PreAuthorize("hasRole('DERM') || hasRole('PHARM')")
+	public ResponseEntity<Boolean> isFree(Long counselingId, Long startDate, int duration) {
+		Date start = new Date(startDate);
+		Calendar calendar = new GregorianCalendar();
+		calendar.setTime(start);
+		calendar.add(Calendar.MINUTE, duration);
+		Date end = calendar.getTime();
+		Patient patient;
+		if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
+				.anyMatch(a -> a.getAuthority().equals("ROLE_DERM"))) {
+			patient = counselingService.getPatientInCounseling(counselingId);
+		}
+		else {
+			patient = examinationService.getPatientInExamination(counselingId);
+		}
+		if(patient == null)
+			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+		if(patientService.hasCounselings(patient.getId(), start, end) == false && patientService.hasExaminations(patient.getId(), start, end) == false) {
+			return new ResponseEntity<>(true, HttpStatus.OK);
+		}
+		return new ResponseEntity<>(false, HttpStatus.OK);
 	}
 	
 

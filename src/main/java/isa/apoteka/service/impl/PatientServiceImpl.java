@@ -1,6 +1,10 @@
 package isa.apoteka.service.impl;
 
+
 import java.util.Date;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,18 +13,14 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import isa.apoteka.domain.Authority;
 import isa.apoteka.domain.Medicine;
+
+import isa.apoteka.domain.Counseling;
+import isa.apoteka.domain.Examination;
 import isa.apoteka.domain.Patient;
 import isa.apoteka.domain.PatientUpdateForm;
-import isa.apoteka.domain.User;
-import isa.apoteka.domain.UserRequest;
 import isa.apoteka.repository.PatientRepository;
-import isa.apoteka.repository.UserRepository;
-import isa.apoteka.service.AuthorityService;
 import isa.apoteka.service.PatientService;
-import isa.apoteka.service.UserService;
 
 @Service
 public class PatientServiceImpl implements PatientService {
@@ -30,9 +30,6 @@ public class PatientServiceImpl implements PatientService {
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
-
-	@Autowired
-	private AuthorityService authService;
 
 	@Override
 	public Patient findByUsername(String username) throws UsernameNotFoundException {
@@ -93,6 +90,59 @@ public class PatientServiceImpl implements PatientService {
 	@Override
 	public void updateReservedMedicineForPatient(Long patId, Long medId, int quantity, Date date, String uid) {
 		patientRepository.updateReservedMedicineForPatient(patId, medId, quantity, date, uid);
+	}
+
+	@Override
+	public Boolean hasCounselings(Long patientId, Date start, Date end) {
+		Calendar calendar = new GregorianCalendar();
+		calendar.setTime(start);
+		calendar.add(Calendar.DATE, -1);
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		Date startDate = calendar.getTime();
+		calendar.add(Calendar.DATE, 2);
+		Date endDate = calendar.getTime();
+		List<Counseling> counselings = patientRepository.getPatientCounselings(patientId, startDate, endDate);
+		System.out.println(start + " *** " + end);
+		for(Counseling c : counselings) {
+			calendar.setTime(c.getStartDate());
+			calendar.add(Calendar.MINUTE, c.getDuration());
+			endDate = calendar.getTime();
+			System.out.println(c.getStartDate() + " XXX " + endDate);
+			if((c.getStartDate().getTime() <= start.getTime() && endDate.getTime() > start.getTime())
+					|| (c.getStartDate().getTime() < end.getTime() && endDate.getTime() >= end.getTime()) 
+					|| (c.getStartDate().getTime() >= start.getTime() && endDate.getTime() <= end.getTime())) {
+				System.out.println("true");
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public Boolean hasExaminations(Long patientId, Date start, Date end) {
+		Calendar calendar = new GregorianCalendar();
+		calendar.setTime(start);
+		calendar.add(Calendar.DATE, -1);
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		Date startDate = calendar.getTime();
+		calendar.add(Calendar.DATE, 2);
+		Date endDate = calendar.getTime();
+		List<Examination> examinations = patientRepository.getPatientExamintaions(patientId, startDate, endDate);
+		for(Examination c : examinations) {
+			calendar.setTime(c.getStartDate());
+			calendar.add(Calendar.MINUTE, c.getDuration());
+			endDate = calendar.getTime();
+			if((c.getStartDate().getTime() <= start.getTime() && endDate.getTime() > start.getTime())
+					|| (c.getStartDate().getTime() < end.getTime() && endDate.getTime() >= end.getTime()) 
+					|| (c.getStartDate().getTime() >= start.getTime() && endDate.getTime() <= end.getTime())) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }

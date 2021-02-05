@@ -18,7 +18,8 @@ var app = new Vue({
         counts: [],
         pharmacies: [],
         pharm: null,
-        derm: null
+        derm: null,
+        nearest: null
         
 	},
 	methods: {
@@ -306,6 +307,9 @@ var app = new Vue({
 				ret += this.counts[i];
 			}
 			return ret;
+		},
+		redirect(p){
+			window.location.href = p;
 		}
 
     },
@@ -325,27 +329,49 @@ var app = new Vue({
         	window.location.href = '/login.html';
 	    })
     	axios
-        .get('/api/dermatologist/getDermPharmacies',{
-			  headers: {
-			    'Authorization': "Bearer " + localStorage.getItem('access_token')
-			  }
-        })
-        .then(response => {
-        	this.pharmacies = response.data
-        	this.pharm = this.pharmacies[0].id
-        	axios
-    		.get('/api/dermatologist/getLoggedUser',{
-    			  headers: {
-    				    'Authorization': "Bearer " + localStorage.getItem('access_token')
-    			  }
-    	     })
-    	     .then(response => {
-    	     	this.derm = response.data
-    	        this.current = new Date(this.current.getFullYear(), this.current.getMonth(), this.current.getDate());
-    	        this.today = new Date(this.today.getFullYear(), this.today.getMonth(), this.today.getDate());
-    	        this.getTerms(this.today);
-    	        this.getDaysInMonth(this.current.getMonth(), this.current.getFullYear());
-    	     })
-        })
+		.get('/api/counseling/getNearestCounseling',{
+			headers: {
+			 'Authorization': "Bearer " + localStorage.getItem('access_token')
+			},
+			params:{
+				start: (new Date).getTime(),
+				finished: true
+			}
+	     })
+	     .then(response => {
+	    	 this.nearest = response.data
+	    	 axios
+	         .get('/api/dermatologist/getDermPharmacies',{
+	 			  headers: {
+	 			    'Authorization': "Bearer " + localStorage.getItem('access_token')
+	 			  }
+	         })
+	         .then(response => {
+	         	this.pharmacies = response.data
+	         	this.pharm = this.pharmacies[0].id
+	         	if(this.nearest){
+	         		for(let ind = 0; ind < this.pharmacies.length; ind++){
+	         			if(this.pharmacies[ind].name == this.nearest.pharmacyName){
+	         				this.pharm = this.pharmacies[ind].id
+	         				break;
+	         			}
+	         		}
+	         	}
+	         	axios
+	     		.get('/api/dermatologist/getLoggedUser',{
+	     			  headers: {
+	     				    'Authorization': "Bearer " + localStorage.getItem('access_token')
+	     			  }
+	     	     })
+	     	     .then(response => {
+	     	     	this.derm = response.data
+	     	        this.current = new Date(this.current.getFullYear(), this.current.getMonth(), this.current.getDate());
+	     	        this.today = new Date(this.today.getFullYear(), this.today.getMonth(), this.today.getDate());
+	     	        this.getTerms(this.today);
+	     	        this.getDaysInMonth(this.current.getMonth(), this.current.getFullYear());
+	     	     })
+	         })
+	    	 
+	     })
     }
 })

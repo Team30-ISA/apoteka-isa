@@ -18,4 +18,6 @@ public interface PatientService {
 	List<Patient> findAllPatientsNotification(Long id);
 	List<Medicine> searchReservedMedicineForPatient(Long id);
 	void updateReservedMedicineForPatient(Long patId, Long medId, int quantity, Date date, String uid);
+	Boolean hasCounselings(Long patientId, Date start, Date end);
+	Boolean hasExaminations(Long patientId, Date start, Date end);
 }

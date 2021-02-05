@@ -3,7 +3,9 @@ package isa.apoteka.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,20 +21,24 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
+
 import isa.apoteka.domain.Address;
 import isa.apoteka.domain.Authority;
 import isa.apoteka.domain.City;
 import isa.apoteka.domain.Pharmacist;
 import isa.apoteka.domain.PharmacyAdmin;
 import isa.apoteka.domain.User;
+import isa.apoteka.dto.ChangeDataDTO;
+import isa.apoteka.dto.FilteredDTO;
 import isa.apoteka.dto.NewPharmacistDTO;
+import isa.apoteka.dto.PharmacistDTO;
+import isa.apoteka.dto.PharmacyDTO;
+import isa.apoteka.dto.SearchFilterDTO;
 import isa.apoteka.service.AddressService;
 import isa.apoteka.service.AuthorityService;
 import isa.apoteka.service.CityService;
 import isa.apoteka.service.PharmacistService;
 import isa.apoteka.service.UserService;
-import isa.apoteka.dto.ChangeDataDTO;
-import isa.apoteka.dto.PharmacyDTO;
 
 
 @RestController
@@ -59,8 +65,9 @@ public class PharmacistController {
 	
 	@GetMapping("/getLoggedUser")
 	@PreAuthorize("hasRole('PHARM')")
-	public Pharmacist getLoggedUser() {
-		return (Pharmacist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	public PharmacistDTO getLoggedUser() {
+		Pharmacist pharmacist = (Pharmacist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		return new PharmacistDTO(pharmacist);
 	}
 	
 
@@ -132,5 +139,16 @@ public class PharmacistController {
 	@PreAuthorize("hasRole('PHARM') || hasRole('ADMIN')")
 	public User loadById(Long pharmId) {
 		return this.pharmacistService.findById(pharmId);
+	}
+	
+	@PostMapping(value = "/searchPharms")
+	@PreAuthorize("hasRole('ADMIN') || hasRole('PATIENT')")
+	public ResponseEntity<List<FilteredDTO>> searchPharmsWorkingInPharmacy(@RequestBody SearchFilterDTO searchPharm) {
+		List<FilteredDTO> pharms = pharmacistService.searchPharms(searchPharm);
+		
+		for(FilteredDTO d : pharms){
+			System.out.println(d.getPharmacyNames().size());
+		}
+		return new ResponseEntity<>(pharms, HttpStatus.OK);
 	}
 }

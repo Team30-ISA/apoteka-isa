@@ -35,5 +35,14 @@ public interface DermatologistRepository extends JpaRepository<Dermatologist, Lo
     @Transactional
     @Query("update Dermatologist p set p.firstName = ?1, p.lastName = ?2 where p.id = ?3")
     void update(String firstName, String lastName, Long id);
+	
+    @Query("from Dermatologist d where d.firstName like %:firstName% and d.lastName like %:lastName%")
+	List<Dermatologist> searchDerms(String firstName, String lastName);
+    
+    @Query("from Dermatologist d join d.pharmacies dp where d.firstName like %:firstName% and d.lastName like %:lastName% and dp.id=:pharmacyId")
+   	List<Dermatologist> searchDermsForAdmin(String firstName, String lastName, Long pharmacyId);
+    
+    @Query("from Dermatologist d join d.pharmacies dp where d.id=:id and dp.id in :pharmacy")
+	List<Dermatologist> worksInPharmacy(Long id, List<Long> pharmacy);
 
 }

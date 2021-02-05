@@ -11,7 +11,6 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="Country")
-@Inheritance(strategy=TABLE_PER_CLASS)
 public class Country {
 
 	@Id

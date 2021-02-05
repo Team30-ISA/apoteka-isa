@@ -24,19 +24,21 @@ public class Counseling {
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Patient patient;
 	private Float price;
+	private String report;
 	
 	public Counseling() {
 		super();
 	}
 
 	public Counseling(Long id, Date startDate, int duration, DermatologistWorkCalendar dermatologistWorkCalendar,
-			Patient patient, Float price) {
+			Patient patient, Float price, String report) {
 		this.id = id;
 		this.startDate = startDate;
 		this.duration = duration;
 		this.dermatologistWorkCalendar = dermatologistWorkCalendar;
 		this.patient = patient;
 		this.price = price;
+		this.report = report;
 	}
 
 	public Long getId() {
@@ -85,6 +87,14 @@ public class Counseling {
 
 	public void setPrice(Float price) {
 		this.price = price;
+	}
+
+	public String getReport() {
+		return report;
+	}
+
+	public void setReport(String report) {
+		this.report = report;
 	}
 	
 }

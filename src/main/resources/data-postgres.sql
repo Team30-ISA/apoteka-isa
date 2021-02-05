@@ -48,6 +48,8 @@ INSERT INTO AUTHORITY (name) VALUES ('ROLE_PHARM');
 INSERT INTO AUTHORITY (name) VALUES ('ROLE_PATIENT');
 
 INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (3, 3);
+INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (5, 3);
+INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (6, 3);
 INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (4, 4);
 INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (16, 5);
 INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (13, 5);
@@ -65,6 +67,10 @@ insert into pharmacy_dermatologist (user_id, pharmacy_id) values (3,1);
 insert into pharmacy_dermatologist (user_id, pharmacy_id) values (5,2);
 insert into pharmacy_dermatologist (user_id, pharmacy_id) values (6,2);
 insert into pharmacy_dermatologist (user_id, pharmacy_id) values (3,2);
+insert into pharmacy_dermatologist (user_id, pharmacy_id) values (17,1);
+insert into pharmacy_dermatologist (user_id, pharmacy_id) values (18,1);
+insert into pharmacy_dermatologist (user_id, pharmacy_id) values (19,1);
+insert into pharmacy_dermatologist (user_id, pharmacy_id) values (20,1);
 
 insert into drug_form (name) VALUES ('antibiotic');
 insert into drug_form (name) VALUES ('anesthetic');
@@ -84,6 +90,8 @@ insert into medicine (name, type_id, form_id, contraindications, composition, re
 insert into medicine (name, type_id, form_id, contraindications, composition, recommended_intake_per_day, manufacturer, regime) VALUES ('Metafex', 4, 3, 'allergy', '200mg ibuprofen, 325mg paracetamol', 'Po potrebi, ali ne više od 2', 'GOODWILL', 0);
 insert into medicine (name, type_id, form_id, contraindications, composition, recommended_intake_per_day, manufacturer, regime) VALUES ('Tetafex', 4, 3, 'allergy', '200mg ibuprofen, 325mg paracetamol', 'Po potrebi, ali ne više od 2', 'GOODWILL', 0);
 
+insert into patient_allergies(patient_id, allergies_id) VALUES (13, 1);
+
 insert into medicine_substitutes (medicine_id, sub_medicine_id) VALUES (1, 2);
 insert into medicine_substitutes (medicine_id, sub_medicine_id) VALUES (2, 1);
 insert into medicine_substitutes (medicine_id, sub_medicine_id) VALUES (3, 1);
@@ -99,11 +107,13 @@ insert into reserved_medicine (uid, quantity, date, patient_id, medicine_id) VAL
 
 insert into dermatologist_work_calendar (dermatologist_id, pharmacy_id, start_date, end_date) VALUES (3, 1, '20210218 10:00:00 AM', '20210218 10:00:00 PM');
 insert into dermatologist_work_calendar (dermatologist_id, pharmacy_id, start_date, end_date) VALUES (3, 2, '20210219 10:00:00 AM', '20210219 10:00:00 PM');
+insert into dermatologist_work_calendar (dermatologist_id, pharmacy_id, start_date, end_date) VALUES (5, 2, '20210220 05:00:00 AM', '20210220 05:00:00 PM');
 
-insert into counseling (start_date, duration, dermatologist_work_calendar_id, price) VALUES ('20210218 10:00:00 AM', 15, 1, 1999.99);
-insert into counseling (start_date, duration, dermatologist_work_calendar_id, price) VALUES ('20210219 12:00:00 PM', 30, 2, 999.99);
+insert into counseling (start_date, duration, dermatologist_work_calendar_id, price) VALUES ('20210202 08:53:00 PM', 5, 1, 1999.99);
+insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, patient_id) VALUES ('20210204 11:35:00 AM', 60, 2, 999.99, 13);
+insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, patient_id) VALUES ('20210219 12:00:00 PM', 30, 2, 999.99, 13);
 insert into counseling (start_date, duration, dermatologist_work_calendar_id, price) VALUES ('20210220 11:00:00 AM', 15, 1, 1999.99);
-insert into counseling (start_date, duration, dermatologist_work_calendar_id, price) VALUES ('20210220 11:15:00 AM', 30, 1, 1999.99);
+insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, patient_id) VALUES ('20210220 11:15:00 AM', 30, 1, 1999.99, 13);
 insert into counseling (start_date, duration, dermatologist_work_calendar_id, price) VALUES ('20210220 12:00:00 PM', 60, 1, 2999.99);
 insert into counseling (start_date, duration, dermatologist_work_calendar_id, price) VALUES ('20210220 01:00:00 PM', 5, 1, 99.99);
 insert into counseling (start_date, duration, dermatologist_work_calendar_id, price) VALUES ('20210220 01:05:00 PM', 15, 1, 999.99);
@@ -114,6 +124,8 @@ insert into counseling (start_date, duration, dermatologist_work_calendar_id, pr
 insert into counseling (start_date, duration, dermatologist_work_calendar_id, price) VALUES ('20210220 03:55:00 PM', 5, 1, 99.99);
 insert into counseling (start_date, duration, dermatologist_work_calendar_id, price) VALUES ('20210220 05:00:00 PM', 15, 1, 999.99);
 
+insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, patient_id) VALUES ('20210220 11:12:00 AM', 20, 3, 500.00, 13);
+
 insert into promotion_notification (patient_id, pharmacy_id) values (13, 1);
 insert into promotion_notification (patient_id, pharmacy_id) values (14, 2);
 insert into promotion_notification (patient_id, pharmacy_id) values (15, 3);
@@ -122,7 +134,7 @@ insert into pharmacist_work_calendar (pharmacist_id, pharmacy_id, start_date, en
 insert into pharmacist_work_calendar (pharmacist_id, pharmacy_id, start_date, end_date) VALUES (4, 1, '20210216 08:00:00 AM', '20210216 08:00:00 PM');
 insert into pharmacist_work_calendar (pharmacist_id, pharmacy_id, start_date, end_date) VALUES (4, 1, '20210217 04:00:00 PM', '20210218 04:00:00 AM');
 
-insert into examination (start_date, duration, pharmacist_work_calendar_id, price) VALUES ('20210215 11:00:00 AM', 5, 1, 99.99);
+insert into examination (start_date, duration, pharmacist_work_calendar_id, price, patient_id) VALUES ('20210205 12:35:00 PM', 30, 1, 99.99, 13);
 insert into examination (start_date, duration, pharmacist_work_calendar_id, price) VALUES ('20210215 11:05:00 AM', 15, 1, 999.99);
 insert into examination (start_date, duration, pharmacist_work_calendar_id, price) VALUES ('20210215 02:20:00 PM', 30, 1, 699.99);
 insert into examination (start_date, duration, pharmacist_work_calendar_id, price) VALUES ('20210216 01:50:00 PM', 10, 2, 599.99);
@@ -131,3 +143,17 @@ insert into examination (start_date, duration, pharmacist_work_calendar_id, pric
 insert into examination (start_date, duration, pharmacist_work_calendar_id, price) VALUES ('20210217 05:55:00 PM', 5, 3, 99.99);
 insert into examination (start_date, duration, pharmacist_work_calendar_id, price) VALUES ('20210218 03:00:00 AM', 15, 3, 999.99);
 
+insert into dermatologist_grade (id, grade, dermatologist_id, patient_id) values (1, 2, 3, 13);
+insert into dermatologist_grade (id, grade, dermatologist_id, patient_id) values (2, 5, 5, 13);
+insert into dermatologist_grade (id, grade, dermatologist_id, patient_id) values (3, 4, 6, 13);
+insert into dermatologist_grade (id, grade, dermatologist_id, patient_id) values (4, 3, 3, 13);
+
+
+insert into pharmacist_grade (id, grade, pharmacist_id, patient_id) values (1, 2, 4, 13);
+insert into pharmacist_grade (id, grade, pharmacist_id, patient_id) values (2, 5, 4, 13);
+insert into pharmacist_grade (id, grade, pharmacist_id, patient_id) values (3, 4, 7, 13);
+insert into pharmacist_grade (id, grade, pharmacist_id, patient_id) values (4, 3, 7, 13);
+
+insert into medicine_price(id, end_of_price, price, start_of_price, medicine_id, pharmacy_id) values (100, '20210216 08:00:00 PM',200, '20210215 10:00:00 AM', 1, 2);
+insert into medicine_price(id, end_of_price, price, start_of_price, medicine_id, pharmacy_id) values (101, '20210216 08:00:00 PM',300, '20210215 10:00:00 AM', 2, 1);
+insert into medicine_price(id, end_of_price, price, start_of_price, medicine_id, pharmacy_id) values (102, '20210216 08:00:00 PM',400, '20210215 10:00:00 AM', 2, 2);

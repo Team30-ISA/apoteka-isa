@@ -73,7 +73,7 @@ public class DermatologistWorkCalendarServiceImpl implements DermatologistWorkCa
 	public List<PeriodDTO> MapDermWCToPeriod(List<DermatologistWorkCalendar> derms) {
 		List<PeriodDTO> periods = new ArrayList<PeriodDTO>();
 		for(DermatologistWorkCalendar derm : derms) {
-			PeriodDTO p = new PeriodDTO(derm.getStartDate(), derm.getEndDate());
+			PeriodDTO p = new PeriodDTO(derm.getStartDate(), derm.getEndDate(), derm.getId());
 			periods.add(p);
 		}
 		return periods;
@@ -100,6 +100,22 @@ public class DermatologistWorkCalendarServiceImpl implements DermatologistWorkCa
 		PharmacyAdmin admin = (PharmacyAdmin) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		dermWCRepository.deleteDermWorkCalendarByDerm(dermId, admin.getPharmacy().getId());
 		
+	}
+
+	@Override
+	public PeriodDTO findDermWorkCalendarByDermIdAndDate(Long pharmacyId, Long dermatologistId, Date start) {
+		Calendar calendar = new GregorianCalendar();
+		calendar.setTime(start);
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		Date startDate = calendar.getTime();
+		calendar.add(Calendar.DATE, 1);
+		Date endDate = calendar.getTime();
+		DermatologistWorkCalendar dwc = dermWCRepository.findDermWorkCalendarByDermIdAndDate(pharmacyId, dermatologistId, startDate, endDate);
+		if(dwc == null)
+			return null;
+		return new PeriodDTO(dwc.getStartDate(), dwc.getEndDate(), dwc.getId());
 	}
 
 }

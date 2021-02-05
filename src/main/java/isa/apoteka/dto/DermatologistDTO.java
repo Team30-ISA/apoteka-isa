@@ -15,8 +15,6 @@ public class DermatologistDTO extends UserDTO{
 
 	public DermatologistDTO(User user) {
 		super(user);
-	}
-	
-	
+	}	
 
 }

@@ -124,11 +124,16 @@ main ::-webkit-scrollbar-thumb:hover {
 				<nav id="nav-menu-container">
 					<ul class="nav-menu">
 						<li class="menu-active"><a href="pharmacyAdminHome.html">Home</a></li>
-						<li><a href="#about">About Us</a></li>
+						<li class="menu-has-children"><a href="#">Search</a>
+							<ul>
+								<li><a href="../filterDermatologist.html">Dermatologists</a></li>
+								<li><a href="../filterPharmacist.html">Pharmacists</a></li>
+							</ul></li>
 						<li class="menu-has-children"><a href="#">Tools</a>
 							<ul>
 								<li><a href="promotion.html">New Promotion</a></li>
 								<li><a href="managingDermatologists.html">Manage Dermatologists</a></li>
+								<li><a href="managingMedication.html">Manage Medicine</a></li>
 							</ul></li>
 						<li class="menu-has-children"><a href="#">{{admin.firstName}}
 								{{admin.lastName}}</a>
@@ -163,7 +168,7 @@ main ::-webkit-scrollbar-thumb:hover {
 					<header class="special">
 						<h2>MANAGE PHARMACISTS</h2>
 					</header>
-						<div class="highlight">
+						<div class="highlight" >
 						<section>
 						    <table style="width: 40%; margin-left:30%; margin-bottom:7.5%">
 								<tr width="100%">
