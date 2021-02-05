@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import isa.apoteka.domain.Examination;
+import isa.apoteka.domain.Patient;
+import isa.apoteka.domain.Pharmacy;
 import isa.apoteka.dto.ExaminationDTO;
 import isa.apoteka.repository.ExamintaionRepository;
 import isa.apoteka.service.ExaminationService;
@@ -45,7 +47,7 @@ public class ExaminationServiceImpl implements ExaminationService {
 		if(examination.getPharmacistWorkCalendar().getPharmacy() == null)
 			return null;
 		if(examination.getPatient() != null)
-			patientName = examination.getPatient().getFirstName() + examination.getPatient().getLastName();
+			patientName = examination.getPatient().getFirstName() + " " + examination.getPatient().getLastName();
 		return new ExaminationDTO(examination.getId(), examination.getStartDate(), examination.getDuration(), examination.getPharmacistWorkCalendar().getPharmacy().getName(), patientName, examination.getPrice(), examination.getReport());
 	}
 	
@@ -116,6 +118,108 @@ public class ExaminationServiceImpl implements ExaminationService {
 	        else
 	            return 0;
 		}
+	}
+
+	@Override
+	public ExaminationDTO getNearestExamintaion(Long pharmacistId, Date start, boolean finished) {
+		Calendar calendar = new GregorianCalendar();
+		calendar.setTime(start);
+		calendar.add(Calendar.DATE, -1);
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		Date startDate = calendar.getTime();
+		List<Examination> examinations = examinationRepository.findAllByPharmAndStart(pharmacistId, startDate);
+		if(examinations == null || examinations.size() == 0)
+			return null;
+		for(Examination e : examinations) {
+			if(finished) {
+				if(e.getReport() != null && !(e.getReport()).equals(""))
+					continue;
+			}
+			if(e.getStartDate().before(start)) {
+				calendar.setTime(e.getStartDate());
+				calendar.add(Calendar.MINUTE, e.getDuration());
+				System.out.println(calendar.getTime());
+				System.out.println(start);
+				if(calendar.getTime().after(start)) {
+					return mapExaminationToExaminationDTO(e);
+				}
+			}
+		}
+		for(Examination e : examinations) {
+			if(finished) {
+				if(e.getReport() != null && !(e.getReport()).equals(""))
+					continue;
+			}
+			if(start.getTime() <= e.getStartDate().getTime()) {
+				return mapExaminationToExaminationDTO(e);
+			}
+		}
+		return null;
+	}
+	
+	@Override
+	public Patient getPatientInExamination(Long id) {
+		Examination examination= examinationRepository.findById(id).orElse(null);
+		if(examination == null)
+			return null;
+		return examination.getPatient();
+	}
+	
+	@Override
+	public Pharmacy getPharmacyInExamination(Long id) {
+		Examination examination = examinationRepository.findById(id).orElse(null);
+		if(examination == null)
+			return null;
+		return examination.getPharmacistWorkCalendar().getPharmacy();
+	}
+	
+	@Override
+	public void updateReport(String report, Long examinationId) {
+		examinationRepository.updateReport(report, examinationId);		
+	}
+
+	@Override
+	public Examination findOne(Long id) {
+		return examinationRepository.findById(id).orElse(null);
+	}
+
+	@Override
+	public Boolean createExamination(Date start, int duration, Long patientId, Long pwcId, Long pharmacistId) {
+		Calendar calendar = new GregorianCalendar();
+		calendar.setTime(start);
+		calendar.add(Calendar.MINUTE, duration);
+		Date end = calendar.getTime();
+		if(isPharmacistFree(start, end, pharmacistId) == false) {
+			return false;
+		}
+		examinationRepository.createExamination(start, duration, patientId, pwcId);
+		return true;
+	}
+	
+	public Boolean isPharmacistFree(Date start, Date end, Long pharmacistId){
+		Calendar calendar = new GregorianCalendar();
+		calendar.setTime(start);
+		calendar.add(Calendar.DATE, -1);
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		Date startDate = calendar.getTime();
+		calendar.add(Calendar.DATE, 2);
+		Date endDate = calendar.getTime();
+		List<Examination> examinations = examinationRepository.findAllTerms(pharmacistId, startDate, endDate);
+		for(Examination c : examinations) {
+			calendar.setTime(c.getStartDate());
+			calendar.add(Calendar.MINUTE, c.getDuration());
+			endDate = calendar.getTime();
+			if((c.getStartDate().getTime() <= start.getTime() && endDate.getTime() > start.getTime())
+					|| (c.getStartDate().getTime() < end.getTime() && endDate.getTime() >= end.getTime()) 
+					|| (c.getStartDate().getTime() >= start.getTime() && endDate.getTime() <= end.getTime())) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 }

@@ -124,8 +124,8 @@ public class PatientServiceImpl implements PatientService {
 			calendar.setTime(c.getStartDate());
 			calendar.add(Calendar.MINUTE, c.getDuration());
 			endDate = calendar.getTime();
-			if((c.getStartDate().getTime() <= start.getTime() && endDate.getTime() >= start.getTime())
-					|| (c.getStartDate().getTime() <= end.getTime() && endDate.getTime() >= end.getTime()) 
+			if((c.getStartDate().getTime() <= start.getTime() && endDate.getTime() > start.getTime())
+					|| (c.getStartDate().getTime() < end.getTime() && endDate.getTime() >= end.getTime()) 
 					|| (c.getStartDate().getTime() >= start.getTime() && endDate.getTime() <= end.getTime())) {
 				return true;
 			}

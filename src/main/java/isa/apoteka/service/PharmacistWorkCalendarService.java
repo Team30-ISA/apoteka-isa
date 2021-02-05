@@ -10,6 +10,7 @@ public interface PharmacistWorkCalendarService {
 	Boolean save(PharmacistWorkCalendar pharm);
 	List<PharmacistWorkCalendar> findAllPharmWorkCalendarByPharmId(Long id);
 	List<PeriodDTO> findAllPharmWorkCalendarByPharmIdAndPeriod(Long pharmacistId, Date start, Date end);
+	PeriodDTO findPharmWorkCalendarByPharmIdAndDate(Long pharmacistId, Date start);
 	void deletePharmWorkCalendarByDate(Date start, Long pharmId);
 	void deletePharmWorkCalendarByPharm(Long id);
 }

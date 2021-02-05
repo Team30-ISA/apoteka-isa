@@ -24,6 +24,7 @@ import isa.apoteka.dto.MedicineDTO;
 import isa.apoteka.dto.MedicineNameDTO;
 import isa.apoteka.dto.PharmacistDTO;
 import isa.apoteka.service.CounselingService;
+import isa.apoteka.service.ExaminationService;
 import isa.apoteka.service.MedicineService;
 
 @RestController
@@ -36,46 +37,69 @@ public class MedicineContoller {
 	@Autowired
 	private CounselingService counselingService;
 	
+	@Autowired
+	private ExaminationService examinationService;
+	
 	@GetMapping("/getAll")
-	@PreAuthorize("hasRole('DERM')")
+	@PreAuthorize("hasRole('DERM') || hasRole('PHARM')")
 	public List<Medicine> getAll() {
 		return medicineService.findAll();
 	}
 	
 	@GetMapping("/searchMedicinesByName")
-	@PreAuthorize("hasRole('DERM')")	
+	@PreAuthorize("hasRole('DERM')  || hasRole('PHARM')")	
 	public List<Medicine> searchMedicinesByName(String name){
 		return medicineService.searchMedicinesByName(name);
 	}
 	
 	@GetMapping("/isPatientAllergic")
-	@PreAuthorize("hasRole('DERM')")	
+	@PreAuthorize("hasRole('DERM')  || hasRole('PHARM')")	
 	public ResponseEntity<Boolean> isPatientAllergic(Long medicineId, Long counselingId){
-		if(!dermAuthorizationForCounseling(counselingId))
-			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
-		Patient patient = counselingService.getPatientInCounseling(counselingId);
-		if(patient == null)
-			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-		Long patientId = patient.getId();
-		return new ResponseEntity<>(medicineService.isPatientAllergic(patientId, medicineId), HttpStatus.OK);
+		if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
+				.anyMatch(a -> a.getAuthority().equals("ROLE_DERM"))) {
+			if(!dermAuthorizationForCounseling(counselingId))
+				return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+			Patient patient = counselingService.getPatientInCounseling(counselingId);
+			if(patient == null)
+				return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+			Long patientId = patient.getId();
+			return new ResponseEntity<>(medicineService.isPatientAllergic(patientId, medicineId), HttpStatus.OK);
+		}
+		else {
+			Patient patient = examinationService.getPatientInExamination(counselingId);
+			if(patient == null)
+				return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+			Long patientId = patient.getId();
+			return new ResponseEntity<>(medicineService.isPatientAllergic(patientId, medicineId), HttpStatus.OK);
+		}
 	}
 	
 	@GetMapping("/getSubstitutesOfMedicine")
-	@PreAuthorize("hasRole('DERM')")
+	@PreAuthorize("hasRole('DERM')  || hasRole('PHARM')")
 	public List<Medicine> getSubstitutesOfMedicine(Long id) {
 		return medicineService.getSubstitutesOfMedicine(id);
 	}
 	
 	@GetMapping("/isMedicineAvailableInPharmacy")
-	@PreAuthorize("hasRole('DERM')")
+	@PreAuthorize("hasRole('DERM')  || hasRole('PHARM')")
 	public ResponseEntity<Boolean> isMedicineAvailableInPharmacy(Long medicineId, Long counselingId) {
-		if(!dermAuthorizationForCounseling(counselingId))
-			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
-		Pharmacy pharmacy = counselingService.getPharmacyInCounseling(counselingId);
-		if(pharmacy == null)
-			return null;
-		Long pharmacyId = pharmacy.getId();
-		return new ResponseEntity<>(medicineService.isMedicineAvailableInPharmacy(medicineId, pharmacyId), HttpStatus.OK);
+		if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
+				.anyMatch(a -> a.getAuthority().equals("ROLE_DERM"))) {
+			if(!dermAuthorizationForCounseling(counselingId))
+				return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+			Pharmacy pharmacy = counselingService.getPharmacyInCounseling(counselingId);
+			if(pharmacy == null)
+				return null;
+			Long pharmacyId = pharmacy.getId();
+			return new ResponseEntity<>(medicineService.isMedicineAvailableInPharmacy(medicineId, pharmacyId), HttpStatus.OK);
+		}
+		else {
+			Pharmacy pharmacy = examinationService.getPharmacyInExamination(counselingId);
+			if(pharmacy == null)
+				return null;
+			Long pharmacyId = pharmacy.getId();
+			return new ResponseEntity<>(medicineService.isMedicineAvailableInPharmacy(medicineId, pharmacyId), HttpStatus.OK);
+		}
 		
 	}
 	
