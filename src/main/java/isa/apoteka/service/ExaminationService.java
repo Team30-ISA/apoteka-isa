@@ -12,7 +12,8 @@ public interface ExaminationService {
 	List<ExaminationDTO> findAllTermsByDay(Long pharmacistId, Date start);
 	List<Long> countTermsByDays( Long pharmacistId, Date start, int num);
 	List<Long> countTermsByMonths(Long pharmacistId, Date start);
-	ExaminationDTO getNearestExamintaion(Long pharmacistId, Date start, boolean finished);
+	Examination getNearestExamintaion(Long pharmacistId, Date start, boolean finished);
+	ExaminationDTO getNearestExamintaionDTO(Long pharmacistId, Date start, boolean finished);
 	Patient getPatientInExamination(Long id);
 	Pharmacy getPharmacyInExamination(Long id);
 	void updateReport(String report, Long examinationId);

@@ -121,7 +121,7 @@ public class ExaminationServiceImpl implements ExaminationService {
 	}
 
 	@Override
-	public ExaminationDTO getNearestExamintaion(Long pharmacistId, Date start, boolean finished) {
+	public Examination getNearestExamintaion(Long pharmacistId, Date start, boolean finished) {
 		Calendar calendar = new GregorianCalendar();
 		calendar.setTime(start);
 		calendar.add(Calendar.DATE, -1);
@@ -143,7 +143,7 @@ public class ExaminationServiceImpl implements ExaminationService {
 				System.out.println(calendar.getTime());
 				System.out.println(start);
 				if(calendar.getTime().after(start)) {
-					return mapExaminationToExaminationDTO(e);
+					return e;
 				}
 			}
 		}
@@ -153,10 +153,18 @@ public class ExaminationServiceImpl implements ExaminationService {
 					continue;
 			}
 			if(start.getTime() <= e.getStartDate().getTime()) {
-				return mapExaminationToExaminationDTO(e);
+				return e;
 			}
 		}
 		return null;
+	}
+	
+	@Override
+	public ExaminationDTO getNearestExamintaionDTO(Long pharmacistId, Date start, boolean finished) {
+		Examination examination = getNearestExamintaion(pharmacistId, start, finished);
+		if(examination == null)
+			return null;
+		return mapExaminationToExaminationDTO(examination);
 	}
 	
 	@Override

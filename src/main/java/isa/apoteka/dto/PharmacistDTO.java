@@ -1,6 +1,7 @@
 package isa.apoteka.dto;
 
 import isa.apoteka.domain.Address;
+import isa.apoteka.domain.Gender;
 import isa.apoteka.domain.Pharmacist;
 import isa.apoteka.domain.User;
 
@@ -11,8 +12,8 @@ public class PharmacistDTO extends UserDTO{
 		super();
 	}
 
-	public PharmacistDTO(Long id, String username, String firstName, String lastName, String email, Address address, String phonenumber, Long pharmacyId) {
-		super(id, username, firstName, lastName, email, address, phonenumber);
+	public PharmacistDTO(Long id, Gender gender, String username, String firstName, String lastName, String email, Address address, String phonenumber, Long pharmacyId) {
+		super(id, gender, username, firstName, lastName, email, address, phonenumber);
 		this.pharmacyId = pharmacyId;
 	}
 

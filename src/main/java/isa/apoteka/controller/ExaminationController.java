@@ -69,7 +69,21 @@ public class ExaminationController {
 	@PreAuthorize("hasRole('PHARM')")
 	public ExaminationDTO getNearestExamination(Long start, boolean finished) {
 		Pharmacist pharm = (Pharmacist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		return examintaionService.getNearestExamintaion(pharm.getId(), new Date(start), finished);
+		return examintaionService.getNearestExamintaionDTO(pharm.getId(), new Date(start), finished);
+	}
+	
+	@GetMapping("/getPatientForNearestExamination")
+	@PreAuthorize("hasRole('PHARM')")
+	public Long getPatientForNearestExamination(Long start, boolean finished) {
+		Pharmacist pharm = (Pharmacist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Long id;
+		try {
+			id = examintaionService.getNearestExamintaion(pharm.getId(), new Date(start), finished).getPatient().getId();
+		}
+		catch (Exception e) {
+			return null;
+		}
+		return id;
 	}
 	
 	@PostMapping("/setReport")

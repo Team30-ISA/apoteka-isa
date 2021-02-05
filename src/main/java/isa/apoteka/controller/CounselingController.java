@@ -86,7 +86,21 @@ public class CounselingController {
 	@PreAuthorize("hasRole('DERM')")
 	public ExaminationDTO getNearestCounseling(Long start, boolean finished) {
 		Dermatologist derm = (Dermatologist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		return counselingService.getNearestCounseling(derm.getId(), new Date(start), finished);
+		return counselingService.getNearestCounselingDTO(derm.getId(), new Date(start), finished);
+	}
+	
+	@GetMapping("/getPatientForNearestCounseling")
+	@PreAuthorize("hasRole('DERM')")
+	public Long getPatientForNearestCounseling(Long start, boolean finished) {
+		Dermatologist derm = (Dermatologist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Long id;
+		try {
+			id = counselingService.getNearestCounseling(derm.getId(), new Date(start), finished).getPatient().getId();
+		}
+		catch (Exception e) {
+			return null;
+		}
+		return id;
 	}
 	
 	@PostMapping("/setPatient")

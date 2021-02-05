@@ -1,10 +1,8 @@
 package isa.apoteka.service.impl;
-
-
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
-
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,12 +11,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import isa.apoteka.domain.Medicine;
 
 import isa.apoteka.domain.Counseling;
 import isa.apoteka.domain.Examination;
+import isa.apoteka.domain.Medicine;
 import isa.apoteka.domain.Patient;
 import isa.apoteka.domain.PatientUpdateForm;
+import isa.apoteka.dto.PatientDTO;
 import isa.apoteka.repository.PatientRepository;
 import isa.apoteka.service.PatientService;
 
@@ -143,6 +142,26 @@ public class PatientServiceImpl implements PatientService {
 			}
 		}
 		return false;
+	}
+
+	@Override
+	public List<PatientDTO> findAllDTO() {
+		return mapPatientListToPatientDTOList(patientRepository.findAll());
+	}
+	
+	public List<PatientDTO> mapPatientListToPatientDTOList(List<Patient> patients) {
+		List<PatientDTO> dtos = new ArrayList<PatientDTO>();
+		
+		for(Patient p : patients) {
+			dtos.add(new PatientDTO(p));
+		}
+		
+		return dtos;		
+	}
+
+	@Override
+	public List<PatientDTO> findAllByName(String firstName, String lastName) {
+		return mapPatientListToPatientDTOList(patientRepository.findAllByName(firstName, lastName));
 	}
 
 }
