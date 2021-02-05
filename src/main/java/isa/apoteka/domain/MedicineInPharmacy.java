@@ -19,6 +19,7 @@ public class MedicineInPharmacy{
 
 	private int quantity;
 
+
 	public Medicine getMedicine() {
 		return medicine;
 	}

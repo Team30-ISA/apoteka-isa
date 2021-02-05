@@ -134,4 +134,15 @@ public class MedicineServiceImpl implements MedicineService {
 		return dto;
 	}
 
+	@Override
+	public List<MedicineNameDTO> findAllMedicine() {
+		List<Medicine> med = medicineRepository.findAll();
+		List<MedicineNameDTO> dto = new ArrayList<MedicineNameDTO>();
+			for(Medicine m : med) {
+				dto.add(new MedicineNameDTO(m.getId(),m.getName()));
+			}
+			
+		return dto;
+	}
+
 }

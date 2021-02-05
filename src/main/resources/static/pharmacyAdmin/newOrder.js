@@ -1,29 +1,27 @@
 var app = new Vue({
 	el: '#manageDerm',
 	data: {
-		derms: [],
+		medicine: [],
 		pharmacyId: "",
-		user: null,
+		admin: null,
 		changePass: false,
+		changeOrder: false,
 		changeData: false,
 		oldPass: "",
 		newPass: "",
-		newDerms: [],
-		dermId: null,
-		searchDermFirst: "",
-		searchDermLast: "",
-		minGrade: "",
-		maxGrade: "",
-		pharmacies: [],
-		filterPharmacies: [],
-		filterPharmacyId: "",
-		index: "",
-		filteredDerms: [],
-		grades: [],
-		indeksi: [],
-		role: null,
-		allPharmacies: [],
-		sendPharmaciesId: []
+		newMedication: [],
+		medId: null,
+		searchMedicine: "",
+		orderMed: null,
+		newPrice: "",
+		startOfPrice: null,
+		endPfPrice: null,
+		medQuantity: null,
+		orderedMedication: [],
+		finishOrder: false,
+		deadline: null,
+		takeBack:null
+		
 	},
 	methods: {
 		logout(){
@@ -37,40 +35,7 @@ var app = new Vue({
 	        	localStorage.clear();
 	        	window.location.href = '/login.html';
 	        })
-		},
-		
-		dermCal(dermId){
-			window.localStorage.setItem('dermId', dermId);
-		},
-		
-		newFilterPharmacy(filterPharmacyId){
-			this.index = -1;
-			for(let j = 0; j < this.pharmacies.length; j++){
-				if(this.pharmacies[j].id == filterPharmacyId){
-					this.filterPharmacies.push(this.pharmacies[j]);
-					this.index = j;
-				}
-			}
-			
-			if(this.index!= -1){
-				this.pharmacies.splice(this.index,1);
-			}
-			
-		},
-		
-		cancelFilterPharmacy(filterPharmacyId){
-			this.index = -1;
-			for(let j = 0; j < this.filterPharmacies.length; j++){
-				if(this.filterPharmacies[j].id == filterPharmacyId){
-					this.pharmacies.push(this.filterPharmacies[j]);
-					this.index = j;
-				}
-			}
-			
-			if(this.index!= -1){
-				this.filterPharmacies.splice(this.index,1);
-			}
-		},
+		},		
 		
 		changeState(){
 			if(this.changePass == true){
@@ -81,31 +46,88 @@ var app = new Vue({
 				this.changePass = true;
 		},
 		discardPassCh(){
-			this.changePass = false;
+			this.finishOrder = false;
 		},
-		reset(){
-			window.location.href = '/filterDermatologist.html';
+		addMedication(m){
+			this.orderMed = m;
+			if(this.changeOrder == true){
+				this.changeOrder = false;
+				
+			}
+			else
+				this.changeOrder = true;
+		},
+		discardPriceCh(){
+			this.changeOrder = false;
+		},
+		defNewOrder(){
+			console.log(this.orderedMedication)
+			let th = this;
+			if(isNaN(this.medQuantity) || !this.medQuantity){
+				JSAlert.alert("Neispravan unos!");
+				this.medQuantity = "";
+				return;
+			}
+			for(let i = 0; i < this.orderedMedication.length; i++){
+				if(this.orderedMedication[i].id == this.orderMed.id){
+					console.log(this.medQuantity)
+					this.orderedMedication[i].quantity = this.medQuantity;
+					const clone = JSON.parse(JSON.stringify(this.orderedMedication));
+					this.orderedMedication = clone
+					console.log(this.orderedMedication[i].quantity)
+					this.changeOrder = false;
+					console.log(this.orderedMedication[i])
+					return;
+				}
+			}	
+			for(let i = 0; i < this.newMedication.length; i++){
+				if(this.newMedication[i].id == this.orderMed.id){
+					this.newMedication.splice(i, 1);
+				}
+			}
+			this.orderMed.quantity = this.medQuantity;
+			this.orderedMedication.push(this.orderMed);		
+			this.medQuantity = null;
+			this.changeOrder = false;
 		},
 		search(){
-			this.sendPharmaciesId = []
-			console.log(this.sendPharmaciesId)
-			for(let j = 0; j < this.filterPharmacies.length; j++){
-					this.sendPharmaciesId.push(this.filterPharmacies[j].id);
-			}
-			if(this.sendPharmaciesId.length == 0){
-				console.log("lsfladljl")
-				for(let j = 0; j < this.allPharmacies.length; j++){
-					this.sendPharmaciesId.push(this.allPharmacies[j]);
-			}
-			}
 			axios
-			.post('/api/dermatologist/searchDerms',
+			.get('/api/medicine/searchMedicineInPharmacy',
 					{
-						pharmacies:this.sendPharmaciesId,
-						firstName: this.searchDermFirst,
-						lastName: this.searchDermLast,
-						minGrade: this.minGrade,
-						maxGrade: this.maxGrade
+						params:{
+							name: this.searchMedicine
+						},
+					headers: {
+					    'Authorization': "Bearer " + localStorage.getItem('access_token')
+					  }
+				
+			})
+			.then(response => {
+				this.medicine = response.data
+			})
+		},
+		formatDate(d){
+			let date = new Date(d)
+			return date.getDate() + "." + (date.getMonth() + 1) + "." + date.getFullYear() + ".";
+		},
+		finish(){
+			if(this.finishOrder == true){
+				this.finishOrder = false;
+				
+			}
+			else
+				this.finishOrder = true;
+			
+			
+		},
+		complete(){
+			if(this.orderedMedication.length == 0)
+				JSAlert.alert("Your order is empty!");
+			axios
+			
+			.post('/api/errand/newErrand',
+					{
+						deadline: this.deadline,
 					},
 					{
 					headers: {
@@ -113,9 +135,51 @@ var app = new Vue({
 					  }
 					})
 			.then(response => {
-				this.filteredDerms = response.data
-			})
+				this.errandId = response.data
+				for(let i = 0; i<this.orderedMedication.length; i++){
+					this.orderedMedication[i].errandId = this.errandId
+				}
+				axios
+				.post('/api/errand/errandMedication',
+						{
+							dto: JSON.stringify(this.orderedMedication)
+						},
+						{
+						headers: {
+						    'Authorization': "Bearer " + localStorage.getItem('access_token')
+						  }
+						})
+				.then(response => {
+					JSAlert.alert("You hae successfully created an order!");
+	                setTimeout(function () {
+						window.location.href = '/pharmacyAdmin/newOrder.html';
+					}, 3000);
+				})
+			}).catch(error => {
+	            if (error.response.status == 401 || error.response.status == 400 || error.response.status == 500) {
+	                JSAlert.alert(error.response.data.errors[0].defaultMessage);
+	            }		            
+	        })
+			
 		},
+		deleteFromOrder(m){
+			for(let i = 0; i < this.orderedMedication.length; i++){
+				if(this.orderedMedication[i].id == m.id){
+					this.orderedMedication.splice(i, 1);
+				}
+			}
+			
+			m.quantity = 0;
+			this.newMedication.push(m);
+		},
+		changePrice(m){
+			this.orderMed = m;
+			if(this.changeOrder == true){
+				this.changeOrder = false;
+			}
+			else
+				this.changeOrder = true;
+		}
 	},
 	created() {
 		axios
@@ -125,73 +189,52 @@ var app = new Vue({
 			  }
         })
         .then(response => {
-        	this.role = response.data
-        	if(response.data == "ADMIN" || response.data == "PATIENT"){
-
-        	}else{
+        	if(response.data != "ADMIN"){
         		window.location.href = '/login.html';
         	}
-        	
-        	if(this.role == "ADMIN"){
-    			axios
-    			.get('/api/pharmacyAdmin/getLoggedUser',{
-    				  headers: {
-    					    'Authorization': "Bearer " + localStorage.getItem('access_token')
-    				  }
-    		     })
-    		     .then(response => {
-    		     	this.user = response.data
-    		     })
-    		}else{
-    			axios
-    			.get('/api/patient/getLoggedUser',{
-    				  headers: {
-    					    'Authorization': "Bearer " + localStorage.getItem('access_token')
-    				  }
-    		     })
-    		     .then(response => {
-    		     	this.user = response.data
-    		     })
-    		}
         })
         .catch(function() {
         	window.location.href = '/login.html';
 	    })
-		
-		console.log(this.role)
-		
 		axios
-		.get('/api/pharmacy',
-				{
-				headers: {
+		.get('/api/pharmacyAdmin/getLoggedUser',{
+			  headers: {
 				    'Authorization': "Bearer " + localStorage.getItem('access_token')
+			  }
+	     })
+	     .then(response => {
+	     	this.admin = response.data
+	     })
+	     axios
+			.get('/api/pharmacyAdmin/getPharmacy',{
+				  headers: {
+					    'Authorization': "Bearer " + localStorage.getItem('access_token')
 				  }
-			
-		})
-		.then(response => {
-			this.pharmacies = response.data
-					for(let j = 0; j < this.pharmacies.length; j++){
-						this.allPharmacies.push(this.pharmacies[j].id);
-					}
-					
-				axios
-				.post('/api/dermatologist/searchDerms',
-						{
-							pharmacies:this.allPharmacies,
-							firstName: this.searchDermFirst,
-							lastName: this.searchDermLast,
-							minGrade: this.minGrade,
-							maxGrade: this.maxGrade
-						},
-						{
-						headers: {
-						    'Authorization': "Bearer " + localStorage.getItem('access_token')
-						  }
+		     })
+		     .then(response => {
+		    	 this.pharmacyId = response.data
+		    	 axios
+					.get('/api/medicine/findAllMedicineInPharmacy',
+							{
+							headers: {
+							    'Authorization': "Bearer " + localStorage.getItem('access_token')
+							  }
+						
+					})
+					.then(response => {
+						this.medicine = response.data
+						axios
+						.get('/api/medicine/findAllMedicine',
+								{
+								headers: {
+								    'Authorization': "Bearer " + localStorage.getItem('access_token')
+								  }
+							
 						})
-				.then(response => {
-					this.filteredDerms = response.data
-				})
-			
-		})
+						.then(response => {
+							this.newMedication = response.data
+						})
+					})
+		     })	    
 	}
 })
