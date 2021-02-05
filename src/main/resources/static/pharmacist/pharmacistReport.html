@@ -318,7 +318,7 @@ main ::-webkit-scrollbar-thumb:hover {
 							style="overflow-y: auto; overflow-x: hidden; height: 300px;">
 							<li v-for="c in counselings" style="position: relative">
 								<p>
-									<strong>{{getStartTime(c.startDate)}}</strong> <span
+									<strong>{{getStartTime(new Date(c.startDate))}}</strong> <span
 										style="font-size: 10px;">{{c.duration}}min</span><br /> <span
 										v-if="c.patientName == ''">Free term</span> <span v-else>{{c.patientName}}</span><br />
 									<span style="text-transform: uppercase; font-size: 10px;">{{c.pharmacyName}}</span>

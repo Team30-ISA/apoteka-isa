@@ -1,7 +1,6 @@
 package isa.apoteka.controller;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import isa.apoteka.domain.Pharmacist;
 import isa.apoteka.domain.PharmacistWorkCalendar;
-import isa.apoteka.domain.PharmacyAdmin;
 import isa.apoteka.dto.PeriodDTO;
 import isa.apoteka.service.PharmacistService;
 import isa.apoteka.service.PharmacistWorkCalendarService;
@@ -36,8 +34,6 @@ public class PharmacistWorkCalendarController {
 	@PostMapping("/save")
 	@PreAuthorize("hasRole('ADMIN')")
 	public Boolean save(@RequestBody Map<String, Object> params) throws ParseException {
-		PharmacyAdmin admin = (PharmacyAdmin) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		Long pharmacyId = admin.getPharmacy().getId();
 		Pharmacist pharmacist = pharmacistService.findById(Long.parseLong(params.get("pharmacistId").toString()));		
 		PharmacistWorkCalendar pwc = new PharmacistWorkCalendar(pharmacist, pharmacist.getPharmacy(), new Date(Long.parseLong(params.get("startDate").toString())), new Date(Long.parseLong(params.get("endDate").toString())));
 		return pharmWCService.save(pwc);
@@ -46,19 +42,21 @@ public class PharmacistWorkCalendarController {
 	@GetMapping("/findAllPharmWorkCalendarByPharmIdAndPeriod")
 	//@PreAuthorize("hasRole('ADMIN')")
 	public List<PeriodDTO> findAllPharmWorkCalendarByPharmIdAndPeriod(Long pharmacistId, Long startDate, Long endDate) {
-		PharmacyAdmin admin = (PharmacyAdmin) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		Long pharmacyId = admin.getPharmacy().getId();
 		return pharmWCService.findAllPharmWorkCalendarByPharmIdAndPeriod(pharmacistId, new Date(startDate), new Date(endDate));
 	}
 	
 	@PostMapping("/deletePharmWorkCalendarByDate")
 	//@PreAuthorize("hasRole('ADMIN')")
 	public void deletePharmWorkCalendarByDate(@RequestBody Map<String, Object> params) throws ParseException {
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 		Date startDate = new Date(Long.parseLong(params.get("startDate").toString()));
 		Long pharmacistId = Long.parseLong(params.get("pharmacistId").toString());
-		PharmacyAdmin admin = (PharmacyAdmin) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		Long pharmacyId = admin.getPharmacy().getId();
 		pharmWCService.deletePharmWorkCalendarByDate(startDate, pharmacistId);
+	}
+	
+	@GetMapping("/findPharmWorkCalendarByPharmIdAndDate")
+	@PreAuthorize("hasRole('PHARM')")
+	public PeriodDTO findPharmWorkCalendarByPharmIdAndDate(Long start) {
+		Pharmacist pharm = (Pharmacist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		return pharmWCService.findPharmWorkCalendarByPharmIdAndDate(pharm.getId(), new Date(start));
 	}
 }

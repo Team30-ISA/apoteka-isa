@@ -8,7 +8,7 @@ var app = new Vue({
         today: new Date(),
         counselings: [],
         counts: [],
-        currentStep: "PRESCRIPT",
+        currentStep: "START",
 		derm: null,
         examination: null,
         monthNames: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
@@ -30,6 +30,7 @@ var app = new Vue({
         addNewTerm: false,
         examTime: "",
         examDuration: null,
+        wp: "/"
 	},
 	methods: {
 		getDaysInMonth(month, year) {
@@ -94,6 +95,7 @@ var app = new Vue({
         setCurrDate(date){
             this.current = date
             this.getTerms(this.current);
+            this.getWorkingPeriod(this.current);
         },
         getTerms(date){
         	axios
@@ -108,6 +110,31 @@ var app = new Vue({
             })
             .then(response => {
             	this.counselings = response.data
+            })
+        },
+        getWorkingPeriod(date){
+        	axios
+            .get('/api/pharmWP/findPharmWorkCalendarByPharmIdAndDate',{
+    			  headers: {
+    			    'Authorization': "Bearer " + localStorage.getItem('access_token')
+    			  },
+    			  params: {
+    				  start: date.getTime()
+    			  }
+            })
+            .then(response => {
+            	if(response.data == []){
+            		this.wp = "/"
+            	}
+            	else{
+	            	this.wpStart = response.data.startDate;
+	            	this.wpEnd = response.data.endDate;
+	            	this.wpStart = new Date(this.wpStart);
+	            	this.wpEnd = new Date(this.wpEnd);
+	            	let wpS = this.getStartTime(this.wpStart);
+	            	let wpE = this.getStartTime(this.wpEnd);
+	            	this.wp = wpS + " - " + wpE;
+            	}
             })
         },
         getStartTime(date){
@@ -302,7 +329,6 @@ var app = new Vue({
         	
         },
         dateDistance(date1, date2){
-        	console.log("kk")
         	let ret = ""
         	let diffTime = Math.abs(date2 - date1);
         	let diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
@@ -331,7 +357,7 @@ var app = new Vue({
         },
         finish(){
         	if(this.schedule){
-        		window.location.href = "/dermatologist/dermatologistHome.html";
+        		window.location.href = "/pharmacist/pharmacistHome.html";
         		return;
         	}
         	let obj = this;
@@ -376,7 +402,45 @@ var app = new Vue({
         		JSAlert.alert("Nisu dozvoljena prazna polja!");
         		return;
         	}
-        	this.addNewTerm = false;
+        	let parts = this.examTime.split(':');
+        	var d = new Date(this.current.getFullYear(),this.current.getMonth(),this.current.getDate(),parseInt(parts[0]),parseInt(parts[1]),0);
+        	if(this.wpStart == null || this.wpEnd == null){
+        		JSAlert.alert("Lekar ne radi u ovom terminu u ovoj apoteci!");
+        		return;
+        	}
+        	else if(d < this.wpStart || d > this.wpEnd){
+        		JSAlert.alert("Lekar ne radi u ovom terminu u ovoj apoteci!");
+        		return;
+        	}
+            	axios
+	 	     	  .post('/api/examination/scheduleExamination',
+	 	     			  {
+	 	     		  		start: d.getTime(),
+	 	     		  		duration: this.examDuration,
+	 	     		  		currExaminationId: this.examination.id 
+		     			  },{
+		     				 headers: {
+		     					 'Authorization': "Bearer " + localStorage.getItem('access_token')
+		 	     			 }
+			    	   })
+				    .then(response => {
+				    	if(response.data == -1)
+				    		JSAlert.alert("Pacijent je zauzet u ovom terminu!");
+				    	else if(response.data == -2){
+				    		JSAlert.alert("Lekar ne radi u ovom terminu u ovoj apoteci!");
+				    	}
+				    	else if(response.data == -3){
+				    		JSAlert.alert("Farmaceut zauzet!");
+				    	}
+				    	else if(response.data == 1){
+				    		JSAlert.alert("Uspesno!");
+				    		this.addNewTerm = false;
+				    	}
+				    	else{
+				    		JSAlert.alert("Neuspesno!");
+				    	}
+				    })
+        	
         },
     },
 	created() {
@@ -432,6 +496,7 @@ var app = new Vue({
 		 	         this.today = new Date(this.today.getFullYear(), this.today.getMonth(), this.today.getDate());
 		 	         this.getTerms(this.today);
 		 	         this.getDaysInMonth(this.current.getMonth(), this.current.getFullYear());
+		 	         this.getWorkingPeriod(this.current);
 		    	 }
 		     })
 	     })

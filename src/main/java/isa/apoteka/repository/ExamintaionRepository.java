@@ -25,4 +25,9 @@ public interface ExamintaionRepository extends JpaRepository<Examination, Long> 
     @Transactional
     @Query(value = "update examination set report = ?1 where id = ?2", nativeQuery = true)
     void updateReport(String report, Long examinationId);
+	
+	@Modifying
+    @Transactional
+	@Query(value = "insert into examination (start_date, duration, price, pharmacist_work_calendar_id, patient_id) values (:start,:duration,0,:pwcId,:patientId)", nativeQuery = true)
+	void createExamination(Date start, int duration, Long patientId, Long pwcId);
 }

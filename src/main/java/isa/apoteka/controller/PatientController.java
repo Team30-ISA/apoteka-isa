@@ -23,6 +23,7 @@ import isa.apoteka.domain.PatientUpdateForm;
 import isa.apoteka.domain.User;
 import isa.apoteka.dto.PatientDTO;
 import isa.apoteka.service.CounselingService;
+import isa.apoteka.service.ExaminationService;
 import isa.apoteka.service.PatientService;
 
 
@@ -35,6 +36,8 @@ public class PatientController {
 	private PatientService patientService;
 	@Autowired
 	private CounselingService counselingService;
+	@Autowired
+	private ExaminationService examinationService;
 
 	// Za pristup ovoj metodi neophodno je da ulogovani korisnik ima ADMIN ulogu
 	// Ukoliko nema, server ce vratiti gresku 403 Forbidden
@@ -98,7 +101,14 @@ public class PatientController {
 		calendar.setTime(start);
 		calendar.add(Calendar.MINUTE, duration);
 		Date end = calendar.getTime();
-		Patient patient = counselingService.getPatientInCounseling(counselingId);
+		Patient patient;
+		if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
+				.anyMatch(a -> a.getAuthority().equals("ROLE_DERM"))) {
+			patient = counselingService.getPatientInCounseling(counselingId);
+		}
+		else {
+			patient = examinationService.getPatientInExamination(counselingId);
+		}
 		if(patient == null)
 			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
 		if(patientService.hasCounselings(patient.getId(), start, end) == false && patientService.hasExaminations(patient.getId(), start, end) == false) {

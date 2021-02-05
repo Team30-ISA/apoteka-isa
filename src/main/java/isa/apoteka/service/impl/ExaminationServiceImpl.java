@@ -180,4 +180,46 @@ public class ExaminationServiceImpl implements ExaminationService {
 		examinationRepository.updateReport(report, examinationId);		
 	}
 
+	@Override
+	public Examination findOne(Long id) {
+		return examinationRepository.findById(id).orElse(null);
+	}
+
+	@Override
+	public Boolean createExamination(Date start, int duration, Long patientId, Long pwcId, Long pharmacistId) {
+		Calendar calendar = new GregorianCalendar();
+		calendar.setTime(start);
+		calendar.add(Calendar.MINUTE, duration);
+		Date end = calendar.getTime();
+		if(isPharmacistFree(start, end, pharmacistId) == false) {
+			return false;
+		}
+		examinationRepository.createExamination(start, duration, patientId, pwcId);
+		return true;
+	}
+	
+	public Boolean isPharmacistFree(Date start, Date end, Long pharmacistId){
+		Calendar calendar = new GregorianCalendar();
+		calendar.setTime(start);
+		calendar.add(Calendar.DATE, -1);
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		Date startDate = calendar.getTime();
+		calendar.add(Calendar.DATE, 2);
+		Date endDate = calendar.getTime();
+		List<Examination> examinations = examinationRepository.findAllTerms(pharmacistId, startDate, endDate);
+		for(Examination c : examinations) {
+			calendar.setTime(c.getStartDate());
+			calendar.add(Calendar.MINUTE, c.getDuration());
+			endDate = calendar.getTime();
+			if((c.getStartDate().getTime() <= start.getTime() && endDate.getTime() > start.getTime())
+					|| (c.getStartDate().getTime() < end.getTime() && endDate.getTime() >= end.getTime()) 
+					|| (c.getStartDate().getTime() >= start.getTime() && endDate.getTime() <= end.getTime())) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 }
