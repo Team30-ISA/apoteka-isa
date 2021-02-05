@@ -11,7 +11,7 @@ import isa.apoteka.domain.MedicineInPharmacy;
 public interface MedicineInPharmacyRepository extends JpaRepository<MedicineInPharmacy, Long>{
 
 	@Modifying
-	@Query(value = "insert into medicine_in_pharmacy (quantity, pharmacy_id, medicine_id) VALUES (0,:pharmacyId,:medicineId)", nativeQuery = true)
+	@Query(value = "insert into medicine_in_pharmacy (quantity, pharmacy_id, medicine_id) VALUES (0,:pharmacyId,:medicineId) ON CONFLICT (pharmacy_id,medicine_id) DO NOTHING;", nativeQuery = true)
 	void addNewMedicine(Long medicineId, Long pharmacyId);
 	
 	@Modifying
