@@ -1,11 +1,15 @@
 package isa.apoteka.controller;
 
 import java.security.Principal;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,12 +22,19 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import isa.apoteka.domain.Medicine;
 import isa.apoteka.domain.Patient;
 import isa.apoteka.domain.PatientUpdateForm;
+import isa.apoteka.domain.ReservedMedicine;
 import isa.apoteka.domain.User;
 import isa.apoteka.dto.PatientDTO;
+
+import isa.apoteka.service.MedicineReservationService;
+import isa.apoteka.service.MedicineService;
+
 import isa.apoteka.service.CounselingService;
 import isa.apoteka.service.ExaminationService;
+
 import isa.apoteka.service.PatientService;
 
 
@@ -34,6 +45,10 @@ public class PatientController {
 	@Autowired
 	private PatientService patientService;
 	@Autowired
+	private MedicineService medicineService;
+	@Autowired
+	private MedicineReservationService mrService;
+	
 	private CounselingService counselingService;
 	@Autowired
 	private ExaminationService examinationService;
@@ -89,6 +104,37 @@ public class PatientController {
 		return puf.getNewPass();
 	}
 	
+	@GetMapping("/patient/updateReservedMedicine")
+	@PreAuthorize("hasRole('PATIENT')")
+	public void updateReservedMedicineForPatient(Long patId, Long medId, int quantity, String date) {
+		String[] s = date.split("-", 3);
+		String s2 = s[2] + "/" + s[1] + "/" + s[0];
+		DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+		Date newDate = null;
+		String uid = UUID.randomUUID().toString();
+		try {
+			newDate = formatter.parse(s2);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		ReservedMedicine rm = new ReservedMedicine();
+		rm.setDate(newDate);
+		rm.setPatient(patientService.findById(patId));
+		rm.setMedicine(medicineService.findOne(medId));
+		rm.setQuantity(quantity);
+		rm.setUid(uid);
+		mrService.SendNotification(rm);
+		System.out.println(medId instanceof Long);
+		this.patientService.updateReservedMedicineForPatient(patId, medId, quantity, newDate, uid);
+	}
+	
+	@GetMapping("/patient/findAllReservedMedicine")
+	@PreAuthorize("hasRole('PATIENT')")
+	public List<Medicine> searchReservedMedicineForPatient(Long id) {
+		return this.patientService.searchReservedMedicineForPatient(id);
+	}
+
 	@GetMapping("/patient/isFree")
 	@PreAuthorize("hasRole('DERM') || hasRole('PHARM')")
 	public ResponseEntity<Boolean> isFree(Long counselingId, Long startDate, int duration) {

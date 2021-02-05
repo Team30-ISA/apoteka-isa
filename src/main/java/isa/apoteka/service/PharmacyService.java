@@ -2,6 +2,8 @@ package isa.apoteka.service;
 
 import java.util.List;
 import isa.apoteka.domain.Dermatologist;
+import isa.apoteka.domain.Medicine;
+import isa.apoteka.domain.MedicineDisplay;
 import isa.apoteka.domain.Pharmacist;
 import isa.apoteka.domain.Pharmacy;
 import isa.apoteka.dto.FilteredDTO;
@@ -30,5 +32,9 @@ public interface PharmacyService {
 	public List<Pharmacist> findAllPharmsWorkingInPharmacy(Long id);
 	
 	public List<Pharmacist> searchPharmsWorkingInPharmacy(Long id, String firstName, String lastName);
+	
+	public Medicine searchMedicineInPharmacy(Long id, String name);
+	
+	void updateMedicineInPharmacy(Long pharmId, Long medId, int quantity);
 	
 }

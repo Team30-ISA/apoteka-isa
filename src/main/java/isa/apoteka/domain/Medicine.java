@@ -35,6 +35,7 @@ public class Medicine {
 	private String composition;
 	@Column
 	private String recommendedIntakePerDay;
+
 	@JsonIgnore
 	@ManyToMany
     @JoinTable(name = "medicine_substitutes",
@@ -47,9 +48,14 @@ public class Medicine {
 	private DrugIssuanceRegime regime;
 	@Column
 	private String notes;
+	
 	@JsonIgnore
 	@OneToMany(mappedBy = "medicine")
 	private List<MedicineInPharmacy> medicineInpharmacy;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "medicine")
+	private List<ReservedMedicine> reservedMedicine;
 	
 	
 	public Medicine() {
