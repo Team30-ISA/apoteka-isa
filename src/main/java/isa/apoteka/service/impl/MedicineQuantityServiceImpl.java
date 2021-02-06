@@ -1,5 +1,6 @@
 package isa.apoteka.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import isa.apoteka.domain.MedicineInPharmacy;
 import isa.apoteka.domain.MedicineQuantity;
 import isa.apoteka.domain.PharmacyAdmin;
+import isa.apoteka.dto.MedicineForSupplyDTO;
 import isa.apoteka.dto.MedicineQuantityDTO;
 import isa.apoteka.repository.MedicineQuantityRepository;
 import isa.apoteka.service.MedicineInPharmacyService;
@@ -36,6 +38,15 @@ public class MedicineQuantityServiceImpl implements MedicineQuantityService{
 			medInPharmacyService.addMedicine(mq.getId(), admin.getPharmacy().getId());
 		}
 		return true;
+	}
+	@Override
+	public List<MedicineForSupplyDTO> getMedicineForErrand(Long errandId) {
+		List<MedicineQuantity> med = medQuantityReposiotry.getMedicineForErrand(errandId);
+		List<MedicineForSupplyDTO> dto = new ArrayList<MedicineForSupplyDTO>();
+		for(MedicineQuantity mq : med) {
+			dto.add(new MedicineForSupplyDTO(mq.getMedicine().getId(), mq.getMedicine().getName(),mq.getQuantity()));
+		}
+		return dto;
 	}
 
 }

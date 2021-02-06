@@ -163,3 +163,24 @@ insert into pharmacist_grade (id, grade, pharmacist_id, patient_id) values (4, 3
 insert into medicine_price(id, end_of_price, price, start_of_price, medicine_id, pharmacy_id) values (100, '20210216 08:00:00 PM',200, '20210215 10:00:00 AM', 1, 2);
 insert into medicine_price(id, end_of_price, price, start_of_price, medicine_id, pharmacy_id) values (101, '20210216 08:00:00 PM',300, '20210215 10:00:00 AM', 2, 1);
 insert into medicine_price(id, end_of_price, price, start_of_price, medicine_id, pharmacy_id) values (102, '20210216 08:00:00 PM',400, '20210215 10:00:00 AM', 2, 2);
+
+
+INSERT INTO supplier (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, gender, address_id) VALUES (25, 'admin8', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', 'Strahinja', 'Nikolic', 'apoteka.isa2021+strn@gmail.com', true, '2017-10-01 18:57:58.508-07', 1, 7);
+INSERT INTO supplier (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, gender, address_id) VALUES (26, 'admin8', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', 'Ana', 'Nikolic', 'apoteka.isa2021+stra@gmail.com', true, '2017-10-01 18:57:58.508-07', 1, 7);
+
+insert into errand (id, creation_time, deadline, pharmacy_id, finished) values (10, '2021-02-06 10:38:09.147', '2021-02-06 20:01:00', 2, false);
+insert into errand (id, creation_time, deadline, pharmacy_id, finished) values (11, '2021-02-06 10:38:09.147', '2021-02-06 20:01:00', 2, false);
+
+insert into medicine_quantity (id, quantity, errand_id, medicine_id) values (10, 5, 10, 2);
+insert into medicine_quantity (id, quantity, errand_id, medicine_id) values (12, 7, 10, 5);
+insert into medicine_quantity (id, quantity, errand_id, medicine_id) values (13, 3, 10, 7);
+
+insert into medicine_quantity (id, quantity, errand_id, medicine_id) values (14, 5, 11, 2);
+insert into medicine_quantity (id, quantity, errand_id, medicine_id) values (15, 7, 11, 5);
+insert into medicine_quantity (id, quantity, errand_id, medicine_id) values (16, 3, 11, 7);
+
+insert into offer (id, price, supply_deadline, errand_id, supplier_id, is_approved) values (10, 10000, '2021-04-05 01:00:00', 10, 25, false);
+insert into offer (id, price, supply_deadline, errand_id, supplier_id, is_approved) values (11, 12000, '2021-03-25 01:00:00', 10, 26, false);
+
+insert into offer (id, price, supply_deadline, errand_id, supplier_id, is_approved) values (12, 10000, '2021-04-05 01:00:00', 11, 25, false);
+insert into offer (id, price, supply_deadline, errand_id, supplier_id, is_approved) values (13, 12000, '2021-03-25 01:00:00', 11, 26, false);
