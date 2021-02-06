@@ -107,6 +107,7 @@ public class PharmacistController {
 		pharmacist.setPassword(passwordEncoder.encode(newPharmacistDTO.getUsername()));
 		pharmacist.setAuthorities(auth);
 		pharmacist.setAddress(newAddress);
+		pharmacist.setEnabled(true);
 		pharmacist.setPharmacy(admin.getPharmacy());
 		pharmacist.setGender(newPharmacistDTO.getGender());
 		try {
