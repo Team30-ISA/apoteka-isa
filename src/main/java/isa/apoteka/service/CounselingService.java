@@ -11,14 +11,16 @@ import isa.apoteka.dto.ExaminationDTO;
 public interface CounselingService {
 	List<ExaminationDTO> findAllTermsByDay(Long pharmacyId, Long dermatologistId, Date start);
 	List<Long> countTermsByDays(Long pharmacyId, Long dermatologistId, Date start, int num);
+	List<Long> countAllTermsByDays(Long dermatologistId, Date start, int num);
 	List<Long> countTermsByMonths(Long pharmacyId, Long dermatologistId, Date start);
-	public List<Pharmacy> findAllPharmaciesByDermatologist(Long dermatologistId);
+	List<Pharmacy> findAllPharmaciesByDermatologist(Long dermatologistId);
 	ExaminationDTO findOneDTO(Long id);
 	Counseling findOne(Long id);
 	Patient getPatientInCounseling(Long id);
 	Pharmacy getPharmacyInCounseling(Long id);
 	ExaminationDTO getNearestCounselingDTO(Long dermatologistId, Date start, boolean finished);
 	Counseling getNearestCounseling(Long dermatologistId, Date start, boolean finished);
+	Boolean isDermFree(Long dermatologistId, Date start, Date end);
 	void update(Long patientId, Long counselingId);
 	void updateReport(String report, Long counselingId);
 }

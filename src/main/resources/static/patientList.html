@@ -132,12 +132,14 @@ main ::-webkit-scrollbar-thumb:hover {
 						<li><a href="#about">About Us</a></li>
 						<li class="menu-has-children"><a href="#">Tools</a>
 							<ul>
-								<li><a href="#">List of examined clients</a></li>
+								<li><a href="/patientList.html">List of examined
+										clients</a></li>
 								<li><a href="/dermatologist/dermatologistReport.html">Start
 										examination</a></li>
 								<li><a href="/dermatologist/workCalendar.html">Work
 										calendar</a></li>
-								<li><a href="#">Create a leave request</a></li>
+								<li><a href="/dermatologist/leaveRequest.html">Create a
+										leave request</a></li>
 								<li><a
 									href="/dermatologist/dermatologistReport.html?schedule=true">Scheduling
 										a new examination</a></li>
@@ -173,12 +175,14 @@ main ::-webkit-scrollbar-thumb:hover {
 						<li><a href="#about">About Us</a></li>
 						<li class="menu-has-children"><a href="#">Tools</a>
 							<ul>
-								<li><a href="#">List of examined clients</a></li>
+								<li><a href="/patientList.html">List of examined
+										clients</a></li>
 								<li><a href="/pharmacist/pharmacistReport.html">Start
 										counseling</a></li>
 								<li><a href="/pharmacist/workCalendar.html">Work
 										calendar</a></li>
-								<li><a href="#">Create a leave request</a></li>
+								<li><a href="/pharmacist/leaveRequest.html">Create a
+										leave request</a></li>
 								<li><a
 									href="/pharmacist/pharmacistReport.html?schedule=true">Scheduling
 										a new counseling</a></li>
@@ -244,7 +248,8 @@ main ::-webkit-scrollbar-thumb:hover {
 									<td style="width: 50%; font-size: 1.5rem">
 										{{p.firstName}}&nbsp{{p.lastName}}</td>
 									<td style="width: 50%;"><a v-if="patientId == p.id"
-									class="icon fa-clock-o" style="font-size: 20px; color: #50d8af; cursor: pointer;"
+										class="icon fa-clock-o"
+										style="font-size: 20px; color: #50d8af; cursor: pointer;"
 										@click="redirect"><span class="label">Icon</span></a></td>
 								</tr>
 							</table>

@@ -429,6 +429,9 @@ var app = new Vue({
 				    	else if(response.data == -2){
 				    		JSAlert.alert("Lekar ne radi u ovom terminu u ovoj apoteci!");
 				    	}
+				    	/*else if(response.data == -3){
+				    		JSAlert.alert("Farmaceut na godisnjem!");
+				    	}*/
 				    	else if(response.data == -3){
 				    		JSAlert.alert("Farmaceut zauzet!");
 				    	}

@@ -27,6 +27,7 @@ import isa.apoteka.dto.ChangeDataDTO;
 import isa.apoteka.dto.DermatologistDTO;
 import isa.apoteka.dto.FilteredDTO;
 import isa.apoteka.dto.HireDermDTO;
+import isa.apoteka.dto.PatientDTO;
 import isa.apoteka.dto.PharmacyDTO;
 import isa.apoteka.dto.SearchFilterDTO;
 import isa.apoteka.service.AddressService;
@@ -111,6 +112,13 @@ public class DermatologistController {
 			System.out.println(d.getPharmacyNames().size());
 		}
 		return new ResponseEntity<>(derms, HttpStatus.OK);
+	}
+	
+	@GetMapping("/findAllExaminedPatients")
+	@PreAuthorize("hasRole('DERM')")
+	public List<PatientDTO> findAllExaminedPatients() {
+		Dermatologist dermatologist = (Dermatologist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		return this.dermatologistService.findAllExaminedPatients(dermatologist.getId());
 	}
 }
 
