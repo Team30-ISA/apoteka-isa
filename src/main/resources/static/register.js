@@ -1,6 +1,7 @@
 new Vue({
   el: "#register",
   data: {
+    username: "",
     email: "",
     password: "",
     confirmedPassword: "",
@@ -27,11 +28,20 @@ new Vue({
     validateForm() {
       this.validationErrors = {};
       this.isFormValid = true;
+      this.validateUsername();
       this.validateEmail();
       this.validatePassword();
       this.validateAddress();
       this.validateFirstAndLast();
       this.checkRequiredFileds();
+    },
+    validateUsername() {
+      if (this.username.match(REGEX.STARTS_WITH_SPACE)) {
+        this.validationErrors = {
+          username: "Username can't start with space."
+        };
+        this.isFormValid = false;
+      }
     },
     validateEmail() {
       if (this.email && !this.email.match(REGEX.EMAIL_REGEX)) {
@@ -72,6 +82,7 @@ new Vue({
     },
     checkRequiredFileds() {
       if (
+        !this.username ||
         !this.password ||
         !this.email ||
         !this.confirmedPassword ||
@@ -119,7 +130,8 @@ new Vue({
           cityId: this.city.id,
           address: this.address.trim(),
           firstname: this.firstname.trim(),
-          lastname: this.lastname.trim()
+          lastname: this.lastname.trim(),
+          username: this.username.trim()
         });
         this.successReg = true;
         this.loading = false;

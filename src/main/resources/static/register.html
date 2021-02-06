@@ -125,6 +125,23 @@
                   <table style="margin-left: auto; margin-right: auto; margin-top:3rem; margin-bottom:1.5rem">
                     <tr>
                       <td>
+                        <h6 style="color:#50d8af;">Username</h6>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colspan="2">
+                        <div class="form-row">
+                          <div class="form-group col-md-12">
+                            <input autofocus v-model="username" type="text" name="username" class="form-control" id="username"
+                              data-rule="minlen:4" data-msg="Please enter at least 4 chars" @keyup="validateForm" />
+                            <div class="validation d-block" v-if="validationErrors.username">{{ validationErrors.username }}
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
                         <h6 style="color:#50d8af;">Email</h6>
                       </td>
                     </tr>

@@ -90,6 +90,7 @@ public class User implements UserDetails {
         this.email = userRequest.getEmail();
         this.firstName = userRequest.getFirstname();
         this.lastName = userRequest.getLastname();
+        this.username = userRequest.getUsername();
     }
 
     public Long getId() {
