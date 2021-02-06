@@ -72,6 +72,15 @@ public class ExaminationController {
 		return examintaionService.getNearestExamintaionDTO(pharm.getId(), new Date(start), finished);
 	}
 	
+	@Nullable
+	@GetMapping("/countAllTerms")
+	@PreAuthorize("hasRole('PHARM')")
+	public ResponseEntity<List<Long>> countAllTerms(Long start, int num){
+		Pharmacist pharm = (Pharmacist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Long pharmacistId = pharm.getId();
+		return new ResponseEntity<>(examintaionService.countTermsByDays(pharmacistId, new Date(start), num), HttpStatus.OK);
+	}
+	
 	@GetMapping("/getPatientForNearestExamination")
 	@PreAuthorize("hasRole('PHARM')")
 	public Long getPatientForNearestExamination(Long start, boolean finished) {

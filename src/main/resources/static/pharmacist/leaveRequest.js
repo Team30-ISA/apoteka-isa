@@ -7,7 +7,7 @@ var app = new Vue({
         current: new Date(),
         today: new Date(),
         counts: [],
-		derm: null,
+		pharm: null,
         index: 0,
         startDate: null,
         endDate: null
@@ -76,7 +76,7 @@ var app = new Vue({
         },
         getCounts(date){
         	axios
-            .get('/api/counseling/countAllTerms',{
+            .get('/api/examination/countAllTerms',{
     			  headers: {
     			    'Authorization': "Bearer " + localStorage.getItem('access_token')
     			  },
@@ -121,7 +121,7 @@ var app = new Vue({
 				return;
 			}
 			axios
-            .get('/api/dermHoliday/save',{
+            .get('/api/pharmHoliday/save',{
     			  headers: {
     			    'Authorization': "Bearer " + localStorage.getItem('access_token')
     			  },
@@ -148,7 +148,7 @@ var app = new Vue({
 			  }
         })
         .then(response => {
-        	if(response.data != "DERM"){
+        	if(response.data != "PHARM"){
         		window.location.href = '/login.html';
         	}
         })
@@ -156,14 +156,14 @@ var app = new Vue({
         	window.location.href = '/login.html';
 	    })
 		axios
-		.get('/api/dermatologist/getLoggedUser',{
+		.get('/api/pharmacist/getLoggedUser',{
 			  headers: {
 				    'Authorization': "Bearer " + localStorage.getItem('access_token')
 			  }
 	     })
 	     .then(response => {
-	    	 this.derm = response.data;
-	     })
+        	this.pharm = response.data;
+        })
 	     this.current = new Date(this.current.getFullYear(), this.current.getMonth(), this.current.getDate());
 		 this.today = new Date(this.today.getFullYear(), this.today.getMonth(), this.today.getDate());
 		 this.getDaysInMonth(this.current.getMonth(), this.current.getFullYear());

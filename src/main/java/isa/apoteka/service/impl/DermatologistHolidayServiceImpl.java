@@ -18,6 +18,6 @@ public class DermatologistHolidayServiceImpl implements DermatologistHolidayServ
 
 	@Override
 	public void save(Dermatologist dermatologist, Date start, Date end) {
-		dermatologistHolidayRepository.save(new DermatologistHoliday(start, end, dermatologist));		
+		dermatologistHolidayRepository.save(new DermatologistHoliday(start, end, dermatologist));
 	}
 }
