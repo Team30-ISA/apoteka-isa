@@ -4,13 +4,9 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.UUID;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
 
 @Entity
 public class ReservedMedicine implements Serializable{
@@ -22,6 +18,9 @@ public class ReservedMedicine implements Serializable{
 	@ManyToOne
 	Medicine medicine;
 	
+	@ManyToOne
+	Pharmacy pharmacy;
+	
     @ManyToOne
     Patient patient;
 
@@ -29,6 +28,8 @@ public class ReservedMedicine implements Serializable{
 	private int quantity;
     
 	private Date date;
+	
+	private Boolean approved;
 	
 	
 	public ReservedMedicine() {
@@ -41,6 +42,7 @@ public class ReservedMedicine implements Serializable{
 		this.quantity = quantity;
 		this.date = date;
 		this.uid = uid;
+		this.approved = false;
 	}
 
 	public Medicine getMedicine() {
@@ -83,6 +85,21 @@ public class ReservedMedicine implements Serializable{
 	public String getUid() {
 		return uid;
 	}
-	
+
+	public Boolean getApproved() {
+		return approved;
+	}
+
+	public void setApproved(Boolean approved) {
+		this.approved = approved;
+	}
+
+	public Pharmacy getPharmacy() {
+		return pharmacy;
+	}
+
+	public void setPharmacy(Pharmacy pharmacy) {
+		this.pharmacy = pharmacy;
+	}
 	
 }

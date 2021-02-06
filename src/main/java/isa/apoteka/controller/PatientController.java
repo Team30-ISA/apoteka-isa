@@ -48,7 +48,7 @@ public class PatientController {
 	private MedicineService medicineService;
 	@Autowired
 	private MedicineReservationService mrService;
-	
+	@Autowired
 	private CounselingService counselingService;
 	@Autowired
 	private ExaminationService examinationService;

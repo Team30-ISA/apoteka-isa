@@ -1,6 +1,8 @@
 package isa.apoteka.service.impl;
 
-import java.util.List;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -9,8 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import isa.apoteka.async.service.EmailService;
 import isa.apoteka.domain.Patient;
-import isa.apoteka.domain.PharmacyAdmin;
 import isa.apoteka.domain.ReservedMedicine;
+import isa.apoteka.dto.ReservedMedicineDTO;
 import isa.apoteka.repository.MedicineReservationRepository;
 import isa.apoteka.service.MedicineReservationService;
 import isa.apoteka.service.PatientService;
@@ -49,5 +51,19 @@ public class MedicineReservationServiceImpl implements MedicineReservationServic
 		}catch(Exception e) {
 			return false;
 		}
+	}
+
+	@Override
+	public ReservedMedicineDTO findReservationByPharmacy(String uid, Long pharmacyId) {
+		ReservedMedicineDTO dto = new ReservedMedicineDTO(mrRepository.findReservationByPharmacy(uid, pharmacyId));
+		Calendar calendar = new GregorianCalendar();
+		calendar.setTime(dto.getDate());
+		calendar.add(Calendar.DATE, -1);
+		Date date = calendar.getTime();
+		Date now = new Date();
+		if(date.getTime() > now.getTime()) {
+			return null;
+		}		
+		return dto;
 	}
 }

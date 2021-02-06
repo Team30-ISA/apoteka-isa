@@ -107,7 +107,10 @@ insert into medicine_in_pharmacy (quantity, pharmacy_id, medicine_id) VALUES (5,
 insert into medicine_in_pharmacy (quantity, pharmacy_id, medicine_id) VALUES (21, 3, 3);
 insert into medicine_in_pharmacy (quantity, pharmacy_id, medicine_id) VALUES (7, 4, 3);
 insert into medicine_in_pharmacy (quantity, pharmacy_id, medicine_id) VALUES (8, 3, 2);
-insert into reserved_medicine (uid, quantity, date, patient_id, medicine_id) VALUES ('9441acaf-c350-421e-a33d-c64522e5135f', 1, '20210218 10:00:00 AM', 13, 3);
+insert into reserved_medicine (uid, quantity, date, patient_id, medicine_id, pharmacy_id) VALUES ('9441acaf-c350-421e-a33d-c64522e5135f', 1, '20210218 10:00:00 AM', 13, 3, 1);
+insert into reserved_medicine (uid, quantity, date, patient_id, medicine_id, pharmacy_id) VALUES ('12', 1, '20210206 10:00:00 AM', 13, 3, 1);
+insert into reserved_medicine (uid, quantity, date, patient_id, medicine_id, pharmacy_id) VALUES ('13', 1, '20210205 11:00:00 PM', 13, 3, 1);
+insert into reserved_medicine (uid, quantity, date, patient_id, medicine_id, pharmacy_id) VALUES ('14', 1, '20210207 10:00:00 AM', 13, 3, 1);
 
 insert into dermatologist_work_calendar (dermatologist_id, pharmacy_id, start_date, end_date) VALUES (3, 1, '20210218 10:00:00 AM', '20210218 10:00:00 PM');
 insert into dermatologist_work_calendar (dermatologist_id, pharmacy_id, start_date, end_date) VALUES (3, 2, '20210219 10:00:00 AM', '20210219 10:00:00 PM');
