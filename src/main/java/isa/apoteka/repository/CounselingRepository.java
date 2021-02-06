@@ -34,4 +34,7 @@ public interface CounselingRepository extends JpaRepository<Counseling, Long>{
     @Query(value = "update counseling set report = ?1 where id = ?2", nativeQuery = true)
     void updateReport(String report, Long counselingId);
 	
+	@Query("from Counseling c join c.dermatologistWorkCalendar d where d.dermatologist.id=:dermatologistId")
+	List<Counseling> findAllByDermId(Long dermatologistId);
+	
 }

@@ -30,4 +30,7 @@ public interface ExamintaionRepository extends JpaRepository<Examination, Long> 
     @Transactional
 	@Query(value = "insert into examination (start_date, duration, price, pharmacist_work_calendar_id, patient_id) values (:start,:duration,0,:pwcId,:patientId)", nativeQuery = true)
 	void createExamination(Date start, int duration, Long patientId, Long pwcId);
+	
+	@Query("from Examination e join e.pharmacistWorkCalendar p where p.pharmacist.id=:pharmacistId")
+	List<Examination> findAllByPharmId(Long pharmacistId);
 }

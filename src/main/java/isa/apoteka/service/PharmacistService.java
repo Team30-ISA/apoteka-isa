@@ -2,10 +2,12 @@ package isa.apoteka.service;
 
 import isa.apoteka.domain.Pharmacy;
 import isa.apoteka.dto.FilteredDTO;
+import isa.apoteka.dto.PatientDTO;
 import isa.apoteka.dto.SearchFilterDTO;
 
 import java.util.List;
 
+import isa.apoteka.domain.Patient;
 import isa.apoteka.domain.Pharmacist;
 
 
@@ -17,6 +19,6 @@ public interface PharmacistService {
 	Pharmacy getPharmPharmacy(Long pharmacistId);
 	Pharmacist findById(Long id);
 	void update(String firstName, String lastName, Long id);
-
-	public List<FilteredDTO> searchPharms(SearchFilterDTO pharms);
+	List<PatientDTO> findAllExaminedPatients(Long pharmacistId);
+	List<FilteredDTO> searchPharms(SearchFilterDTO pharms);
 }

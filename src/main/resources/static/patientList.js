@@ -80,6 +80,15 @@ var app = new Vue({
     		     .then(response => {
     		     	this.patientId = response.data
     		     })
+    		     axios
+    			 .get('/api/dermatologist/findAllExaminedPatients',{
+    				  headers: {
+    					    'Authorization': "Bearer " + localStorage.getItem('access_token')
+    				  }
+    		     })
+    		     .then(response => {
+    		    	 this.patients = response.data
+    		     })
     		}
     		else{
     			axios
@@ -104,21 +113,19 @@ var app = new Vue({
     		     .then(response => {
     		     	this.patientId = response.data
     		     })
+    		     axios
+    			.get('/api/pharmacist/findAllExaminedPatients',{
+    				  headers: {
+    					    'Authorization': "Bearer " + localStorage.getItem('access_token')
+    				  }
+    		     })
+    		     .then(response => {
+    		    	 this.patients = response.data
+    		     })
     		}
         })
         .catch(function() {
         	window.location.href = '/login.html';
 	    })
-		axios
-		.get('/api/patient/findAllDTO',
-			{
-				headers: {
-			    'Authorization': "Bearer " + localStorage.getItem('access_token')
-			}
-			
-		})
-		.then(response => {
-			this.patients = response.data
-		})
 	}
 })
