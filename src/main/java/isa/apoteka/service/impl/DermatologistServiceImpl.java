@@ -2,17 +2,21 @@ package isa.apoteka.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import isa.apoteka.domain.Counseling;
 import isa.apoteka.domain.Dermatologist;
 import isa.apoteka.domain.Pharmacy;
 import isa.apoteka.domain.PharmacyAdmin;
 import isa.apoteka.dto.FilteredDTO;
+import isa.apoteka.dto.PatientDTO;
 import isa.apoteka.dto.PharmacyDTO;
 import isa.apoteka.dto.SearchFilterDTO;
+import isa.apoteka.repository.CounselingRepository;
 import isa.apoteka.repository.DermatologistRepository;
 import isa.apoteka.service.DermatologistGradeService;
 import isa.apoteka.service.DermatologistService;
@@ -23,12 +27,14 @@ import isa.apoteka.service.DermatologistWorkCalendarService;
 public class DermatologistServiceImpl implements DermatologistService {
 	
 	private DermatologistRepository dermatologistRepository;
+	private CounselingRepository counselingRepository;
 	private DermatologistWorkCalendarService dermWCService;
 	private DermatologistGradeService dermGradeService;
 	
 	@Autowired
-	public DermatologistServiceImpl(DermatologistRepository dermatologistRepository, DermatologistWorkCalendarService dermWCService, DermatologistGradeService dermGradeService) {
+	public DermatologistServiceImpl(DermatologistRepository dermatologistRepository, DermatologistWorkCalendarService dermWCService, DermatologistGradeService dermGradeService, CounselingRepository counselingRepository) {
 		this.dermatologistRepository = dermatologistRepository;
+		this.counselingRepository = counselingRepository;
 		this.dermWCService = dermWCService;
 		this.dermGradeService = dermGradeService;
 	}
@@ -138,6 +144,22 @@ public class DermatologistServiceImpl implements DermatologistService {
 		}
 		
 		return filteredDerms; 
+	}
+	@Override
+	public List<PatientDTO> findAllExaminedPatients(Long pharmacistId) {
+		List<PatientDTO> patients = new ArrayList<PatientDTO>();
+		List<Counseling> counselings = counselingRepository.findAllByDermId(pharmacistId);
+		for(Counseling c : counselings) {
+			if(c.getReport() == null || c.getReport().equals(""))
+				continue;
+			if(c.getPatient() != null) {
+				PatientDTO dto = new PatientDTO(c.getPatient());
+				if(!patients.contains(dto)) {
+					patients.add(dto);
+				}
+			}
+		}
+		return patients;
 	}
 	
 }

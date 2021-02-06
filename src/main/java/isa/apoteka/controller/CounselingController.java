@@ -63,6 +63,15 @@ public class CounselingController {
 	}
 	
 	@Nullable
+	@GetMapping("/countAllTerms")
+	@PreAuthorize("hasRole('DERM')")
+	public ResponseEntity<List<Long>> countAllTerms(Long start, int num){
+		Dermatologist derm = (Dermatologist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Long dermatologistId = derm.getId();
+		return new ResponseEntity<>(counselingService.countAllTermsByDays(dermatologistId, new Date(start), num), HttpStatus.OK);
+	}
+	
+	@Nullable
 	@GetMapping("/countTermsByMonths")
 	@PreAuthorize("hasRole('DERM')")
 	public ResponseEntity<List<Long>> countTermsByMonths(Long pharmacyId, Long start){
@@ -157,6 +166,13 @@ public class CounselingController {
 		if(counseling.getDermatologistWorkCalendar().getPharmacy() == null)
 			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		return new ResponseEntity<>(counseling.getDermatologistWorkCalendar().getPharmacy().getId(), HttpStatus.OK);
+	}
+	
+	@GetMapping("/isDermFree")
+	@PreAuthorize("hasRole('DERM')")
+	public Boolean isDermFree(Long startDate, Long endDate) {
+		Dermatologist derm = (Dermatologist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		return counselingService.isDermFree(derm.getId(), new Date(startDate), new Date(endDate));
 	}
 	
 	public List<Pharmacy> findAllPharmaciesByDermatologist(Long dermatologistId) {
