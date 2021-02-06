@@ -3,18 +3,17 @@ package isa.apoteka.service.impl;
 import java.util.List;
 
 import isa.apoteka.async.service.EmailService;
-import isa.apoteka.domain.Patient;
+import isa.apoteka.domain.*;
 import isa.apoteka.dto.UserVerificationDTO;
 import isa.apoteka.repository.PatientRepository;
+import isa.apoteka.service.AddressService;
+import isa.apoteka.service.CityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import isa.apoteka.domain.Authority;
-import isa.apoteka.domain.User;
-import isa.apoteka.domain.UserRequest;
 import isa.apoteka.repository.UserRepository;
 import isa.apoteka.service.AuthorityService;
 import isa.apoteka.service.UserService;
@@ -37,6 +36,12 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private EmailService emailService;
+
+	@Autowired
+	private AddressService addressService;
+
+	@Autowired
+	private CityService cityService;
 
 	@Override
 	public User findByUsername(String username) throws UsernameNotFoundException {
@@ -63,8 +68,11 @@ public class UserServiceImpl implements UserService {
 		Patient patient = new Patient(userRequest);
 
 		patient.setPassword(passwordEncoder.encode(userRequest.getPassword()));
-		
-		List<Authority> auth = authService.findByname("ROLE_USER");
+		City city = this.cityService.findCityById(userRequest.getCityId().longValue());
+		Address address = new Address(userRequest.getAddress(), city);
+		patient.setAddress(address);
+		this.addressService.insertNewAddress(address);
+		List<Authority> auth = authService.findByname("ROLE_PATIENT");
 		patient.setAuthorities(auth);
 		this.patientRepository.save(patient);
 

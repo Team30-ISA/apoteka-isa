@@ -1,12 +1,14 @@
 var app = new Vue({
   el: "#login",
   data: {
-    username: "",
+    email: "",
     password: "",
-    info: ""
+    info: "",
+    validationErrors: {},
+    isFormValid: false
   },
   methods: {
-    submit: function () {
+    submit() {
       axios
         .post("/auth/login", {
           email: this.email,
@@ -16,6 +18,10 @@ var app = new Vue({
           window.localStorage.setItem(
             "access_token",
             response.data.accessToken
+          );
+          window.localStorage.setItem(
+            "user",
+            JSON.stringify(response.data.user)
           );
           axios
             .get("auth/getRole", {
@@ -49,6 +55,43 @@ var app = new Vue({
             JSAlert.alert("Incorrect email or password!");
           }
         });
+    },
+    validateForm() {
+      this.validationErrors = {};
+      this.isFormValid = true;
+      if (!this.email || !this.password) this.isFormValid = false;
+      this.validatePassword();
+      this.validateEmail();
+    },
+    validateEmail() {
+      if (this.email && !this.email.match(REGEX.EMAIL_REGEX)) {
+        this.validationErrors = {
+          email: "Email must have valid email format."
+        };
+        this.isFormValid = false;
+      }
+      if (this.email.match(REGEX.STARTS_WITH_SPACE)) {
+        this.validationErrors = {
+          email: "Email can't start with space."
+        };
+        this.isFormValid = false;
+      }
+    },
+    validatePassword() {
+      if (this.password.match(REGEX.STARTS_WITH_SPACE)) {
+        this.validationErrors = {
+          ...this.validationErrors,
+          password: "Password can't start with space."
+        };
+        this.isFormValid = false;
+      }
+      if (this.password && this.password.length < 6) {
+        this.validationErrors = {
+          ...this.validationErrors,
+          password: "Password min length is 6 characters."
+        };
+        this.isFormValid = false;
+      }
     }
   }
 });

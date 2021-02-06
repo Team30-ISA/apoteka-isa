@@ -62,7 +62,7 @@ new Vue({
         };
         this.isFormValid = false;
       }
-      if (this.password.length < 6) {
+      if (this.password && this.password.length < 6) {
         this.validationErrors = {
           ...this.validationErrors,
           password: "Password min length is 6 characters."

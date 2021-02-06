@@ -1,6 +1,7 @@
 package isa.apoteka.domain;
 
 public class UserRequest {
+	private final int PASSWORD_LENGTH = 6;
 
 	private Long id;
 
@@ -23,7 +24,7 @@ public class UserRequest {
 	private String phoneNumber;
 
 	public void registerValidation() throws Exception {
-		if(email.isEmpty() || password.isEmpty() || firstname.isEmpty() || lastname.isEmpty() || stateId == null || cityId == null || address.isEmpty())
+		if(email.isEmpty() || password.isEmpty() || firstname.isEmpty() || lastname.isEmpty() || stateId == null || cityId == null || address.isEmpty() || password.length() < PASSWORD_LENGTH)
 			throw new Exception("Validation failed");
 	}
 
