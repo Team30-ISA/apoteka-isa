@@ -56,7 +56,7 @@ public class User implements UserDetails {
     private String firstName;
 
     @Size(min=2, max=50)
-    @Column(name = "last_name")
+    @Column(name = "last_name", nullable = false)
     private String lastName;
 
     @Column(name = "email")
@@ -70,7 +70,7 @@ public class User implements UserDetails {
     private String phonenumber;
 
     @Column(name = "enabled")
-    private boolean enabled;
+    private boolean enabled = false;
     
     @Column(name = "gender")
     private Gender gender;
@@ -83,6 +83,15 @@ public class User implements UserDetails {
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id"))
     private List<Authority> authorities;
+
+    public User(){}
+
+    public User(UserRequest userRequest) {
+        this.email = userRequest.getEmail();
+        this.firstName = userRequest.getFirstname();
+        this.lastName = userRequest.getLastname();
+        this.username = userRequest.getUsername();
+    }
 
     public Long getId() {
         return id;

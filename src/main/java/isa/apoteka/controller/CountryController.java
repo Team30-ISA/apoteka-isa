@@ -18,7 +18,6 @@ public class CountryController {
 	private CountryService countryService;
 
 	@GetMapping("/getAllCountries")
-	//@PreAuthorize("hasRole('PATIENT')")
 	public List<Country> loadAll() {
 		return this.countryService.findAllCountries();
 	}
