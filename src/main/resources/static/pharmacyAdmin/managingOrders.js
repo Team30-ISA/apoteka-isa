@@ -26,46 +26,16 @@ var app = new Vue({
 	        	localStorage.clear();
 	        	window.location.href = '/login.html';
 	        })
-		},
-		
-		dermCal(dermId){
-			window.localStorage.setItem('dermId', dermId);
-		},
-		
+		},		
 		showMedicine(medicines){
 			this.orderedMed = medicines;
 			console.log(this.orderedMed)
 			if(this.changePass == true){
-				this.changePass = false;
-				
+				this.changePass = false;				
 			}
 			else
 				this.changePass = true;
 		},
-		
-		fireDerm(dermId){
-			window.localStorage.setItem('dermId', dermId);
-			this.dermId = window.localStorage.getItem('dermId');
-			axios
-	        .delete('/api/dermatologist/fire/' + dermId,{
-
-	    		headers: {
-					'Authorization': "Bearer " + localStorage.getItem('access_token'),
-				    "Content-Type": "application/json"
-				  }
-				  
-	        })
-	        .then(response => {
-	        	window.location.href = '/pharmacyAdmin/managingDermatologists.html';
-	        }).catch(error => {
-	            console.log(error)
-	            if (error.response.status == 401 || error.response.status == 400 || error.response.status == 500) {
-	                JSAlert.alert("Dermatologist has appointments scheduled. He cannot be deleted.");
-	            }
-	            
-	    })
-		},
-		
 		changeState(){
 			if(this.changePass == true){
 				this.changePass = false;
@@ -79,27 +49,59 @@ var app = new Vue({
 		},
 		
 		finish(supplier, order){
-			axios
-			.get('/api/offer/approveOffer',
-					{
-						params:{
-							offerId: supplier.id,
-							errandId: order.id
-						},
-					headers: {
-					    'Authorization': "Bearer " + localStorage.getItem('access_token')
-					  }
-				
-			})
-			.then(response => {
-				if(response.data == true){
-					JSAlert.alert("Success");
-				}
-			})
+			JSAlert.confirm("Are you sure that you want to approve this offer?").then(function(result) {
+     		    if (!result)
+     		        return;
+
+					axios
+					.get('/api/offer/approveOffer',
+							{
+								params:{
+									offerId: supplier.offerId,
+									errandId: order.id
+								},
+							headers: {
+							    'Authorization': "Bearer " + localStorage.getItem('access_token')
+							  }
+						
+					})
+					.then(response => {
+						if(response.data == true){
+							axios
+							.get('/api/offer/sendEmail',
+									{
+										params:{
+											errandId: order.id
+										},
+									headers: {
+									    'Authorization': "Bearer " + localStorage.getItem('access_token')
+									  }
+								
+							})
+							.then(response => {
+								if(response.data){
+									JSAlert.alert("You have successfully approved! Your suppliers will be informed!");
+					                setTimeout(function () {
+										window.location.href = '/pharmacyAdmin/managingOrders.html';
+									}, 3000);
+								}
+							})
+						}
+					})
+			
+			});
 		},
 		formatDate(d){
 			let date = new Date(d)
-			return date.getDate() + "." + (date.getMonth() + 1) + "." + date.getFullYear() + ".";
+			return (date.getDate()-1) + "." + (date.getMonth() + 1) + "." + date.getFullYear() + ".";
+		},
+		calc(d){
+			let date = new Date(d);
+			let now = new Date();
+			if(now.getTime() > date.getTime()){
+				return false;
+			}
+			return true;
 		}
 	},
 	created() {

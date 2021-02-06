@@ -213,8 +213,14 @@ main ::-webkit-scrollbar-thumb:hover {
 									<td width="20%">
 										{{s.price}}
 									</td>
-									<td width="20%">
-										<input type="button" @click="finish(s,o)" value="Approve" style="background: #50d8af; border: 0; width:100%; border-radius: 3px; padding: 10px 20px; color: #fff; transition: 0.4s; cursor: pointer; ">
+									<td width="20%" v-if = "o.finished == false">
+										<input type="button" @click="finish(s,o)" :disabled="calc(o.deadline)" :style="calc(o.deadline) ? {'background' : 'silver'} : {}"  value="Approve" style="background: #50d8af; border: 0; width:100%; border-radius: 3px; padding: 10px 20px; color: #fff; transition: 0.4s; cursor: pointer; ">
+									</td>
+									<td width="20%" v-if = "o.finished == true && s.approved == false" style="color:red">
+										REJECTED
+									</td>
+									<td width="20%" v-if = "o.finished == true && s.approved == true" style="color:green">
+										APPROVED
 									</td>
 								</tr>
 							</table>

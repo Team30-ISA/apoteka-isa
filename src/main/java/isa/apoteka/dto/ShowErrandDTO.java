@@ -9,17 +9,19 @@ public class ShowErrandDTO {
 	private Date deadline;
 	List<MedicineForSupplyDTO> medicines;
 	List<SupplierDTO> suppliers;
+	private Boolean finished;
 	public ShowErrandDTO() {
 		super();
 	}
 	public ShowErrandDTO(Long id, Date start, Date deadline, List<MedicineForSupplyDTO> medicines,
-			List<SupplierDTO> suppliers) {
+			List<SupplierDTO> suppliers, Boolean finished) {
 		super();
 		this.id = id;
 		this.start = start;
 		this.deadline = deadline;
 		this.medicines = medicines;
 		this.suppliers = suppliers;
+		this.finished = finished;
 	}
 	public Long getId() {
 		return id;
@@ -51,7 +53,11 @@ public class ShowErrandDTO {
 	public void setSuppliers(List<SupplierDTO> suppliers) {
 		this.suppliers = suppliers;
 	}
-	
-	
+	public Boolean getFinished() {
+		return finished;
+	}
+	public void setFinished(Boolean finished) {
+		this.finished = finished;
+	}
 	
 }

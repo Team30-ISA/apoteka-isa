@@ -65,8 +65,8 @@ public class EmailService {
 		}
 		mail.setFrom(env.getProperty("spring.mail.username"));
 		mail.setSubject("Ponuda za narudzbenicu");
-		if(offer.getApproved() == true) {
-		mail.setText("Pozdrav " + offer.getSupplier().getFirstName() + ",\n" + "\nVaša ponuda za narudžbenicu broj " + offer.getErrand().getId() + "je odobrena.");
+		if(offer.getIsApproved() == true) {
+		mail.setText("Pozdrav " + offer.getSupplier().getFirstName() + ",\n" + "\nVaša ponuda za narudžbenicu broj " + offer.getErrand().getId() + " je odobrena.");
 
 		}else {
 			mail.setText("Pozdrav " + offer.getSupplier().getFirstName() + ",\n" + "\nVaša ponuda za narudžbenicu broj " + offer.getErrand().getId() + "je nažalost odbijena.");

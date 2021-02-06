@@ -29,4 +29,11 @@ public class OfferController {
 		offerService.approveOffer(offerId, errandId);
 		return true;
 	}
+	
+	@GetMapping("/sendEmail")
+	@PreAuthorize("hasRole('ADMIN')")	
+	public Boolean sendEmail(Long offerId, Long errandId){
+		offerService.sendMail(errandId);
+		return true;
+	}
 }

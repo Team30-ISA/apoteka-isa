@@ -1,6 +1,8 @@
 package isa.apoteka.service.impl;
 
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,10 +28,19 @@ public class ErrandServiceImpl implements ErrandService{
 	@Transactional(readOnly = false)
 	public Long save(Date deadline) {
 		PharmacyAdmin admin = (PharmacyAdmin) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Calendar calendar = new GregorianCalendar();
+		calendar.setTime(deadline);
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.add(Calendar.DATE, 1);
+		Date startDate = calendar.getTime();
+		
 		
 		Errand e = new Errand();
+		e.setFinished(false);
 		e.setCreationTime(new Date());
-		e.setDeadline(deadline);
+		e.setDeadline(startDate);
 		e.setPharmacy(admin.getPharmacy());
 		e.setMedicineForOrder(null);
 		Errand errand = errandRepository.save(e);

@@ -3,27 +3,38 @@ package isa.apoteka.dto;
 import java.util.Date;
 
 public class SupplierDTO {
-	private Long id;
+	private Long supplierId;
+	private Long offerId;
 	private String firstName;
 	private String lastName;
 	private double price;
 	private Date supplyDeadline;
+	private Boolean approved;
 	public SupplierDTO() {
 		super();
 	}
-	public SupplierDTO(Long id, String firstName, String lastName, double price, Date supplyDeadline) {
+	public SupplierDTO(Long supplierId, Long offerId, String firstName, String lastName, double price,
+			Date supplyDeadline, Boolean approved) {
 		super();
-		this.id = id;
+		this.supplierId = supplierId;
+		this.offerId = offerId;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.price = price;
 		this.supplyDeadline = supplyDeadline;
+		this.approved = approved;
 	}
-	public Long getId() {
-		return id;
+	public Long getSupplierId() {
+		return supplierId;
 	}
-	public void setId(Long id) {
-		this.id = id;
+	public void setSupplierId(Long supplierId) {
+		this.supplierId = supplierId;
+	}
+	public Long getOfferId() {
+		return offerId;
+	}
+	public void setOfferId(Long offerId) {
+		this.offerId = offerId;
 	}
 	public String getFirstName() {
 		return firstName;
@@ -49,6 +60,13 @@ public class SupplierDTO {
 	public void setSupplyDeadline(Date supplyDeadline) {
 		this.supplyDeadline = supplyDeadline;
 	}
+	public Boolean getApproved() {
+		return approved;
+	}
+	public void setApproved(Boolean approved) {
+		this.approved = approved;
+	}
+	
 	
 	
 	

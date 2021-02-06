@@ -82,6 +82,7 @@ public class ErrandController {
 			dto.setId(e.getId());
 			dto.setDeadline(e.getDeadline());
 			dto.setStart(e.getCreationTime());
+			dto.setFinished(e.getFinished());
 			
 			errands.add(dto);
 		}

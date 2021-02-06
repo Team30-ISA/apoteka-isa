@@ -27,7 +27,7 @@ public class Offer {
 	
 	private Date supplyDeadline;
 	
-	private Boolean approved;
+	private Boolean isApproved;
 
 	public Offer() {
 		super();
@@ -41,7 +41,7 @@ public class Offer {
 		this.supplier = supplier;
 		this.price = price;
 		this.supplyDeadline = supplyDeadline;
-		this.approved = approved;
+		this.isApproved = approved;
 	}
 
 	public Long getId() {
@@ -84,12 +84,12 @@ public class Offer {
 		this.supplyDeadline = supplyDeadline;
 	}
 
-	public Boolean getApproved() {
-		return approved;
+	public Boolean getIsApproved() {
+		return isApproved;
 	}
 
-	public void setApproved(Boolean approved) {
-		this.approved = approved;
+	public void setIsApproved(Boolean approved) {
+		this.isApproved = approved;
 	}
 
 
