@@ -46,7 +46,7 @@ public class PharmacistWorkCalendarServiceImpl implements PharmacistWorkCalendar
 	public List<PeriodDTO> MapPharmWCToPeriod(List<PharmacistWorkCalendar> pharms) {
 		List<PeriodDTO> periods = new ArrayList<PeriodDTO>();
 		for(PharmacistWorkCalendar pharm : pharms) {
-			PeriodDTO p = new PeriodDTO(pharm.getStartDate(), pharm.getEndDate());
+			PeriodDTO p = new PeriodDTO(pharm.getStartDate(), pharm.getEndDate(), pharm.getId());
 			periods.add(p);
 		}
 		return periods;
@@ -69,5 +69,21 @@ public class PharmacistWorkCalendarServiceImpl implements PharmacistWorkCalendar
 	public void deletePharmWorkCalendarByPharm(Long id) {
 		pharmWCRepository.deletePharmWorkCalendarByPharm(id);
 		
+	}
+	
+	@Override
+	public PeriodDTO findPharmWorkCalendarByPharmIdAndDate(Long pharmacistId, Date start) {
+		Calendar calendar = new GregorianCalendar();
+		calendar.setTime(start);
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		Date startDate = calendar.getTime();
+		calendar.add(Calendar.DATE, 1);
+		Date endDate = calendar.getTime();
+		PharmacistWorkCalendar pwc = pharmWCRepository.findPharmWorkCalendarByPharmIdAndDate(pharmacistId, startDate, endDate);
+		if(pwc == null)
+			return null;
+		return new PeriodDTO(pwc.getStartDate(), pwc.getEndDate(), pwc.getId());
 	}
 }

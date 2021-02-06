@@ -1,6 +1,7 @@
 package isa.apoteka.async.service;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -12,7 +13,9 @@ import org.springframework.stereotype.Service;
 import javax.mail.internet.MimeMessage;
 import org.springframework.mail.javamail.MimeMessageHelper;
 
+import isa.apoteka.domain.Patient;
 import isa.apoteka.domain.Promotion;
+import isa.apoteka.domain.ReservedMedicine;
 import isa.apoteka.domain.User;
 
 
@@ -59,6 +62,21 @@ public class EmailService {
 			System.out.println(e.getMessage());
 			return;
 		}
+	}
+	
+	@Async
+	public void sendMedicineReservation(ReservedMedicine rm, Patient p) throws MailException{
+		SimpleMailMessage mail = new SimpleMailMessage();
+		mail.setTo(p.getEmail());
+		if(env.getProperty("spring.mail.username") == null) {
+			return;
+		}
+		mail.setFrom(env.getProperty("spring.mail.username"));
+		mail.setSubject("Rezervacija leka");
+		mail.setText("Pozdrav, " + p.getFirstName() + "\n" + "\nLek je rezervisan do: " + rm.getDate()
+				+ "\nNaziv leka: " + rm.getMedicine().getName() + "\n Sifra rezervacije: " + rm.getUid());
+		javaMailSender.send(mail);
+
 	}
 
 }

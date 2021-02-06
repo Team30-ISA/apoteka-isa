@@ -1,14 +1,15 @@
 package isa.apoteka.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import java.util.ArrayList;
-import java.util.List;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,10 +18,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 import isa.apoteka.domain.Dermatologist;
-import isa.apoteka.domain.Pharmacy;
 import isa.apoteka.domain.PharmacyAdmin;
 import isa.apoteka.domain.User;
 import isa.apoteka.dto.ChangeDataDTO;
@@ -43,8 +43,9 @@ public class DermatologistController {
 	
 	@GetMapping("/getLoggedUser")
 	@PreAuthorize("hasRole('DERM')")
-	public Dermatologist getLoggedUser() {
-		return (Dermatologist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	public DermatologistDTO getLoggedUser() {
+		Dermatologist derm = (Dermatologist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		return new DermatologistDTO(derm);
 	}
 	
 	@GetMapping("/derm")

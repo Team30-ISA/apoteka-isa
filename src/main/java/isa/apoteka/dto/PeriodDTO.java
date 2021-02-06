@@ -3,6 +3,7 @@ package isa.apoteka.dto;
 import java.util.Date;
 
 public class PeriodDTO {
+	private Long id;
 	private Date startDate;
 	private Date endDate;
 	
@@ -10,9 +11,19 @@ public class PeriodDTO {
 		super();
 	}
 
-	public PeriodDTO(Date startDate, Date endDate) {
+	public PeriodDTO(Date startDate, Date endDate, Long id) {
 		this.startDate = startDate;
 		this.endDate = endDate;
+		this.id = id;
+	}
+	
+	
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public Date getStartDate() {

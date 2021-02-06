@@ -1,5 +1,5 @@
 package isa.apoteka.service.impl;
-
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -14,8 +14,10 @@ import org.springframework.stereotype.Service;
 
 import isa.apoteka.domain.Counseling;
 import isa.apoteka.domain.Examination;
+import isa.apoteka.domain.Medicine;
 import isa.apoteka.domain.Patient;
 import isa.apoteka.domain.PatientUpdateForm;
+import isa.apoteka.dto.PatientDTO;
 import isa.apoteka.repository.PatientRepository;
 import isa.apoteka.service.PatientService;
 
@@ -79,6 +81,15 @@ public class PatientServiceImpl implements PatientService {
 		List<Patient> result = patientRepository.findAllPatientsNotification(id);
 		return result;
 	}
+	@Override
+	public List<Medicine> searchReservedMedicineForPatient(Long id) {
+		List<Medicine> result = patientRepository.searchReservedMedicineForPatient(id);
+		return result;
+	}
+	@Override
+	public void updateReservedMedicineForPatient(Long patId, Long medId, int quantity, Date date, String uid) {
+		patientRepository.updateReservedMedicineForPatient(patId, medId, quantity, date, uid);
+	}
 
 	@Override
 	public Boolean hasCounselings(Long patientId, Date start, Date end) {
@@ -124,13 +135,33 @@ public class PatientServiceImpl implements PatientService {
 			calendar.setTime(c.getStartDate());
 			calendar.add(Calendar.MINUTE, c.getDuration());
 			endDate = calendar.getTime();
-			if((c.getStartDate().getTime() <= start.getTime() && endDate.getTime() >= start.getTime())
-					|| (c.getStartDate().getTime() <= end.getTime() && endDate.getTime() >= end.getTime()) 
+			if((c.getStartDate().getTime() <= start.getTime() && endDate.getTime() > start.getTime())
+					|| (c.getStartDate().getTime() < end.getTime() && endDate.getTime() >= end.getTime()) 
 					|| (c.getStartDate().getTime() >= start.getTime() && endDate.getTime() <= end.getTime())) {
 				return true;
 			}
 		}
 		return false;
+	}
+
+	@Override
+	public List<PatientDTO> findAllDTO() {
+		return mapPatientListToPatientDTOList(patientRepository.findAll());
+	}
+	
+	public List<PatientDTO> mapPatientListToPatientDTOList(List<Patient> patients) {
+		List<PatientDTO> dtos = new ArrayList<PatientDTO>();
+		
+		for(Patient p : patients) {
+			dtos.add(new PatientDTO(p));
+		}
+		
+		return dtos;		
+	}
+
+	@Override
+	public List<PatientDTO> findAllByName(String firstName, String lastName) {
+		return mapPatientListToPatientDTOList(patientRepository.findAllByName(firstName, lastName));
 	}
 
 }

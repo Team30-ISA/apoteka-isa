@@ -19,6 +19,7 @@ import isa.apoteka.domain.Patient;
 import isa.apoteka.domain.Therapy;
 import isa.apoteka.dto.TherapyDTO;
 import isa.apoteka.service.CounselingService;
+import isa.apoteka.service.ExaminationService;
 import isa.apoteka.service.MedicineService;
 import isa.apoteka.service.TherapyService;
 
@@ -31,21 +32,35 @@ public class TherapyController {
 	@Autowired
 	private CounselingService counselingService;
 	@Autowired
+	private ExaminationService examinationService;
+	@Autowired
 	private MedicineService medicineService;
 	
 	@PostMapping("/save")
-	@PreAuthorize("hasRole('DERM')")
+	@PreAuthorize("hasRole('DERM')  || hasRole('PHARM')")
 	public ResponseEntity<TherapyDTO> save(@RequestBody Map<String, Object> params) {
-		if(!dermAuthorizationForCounseling(Long.parseLong(params.get("counselingId").toString())))
-			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
-		
-		Patient patient = counselingService.getPatientInCounseling(Long.parseLong(params.get("counselingId").toString()));
-		if(patient == null)
-			return null;
-		Medicine medicine = medicineService.findOne(Long.parseLong(params.get("medicineId").toString()));
-		if(medicine == null)
-			return null;
-		return new ResponseEntity<>(new TherapyDTO(therapyService.save(new Therapy(Integer.parseInt(params.get("duration").toString()), patient, medicine))), HttpStatus.OK);
+		if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
+				.anyMatch(a -> a.getAuthority().equals("ROLE_DERM"))) {
+			if(!dermAuthorizationForCounseling(Long.parseLong(params.get("counselingId").toString())))
+				return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+			
+			Patient patient = counselingService.getPatientInCounseling(Long.parseLong(params.get("counselingId").toString()));
+			if(patient == null)
+				return null;
+			Medicine medicine = medicineService.findOne(Long.parseLong(params.get("medicineId").toString()));
+			if(medicine == null)
+				return null;
+			return new ResponseEntity<>(new TherapyDTO(therapyService.save(new Therapy(Integer.parseInt(params.get("duration").toString()), patient, medicine))), HttpStatus.OK);
+		}
+		else {
+			Patient patient = examinationService.getPatientInExamination(Long.parseLong(params.get("counselingId").toString()));
+			if(patient == null)
+				return null;
+			Medicine medicine = medicineService.findOne(Long.parseLong(params.get("medicineId").toString()));
+			if(medicine == null)
+				return null;
+			return new ResponseEntity<>(new TherapyDTO(therapyService.save(new Therapy(Integer.parseInt(params.get("duration").toString()), patient, medicine))), HttpStatus.OK);
+		}
 	}
 	
 	public Boolean dermAuthorizationForCounseling(Long counselingId) {

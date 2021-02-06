@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import isa.apoteka.domain.Dermatologist;
+import isa.apoteka.domain.Medicine;
+import isa.apoteka.domain.MedicineDisplay;
 import isa.apoteka.domain.Pharmacist;
 import isa.apoteka.domain.Pharmacy;
 import isa.apoteka.dto.DermatologistDTO;
@@ -28,7 +30,7 @@ public class PharmacyController {
 	@Autowired
 	private PharmacyService pharmacyService;
 	
-	@GetMapping
+	@GetMapping(value = "/findAll")
 	public ResponseEntity<List<PharmacyDTO>> getAllPharmacies() {
 
 		List<Pharmacy> pharmacies = pharmacyService.findAll();
@@ -120,5 +122,29 @@ public class PharmacyController {
 		}
 
 		return new ResponseEntity<>(pharmDTO, HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/searchMedicineInPharmacy")
+	@PreAuthorize("hasRole('PATIENT')")
+	public ResponseEntity<Medicine> searchMedicineInPharmacy(Long id, String name) {
+
+		Medicine meds = pharmacyService.searchMedicineInPharmacy(id, name);
+		/*List<MedicineDTO> medsDTO = new ArrayList<>();
+		for (Medicine m : meds) {
+			medsDTO.add(new MedicineDTO(m));
+		}*/
+
+		return new ResponseEntity<>(meds, HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/updateMedicineInPharmacy")
+	@PreAuthorize("hasRole('PATIENT')")
+	public void updateMedicineInPharmacy(Long pharmId, Long medId, int quantity) {
+
+		pharmacyService.updateMedicineInPharmacy(pharmId, medId, quantity);
+		/*List<MedicineDTO> medsDTO = new ArrayList<>();
+		for (Medicine m : meds) {
+			medsDTO.add(new MedicineDTO(m));
+		}*/
 	}
 }
