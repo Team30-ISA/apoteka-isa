@@ -1,6 +1,7 @@
 package isa.apoteka.service.impl;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -33,6 +34,12 @@ public class ErrandServiceImpl implements ErrandService{
 		e.setMedicineForOrder(null);
 		Errand errand = errandRepository.save(e);
 		return errand.getId();
+	}
+
+	@Override
+	public List<Errand> findAllErrands() {
+		PharmacyAdmin admin = (PharmacyAdmin) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		return errandRepository.findAllByPharmacy(admin.getPharmacy().getId());
 	}
 
 }
