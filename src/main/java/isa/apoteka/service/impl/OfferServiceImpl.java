@@ -44,7 +44,7 @@ public class OfferServiceImpl implements OfferService{
 		System.out.println("*******************");
 		System.out.println(offers.size());
 		for(Offer o : offers) {
-			if(o.getId() == id) {
+			if(o.getId().equals(id)) {
 				offerRepository.offerApproval(id);
 			}
 		}
