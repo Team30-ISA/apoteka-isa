@@ -8,14 +8,15 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import isa.apoteka.domain.Dermatologist;
+import isa.apoteka.domain.Examination;
 import isa.apoteka.domain.Pharmacist;
 import isa.apoteka.domain.Pharmacy;
 import isa.apoteka.domain.PharmacyAdmin;
 import isa.apoteka.dto.FilteredDTO;
+import isa.apoteka.dto.PatientDTO;
 import isa.apoteka.dto.SearchFilterDTO;
+import isa.apoteka.repository.ExamintaionRepository;
 import isa.apoteka.repository.PharmacistRepository;
-import isa.apoteka.service.DermatologistGradeService;
 import isa.apoteka.service.PharmacistGradeService;
 import isa.apoteka.service.PharmacistService;
 import isa.apoteka.service.PharmacistWorkCalendarService;
@@ -25,12 +26,15 @@ import isa.apoteka.service.PharmacistWorkCalendarService;
 public class PharmacistServiceImpl implements PharmacistService{
 
 	private PharmacistRepository pharmacistRepository;
+	private ExamintaionRepository examinationRepository;
+	
 	private PharmacistWorkCalendarService pharmWorkCalendarService;
 	private PharmacistGradeService pharmGradeService;
 	
 	@Autowired
-	public PharmacistServiceImpl(PharmacistRepository pharmacistRepository, PharmacistWorkCalendarService pharmWorkCalendarService, PharmacistGradeService pharmGradeService) {
+	public PharmacistServiceImpl(PharmacistRepository pharmacistRepository, PharmacistWorkCalendarService pharmWorkCalendarService, PharmacistGradeService pharmGradeService, ExamintaionRepository examinationRepository) {
 		this.pharmacistRepository = pharmacistRepository;
+		this.examinationRepository = examinationRepository;
 		this.pharmWorkCalendarService = pharmWorkCalendarService;
 		this.pharmGradeService = pharmGradeService;
 	}
@@ -115,6 +119,23 @@ public class PharmacistServiceImpl implements PharmacistService{
 		}
 		
 		return filteredPharms; 
+	}
+
+	@Override
+	public List<PatientDTO> findAllExaminedPatients(Long pharmacistId) {
+		List<PatientDTO> patients = new ArrayList<PatientDTO>();
+		List<Examination> examintaions = examinationRepository.findAllByPharmId(pharmacistId);
+		for(Examination e : examintaions) {
+			if(e.getReport() == null || e.getReport().equals(""))
+				continue;
+			if(e.getPatient() != null) {
+				PatientDTO dto = new PatientDTO(e.getPatient());
+				if(!patients.contains(dto)) {
+					patients.add(dto);
+				}
+			}
+		}
+		return patients;
 	}
 
 }

@@ -31,6 +31,7 @@ import isa.apoteka.domain.User;
 import isa.apoteka.dto.ChangeDataDTO;
 import isa.apoteka.dto.FilteredDTO;
 import isa.apoteka.dto.NewPharmacistDTO;
+import isa.apoteka.dto.PatientDTO;
 import isa.apoteka.dto.PharmacistDTO;
 import isa.apoteka.dto.PharmacyDTO;
 import isa.apoteka.dto.SearchFilterDTO;
@@ -151,5 +152,12 @@ public class PharmacistController {
 			System.out.println(d.getPharmacyNames().size());
 		}
 		return new ResponseEntity<>(pharms, HttpStatus.OK);
+	}
+	
+	@GetMapping("/findAllExaminedPatients")
+	@PreAuthorize("hasRole('PHARM')")
+	public List<PatientDTO> findAllExaminedPatients() {
+		Pharmacist pharmacist = (Pharmacist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		return this.pharmacistService.findAllExaminedPatients(pharmacist.getId());
 	}
 }

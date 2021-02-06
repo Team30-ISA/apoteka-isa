@@ -82,10 +82,10 @@
 						<li><a href="#about">About Us</a></li>
 						<li class="menu-has-children"><a href="#">Tools</a>
 							<ul>
-								<li><a href="#">List of examined clients</a></li>
+								<li><a href="/patientList.html">List of examined clients</a></li>
 								<li><a href="/dermatologist/dermatologistReport.html">Start examination</a></li>
 								<li><a href="/dermatologist/workCalendar.html">Work calendar</a></li>
-								<li><a href="#">Create a leave request</a></li>
+								<li><a href="/dermatologist/leaveRequest.html">Create a leave request</a></li>
 								<li><a href="/dermatologist/dermatologistReport.html?schedule=true">Scheduling a new examination</a></li>
 							</ul></li>
 						<li class="menu-has-children"><a href="#">{{derm.firstName}}
@@ -126,7 +126,7 @@
 					</header>
 					<div class="highlights">
 						<section>
-							<div class="content">
+							<div class="content" @click="redirect('/patientList.html')">
 								<header>
 									<a href="#" class="icon fa-list-alt"><span class="label">Icon</span></a>
 									<h3>List of examined clients</h3>
@@ -153,7 +153,7 @@
 							</div>
 						</section>
 						<section>
-							<div class="content">
+							<div class="content" @click="redirect('/dermatologist/leaveRequest.html')">
 								<header>
 									<a  href="#" class="icon fa-suitcase"><span class="label">Icon</span></a>
 									<h3>Create a leave request</h3>

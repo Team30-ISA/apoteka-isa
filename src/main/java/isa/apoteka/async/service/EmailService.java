@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import javax.mail.internet.MimeMessage;
 import org.springframework.mail.javamail.MimeMessageHelper;
 
+import isa.apoteka.domain.Offer;
 import isa.apoteka.domain.Patient;
 import isa.apoteka.domain.Promotion;
 import isa.apoteka.domain.ReservedMedicine;
@@ -77,6 +78,25 @@ public class EmailService {
 				+ "\nNaziv leka: " + rm.getMedicine().getName() + "\n Sifra rezervacije: " + rm.getUid());
 		javaMailSender.send(mail);
 
+	}
+	
+	@Async
+	public void sendOfferNotificaitionAsync(Offer offer) throws MailException{
+		SimpleMailMessage mail = new SimpleMailMessage();
+		mail.setTo(offer.getSupplier().getEmail());
+		if(env.getProperty("spring.mail.username") == null) {
+			return;
+		}
+		mail.setFrom(env.getProperty("spring.mail.username"));
+		mail.setSubject("Ponuda za narudzbenicu");
+		if(offer.getIsApproved() == true) {
+		mail.setText("Pozdrav " + offer.getSupplier().getFirstName() + ",\n" + "\nVaša ponuda za narudžbenicu broj " + offer.getErrand().getId() + " je odobrena.");
+
+		}else {
+			mail.setText("Pozdrav " + offer.getSupplier().getFirstName() + ",\n" + "\nVaša ponuda za narudžbenicu broj " + offer.getErrand().getId() + "je nažalost odbijena.");
+		}
+		
+		javaMailSender.send(mail);
 	}
 
 }
