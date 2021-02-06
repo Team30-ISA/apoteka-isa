@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import isa.apoteka.domain.Dermatologist;
+import isa.apoteka.domain.Pharmacist;
 import isa.apoteka.domain.Pharmacy;
 import isa.apoteka.domain.PharmacyAdmin;
 import isa.apoteka.dto.PeriodDTO;
@@ -68,5 +69,12 @@ public class DermatologistWorkCalendarController {
 	public PeriodDTO findDermWorkCalendarByDermIdAndDate(Long pharmacyId, Long start) {
 		Dermatologist derm = (Dermatologist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		return dermWCService.findDermWorkCalendarByDermIdAndDate(pharmacyId, derm.getId(), new Date(start));
+	}
+	
+	@GetMapping("/getDermWorkCalendarByDermIdAndDate")
+	@PreAuthorize("hasRole('ADMIN')")
+	public PeriodDTO getDermWorkCalendarByDermIdAndDate(Long dermId,Long start) {
+		PharmacyAdmin admin = (PharmacyAdmin) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		return dermWCService.findDermWorkCalendarByDermIdAndDate(admin.getPharmacy().getId(),dermId, new Date(start));
 	}
 }

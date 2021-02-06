@@ -24,9 +24,13 @@ import com.sun.istack.Nullable;
 import isa.apoteka.domain.Counseling;
 import isa.apoteka.domain.Dermatologist;
 import isa.apoteka.domain.Patient;
+import isa.apoteka.domain.Pharmacist;
 import isa.apoteka.domain.Pharmacy;
+import isa.apoteka.domain.PharmacyAdmin;
 import isa.apoteka.dto.ExaminationDTO;
+import isa.apoteka.dto.PeriodDTO;
 import isa.apoteka.service.CounselingService;
+import isa.apoteka.service.DermatologistWorkCalendarService;
 import isa.apoteka.service.PatientService;
 
 @RestController
@@ -37,6 +41,8 @@ public class CounselingController {
 	private CounselingService counselingService;
 	@Autowired
 	private PatientService patientService;
+	@Autowired
+	private DermatologistWorkCalendarService dWCService;
 	
 	@Nullable
 	@GetMapping("/findAllTermsByDay")
@@ -173,6 +179,39 @@ public class CounselingController {
 	public Boolean isDermFree(Long startDate, Long endDate) {
 		Dermatologist derm = (Dermatologist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		return counselingService.isDermFree(derm.getId(), new Date(startDate), new Date(endDate));
+	}
+	
+	@PostMapping("/scheduleCounseling")
+	@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<Integer> scheduleCounseling(@RequestBody Map<String, Object> params) {
+		PharmacyAdmin admin = (PharmacyAdmin) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Date start = new Date(Long.parseLong(params.get("start").toString()));
+		Integer duration = Integer.parseInt(params.get("duration").toString());
+		Float price = Float.parseFloat(params.get("price").toString());
+		Long dermId = Long.parseLong(params.get("dermId").toString());
+		if(start == null || duration == null || price == null || dermId == null) {
+			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+		}
+		Long dwcId = getCurrDermWP(start, dermId, admin.getPharmacy().getId());
+		if(dwcId == null) {
+			return new ResponseEntity<>(-1, HttpStatus.OK);
+		}
+		if(!counselingService.createCounseling(start, duration, price, dwcId, dermId, admin.getPharmacy().getId())) {
+			return new ResponseEntity<>(-2, HttpStatus.OK);
+		}
+		
+		return new ResponseEntity<>(1, HttpStatus.OK);
+		
+	}
+	
+	public Long getCurrDermWP(Date start, Long dermId, Long pharmId) {
+		try {
+			PeriodDTO dwc = dWCService.findDermWorkCalendarByDermIdAndDate(pharmId, dermId, start);
+			return dwc.getId();
+		}
+		catch (Exception e) {
+			return null;
+		}
 	}
 	
 	public List<Pharmacy> findAllPharmaciesByDermatologist(Long dermatologistId) {

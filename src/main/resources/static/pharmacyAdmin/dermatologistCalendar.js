@@ -14,7 +14,8 @@ var app = new Vue({
         periods: [],
         admin: null,
         dermId: null,
-        derm:null
+        derm:null,
+        addNewTerm: false
 	},
 	methods: {
 		logout(){
@@ -222,7 +223,42 @@ var app = new Vue({
 	            }   	
 	            
 	        })
-        }
+        },
+        addExam(){
+        	if(!this.examTime || !this.examDuration){
+        		JSAlert.alert("Nisu dozvoljena prazna polja!");
+        		return;
+        	}
+        	let parts = this.examTime.split(':');
+        	var d = new Date(this.current.getFullYear(),this.current.getMonth(),this.current.getDate(),parseInt(parts[0]),parseInt(parts[1]),0);
+            axios
+	 	    .post('/api/counseling/scheduleCounseling',
+	 	    		{
+	 	     			start: d.getTime(),
+	 	     		  	duration: this.examDuration,
+	 	     		  	price: 100,
+	 	     		  	dermId: this.dermId
+		     		},{
+		     			 headers: {
+		     			 'Authorization': "Bearer " + localStorage.getItem('access_token')
+		 	     	}
+			 })
+			 .then(response => {
+				 if(response.data == -1)
+			    		JSAlert.alert("Lekar ne radi u ovom terminu u ovoj apoteci!");
+			    	else if(response.data == -2){
+			    		JSAlert.alert("Ima vec termin!");
+			    	}
+			    	else if(response.data == 1){
+			    		JSAlert.alert("Uspesno!");
+			    		this.addNewTerm = false;
+			    	}
+			    	else{
+			    		JSAlert.alert("Neuspesno!");
+			    	}
+			})
+        	
+        },
     },
     created(){
         this.current = new Date(this.current.getFullYear(), this.current.getMonth(), this.current.getDate());

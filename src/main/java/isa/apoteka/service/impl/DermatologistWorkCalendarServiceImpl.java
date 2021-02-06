@@ -115,6 +115,11 @@ public class DermatologistWorkCalendarServiceImpl implements DermatologistWorkCa
 		DermatologistWorkCalendar dwc = dermWCRepository.findDermWorkCalendarByDermIdAndDate(pharmacyId, dermatologistId, startDate, endDate);
 		if(dwc == null)
 			return null;
+		//??
+		if(!(start.getTime() >= dwc.getStartDate().getTime() && start.getTime() < dwc.getEndDate().getTime())) {
+			return null;
+		}
+		//??
 		return new PeriodDTO(dwc.getStartDate(), dwc.getEndDate(), dwc.getId());
 	}
 

@@ -254,5 +254,42 @@ public class CounselingServiceImpl implements CounselingService {
 			return false;
 		return true;
 	}
+	
+	@Override
+	public Boolean createCounseling(Date start, int duration, Float price, Long dwcId, Long dermId, Long pharmacyId) {
+		Calendar calendar = new GregorianCalendar();
+		calendar.setTime(start);
+		calendar.add(Calendar.MINUTE, duration);
+		Date end = calendar.getTime();
+		if(isDermatologistFree(start, end, dermId, pharmacyId) == false) {
+			return false;
+		}
+		counselingRepository.createCounseling(start, duration, price, dwcId);
+		return true;
+	}
+	
+	public Boolean isDermatologistFree(Date start, Date end, Long dermId, Long pharmacyId){
+		Calendar calendar = new GregorianCalendar();
+		calendar.setTime(start);
+		calendar.add(Calendar.DATE, -1);
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		Date startDate = calendar.getTime();
+		calendar.add(Calendar.DATE, 2);
+		Date endDate = calendar.getTime();
+		List<Counseling> counselings = counselingRepository.findAllTerms(pharmacyId, dermId, startDate, endDate);
+		for(Counseling c : counselings) {
+			calendar.setTime(c.getStartDate());
+			calendar.add(Calendar.MINUTE, c.getDuration());
+			endDate = calendar.getTime();
+			if((c.getStartDate().getTime() <= start.getTime() && endDate.getTime() > start.getTime())
+					|| (c.getStartDate().getTime() < end.getTime() && endDate.getTime() >= end.getTime()) 
+					|| (c.getStartDate().getTime() >= start.getTime() && endDate.getTime() <= end.getTime())) {
+				return false;
+			}
+		}
+		return true;
+	}
 
 }
