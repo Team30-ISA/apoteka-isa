@@ -23,6 +23,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
+import isa.apoteka.dto.PharmacistDTO;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -91,6 +92,14 @@ public class User implements UserDetails {
         this.firstName = userRequest.getFirstname();
         this.lastName = userRequest.getLastname();
         this.username = userRequest.getUsername();
+    }
+
+    public User(PharmacistDTO pharmacyAdminData) {
+        this.email = pharmacyAdminData.getEmail();
+        this.firstName = pharmacyAdminData.getFirstName();
+        this.lastName = pharmacyAdminData.getLastName();
+        this.username = pharmacyAdminData.getUsername();
+        this.address = pharmacyAdminData.getAddress();
     }
 
     public Long getId() {
@@ -212,5 +221,8 @@ public class User implements UserDetails {
 		this.gender = gender;
 	}
 
-    
+
+    public void setPasswordForReset(String password) {
+        this.password = password;
+    }
 }

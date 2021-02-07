@@ -59,6 +59,7 @@ public class AuthenticationController {
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 
 		User user = (User) authentication.getPrincipal();
+
 		String jwt = tokenUtils.generateToken(user.getEmail());
 		int expiresIn = tokenUtils.getExpiredIn();
 
@@ -142,6 +143,10 @@ public class AuthenticationController {
 		else if(SecurityContextHolder.getContext().getAuthentication()
 				.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_PATIENT"))) {
 			return ResponseEntity.ok("PATIENT");
+		}
+		else if(SecurityContextHolder.getContext().getAuthentication()
+				.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_SYS_ADMIN"))) {
+			return ResponseEntity.ok("SYS_ADMIN");
 		}
 		return ResponseEntity.ok("NONE");
 	}

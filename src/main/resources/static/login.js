@@ -44,6 +44,8 @@ var app = new Vue({
                 window.location.href = "pharmacyAdmin/pharmacyAdminHome.html";
               } else if (response.data == "PATIENT") {
                 window.location.href = "profile.html";
+              } else if (response.data == "SYS_ADMIN") {
+                window.location.href = "profile.html";
               } else {
                 window.location.href = "changePassword.html";
               }
