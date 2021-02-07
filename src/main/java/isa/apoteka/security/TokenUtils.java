@@ -44,11 +44,10 @@ public class TokenUtils {
 	// Algoritam za potpisivanje JWT
 	private SignatureAlgorithm SIGNATURE_ALGORITHM = SignatureAlgorithm.HS512;
 
-	// Funkcija za generisanje JWT token
-	public String generateToken(String username) {
+	public String generateToken(String email) {
 		return Jwts.builder()
 				.setIssuer(APP_NAME)
-				.setSubject(username)
+				.setSubject(email)
 				.setAudience(generateAudience())
 				.setIssuedAt(new Date())
 				.setExpiration(generateExpirationDate())
@@ -57,16 +56,6 @@ public class TokenUtils {
 	}
 
 	private String generateAudience() {
-//		Moze se iskoristiti org.springframework.mobile.device.Device objekat za odredjivanje tipa uredjaja sa kojeg je zahtev stigao.
-		
-//		String audience = AUDIENCE_UNKNOWN;
-//		if (device.isNormal()) {
-//			audience = AUDIENCE_WEB;
-//		} else if (device.isTablet()) {
-//			audience = AUDIENCE_TABLET;
-//		} else if (device.isMobile()) {
-//			audience = AUDIENCE_MOBILE;
-//		}
 		return AUDIENCE_WEB;
 	}
 
@@ -74,7 +63,6 @@ public class TokenUtils {
 		return new Date(new Date().getTime() + EXPIRES_IN);
 	}
 
-	// Funkcija za refresh JWT tokena
 	public String refreshToken(String token) {
 		String refreshedToken;
 		try {
@@ -98,13 +86,12 @@ public class TokenUtils {
 				&& (!(this.isTokenExpired(token)) || this.ignoreTokenExpiration(token)));
 	}
 
-	// Funkcija za validaciju JWT tokena
 	public Boolean validateToken(String token, UserDetails userDetails) {
 		User user = (User) userDetails;
-		final String username = getUsernameFromToken(token);
+		final String email = getEmailFromToken(token);
 		final Date created = getIssuedAtDateFromToken(token);
 		
-		return (username != null && username.equals(userDetails.getUsername())
+		return (email != null && email.equals(user.getEmail())
 				&& !isCreatedBeforeLastPasswordReset(created, user.getLastPasswordResetDate()));
 	}
 
@@ -209,4 +196,15 @@ public class TokenUtils {
 		return claims;
 	}
 
+	public String getEmailFromToken(String token) {
+		String email = null;
+		try {
+			final Claims claims = this.getAllClaimsFromToken(token);
+			if(claims == null)
+				return null;
+			email = claims.getSubject();
+		} catch (Exception e) {
+		}
+		return email;
+	}
 }

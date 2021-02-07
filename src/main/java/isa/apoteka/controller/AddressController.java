@@ -20,7 +20,6 @@ public class AddressController {
 	private AddressService addressService;
 
 	@GetMapping("/getAllAddressesForCity")
-	//@PreAuthorize("hasRole('PATIENT')")
 	public List<Address> loadAll(CityDTO city) {
 		return this.addressService.findAllAddressesForCity(city);
 	}

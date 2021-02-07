@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import isa.apoteka.dto.UserVerificationDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -49,57 +50,59 @@ public class AuthenticationController {
 	@Autowired
 	private UserService userService;
 
-	// Prvi endpoint koji pogadja korisnik kada se loguje.
-	// Tada zna samo svoje korisnicko ime i lozinku i to prosledjuje na backend.
 	@PostMapping("/login")
 	public ResponseEntity<UserTokenState> createAuthenticationToken(
 			@RequestBody JwtAuthenticationRequest authenticationRequest, HttpServletResponse response) {
-
-		//
 		Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-				authenticationRequest.getUsername(), authenticationRequest.getPassword()));
+				authenticationRequest.getEmail(), authenticationRequest.getPassword()));
 
-		// Ubaci korisnika u trenutni security kontekst
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 
-		// Kreiraj token za tog korisnika
 		User user = (User) authentication.getPrincipal();
-		String jwt = tokenUtils.generateToken(user.getUsername());
+		String jwt = tokenUtils.generateToken(user.getEmail());
 		int expiresIn = tokenUtils.getExpiredIn();
 
-		// Vrati token kao odgovor na uspesnu autentifikaciju
-		return ResponseEntity.ok(new UserTokenState(jwt, expiresIn));
+		return ResponseEntity.ok(new UserTokenState(jwt, expiresIn, user));
 	}
 
-	// Endpoint za registraciju novog korisnika
 	@PostMapping("/signup")
-	public ResponseEntity<User> addUser(@RequestBody UserRequest userRequest, UriComponentsBuilder ucBuilder) {
+	public ResponseEntity<?> addUser(@RequestBody UserRequest userRequest) {
+		try {
+			userRequest.registerValidation();
+			User existUser = this.userService.findUserByEmail(userRequest.getEmail());
+			if (existUser != null)
+				throw new ResourceConflictException(userRequest.getId(), "Username already exists");
 
-		User existUser = this.userService.findByUsername(userRequest.getUsername());
-		if (existUser != null) {
-			throw new ResourceConflictException(userRequest.getId(), "Username already exists");
+			return new ResponseEntity<>(this.userService.save(userRequest), HttpStatus.CREATED);
+		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
-
-		User user = this.userService.save(userRequest);
-		HttpHeaders headers = new HttpHeaders();
-		headers.setLocation(ucBuilder.path("/api/user/{userId}").buildAndExpand(user.getId()).toUri());
-		return new ResponseEntity<>(user, HttpStatus.CREATED);
 	}
 
-	// U slucaju isteka vazenja JWT tokena, endpoint koji se poziva da se token
-	// osvezi
+	@PostMapping("/verify")
+	public ResponseEntity<Boolean> verifyUser(@RequestBody UserVerificationDTO verificationData) {
+		try {
+			this.userService.verifyUser(verificationData);
+			return new ResponseEntity<>(true, HttpStatus.CREATED);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
+		}
+	}
+
+
 	@PostMapping(value = "/refresh")
 	public ResponseEntity<UserTokenState> refreshAuthenticationToken(HttpServletRequest request) {
 
 		String token = tokenUtils.getToken(request);
-		String username = this.tokenUtils.getUsernameFromToken(token);
-		User user = (User) this.userDetailsService.loadUserByUsername(username);
+		String email = this.tokenUtils.getEmailFromToken(token);
+		User user = (User) this.userDetailsService.loadUserByUsername(email);
 
 		if (this.tokenUtils.canTokenBeRefreshed(token, user.getLastPasswordResetDate())) {
 			String refreshedToken = tokenUtils.refreshToken(token);
 			int expiresIn = tokenUtils.getExpiredIn();
 
-			return ResponseEntity.ok(new UserTokenState(refreshedToken, expiresIn));
+			return ResponseEntity.ok(new UserTokenState(refreshedToken, expiresIn, user));
 		} else {
 			UserTokenState userTokenState = new UserTokenState();
 			return ResponseEntity.badRequest().body(userTokenState);

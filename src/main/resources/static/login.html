@@ -71,7 +71,7 @@
 
       <nav id="nav-menu-container">
         <ul class="nav-menu">
-          <li class="menu-active"><a href="#body">Home</a></li>
+          <li><a href="#body">Home</a></li>
           <li><a href="#about">About Us</a></li>
           <li><a href="#services">Services</a></li>
           <li><a href="#portfolio">Portfolio</a></li>
@@ -103,7 +103,7 @@
     <!--==========================
       Services Section
     ============================-->
-    <section id="contact" class="wow fadeInUp">
+    <section id="contact" class="wow fadeInUp" style="animation-fill-mode: both">
        <div class="container">
         <div class="form">
           <div id="sendmessage">Your message has been sent. Thank you!</div>
@@ -114,15 +114,15 @@
           <table style=" margin-left: auto; margin-right: auto; margin-top:3rem; margin-bottom:1.5rem">
           	<tr>
           		<td>
-          			<h6 style="color:#50d8af;">Username</h6>
+          			<h6 style="color:#50d8af;">Email</h6>
           		</td>
           	</tr>
           	<tr>
           		<td colspan="2">
           			<div class="form-row">
              			<div class="form-group col-md-12">             	
-                			<input v-model="username" type="text" name="name" class="form-control" id="name" data-rule="minlen:4" data-msg="Please enter at least 4 chars" />
-                			<div class="validation"></div>
+                			<input autofocus v-model="email" type="text" name="email" class="form-control" id="email" data-rule="minlen:4" data-msg="Please enter at least 4 chars" @keyup="validateForm"/>
+                			<div class="validation d-lg-block" v-if="validationErrors.email">{{ validationErrors.email }}</div>
              			</div>
             		</div>
           		</td>
@@ -136,14 +136,14 @@
           		<td colspan="2">
           			<div class="form-row">
              			<div class="form-group col-md-12">             	
-                			<input v-model="password" type="password" name="name" class="form-control" id="name" data-rule="minlen:4" data-msg="Please enter at least 4 chars" />
-                			<div class="validation"></div>
+                			<input v-model="password" type="password" name="password" class="form-control" id="password" data-rule="minlen:4" data-msg="Please enter at least 4 chars" @keyup="validateForm" />
+                			<div class="validation d-block" v-if="validationErrors.password">{{ validationErrors.password }}</div>
              			</div>
             		</div>
           		</td>
           	</tr>         	
           </table>
-            <div class="text-center col-md-24"><input style="margin-bottom:3rem" type="submit" value="Login"/></div>
+            <div class="text-center col-md-12 mb-5"><button style="margin-bottom:3rem" class="btn" type="submit" :disabled="!isFormValid">Submit</button></div>
             <div>
         </div>
 		</form>
@@ -173,6 +173,7 @@
   <!-- Template Main Javascript File -->
   <script src="js/main.js"></script>
   <script src="axios.js"></script>
+  <script src="./constants/index.js"></script>
   <script src="login.js"></script>
 
 </body>

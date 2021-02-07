@@ -19,7 +19,6 @@ public class CityController {
 	private CityService cityService;
 	
 	@GetMapping("/getAllCitiesForCountry")
-	//@PreAuthorize("hasRole('PATIENT')")
 	public List<City> loadAll(CountryDTO country) {
 		return this.cityService.findAllCitiesForCountry(country);
 	}
