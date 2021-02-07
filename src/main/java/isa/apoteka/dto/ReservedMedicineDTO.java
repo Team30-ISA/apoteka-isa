@@ -13,6 +13,8 @@ public class ReservedMedicineDTO {
 	private Long medicineId;
 	private String medicineName;
 	private Date date;
+	private int quantity;
+	private Boolean approved;
 	
 	public ReservedMedicineDTO() {
 		super();
@@ -27,6 +29,8 @@ public class ReservedMedicineDTO {
 		this.medicineId = rm.getMedicine().getId();
 		this.medicineName = rm.getMedicine().getName();
 		this.date = rm.getDate();
+		this.quantity = rm.getQuantity();
+		this.approved = rm.getApproved();
 	}
 	
 	public String getUid() {
@@ -76,6 +80,22 @@ public class ReservedMedicineDTO {
 	}
 	public void setDate(Date date) {
 		this.date = date;
+	}
+
+	public int getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
+
+	public Boolean getApproved() {
+		return approved;
+	}
+
+	public void setApproved(Boolean approved) {
+		this.approved = approved;
 	}
 	
 }

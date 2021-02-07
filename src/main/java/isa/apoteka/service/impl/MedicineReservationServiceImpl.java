@@ -61,9 +61,18 @@ public class MedicineReservationServiceImpl implements MedicineReservationServic
 		calendar.add(Calendar.DATE, -1);
 		Date date = calendar.getTime();
 		Date now = new Date();
-		if(date.getTime() > now.getTime()) {
+		if(date.getTime() < now.getTime()) {
 			return null;
 		}		
 		return dto;
+	}
+
+	@Transactional(readOnly = false)
+	@Override
+	public void approveReservation(String uid, Long pharmacyId) {
+		if(mrRepository.findReservationByPharmacy(uid, pharmacyId) == null)
+			return;
+		mrRepository.approveReservation(uid);
+		
 	}
 }

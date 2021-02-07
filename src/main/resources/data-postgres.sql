@@ -107,10 +107,11 @@ insert into medicine_in_pharmacy (quantity, pharmacy_id, medicine_id) VALUES (5,
 insert into medicine_in_pharmacy (quantity, pharmacy_id, medicine_id) VALUES (21, 3, 3);
 insert into medicine_in_pharmacy (quantity, pharmacy_id, medicine_id) VALUES (7, 4, 3);
 insert into medicine_in_pharmacy (quantity, pharmacy_id, medicine_id) VALUES (8, 3, 2);
-insert into reserved_medicine (uid, quantity, date, patient_id, medicine_id, pharmacy_id) VALUES ('9441acaf-c350-421e-a33d-c64522e5135f', 1, '20210218 10:00:00 AM', 13, 3, 1);
-insert into reserved_medicine (uid, quantity, date, patient_id, medicine_id, pharmacy_id) VALUES ('12', 1, '20210206 10:00:00 AM', 13, 3, 1);
-insert into reserved_medicine (uid, quantity, date, patient_id, medicine_id, pharmacy_id) VALUES ('13', 1, '20210205 11:00:00 PM', 13, 3, 1);
-insert into reserved_medicine (uid, quantity, date, patient_id, medicine_id, pharmacy_id) VALUES ('14', 1, '20210207 10:00:00 AM', 13, 3, 1);
+insert into reserved_medicine (uid, quantity, date, patient_id, medicine_id, pharmacy_id, approved) VALUES ('9441acaf-c350-421e-a33d-c64522e5135f', 1, '20210218 10:00:00 AM', 13, 3, 1, false);
+insert into reserved_medicine (uid, quantity, date, patient_id, medicine_id, pharmacy_id, approved) VALUES ('12', 1, '20210210 10:00:00 AM', 13, 3, 1, false);
+insert into reserved_medicine (uid, quantity, date, patient_id, medicine_id, pharmacy_id, approved) VALUES ('13', 1, '20210211 11:03:00 AM', 13, 3, 1, false);
+insert into reserved_medicine (uid, quantity, date, patient_id, medicine_id, pharmacy_id, approved) VALUES ('14', 1, '20210212 10:00:00 AM', 13, 3, 1, false);
+insert into reserved_medicine (uid, quantity, date, patient_id, medicine_id, pharmacy_id, approved) VALUES ('15', 1, '20210212 10:00:00 AM', 13, 3, 2, false);
 
 insert into dermatologist_work_calendar (dermatologist_id, pharmacy_id, start_date, end_date) VALUES (3, 1, '20210218 10:00:00 AM', '20210218 10:00:00 PM');
 insert into dermatologist_work_calendar (dermatologist_id, pharmacy_id, start_date, end_date) VALUES (3, 2, '20210219 10:00:00 AM', '20210219 10:00:00 PM');
@@ -166,3 +167,7 @@ insert into pharmacist_grade (id, grade, pharmacist_id, patient_id) values (4, 3
 insert into medicine_price(id, end_of_price, price, start_of_price, medicine_id, pharmacy_id) values (100, '20210216 08:00:00 PM',200, '20210215 10:00:00 AM', 1, 2);
 insert into medicine_price(id, end_of_price, price, start_of_price, medicine_id, pharmacy_id) values (101, '20210216 08:00:00 PM',300, '20210215 10:00:00 AM', 2, 1);
 insert into medicine_price(id, end_of_price, price, start_of_price, medicine_id, pharmacy_id) values (102, '20210216 08:00:00 PM',400, '20210215 10:00:00 AM', 2, 2);
+
+insert into dermatologist_holiday(start_date, end_date, dermatologist_id) values ('20210210 12:00:00 AM','20210213 12:00:00 PM',5);
+insert into pharmacist_holiday(start_date, end_date, pharmacist_id) values ('20210210 12:00:00 AM','20210213 12:00:00 PM',4);
+
