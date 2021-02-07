@@ -106,6 +106,7 @@
 								<li><a href="managingDermatologists.html">Manage Dermatologists</a></li>
 								<li><a href="managingPharmacists.html">Manage Pharmacists</a></li>
 								<li><a href="managingMedication.html">Manage Medicine</a></li>
+								<li><a href="managingOrders.html">Manage supply offers</a></li>
 							</ul></li>
 						<li class="menu-has-children"><a href="#">{{admin.firstName}}
 								{{admin.lastName}}</a>
@@ -144,6 +145,16 @@
 						<input type="time" v-model="endTime" style="border-radius: 5px; border-color: silver; border-style: none; background-color: #f9f9f9; outline: none;">
 					</li>
 				</ul>
+				<ul class="calendar-events" style="overflow-y: auto; overflow-x: hidden; max-height: 300px;">
+					<li v-for="c in counselings" style="position: relative">
+						<p>
+							<strong>{{getStartTime(new Date(c.startDate))}}</strong>
+								<span style="font-size: 10px;">{{c.duration}}min</span><br />
+								<span v-if="c.patientName == ''">Free term</span>
+								<span v-else>{{c.patientName}}</span><br/>
+						</p>
+					</li>
+				</ul>
 				<ul class="calendar-events" v-else>
 					<li>
 						<p><strong >Working period</strong></p>
@@ -152,6 +163,11 @@
 				</ul>
 			<p v-if="getWorkingPeriodByDate(current) == null"><a class="calendar-btn" style="cursor: pointer" @click="addNew()"><i class="icon fa-check"></i> Submit entry</a></p>
 			<p v-else><a class="calendar-btn" style="cursor: pointer" @click="deleteWP(current)"><i class="icon fa-close"></i> Delete entry</a></p>
+			<p>
+							<a @click="addNewTerm = true" style="text-align: center; cursor: pointer;"
+								class="calendar-btn"><i class="fa fa-plus"></i> Add new
+								examination</a>
+						</p>
 			</div>
 		</section>
 		<section class="calendar-right">
@@ -198,6 +214,31 @@
 			</div>
 		</section>
 		<div class="clear"></div>
+		<div v-if="addNewTerm"
+					style="position: fixed; padding: 20px; width: 300px; height: 300px; left: calc(50% - 150px); top: calc(50% - 150px); box-shadow: 0px 15px 25px rgb(0 0 0/ 10%); background: rgb(248, 248, 248); border-radius: 5px;">
+					<a @click="addNewTerm = false" class="icon fa-close" style="position: absolute; right: 20px; cursor: pointer;"></a>
+					
+					<table style="width:80%; margin-left:10%; margin-top:20%">
+						<tr>
+							<td style="width:60%"><b>Start time:</b></td>
+							<td style="width:40%"><input v-model="examTime" type="time" style="border-radius: 5px; margin-bottom:5px; border-color: silver; border-style: none; background-color: #f9f9f9; outline: none;"></td>
+						</tr>
+						<tr>
+							<td style="width:60%"><b>Duration: &nbsp;&nbsp;</b></td>
+							<td style="width:40%"><input type="number" v-model="examDuration" style="width: 50px; margin-right:20%"></td>
+						</tr>
+						<tr>
+							<td style="width:60%"><b>Price:</b></td>
+							<td style="width:40%"><input type="number" v-model="examPrice" style="width: 50px;"></td>
+						</tr>
+						<tr>
+							<td colspan="2" align="center">
+								<input type="button" @click="addExam" value="Submit" style="width: 200px; background: #50d8af; border: 0; border-radius: 3px; padding: 10px 30px; color: #fff; transition: 0.4s; cursor: pointer; margin-top: 20px;">
+							</td>
+							<td></td>
+						</tr>
+					</table>						
+				</div>
 	</div>
 		</main>
 

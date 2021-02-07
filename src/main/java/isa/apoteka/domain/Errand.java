@@ -22,6 +22,7 @@ public class Errand {
 	private Date creationTime;
 	@ManyToOne
 	private Pharmacy pharmacy;
+	private Boolean finished;
 	
 	@OneToMany(mappedBy = "errand")
 	private List<MedicineQuantity> medicineForOrder;
@@ -30,13 +31,14 @@ public class Errand {
 		super();
 	}
 
-	public Errand(Long id, Date deadline, Date creationTime,Pharmacy pharmacy,
+	public Errand(Long id, Date deadline, Date creationTime, Pharmacy pharmacy, Boolean finished,
 			List<MedicineQuantity> medicineForOrder) {
 		super();
 		this.id = id;
 		this.deadline = deadline;
 		this.creationTime = creationTime;
 		this.pharmacy = pharmacy;
+		this.finished = finished;
 		this.medicineForOrder = medicineForOrder;
 	}
 
@@ -72,6 +74,14 @@ public class Errand {
 		this.pharmacy = pharmacy;
 	}
 
+	public Boolean getFinished() {
+		return finished;
+	}
+
+	public void setFinished(Boolean finished) {
+		this.finished = finished;
+	}
+
 	public List<MedicineQuantity> getMedicineForOrder() {
 		return medicineForOrder;
 	}
@@ -79,6 +89,7 @@ public class Errand {
 	public void setMedicineForOrder(List<MedicineQuantity> medicineForOrder) {
 		this.medicineForOrder = medicineForOrder;
 	}
+
 	
 	
 	

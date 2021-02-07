@@ -18,5 +18,6 @@ public interface ExaminationService {
 	Pharmacy getPharmacyInExamination(Long id);
 	void updateReport(String report, Long examinationId);
 	Examination findOne(Long id);
+	Boolean isPharmFree(Long pharmacistId, Date start, Date end);
 	Boolean createExamination(Date start, int duration, Long patientId, Long pwcId, Long pharmacistId);
 }

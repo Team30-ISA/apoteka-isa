@@ -26,6 +26,7 @@ import isa.apoteka.dto.ExaminationDTO;
 import isa.apoteka.dto.PeriodDTO;
 import isa.apoteka.service.ExaminationService;
 import isa.apoteka.service.PatientService;
+import isa.apoteka.service.PharmacistHolidayService;
 import isa.apoteka.service.PharmacistWorkCalendarService;
 
 @RestController
@@ -40,6 +41,9 @@ public class ExaminationController {
 	
 	@Autowired
 	private PatientService patientService;
+	
+	@Autowired
+	private PharmacistHolidayService pharmacistHolidayService;
 	
 	@Nullable
 	@GetMapping("/findAllTermsByDay")
@@ -70,6 +74,15 @@ public class ExaminationController {
 	public ExaminationDTO getNearestExamination(Long start, boolean finished) {
 		Pharmacist pharm = (Pharmacist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		return examintaionService.getNearestExamintaionDTO(pharm.getId(), new Date(start), finished);
+	}
+	
+	@Nullable
+	@GetMapping("/countAllTerms")
+	@PreAuthorize("hasRole('PHARM')")
+	public ResponseEntity<List<Long>> countAllTerms(Long start, int num){
+		Pharmacist pharm = (Pharmacist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Long pharmacistId = pharm.getId();
+		return new ResponseEntity<>(examintaionService.countTermsByDays(pharmacistId, new Date(start), num), HttpStatus.OK);
 	}
 	
 	@GetMapping("/getPatientForNearestExamination")
@@ -123,6 +136,9 @@ public class ExaminationController {
 		if(pwcId == null) {
 			return new ResponseEntity<>(-2, HttpStatus.OK);
 		}
+		/*if(pharmacistHolidayService.isPharmOnHolidays(pharmacistId, start)) {
+			return new ResponseEntity<>(-3, HttpStatus.OK);
+		}*/
 		if(!examintaionService.createExamination(start, duration, patientId, pwcId, pharmacistId)) {
 			return new ResponseEntity<>(-3, HttpStatus.OK);
 		}

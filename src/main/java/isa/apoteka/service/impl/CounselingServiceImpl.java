@@ -21,10 +21,10 @@ import isa.apoteka.service.CounselingService;
 
 @Service
 public class CounselingServiceImpl implements CounselingService {
-	
+
 	@Autowired
 	private CounselingRepository counselingRepository;
-	
+
 	@Autowired
 	private DermatologistRepository dermatologistRepository;
 
@@ -38,28 +38,31 @@ public class CounselingServiceImpl implements CounselingService {
 		Date startDate = calendar.getTime();
 		calendar.add(Calendar.DATE, 1);
 		Date endDate = calendar.getTime();
-		List<Counseling> counseling = counselingRepository.findAllTerms(pharmacyId, dermatologistId, startDate, endDate);
+		List<Counseling> counseling = counselingRepository.findAllTerms(pharmacyId, dermatologistId, startDate,
+				endDate);
 		List<ExaminationDTO> dtos = mapListCounselingToListCounselingDTO(counseling);
 		Collections.sort(dtos, new Sortbyroll());
 		return dtos;
 	}
-	
+
 	public ExaminationDTO mapCounselingToCounselingDTO(Counseling counseling) {
 		String patientName = "";
-		if(counseling.getDermatologistWorkCalendar() == null)
+		if (counseling.getDermatologistWorkCalendar() == null)
 			return null;
-		if(counseling.getDermatologistWorkCalendar().getPharmacy() == null)
+		if (counseling.getDermatologistWorkCalendar().getPharmacy() == null)
 			return null;
-		if(counseling.getPatient() != null)
+		if (counseling.getPatient() != null)
 			patientName = counseling.getPatient().getFirstName() + " " + counseling.getPatient().getLastName();
-		return new ExaminationDTO(counseling.getId(), counseling.getStartDate(), counseling.getDuration(), counseling.getDermatologistWorkCalendar().getPharmacy().getName(), patientName, counseling.getPrice(), counseling.getReport());
+		return new ExaminationDTO(counseling.getId(), counseling.getStartDate(), counseling.getDuration(),
+				counseling.getDermatologistWorkCalendar().getPharmacy().getName(), patientName, counseling.getPrice(),
+				counseling.getReport());
 	}
-	
+
 	public List<ExaminationDTO> mapListCounselingToListCounselingDTO(List<Counseling> counselings) {
 		List<ExaminationDTO> counselingDTOs = new ArrayList<>();
-		for(Counseling c : counselings) {
+		for (Counseling c : counselings) {
 			ExaminationDTO dto = mapCounselingToCounselingDTO(c);
-			if(dto == null)
+			if (dto == null)
 				continue;
 			counselingDTOs.add(dto);
 		}
@@ -77,7 +80,7 @@ public class CounselingServiceImpl implements CounselingService {
 		Date startDate = calendar.getTime();
 		calendar.add(Calendar.DATE, 1);
 		Date endDate = calendar.getTime();
-		for(int i = 0; i < num; i++) {
+		for (int i = 0; i < num; i++) {
 			Long n = counselingRepository.countTerms(pharmacyId, dermatologistId, startDate, endDate);
 			ret.add(n);
 			startDate = calendar.getTime();
@@ -86,7 +89,28 @@ public class CounselingServiceImpl implements CounselingService {
 		}
 		return ret;
 	}
-	
+
+	@Override
+	public List<Long> countAllTermsByDays(Long dermatologistId, Date start, int num) {
+		List<Long> ret = new ArrayList<>();
+		Calendar calendar = new GregorianCalendar();
+		calendar.setTime(start);
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		Date startDate = calendar.getTime();
+		calendar.add(Calendar.DATE, 1);
+		Date endDate = calendar.getTime();
+		for (int i = 0; i < num; i++) {
+			Long n = counselingRepository.countAllTerms(dermatologistId, startDate, endDate);
+			ret.add(n);
+			startDate = calendar.getTime();
+			calendar.add(Calendar.DATE, 1);
+			endDate = calendar.getTime();
+		}
+		return ret;
+	}
+
 	@Override
 	public List<Long> countTermsByMonths(Long pharmacyId, Long dermatologistId, Date start) {
 		List<Long> ret = new ArrayList<>();
@@ -100,7 +124,7 @@ public class CounselingServiceImpl implements CounselingService {
 		Date startDate = calendar.getTime();
 		calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
 		Date endDate = calendar.getTime();
-		for(int i = 0; i < 12; i++) {
+		for (int i = 0; i < 12; i++) {
 			Long n = counselingRepository.countTerms(pharmacyId, dermatologistId, startDate, endDate);
 			ret.add(n);
 			calendar.add(Calendar.DATE, 1);
@@ -115,43 +139,42 @@ public class CounselingServiceImpl implements CounselingService {
 	public List<Pharmacy> findAllPharmaciesByDermatologist(Long dermatologistId) {
 		return dermatologistRepository.getDermPharmacies(dermatologistId);
 	}
-	
+
 	@Override
 	public ExaminationDTO findOneDTO(Long id) {
 		return mapCounselingToCounselingDTO(counselingRepository.findById(id).orElse(null));
 	}
-	
+
 	@Override
 	public Counseling findOne(Long id) {
 		return counselingRepository.findById(id).orElse(null);
 	}
-	
+
 	@Override
 	public Patient getPatientInCounseling(Long id) {
 		Counseling counseling = counselingRepository.findById(id).orElse(null);
-		if(counseling == null)
+		if (counseling == null)
 			return null;
 		return counseling.getPatient();
 	}
-	
+
 	@Override
 	public Pharmacy getPharmacyInCounseling(Long id) {
 		Counseling counseling = counselingRepository.findById(id).orElse(null);
-		if(counseling == null)
+		if (counseling == null)
 			return null;
 		return counseling.getDermatologistWorkCalendar().getPharmacy();
 	}
-	
-	class Sortbyroll implements Comparator<ExaminationDTO>
-	{
+
+	class Sortbyroll implements Comparator<ExaminationDTO> {
 		@Override
 		public int compare(ExaminationDTO o1, ExaminationDTO o2) {
 			if (o1.getStartDate().getTime() <= o2.getStartDate().getTime())
-	            return -1;
-	        else if (o1.getStartDate().getTime() >= o2.getStartDate().getTime())
-	            return 1;
-	        else
-	            return 0;
+				return -1;
+			else if (o1.getStartDate().getTime() >= o2.getStartDate().getTime())
+				return 1;
+			else
+				return 0;
 		}
 	}
 
@@ -165,39 +188,39 @@ public class CounselingServiceImpl implements CounselingService {
 		calendar.set(Calendar.SECOND, 0);
 		Date startDate = calendar.getTime();
 		List<Counseling> counselings = counselingRepository.findAllByDermAndStart(dermatologistId, startDate);
-		if(counselings == null || counselings.size() == 0)
+		if (counselings == null || counselings.size() == 0)
 			return null;
-		for(Counseling c : counselings) {
-			if(finished) {
-				if(c.getReport() != null && !(c.getReport()).equals(""))
+		for (Counseling c : counselings) {
+			if (finished) {
+				if (c.getReport() != null && !(c.getReport()).equals(""))
 					continue;
 			}
-			if(c.getStartDate().before(start)) {
+			if (c.getStartDate().before(start)) {
 				calendar.setTime(c.getStartDate());
 				calendar.add(Calendar.MINUTE, c.getDuration());
 				System.out.println(calendar.getTime());
 				System.out.println(start);
-				if(calendar.getTime().after(start)) {
+				if (calendar.getTime().after(start)) {
 					return c;
 				}
 			}
 		}
-		for(Counseling c : counselings) {
-			if(finished) {
-				if(c.getReport() != null && !(c.getReport()).equals(""))
+		for (Counseling c : counselings) {
+			if (finished) {
+				if (c.getReport() != null && !(c.getReport()).equals(""))
 					continue;
 			}
-			if(start.getTime() <= c.getStartDate().getTime()) {
+			if (start.getTime() <= c.getStartDate().getTime()) {
 				return c;
 			}
 		}
-		return null;		
+		return null;
 	}
-	
+
 	@Override
 	public ExaminationDTO getNearestCounselingDTO(Long pharmacistId, Date start, boolean finished) {
 		Counseling counseling = getNearestCounseling(pharmacistId, start, finished);
-		if(counseling == null)
+		if (counseling == null)
 			return null;
 		return mapCounselingToCounselingDTO(counseling);
 	}
@@ -205,12 +228,68 @@ public class CounselingServiceImpl implements CounselingService {
 	@Override
 	public void update(Long patientId, Long counselingId) {
 		counselingRepository.update(patientId, counselingId);
-		
+
 	}
 
 	@Override
 	public void updateReport(String report, Long counselingId) {
-		counselingRepository.updateReport(report, counselingId);		
+		counselingRepository.updateReport(report, counselingId);
+	}
+
+	@Override
+	public Boolean isDermFree(Long dermatologistId, Date start, Date end) {
+		Calendar calendar = new GregorianCalendar();
+		calendar.setTime(start);
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		start = calendar.getTime();
+		calendar.setTime(end);
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.add(Calendar.DATE, 1);
+		end = calendar.getTime();
+		if(counselingRepository.countAllTerms(dermatologistId, start, end) > 0)
+			return false;
+		return true;
+	}
+	
+	@Override
+	public Boolean createCounseling(Date start, int duration, Float price, Long dwcId, Long dermId, Long pharmacyId) {
+		Calendar calendar = new GregorianCalendar();
+		calendar.setTime(start);
+		calendar.add(Calendar.MINUTE, duration);
+		Date end = calendar.getTime();
+		if(isDermatologistFree(start, end, dermId, pharmacyId) == false) {
+			return false;
+		}
+		counselingRepository.createCounseling(start, duration, price, dwcId);
+		return true;
+	}
+	
+	public Boolean isDermatologistFree(Date start, Date end, Long dermId, Long pharmacyId){
+		Calendar calendar = new GregorianCalendar();
+		calendar.setTime(start);
+		calendar.add(Calendar.DATE, -1);
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		Date startDate = calendar.getTime();
+		calendar.add(Calendar.DATE, 2);
+		Date endDate = calendar.getTime();
+		List<Counseling> counselings = counselingRepository.findAllTerms(pharmacyId, dermId, startDate, endDate);
+		for(Counseling c : counselings) {
+			calendar.setTime(c.getStartDate());
+			calendar.add(Calendar.MINUTE, c.getDuration());
+			endDate = calendar.getTime();
+			if((c.getStartDate().getTime() <= start.getTime() && endDate.getTime() > start.getTime())
+					|| (c.getStartDate().getTime() < end.getTime() && endDate.getTime() >= end.getTime()) 
+					|| (c.getStartDate().getTime() >= start.getTime() && endDate.getTime() <= end.getTime())) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 }

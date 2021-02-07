@@ -230,4 +230,23 @@ public class ExaminationServiceImpl implements ExaminationService {
 		return true;
 	}
 
+	@Override
+	public Boolean isPharmFree(Long pharmacistId, Date start, Date end) {
+		Calendar calendar = new GregorianCalendar();
+		calendar.setTime(start);
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		start = calendar.getTime();
+		calendar.setTime(end);
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.add(Calendar.DATE, 1);
+		end = calendar.getTime();
+		if(examinationRepository.countTerms(pharmacistId, start, end) > 0)
+			return false;
+		return true;
+	}
+
 }

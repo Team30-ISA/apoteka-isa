@@ -18,6 +18,9 @@ public interface CounselingRepository extends JpaRepository<Counseling, Long>{
 	@Query("select count(c) from Counseling c join c.dermatologistWorkCalendar d where d.dermatologist.id=:dermatologistId and d.pharmacy.id=:pharmacyId and c.startDate >= :start and c.startDate <= :end")
 	Long countTerms(Long pharmacyId, Long dermatologistId, Date start, Date end);
 	
+	@Query("select count(c) from Counseling c join c.dermatologistWorkCalendar d where d.dermatologist.id=:dermatologistId and c.startDate >= :start and c.startDate <= :end")
+	Long countAllTerms(Long dermatologistId, Date start, Date end);
+	
 	@Query("from Counseling c join c.dermatologistWorkCalendar d join c.patient p where d.dermatologist.id=:dermatologistId and c.startDate >= :start order by c.startDate ASC")
 	List<Counseling> findAllByDermAndStart(Long dermatologistId, Date start);
 	
@@ -30,5 +33,13 @@ public interface CounselingRepository extends JpaRepository<Counseling, Long>{
     @Transactional
     @Query(value = "update counseling set report = ?1 where id = ?2", nativeQuery = true)
     void updateReport(String report, Long counselingId);
+	
+	@Query("from Counseling c join c.dermatologistWorkCalendar d where d.dermatologist.id=:dermatologistId")
+	List<Counseling> findAllByDermId(Long dermatologistId);
+	
+	@Modifying
+    @Transactional
+	@Query(value = "insert into counseling (start_date, duration, price, dermatologist_work_calendar_id) values (:start,:duration,:price,:dwcId)", nativeQuery = true)
+	void createCounseling(Date start, int duration, Float price, Long dwcId);
 	
 }
