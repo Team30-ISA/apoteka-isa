@@ -13,8 +13,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import isa.apoteka.dto.PharmacyDTO;
 
 @Entity
 public class Pharmacy {
@@ -23,9 +25,11 @@ public class Pharmacy {
 	private Long id;
 
 	@Column(unique = true, nullable = false)
+	@NotBlank
 	String name;
 	
 	@Column(unique = true, nullable = false)
+	@NotBlank
 	String address;
 	
 	@JsonIgnore
@@ -64,7 +68,12 @@ public class Pharmacy {
 		super();
 	}
 
-	public Long getId() {
+    public Pharmacy(PharmacyDTO pharmacyDTO) {
+		this.name = pharmacyDTO.getName();
+		this.address = pharmacyDTO.getAddress();
+    }
+
+    public Long getId() {
 		return id;
 	}
 

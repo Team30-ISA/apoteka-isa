@@ -88,6 +88,7 @@ public class User implements UserDetails {
     public User(){}
 
     public User(UserRequest userRequest) {
+        this.id = userRequest.getId();
         this.email = userRequest.getEmail();
         this.firstName = userRequest.getFirstname();
         this.lastName = userRequest.getLastname();
@@ -100,6 +101,8 @@ public class User implements UserDetails {
         this.lastName = pharmacyAdminData.getLastName();
         this.username = pharmacyAdminData.getUsername();
         this.address = pharmacyAdminData.getAddress();
+        this.phonenumber = pharmacyAdminData.getPhonenumber();
+        this.enabled = true;
     }
 
     public Long getId() {

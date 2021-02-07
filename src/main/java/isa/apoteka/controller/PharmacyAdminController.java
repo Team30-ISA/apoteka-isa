@@ -57,9 +57,6 @@ public class PharmacyAdminController {
 		try {
 			return new ResponseEntity<>(pharmacyAdminService.create(pharmacyAdmin), HttpStatus.CREATED);
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
-
-			System.out.println(e);
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 	}

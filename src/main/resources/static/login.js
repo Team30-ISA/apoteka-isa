@@ -5,7 +5,38 @@ var app = new Vue({
     password: "",
     info: "",
     validationErrors: {},
-    isFormValid: false
+    isFormValid: false,
+    user: null
+  },
+  created() {
+    try {
+      const user = JSON.parse(localStorage.getItem("user"));
+      axios
+        .get("auth/getRole", {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("access_token")
+          }
+        })
+        .then((response) => {
+          if (!user.lastPasswordResetDate)
+            window.location.href = "changePassword.html";
+          else if (response.data == "DERM" && this.email !== this.password) {
+            window.location.href = "dermatologist/dermatologistHome.html";
+          } else if (response.data == "PHARM" && this.email !== this.password) {
+            window.location.href = "pharmacist/pharmacistHome.html";
+          } else if (response.data == "ADMIN" && this.email !== this.password) {
+            window.location.href = "pharmacyAdmin/pharmacyAdminHome.html";
+          } else if (response.data == "PATIENT") {
+            window.location.href = "profile.html";
+          } else if (response.data == "SYS_ADMIN") {
+            window.location.href = "sysadmin/profile.html";
+          } else {
+            window.location.href = "changePassword.html";
+          }
+        });
+    } catch (err) {
+      console.log(err);
+    }
   },
   methods: {
     submit() {
@@ -23,6 +54,7 @@ var app = new Vue({
             "user",
             JSON.stringify(response.data.user)
           );
+          this.user = response.data.user;
           axios
             .get("auth/getRole", {
               headers: {
@@ -30,7 +62,12 @@ var app = new Vue({
               }
             })
             .then((response) => {
-              if (response.data == "DERM" && this.email !== this.password) {
+              if (!this.user.lastPasswordResetDate)
+                window.location.href = "changePassword.html";
+              else if (
+                response.data == "DERM" &&
+                this.email !== this.password
+              ) {
                 window.location.href = "dermatologist/dermatologistHome.html";
               } else if (
                 response.data == "PHARM" &&

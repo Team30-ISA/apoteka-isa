@@ -2,7 +2,9 @@ package isa.apoteka.service.impl;
 
 import java.util.List;
 
+import isa.apoteka.dto.PharmacyDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import isa.apoteka.domain.Dermatologist;
@@ -68,5 +70,12 @@ public class PharmacyServiceImpl implements PharmacyService{
 	
 	public void updateMedicineInPharmacy(Long pharmId, Long medId, int quantity) {
 		pharmacyRepository.updateMedicineInPharmacy(pharmId, medId, quantity);
+	}
+
+	@Override
+	public Pharmacy create(PharmacyDTO pharmacyDTO) {
+		Pharmacy pharmacy = new Pharmacy(pharmacyDTO);
+		pharmacyRepository.save(pharmacy);
+		return pharmacy;
 	}
 }
