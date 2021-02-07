@@ -37,4 +37,9 @@ public interface CounselingRepository extends JpaRepository<Counseling, Long>{
 	@Query("from Counseling c join c.dermatologistWorkCalendar d where d.dermatologist.id=:dermatologistId")
 	List<Counseling> findAllByDermId(Long dermatologistId);
 	
+	@Modifying
+    @Transactional
+	@Query(value = "insert into counseling (start_date, duration, price, dermatologist_work_calendar_id) values (:start,:duration,:price,:dwcId)", nativeQuery = true)
+	void createCounseling(Date start, int duration, Float price, Long dwcId);
+	
 }

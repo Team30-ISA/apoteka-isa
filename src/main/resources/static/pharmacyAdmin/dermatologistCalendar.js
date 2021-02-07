@@ -14,7 +14,12 @@ var app = new Vue({
         periods: [],
         admin: null,
         dermId: null,
-        derm:null
+        derm:null,
+        addNewTerm: false,
+        counselings: [],
+        examPrice: null,
+        examTime: null,
+        examDuration: null
 	},
 	methods: {
 		logout(){
@@ -70,6 +75,7 @@ var app = new Vue({
                 this.current = new Date(this.current.getFullYear() - 1, 11, 1);}
             else
                 this.current = new Date(this.current.getFullYear(), this.current.getMonth() - 1, 1);
+            this.getTerms(this.current)
             await this.getDaysInMonth(this.current.getMonth(), this.current.getFullYear());
             this.periods = [];
         	this.reloadData();
@@ -79,6 +85,7 @@ var app = new Vue({
                 this.current = new Date(this.current.getFullYear() + 1, 0, 1);}
             else
                 this.current = new Date(this.current.getFullYear(), this.current.getMonth() + 1, 1);
+            this.getTerms(this.current)
             await this.getDaysInMonth(this.current.getMonth(), this.current.getFullYear());
             this.periods = [];
         	this.reloadData();
@@ -86,6 +93,7 @@ var app = new Vue({
         reset(){
             this.current = new Date();
             this.current = new Date(this.current.getFullYear(), this.current.getMonth(), this.current.getDate());
+            this.getTerms(this.current)
             this.getDaysInMonth(this.current.getMonth(), this.current.getFullYear());
         },
         setCurrDate(date){
@@ -96,6 +104,7 @@ var app = new Vue({
         		this.prev();
         	}
             this.current = date
+            this.getTerms(this.current)
         },
         addNew(){
         	let hours = parseInt(this.startTime.split(":")[0]);
@@ -222,6 +231,66 @@ var app = new Vue({
 	            }   	
 	            
 	        })
+        },
+        getStartTime(date){
+        	let h = date.getHours();
+        	if(h < 10)
+        		h = "0" + h;
+        	let m =  date.getMinutes();
+        	if(m < 10)
+        		m = "0" + m;
+        	return h + ":" + m;
+        },
+        addExam(){
+        	if(!this.examTime || !this.examDuration){
+        		JSAlert.alert("Nisu dozvoljena prazna polja!");
+        		return;
+        	}
+        	let parts = this.examTime.split(':');
+        	var d = new Date(this.current.getFullYear(),this.current.getMonth(),this.current.getDate(),parseInt(parts[0]),parseInt(parts[1]),0);
+            axios
+	 	    .post('/api/counseling/scheduleCounseling',
+	 	    		{
+	 	     			start: d.getTime(),
+	 	     		  	duration: this.examDuration,
+	 	     		  	price: this.examPrice,
+	 	     		  	dermId: this.dermId
+		     		},{
+		     			 headers: {
+		     			 'Authorization': "Bearer " + localStorage.getItem('access_token')
+		 	     	}
+			 })
+			 .then(response => {
+				 if(response.data == -1)
+			    		JSAlert.alert("Lekar ne radi u ovom terminu u ovoj apoteci!");
+			    	else if(response.data == -2){
+			    		JSAlert.alert("Ima vec termin!");
+			    	}
+			    	else if(response.data == 1){
+			    		this.getTerms(this.current);
+			    		JSAlert.alert("Uspesno!");
+			    		this.addNewTerm = false;
+			    	}
+			    	else{
+			    		JSAlert.alert("Neuspesno!");
+			    	}
+			})
+        	
+        },
+        getTerms(date){
+        	axios
+            .get('/api/counseling/findAllTerms',{
+    			  headers: {
+    			    'Authorization': "Bearer " + localStorage.getItem('access_token')
+    			  },
+    			  params: {
+    				  dermatologistId: this.dermId,
+    				  start: date.getTime()
+    			  }
+            })
+            .then(response => {
+            	this.counselings = response.data
+            })
         }
     },
     created(){
@@ -229,7 +298,8 @@ var app = new Vue({
         this.today = new Date(this.today.getFullYear(), this.today.getMonth(), this.today.getDate());
         this.getDaysInMonth(this.current.getMonth(), this.current.getFullYear());
         this.dermId = localStorage.getItem('dermId');
-        localStorage.removeItem('dermId');
+        this.getTerms(this.today);
+        //localStorage.removeItem('dermId');
         axios
         .get('/api/dermatologist/derm',{
 			  headers: {

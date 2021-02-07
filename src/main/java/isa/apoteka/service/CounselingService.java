@@ -23,4 +23,5 @@ public interface CounselingService {
 	Boolean isDermFree(Long dermatologistId, Date start, Date end);
 	void update(Long patientId, Long counselingId);
 	void updateReport(String report, Long counselingId);
+	public Boolean createCounseling(Date start, int duration, Float price, Long dwcId, Long dermId, Long pharmacyId);
 }
