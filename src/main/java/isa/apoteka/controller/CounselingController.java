@@ -24,7 +24,6 @@ import com.sun.istack.Nullable;
 import isa.apoteka.domain.Counseling;
 import isa.apoteka.domain.Dermatologist;
 import isa.apoteka.domain.Patient;
-import isa.apoteka.domain.Pharmacist;
 import isa.apoteka.domain.Pharmacy;
 import isa.apoteka.domain.PharmacyAdmin;
 import isa.apoteka.dto.ExaminationDTO;
@@ -50,6 +49,18 @@ public class CounselingController {
 	public ResponseEntity<List<ExaminationDTO>> findAllTermsByDay(Long pharmacyId, Long start) {
 		Dermatologist derm = (Dermatologist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		Long dermatologistId = derm.getId();
+		if(Boolean.FALSE.equals(isDermInPharmacy(dermatologistId, pharmacyId))) {
+			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+		}
+		return new ResponseEntity<>(counselingService.findAllTermsByDay(pharmacyId, dermatologistId, new Date(start)), HttpStatus.OK);
+	}
+	
+	@Nullable
+	@GetMapping("/findAllTerms")
+	@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<List<ExaminationDTO>> findAllTerms(Long dermatologistId, Long start) {
+		PharmacyAdmin admin = (PharmacyAdmin) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Long pharmacyId = admin.getPharmacy().getId();
 		if(Boolean.FALSE.equals(isDermInPharmacy(dermatologistId, pharmacyId))) {
 			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}
@@ -206,7 +217,7 @@ public class CounselingController {
 	
 	public Long getCurrDermWP(Date start, Long dermId, Long pharmId) {
 		try {
-			PeriodDTO dwc = dWCService.findDermWorkCalendarByDermIdAndDate(pharmId, dermId, start);
+			PeriodDTO dwc = dWCService.findDermWorkCalendarForDermAndDate(pharmId, dermId, start);
 			return dwc.getId();
 		}
 		catch (Exception e) {

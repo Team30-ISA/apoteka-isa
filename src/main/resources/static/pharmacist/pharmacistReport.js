@@ -436,6 +436,7 @@ var app = new Vue({
 				    		JSAlert.alert("Farmaceut zauzet!");
 				    	}
 				    	else if(response.data == 1){
+				    		this.getTerms(this.current);
 				    		JSAlert.alert("Uspesno!");
 				    		this.addNewTerm = false;
 				    	}
