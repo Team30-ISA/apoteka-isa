@@ -70,9 +70,12 @@ public class MedicineReservationServiceImpl implements MedicineReservationServic
 	@Transactional(readOnly = false)
 	@Override
 	public void approveReservation(String uid, Long pharmacyId) {
-		if(mrRepository.findReservationByPharmacy(uid, pharmacyId) == null)
+		ReservedMedicine rm = mrRepository.findReservationByPharmacy(uid, pharmacyId);
+		if(rm == null)
 			return;
 		mrRepository.approveReservation(uid);
+		emailService.issuedMedicineReservation(uid, rm.getPatient());
+		
 		
 	}
 }
