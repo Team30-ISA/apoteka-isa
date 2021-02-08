@@ -9,11 +9,15 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import isa.apoteka.async.service.EmailService;
 import isa.apoteka.domain.Counseling;
+import isa.apoteka.domain.Dermatologist;
 import isa.apoteka.domain.Patient;
 import isa.apoteka.domain.Pharmacy;
+import isa.apoteka.domain.ReservedMedicine;
 import isa.apoteka.dto.ExaminationDTO;
 import isa.apoteka.repository.CounselingRepository;
 import isa.apoteka.repository.DermatologistRepository;
@@ -27,6 +31,9 @@ public class CounselingServiceImpl implements CounselingService {
 
 	@Autowired
 	private DermatologistRepository dermatologistRepository;
+	
+	@Autowired
+	private EmailService emailService;
 
 	@Override
 	public List<ExaminationDTO> findAllTermsByDay(Long pharmacyId, Long dermatologistId, Date start) {
@@ -230,6 +237,12 @@ public class CounselingServiceImpl implements CounselingService {
 		counselingRepository.update(patientId, counselingId);
 
 	}
+	
+	@Override
+	public void makeAppointment(Long patId, Long counsId) {
+		counselingRepository.makeAppointment(patId, counsId);
+
+	}
 
 	@Override
 	public void updateReport(String report, Long counselingId) {
@@ -290,6 +303,34 @@ public class CounselingServiceImpl implements CounselingService {
 			}
 		}
 		return true;
+	}
+	
+	public List<Counseling> findAllByPharmId(Long pharmId){
+		return counselingRepository.findAllByPharmId(pharmId);
+	}
+	
+	public Dermatologist findDermatologistForCounseling(Long counsId) {
+		return counselingRepository.findDermatologistForCounseling(counsId);
+	}
+	
+	@Override
+	public void sendCounselingReservation(Counseling c){
+		Patient patient = (Patient) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		try {
+				emailService.sendCounselingReservation(c, patient);
+		}catch(Exception e) {
+			System.out.println("Greska pri slanju emaila");
+		}
+	}
+	
+	@Override
+	public List<Counseling> findAllByPatientId(Long patId){
+		return counselingRepository.findAllByPatientId(patId);
+	}
+	
+	@Override
+	public void cancelAppointment(Long counsId) {
+		counselingRepository.cancelAppointment(counsId);
 	}
 
 }

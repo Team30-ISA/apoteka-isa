@@ -1,18 +1,19 @@
 package isa.apoteka.async.service;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
+
+import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import javax.mail.internet.MimeMessage;
-import org.springframework.mail.javamail.MimeMessageHelper;
 
+import isa.apoteka.domain.Counseling;
 import isa.apoteka.domain.Offer;
 import isa.apoteka.domain.Patient;
 import isa.apoteka.domain.Promotion;
@@ -81,6 +82,21 @@ public class EmailService {
 	}
 	
 	@Async
+	public void sendCounselingReservation(Counseling c, Patient p) throws MailException{
+		SimpleMailMessage mail = new SimpleMailMessage();
+		mail.setTo(p.getEmail());
+		if(env.getProperty("spring.mail.username") == null) {
+			return;
+		}
+		mail.setFrom(env.getProperty("spring.mail.username"));
+		mail.setSubject("Rezervacija pregleda kod dermatologa");
+		mail.setText("Pozdrav, " + p.getFirstName() + "\n" + "\nPregled je rezervisan za datum: " + c.getStartDate()
+				+ "\nNaziv dermatologa: " + c.getDermatologistWorkCalendar().getDermatologist().getFirstName() + " " + c.getDermatologistWorkCalendar().getDermatologist().getLastName() + "\n ");
+		javaMailSender.send(mail);
+
+	}
+	
+	@Async
 	public void sendOfferNotificaitionAsync(Offer offer) throws MailException{
 		SimpleMailMessage mail = new SimpleMailMessage();
 		mail.setTo(offer.getSupplier().getEmail());
@@ -96,6 +112,20 @@ public class EmailService {
 			mail.setText("Pozdrav " + offer.getSupplier().getFirstName() + ",\n" + "\nVaša ponuda za narudžbenicu broj " + offer.getErrand().getId() + "je nažalost odbijena.");
 		}
 		
+		javaMailSender.send(mail);
+	}
+	
+	@Async
+	public void issuedMedicineReservation(String uid, Patient p) throws MailException{
+		SimpleMailMessage mail = new SimpleMailMessage();
+		mail.setTo(p.getEmail());
+		if(env.getProperty("spring.mail.username") == null) {
+			return;
+		}
+		mail.setFrom(env.getProperty("spring.mail.username"));
+		mail.setSubject("Rezervacija leka izdata");
+		mail.setText("Pozdrav, " + p.getFirstName() + "\n" + "\nRezervacija broj " + uid
+				+ " je uspesno preuzeta!");
 		javaMailSender.send(mail);
 	}
 

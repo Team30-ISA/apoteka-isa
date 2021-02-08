@@ -40,8 +40,27 @@
     License: https://bootstrapmade.com/license/
   ======================================================= -->
 </head>
+<style>
+.txtEnabled {
+	padding: 5px 5px;
+	border-radius: 0;
+	box-shadow: none;
+	font-size: 15px;
+	display: block;
+	width: 100%;
+	padding: .275rem .75rem;
+	font-size: 1rem;
+	line-height: 2;
+	color: #495057;
+	background-color: #fff;
+	background-clip: padding-box;
+	border: 1px solid #ced4da;
+	border-radius: .25rem;
+	transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+</style>
 <body id="body">
-	<div id="pharmacyAdmin">
+	<div id="pharmacist">
 		<!--==========================
     Top Bar
   ============================-->
@@ -70,7 +89,7 @@
 
 				<div id="logo" class="pull-left">
 					<h1>
-						<a href="pharmacyAdminHome.html" class="scrollto">Apote<span>ke</span></a>
+						<a href="#body" class="scrollto">Apote<span>ke</span></a>
 					</h1>
 					<!-- Uncomment below if you prefer to use an image logo -->
 					<!-- <a href="#body"><img src="img/logo.png" alt="" title="" /></a>-->
@@ -78,26 +97,21 @@
 
 				<nav id="nav-menu-container">
 					<ul class="nav-menu">
-						<li class="menu-active"><a href="pharmacyAdminHome.html">Home</a></li>
-						<li class="menu-has-children"><a href="#">Search</a>
-							<ul>
-								<li><a href="../filterDermatologist.html">Dermatologists</a></li>
-								<li><a href="../filterPharmacist.html">Pharmacists</a></li>
-							</ul></li>
+						<li class="menu-active"><a href="#body">Home</a></li>
+						<li><a href="#about">About Us</a></li>
 						<li class="menu-has-children"><a href="#">Tools</a>
 							<ul>
-								<li><a href="promotion.html">New Promotion</a></li>
-								<li><a href="newOrder.html">New Order</a></li>
-								<li><a href="managingDermatologists.html">Manage Dermatologists</a></li>
-								<li><a href="managingPharmacists.html">Manage Pharmacists</a></li>
-								<li><a href="managingMedication.html">Manage Medicine</a></li>
-								<li><a href="managingOrders.html">Manage supply offers</a></li>
-								<li><a href="pharmacistHoliday.html">Manage leave requests</a></li>
+								<li><a href="/patientList.html">List of examined clients</a></li>
+								<li><a href="/pharmacist/pharmacistReport.html">Start counseling</a></li>
+								<li><a href="/pharmacist/workCalendar.html">Work calendar</a></li>
+								<li><a href="/pharmacist/leaveRequest.html">Create a leave request</a></li>
+								<li><a href="/pharmacist/pharmacistReport.html?schedule=true">Scheduling a new counseling</a></li>
+								<li><a href="#">Issue a drug</a></li>
 							</ul></li>
-						<li class="menu-has-children"><a href="#">{{admin.firstName}}
-								{{admin.lastName}}</a>
+						<li class="menu-has-children"><a href="#">{{pharm.firstName}}
+								{{pharm.lastName}}</a>
 							<ul>
-								<li><a href="pharmacyAdminProfile.html"><i class="icon fa-user"></i>&nbsp&nbsp&nbspProfile</a></li>
+								<li><a href="/employeeProfile.html"><i class="icon fa-user"></i>&nbsp&nbsp&nbspProfile</a></li>
 								<li @click="logout"><a href="#"><i
 										class="icon fa-sign-out"></i>&nbsp&nbspLog out</a></li>
 							</ul></li>
@@ -114,24 +128,54 @@
   ============================-->
 
 		<main id="main">
-
-			<!--==========================
-      About Section
-    ============================-->
-
-			<!--==========================
-      Services Section
-    ============================-->
-			<section id="wrapper">
-				<div class="inner">
-					<header class="special">
-						<h2>Welcome {{admin.firstName}} {{admin.lastName}}</h2>
-					</header>
-				</div>
-			</section>
-			<!-- #services -->
-
-
+			<div style="width: 80%; left: 10%; display: flex; position: relative; top: 40px;">
+				<input type="text" class="txtEnabled" v-model="uid" placeholder="Reservation ID">
+				<input type="button" value="Search" @click="search" style="background: #50d8af; border: 0; width: 200px; border-radius: 3px; padding: 10px 30px; color: #fff; transition: 0.4s; cursor: pointer; margin-left: 1%">
+			</div>
+			<div v-if="reservation!=null" style="width: 80%; left: 10%; position: relative; top: 100px;">
+				<section style="margin-left:4rem">
+							<table style="width: 100%; height: 150%;">
+								<tr>
+									<td style="width: 50%; padding-bottom: 10px;">
+										<b>PATIENT NAME</b>
+									</td>
+									<td style="width: 50%">{{reservation.patientName}}</td>
+								</tr>
+								<tr>
+									<td style="width: 50%; padding-bottom: 10px;">
+										<b>PHARMACY NAME</b>
+									</td>
+									<td style="width: 50%;">{{reservation.pharmacyName}}</td>
+								</tr>
+								<tr>
+									<td style="width: 50%; padding-bottom: 10px;">
+										<b>MEDICINE NAME</b>
+									</td>
+									<td style="width: 50%;">{{reservation.medicineName}}</td>
+								</tr>
+								<tr>
+									<td style="width: 50%; padding-bottom: 10px;">
+										<b>QUANTITY</b>
+									</td>
+									<td style="width: 50%;">{{reservation.quantity}}</td>
+								</tr>
+								<tr>
+									<td style="width: 50%; padding-bottom: 10px;">
+										<b>EXP. DATE</b>
+									</td>
+									<td style="width: 50%;">{{formatDate(reservation.date)}}</td>
+								</tr>
+								<tr>
+									<td colspan="2">
+									<input  v-if="reservation.approved != true" type="button" @click="approve" value="APPROVE" style="width: 200px; background: #50d8af; border: 0; border-radius: 3px; padding: 10px 30px; color: #fff; transition: 0.4s; cursor: pointer;  margin-top:2rem">
+									<input  v-else type="button" value="APPROVED" style="width: 200px; background: silver; border: 0; border-radius: 3px; padding: 10px 30px; color: #fff; transition: 0.4s; cursor: pointer;  margin-top:2rem">
+									</td>
+									<td>
+									</td>
+								</tr>
+							</table>
+						</section>
+						</div>
 		</main>
 
 		<a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
@@ -147,6 +191,7 @@
 	<script src="../lib/owlcarousel/owl.carousel.min.js"></script>
 	<script src="../lib/magnific-popup/magnific-popup.min.js"></script>
 	<script src="../lib/sticky/sticky.js"></script>
+	<script src="https://npmcdn.com/js-alert/dist/jsalert.min.js"></script>
 
 	<!-- Contact Form JavaScript File -->
 	<script
@@ -154,7 +199,7 @@
 	<!-- Template Main Javascript File -->
 	<script src="../js/main.js"></script>
 	<script src="../axios.js"></script>
-	<script src="pharmacyAdminHome.js"></script>
+	<script src="issueMedicine.js"></script>
 
 </body>
 </html>

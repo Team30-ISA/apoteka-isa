@@ -1,6 +1,5 @@
 package isa.apoteka.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import isa.apoteka.dto.*;
@@ -15,8 +14,9 @@ import isa.apoteka.domain.Counseling;
 import isa.apoteka.domain.Dermatologist;
 import isa.apoteka.domain.Medicine;
 import isa.apoteka.domain.Patient;
-import isa.apoteka.domain.Pharmacist;
 import isa.apoteka.domain.Pharmacy;
+import isa.apoteka.dto.MedicineDTO;
+import isa.apoteka.dto.MedicineNameDTO;
 import isa.apoteka.service.CounselingService;
 import isa.apoteka.service.ExaminationService;
 import isa.apoteka.service.MedicineService;

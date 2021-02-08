@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import isa.apoteka.domain.Dermatologist;
 import isa.apoteka.domain.Medicine;
-import isa.apoteka.domain.MedicineDisplay;
 import isa.apoteka.domain.Pharmacist;
 import isa.apoteka.domain.Pharmacy;
 import isa.apoteka.dto.DermatologistDTO;
