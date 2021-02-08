@@ -37,7 +37,24 @@
 </head>
 
 <body id="body">
-<div id="home">
+<div id="pharmacies">
+  <div v-if="showAddPharmacyForm" style="position: absolute; width: 100vw; height: 100vh; background-color: rgba(0,0,0,0.2); z-index: 1000;" @click="showAddPharmacyForm = false">
+    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); background-color: white; width: 600px; height: 500px;" @click.stop>
+      <div style="position: absolute; top: 10px; right: 15px; cursor: pointer;" @click="showAddPharmacyForm = false"><i class="icon fa-times"></i></div>
+      <form @submit.prevent="submit" class="text-center mt-5">
+        <div class="d-inline-block w-75 mt-5">
+          <h6 style="color:#50d8af;"">Pharmacy name</h6>
+          <input autofocus v-model="name" type="text" name="name" class="form-control" id="name" />
+        </div>
+        <div class="d-inline-block w-75 mt-4">
+          <h6 style="color:#50d8af;"">Address</h6>
+          <input autofocus v-model="address" type="text" name="address" class="form-control" id="address" />
+        </div>
+        <button type="submit" class="btn d-inline-block w-75 mt-5">Submit</button>
+      </form>
+    </div>
+  </div>
+
   <!--==========================
     Top Bar
   ============================-->
@@ -81,17 +98,15 @@
 								<li><a href="managingDermatologists.html">Suppliers</a></li>
 								<li><a href="managingPharmacists.html">Medicines</a></li>
 								<li><a href="managingMedication.html">Complaints</a></li>
-                                <li><a href="managingMedication.html">Loyalty program</a></li>
-                                <li><a href="managingMedication.html">Loyalty program</a></li>
+                <li><a href="managingMedication.html">Loyalty program</a></li>
+
 							</ul></li>
-						<li class="menu-has-children"><a href="#">{{admin.firstName}}
-								{{admin.lastName}}</a>
+						<li class="menu-has-children"><a href="#"><i class="icon fa-cog"></i></a>
 							<ul>
 								<li><a href="pharmacyAdminProfile.html"><i class="icon fa-user"></i>&nbsp&nbsp&nbspProfile</a></li>
 								<li @click="logout"><a href="#"><i
 										class="icon fa-sign-out"></i>&nbsp&nbspLog out</a></li>
 							</ul></li>
-						<li><a href="#contact">Contact</a></li>
 					</ul>
 				</nav>
 				<!-- #nav-menu-container -->
@@ -103,13 +118,16 @@
   ============================-->
   
   <main id="main">
-
-
-    
+    <div class="text-center mt-5">
+        <ul class="list-group d-inline-block w-50 mt-3">
+            <li v-for="pharmacy in pharmacies" class="list-group-item">{{ pharmacy.name }} <i class="icon fa-chevron-right"></i></li>
+            <li class="list-group-item" style="cursor: pointer;" @click="showAddPharmacyForm = true"><i
+                class="icon fa-plus"></i> Add new pharmacy</li>
+          </ul>
+    </div>
   </main>
-
-  <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
 </div>
+
   <!-- JavaScript Libraries -->
   <script src="../lib/jquery/jquery.min.js"></script>
   <script src="../lib/jquery/jquery-migrate.min.js"></script>
@@ -123,13 +141,11 @@
   <script src="../lib/sticky/sticky.js"></script>
   <script src="https://npmcdn.com/js-alert/dist/jsalert.min.js"></script>
 
-  <!-- Contact Form JavaScript File -->
-  <script src="../contactform/contactform.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.18/vue.min.js"></script>
   <!-- Template Main Javascript File -->
   <script src="../js/main.js"></script>
   <script src="../axios.js"></script>
-  <script src="home.js"></script>
+  <script src="pharmacies.js"></script>
 
 </body>
 </html>
