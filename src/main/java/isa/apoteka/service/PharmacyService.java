@@ -36,5 +36,7 @@ public interface PharmacyService {
 	public Medicine searchMedicineInPharmacy(Long id, String name);
 	
 	void updateMedicineInPharmacy(Long pharmId, Long medId, int quantity);
+
+	public Pharmacy findById(Long id);
 	
 }

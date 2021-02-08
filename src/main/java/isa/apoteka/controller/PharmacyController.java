@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,6 +18,7 @@ import isa.apoteka.domain.Medicine;
 import isa.apoteka.domain.MedicineDisplay;
 import isa.apoteka.domain.Pharmacist;
 import isa.apoteka.domain.Pharmacy;
+import isa.apoteka.domain.PharmacyAdmin;
 import isa.apoteka.dto.DermatologistDTO;
 import isa.apoteka.dto.PharmacistDTO;
 import isa.apoteka.dto.PharmacyDTO;
@@ -48,6 +50,16 @@ public class PharmacyController {
 	public ResponseEntity<PharmacyDTO> getPharmacyByName(@RequestParam String name) {
 
 		Pharmacy pharmacy = pharmacyService.findByName(name);
+
+		// convert students to DTOs
+		PharmacyDTO pharmacyDTO = new PharmacyDTO(pharmacy);
+		return new ResponseEntity<>(pharmacyDTO, HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/findPharmacyForAdmin")
+	public ResponseEntity<PharmacyDTO> findPharmacyForAdmin() {
+		PharmacyAdmin admin = (PharmacyAdmin) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Pharmacy pharmacy = pharmacyService.findById(admin.getPharmacy().getId());
 
 		// convert students to DTOs
 		PharmacyDTO pharmacyDTO = new PharmacyDTO(pharmacy);

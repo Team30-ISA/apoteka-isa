@@ -1,7 +1,3 @@
-insert into pharmacy (name, address) values ('Helenina Apoteka','Teslina ulica 34');
-insert into pharmacy (name, address) values ('Nikolina Apoteka', 'Njegoševa 8');
-insert into pharmacy (name, address) values ('Milanova Apoteka', 'Petra Konjovica 1');
-insert into pharmacy (name, address) values ('Aleksandrova Apoteka', 'Laze Lazarevica 234');
 
 INSERT INTO Country (id, country) VALUES (1, 'Srbija');
 INSERT INTO Country (id, country) VALUES (2, 'Bosna i Hercegovina');
@@ -11,10 +7,16 @@ INSERT INTO City (id, city, country_id) VALUES (2, 'Novi Sad', 1);
 INSERT INTO City (id, city, country_id) VALUES (3, 'Beograd', 1);
 INSERT INTO City (id, city, country_id) VALUES (4, 'Mostar', 2);
 
-INSERT INTO Address (id, street, city_id) VALUES (6, 'Mirka Lazica 3a', 1);
-INSERT INTO Address (id, street, city_id) VALUES (7, 'Kumiciceva 6', 1);
-INSERT INTO Address (id, street, city_id) VALUES (8, 'Laze Kostica 9', 2);
-INSERT INTO Address (id, street, city_id) VALUES (9, 'Kisacka 9', 2);
+INSERT INTO Address (id, street, city_id) VALUES (6, 'Beogradski put 24', 1);
+INSERT INTO Address (id, street, city_id) VALUES (7, 'Zetska 10', 1);
+INSERT INTO Address (id, street, city_id) VALUES (8, 'Bulevar oslobodjenja 52', 2);
+INSERT INTO Address (id, street, city_id) VALUES (9, 'Brace Ribnikara 65', 2);
+
+insert into pharmacy (name, address_id) values ('Helenina Apoteka',6);
+insert into pharmacy (name, address_id) values ('Nikolina Apoteka', 8);
+insert into pharmacy (name, address_id) values ('Milanova Apoteka', 8);
+insert into pharmacy (name, address_id) values ('Aleksandrova Apoteka', 9);
+
 
 INSERT INTO dermatologist (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, gender, address_id) VALUES (3, 'ale', '$2a$10$2affw9vkXuEbQOoiKqN2XuVQ1sVZLQ6XBRAZ1IHeCT6W8.qJOXkhe', 'Aleksandra', 'Gojkovic', 'apoteka.isa2021+ale@gmail.com', true, '2017-10-01 18:57:58.508-07', 0, 6);
 INSERT INTO dermatologist (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, gender, address_id) VALUES (5, 'mile', '$2a$10$2affw9vkXuEbQOoiKqN2XuVQ1sVZLQ6XBRAZ1IHeCT6W8.qJOXkhe', 'Mile', 'Micic', 'apoteka.isa2021+mile@gmail.com', true, '2017-10-01 18:57:58.508-07', 1, 6);

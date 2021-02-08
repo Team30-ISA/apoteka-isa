@@ -54,4 +54,9 @@ public class MedicineInPharmacyServiceImpl implements MedicineInPharmacyService{
 		return medInPharmacyRepository.searchMedicineInPharmacy(pharmacyId, name);
 	}
 
+	@Override
+	public List<MedicineInPharmacy> getAvailableMedicineInPharmacy(Long id) {
+		return medInPharmacyRepository.getAvailableMedicineInPharmacy(id);
+	}
+
 }

@@ -69,4 +69,9 @@ public class PharmacyServiceImpl implements PharmacyService{
 	public void updateMedicineInPharmacy(Long pharmId, Long medId, int quantity) {
 		pharmacyRepository.updateMedicineInPharmacy(pharmId, medId, quantity);
 	}
+
+	@Override
+	public Pharmacy findById(Long id) {
+		return pharmacyRepository.findById(id).orElse(null);
+	}
 }

@@ -145,4 +145,29 @@ public class MedicineServiceImpl implements MedicineService {
 		return dto;
 	}
 
+	@Override
+	public List<MedicineDTO> findAllMedicineAvailableInPharmacy() {
+		List<MedicineDTO> dto = new ArrayList<MedicineDTO>();
+		PharmacyAdmin admin = (PharmacyAdmin) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		List<MedicineInPharmacy> medicineInPharmacy = medInPharmacyService.getAvailableMedicineInPharmacy(admin.getPharmacy().getId());
+		
+		for(MedicineInPharmacy m : medicineInPharmacy) { 			
+			Long medId = m.getMedicine().getId();
+			String name = m.getMedicine().getName();
+			int quantity = m.getQuantity();
+			MedicinePrice medPrice = medPriceService.findMedicinePrice(admin.getPharmacy().getId(), medId);
+			int price;
+			if(medPrice.getPrice() == null) {
+				price = 0;
+			}else {
+				price = medPrice.getPrice();
+			}
+			Date start = medPrice.getStartOfPrice();
+			Date end = medPrice.getEndOfPrice();
+			dto.add(new MedicineDTO(medId, name, quantity, price, start,end ));
+		}
+		
+		return dto;
+	}
+
 }

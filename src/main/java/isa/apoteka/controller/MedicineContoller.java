@@ -121,6 +121,12 @@ public class MedicineContoller {
 		return new ResponseEntity<>(med, HttpStatus.OK);
 	}
 	
+	@GetMapping(value = "/findAllMedicineAvailableInPharmacy")
+	public ResponseEntity<List<MedicineDTO>> findAllMedicineAvailableInPharmacy() {
+		List<MedicineDTO> med = medicineService.findAllMedicineAvailableInPharmacy();
+		return new ResponseEntity<>(med, HttpStatus.OK);
+	}
+	
 	@GetMapping(value = "/searchMedicineInPharmacy")
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<List<MedicineDTO>> searchMedicineInPharmacy(@RequestParam String name) {
