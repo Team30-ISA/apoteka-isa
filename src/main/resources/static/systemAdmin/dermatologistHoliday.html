@@ -40,8 +40,58 @@
     License: https://bootstrapmade.com/license/
   ======================================================= -->
 </head>
+<style>
+.txtDisabled {
+	border-color: transparent;
+	background-color: white;
+}
+
+.txtEnabled {
+	padding: 5px 5px;
+	border-radius: 0;
+	box-shadow: none;
+	font-size: 15px;
+	display: block;
+	width: 100%;
+	padding: .275rem .75rem;
+	font-size: 1rem;
+	line-height: 2;
+	color: #495057;
+	background-color: #fff;
+	background-clip: padding-box;
+	border: 1px solid #ced4da;
+	border-radius: .25rem;
+	transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+main ::-webkit-scrollbar {
+	width: 8px;
+}
+
+main ::-webkit-scrollbar-button {
+	width: 8px;
+	height: 5px;
+}
+
+main ::-webkit-scrollbar-track {
+	background: #eee;
+	border: thin solid lightgray;
+	box-shadow: 0px 0px 3px #dfdfdf inset;
+	border-radius: 10px;
+}
+
+main ::-webkit-scrollbar-thumb {
+	background: #999;
+	border: thin solid gray;
+	border-radius: 10px;
+}
+
+main ::-webkit-scrollbar-thumb:hover {
+	background: #7d7d7d;
+}
+</style>
 <body id="body">
-	<div id="pharmacyAdmin">
+	<div id="manageDerm">
 		<!--==========================
     Top Bar
   ============================-->
@@ -88,16 +138,18 @@
 							<ul>
 								<li><a href="promotion.html">New Promotion</a></li>
 								<li><a href="newOrder.html">New Order</a></li>
-								<li><a href="managingDermatologists.html">Manage Dermatologists</a></li>
-								<li><a href="managingPharmacists.html">Manage Pharmacists</a></li>
+								<li><a href="managingDermatologists.html">Manage
+										Dermatologists</a></li>
+								<li><a href="managingPharmacists.html">Manage
+										Pharmacists</a></li>
 								<li><a href="managingMedication.html">Manage Medicine</a></li>
 								<li><a href="managingOrders.html">Manage supply offers</a></li>
-								<li><a href="pharmacistHoliday.html">Manage leave requests</a></li>
 							</ul></li>
 						<li class="menu-has-children"><a href="#">{{admin.firstName}}
 								{{admin.lastName}}</a>
 							<ul>
-								<li><a href="pharmacyAdminProfile.html"><i class="icon fa-user"></i>&nbsp&nbsp&nbspProfile</a></li>
+								<li><a href="pharmacyAdminProfile.html"><i
+										class="icon fa-user"></i>&nbsp&nbsp&nbspProfile</a></li>
 								<li @click="logout"><a href="#"><i
 										class="icon fa-sign-out"></i>&nbsp&nbspLog out</a></li>
 							</ul></li>
@@ -125,8 +177,46 @@
 			<section id="wrapper">
 				<div class="inner">
 					<header class="special">
-						<h2>Welcome {{admin.firstName}} {{admin.lastName}}</h2>
+						<h2>MANAGE LEAVE REQUESTS</h2>
 					</header>
+					<div class="highlight">
+						<section>
+							<div >							
+							<table style="width: 60%; margin-left:20%; margin-bottom:7.5%; font-size:1rem;" v-for="r in requests">
+								<tr width="100%" style="color:#0c2e8a; height:4rem">
+									<td width="30%"><b>Pharmacist:</b></td>
+									<td width="20%"><b>Start date:</b></td>
+									<td width="20%"><b>End date:</b></td>
+									<td width="15%">&nbsp</td>
+									<td width="15%">&nbsp</td>
+								</tr>
+								<tr width="100%" style="height:4rem">
+									<td width="30%">
+										{{r.firstName}}&nbsp{{r.lastName}}
+									</td>
+									<td width="20%">
+										{{formatDate(r.start)}}
+									</td>
+									<td width="20%">
+										{{formatDate(r.end)}}
+									</td>
+									<td width="15%" v-if = "r.status == 'PENDING'">
+										<input type="button" @click="approve(r)"  value="Approve" style="background: #50d8af; border: 0; width:100%; border-radius: 3px; padding: 10px 20px; color: #fff; transition: 0.4s; cursor: pointer; ">
+									</td>
+									<td width="15%" v-if = "r.status == 'PENDING'">
+										<input type="button" @click="reject(r)"  value="Reject" style="background: #50d8af; border: 0; width:100%; border-radius: 3px; padding: 10px 20px; color: #fff; transition: 0.4s; cursor: pointer; ">
+									</td>
+									<td width="15%"  v-if = "r.status == 'REJECTED'" style="color:red">
+										REJECTED
+									</td>
+									<td width="%"  v-if = "r.status == 'APPROVED'" style="color:green">
+										APPROVED
+									</td>
+								</tr>
+							</table>
+							</div>
+						</section>
+					</div>
 				</div>
 			</section>
 			<!-- #services -->
@@ -148,13 +238,15 @@
 	<script src="../lib/magnific-popup/magnific-popup.min.js"></script>
 	<script src="../lib/sticky/sticky.js"></script>
 
+	<script src="https://npmcdn.com/js-alert/dist/jsalert.min.js"></script>
+
 	<!-- Contact Form JavaScript File -->
 	<script
 		src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.18/vue.min.js"></script>
 	<!-- Template Main Javascript File -->
 	<script src="../js/main.js"></script>
 	<script src="../axios.js"></script>
-	<script src="pharmacyAdminHome.js"></script>
+	<script src="dermatologistHoliday.js"></script>
 
 </body>
 </html>
