@@ -198,7 +198,7 @@ public class CounselingController {
 		counsDate.setTime(counseling.getStartDate());
 		if(counseling.getPatient() == null)
 			return false;
-		if(counseling.getPatient().getId() != p.getId())
+		if(!counseling.getPatient().getId().equals(p.getId()))
 			return false;
 		if(checkIfDayEarlier(counsDate, cal)) {
 			return false;
@@ -339,7 +339,7 @@ public class CounselingController {
 			List<Counseling> ret = new ArrayList<Counseling>();
 			for(Counseling s: counselings) {
 				if(s.getPatient() != null)
-					if(s.getPatient().getId() == patId)
+					if(s.getPatient().getId().equals(patId))
 						ret.add(s);
 			}
 			return ret;
