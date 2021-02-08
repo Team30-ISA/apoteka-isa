@@ -150,6 +150,14 @@ public class Pharmacy {
 		return true;
 	}
 
+	public List<PharmacyAdmin> getPharmacyAdmins() {
+		return pharmacyAdmins;
+	}
+
+	public void setPharmacyAdmins(List<PharmacyAdmin> pharmacyAdmins) {
+		this.pharmacyAdmins = pharmacyAdmins;
+	}
+
 	@Override
 	public String toString() {
 		return "Pharmacy [id=" + id + ", name=" + name + ", address=" + address + "]";

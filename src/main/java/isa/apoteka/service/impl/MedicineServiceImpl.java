@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import isa.apoteka.domain.*;
+import isa.apoteka.dto.MedicineCreateDTO;
+import isa.apoteka.repository.DrugFormRepository;
+import isa.apoteka.repository.DrugTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import isa.apoteka.domain.Medicine;
-import isa.apoteka.domain.MedicineInPharmacy;
-import isa.apoteka.domain.MedicinePrice;
-import isa.apoteka.domain.PharmacyAdmin;
 import isa.apoteka.dto.MedicineDTO;
 import isa.apoteka.dto.MedicineNameDTO;
 import isa.apoteka.repository.MedicineRepository;
@@ -33,7 +33,13 @@ public class MedicineServiceImpl implements MedicineService {
 		this.medPriceService = medPriceService;
 		this.medInPharmacyService = medInPharmacyService;
 	}
-	
+
+	@Autowired
+	private DrugFormRepository drugFormRepository;
+
+	@Autowired
+	private DrugTypeRepository drugTypeRepository;
+
 	@Override
 	public List<Medicine> findAll() {
 		return medicineRepository.findAll();
@@ -143,6 +149,16 @@ public class MedicineServiceImpl implements MedicineService {
 			}
 			
 		return dto;
+	}
+
+	@Override
+	public Medicine create(MedicineCreateDTO medicineDTO) {
+		DrugForm drugForm = drugFormRepository.getOne(medicineDTO.getForm());
+		DrugType drugType = drugTypeRepository.getOne(medicineDTO.getType());
+		List<Medicine> substitutes = medicineRepository.findAllById(medicineDTO.getSubstitutes());
+		Medicine medicine = new Medicine(medicineDTO, substitutes, drugType, drugForm);
+		medicineRepository.save(medicine);
+		return medicine;
 	}
 
 }

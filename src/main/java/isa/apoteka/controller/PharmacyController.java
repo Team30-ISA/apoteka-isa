@@ -130,6 +130,16 @@ public class PharmacyController {
 
 		return new ResponseEntity<>(pharmDTO, HttpStatus.OK);
 	}
+
+	@GetMapping(value = "/{id}/admins")
+	@PreAuthorize("hasRole('SYS_ADMIN')")
+	public ResponseEntity<?> getPharmacyAdminsForPharmacy(@PathVariable(value="id") Long id) {
+		try {
+			return new ResponseEntity<>(pharmacyService.getPharmacyAdminsForPharmacy(id), HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+	}
 	
 	@GetMapping(value = "/searchMedicineInPharmacy")
 	@PreAuthorize("hasRole('PATIENT')")

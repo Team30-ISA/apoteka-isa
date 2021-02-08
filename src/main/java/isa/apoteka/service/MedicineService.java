@@ -3,6 +3,7 @@ package isa.apoteka.service;
 import java.util.List;
 
 import isa.apoteka.domain.Medicine;
+import isa.apoteka.dto.MedicineCreateDTO;
 import isa.apoteka.dto.MedicineDTO;
 import isa.apoteka.dto.MedicineNameDTO;
 
@@ -17,4 +18,5 @@ public interface MedicineService {
 	List<MedicineNameDTO> findAllMedicineNotInPharmacy();
 	List<MedicineDTO> searchMedicineInPharmacy(String name);
 	List<MedicineNameDTO> findAllMedicine();
+    Medicine create(MedicineCreateDTO medicineDTO);
 }

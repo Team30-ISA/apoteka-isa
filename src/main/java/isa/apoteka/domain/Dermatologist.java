@@ -7,6 +7,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import isa.apoteka.dto.PharmacistDTO;
 
 @Entity
 @Table(name="dermatologist")
@@ -25,7 +26,11 @@ public class Dermatologist extends User{
 
 	}
 
-	public List<Pharmacy> getPharmacies() {
+    public Dermatologist(PharmacistDTO dermatologistData) {
+		super(dermatologistData);
+    }
+
+    public List<Pharmacy> getPharmacies() {
 		return pharmacies;
 	}
 
