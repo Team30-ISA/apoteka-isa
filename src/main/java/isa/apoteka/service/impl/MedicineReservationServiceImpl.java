@@ -15,19 +15,16 @@ import isa.apoteka.domain.ReservedMedicine;
 import isa.apoteka.dto.ReservedMedicineDTO;
 import isa.apoteka.repository.MedicineReservationRepository;
 import isa.apoteka.service.MedicineReservationService;
-import isa.apoteka.service.PatientService;
 
 @Service
 @Transactional(readOnly = true)
 public class MedicineReservationServiceImpl implements MedicineReservationService{
 	
-	private PatientService patientService;
 	private EmailService emailService;
 	private MedicineReservationRepository mrRepository;
 	
 	@Autowired 
-	public MedicineReservationServiceImpl(PatientService patientService, EmailService emailService, MedicineReservationRepository mrRepository) {
-		this.patientService = patientService;
+	public MedicineReservationServiceImpl(EmailService emailService, MedicineReservationRepository mrRepository) {
 		this.emailService = emailService;
 		this.mrRepository = mrRepository;
 	}
