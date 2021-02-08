@@ -142,6 +142,9 @@ public class AuthenticationController {
 		else if(SecurityContextHolder.getContext().getAuthentication()
 				.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_PATIENT"))) {
 			return ResponseEntity.ok("PATIENT");
+		}else if(SecurityContextHolder.getContext().getAuthentication()
+				.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_SYS_ADMIN"))) {
+			return ResponseEntity.ok("SYS_ADMIN");
 		}
 		return ResponseEntity.ok("NONE");
 	}

@@ -16,4 +16,6 @@ public interface DermatologistWorkCalendarService {
 	void deleteDermWorkCalendarByDerm(Long dermId);
 	PeriodDTO findDermWorkCalendarByDermIdAndDate(Long pharmacyId, Long dermatologistId, Date start);
 	PeriodDTO findDermWorkCalendarForDermAndDate(Long pharmacyId, Long dermatologistId, Date start);
+	List<PeriodDTO> findAllDermWorkCalendarByPeriod(Long dermatologistId, Date start, Date end);
+	void deleteDermWorkCalendarByDateAllPharmacies(Date start, Long dermId);
 }
