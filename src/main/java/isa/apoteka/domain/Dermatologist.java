@@ -17,7 +17,8 @@ public class Dermatologist extends User{
 	private static final long serialVersionUID = 1L;
 	@ManyToMany(mappedBy = "dermatologists")
 	private List<Pharmacy> pharmacies;
-
+	
+	private int grade;
 	
 
 	public Dermatologist() {
@@ -32,5 +33,13 @@ public class Dermatologist extends User{
 
 	public void setPharmacies(List<Pharmacy> pharmacies) {
 		this.pharmacies = pharmacies;
+	}
+	
+	public int getGrade() {
+		return this.grade;
+	}
+	
+	public void setGrade(int grade) {
+		this.grade = grade;
 	}
 }

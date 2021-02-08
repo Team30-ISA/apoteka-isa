@@ -269,6 +269,18 @@
 				</style>
 				<label v-for="med in reservedMedications" value="med.id">{{med.name}}&#13;&#10;</label>
 			</div>
+			
+			<div>
+				<h4>Spisak rezervisanih pregleda kod dermatologa: </h4>
+				<style>
+				.pre-formatted {
+  					white-space: pre-wrap; /* 👈 this is the important part */
+  					border: 1px dotted;
+  					padding: 1rem;
+				}
+				</style>
+				<label v-for="med in reservedMedications" value="med.id">{{med.name}}&#13;&#10;</label>
+			</div>
 		</main>
 
 		<a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
