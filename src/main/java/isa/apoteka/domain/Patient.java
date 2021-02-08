@@ -32,4 +32,7 @@ public class Patient extends User{
 		super();
 	}
 
+    public Patient(UserRequest userRequest) {
+        super(userRequest);
+    }
 }

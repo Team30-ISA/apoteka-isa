@@ -1,5 +1,7 @@
 package isa.apoteka.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -25,8 +27,11 @@ import isa.apoteka.domain.Counseling;
 import isa.apoteka.domain.Dermatologist;
 import isa.apoteka.domain.Patient;
 import isa.apoteka.domain.Pharmacy;
+import isa.apoteka.domain.PharmacyAdmin;
 import isa.apoteka.dto.ExaminationDTO;
+import isa.apoteka.dto.PeriodDTO;
 import isa.apoteka.service.CounselingService;
+import isa.apoteka.service.DermatologistWorkCalendarService;
 import isa.apoteka.service.PatientService;
 
 @RestController
@@ -37,6 +42,8 @@ public class CounselingController {
 	private CounselingService counselingService;
 	@Autowired
 	private PatientService patientService;
+	@Autowired
+	private DermatologistWorkCalendarService dWCService;
 	
 	@Nullable
 	@GetMapping("/findAllTermsByDay")
@@ -44,6 +51,18 @@ public class CounselingController {
 	public ResponseEntity<List<ExaminationDTO>> findAllTermsByDay(Long pharmacyId, Long start) {
 		Dermatologist derm = (Dermatologist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		Long dermatologistId = derm.getId();
+		if(Boolean.FALSE.equals(isDermInPharmacy(dermatologistId, pharmacyId))) {
+			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+		}
+		return new ResponseEntity<>(counselingService.findAllTermsByDay(pharmacyId, dermatologistId, new Date(start)), HttpStatus.OK);
+	}
+	
+	@Nullable
+	@GetMapping("/findAllTerms")
+	@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<List<ExaminationDTO>> findAllTerms(Long dermatologistId, Long start) {
+		PharmacyAdmin admin = (PharmacyAdmin) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Long pharmacyId = admin.getPharmacy().getId();
 		if(Boolean.FALSE.equals(isDermInPharmacy(dermatologistId, pharmacyId))) {
 			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}
@@ -125,6 +144,70 @@ public class CounselingController {
 		}
 		counselingService.update(patient.getId(), Long.parseLong(params.get("newCounselingId").toString()));
 	}
+	@Nullable
+	@PostMapping("/makeAppointment")
+	@PreAuthorize("hasRole('PATIENT')")
+	public boolean makeAppointment(Long counsId) {
+		System.out.println("AAAAAAAAAAAAAAAAA");
+		Patient p = (Patient) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		//Patient patient = patientService.findById(patId);
+		if(p == null)
+			return false;
+		Counseling counseling = counselingService.findOne(counsId);
+		if(counseling.getStartDate().getTime() < (new Date()).getTime()) {
+			return false;
+		}
+		counselingService.makeAppointment(p.getId(), counseling.getId());
+		return true;
+	}
+	
+	@GetMapping("/makeAnAppointment")
+	@PostMapping("/makeAnAppointment")
+	@PreAuthorize("hasRole('PATIENT')")
+	public boolean makeAnAppointment(Long counsId) {
+		Patient p = (Patient) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		//Patient patient = patientService.findById(patId);
+		if(p == null)
+			return false;
+		Counseling counseling = counselingService.findOne(counsId);
+		if(counseling.getStartDate().getTime() < (new Date()).getTime()) {
+			return false;
+		}
+		counselingService.sendCounselingReservation(counseling);
+		counselingService.makeAppointment(p.getId(), counseling.getId());
+		return true;
+	}
+	
+	@GetMapping("/cancelAppointment")
+	@PostMapping("/cancelAppointment")
+	@PreAuthorize("hasRole('PATIENT')")
+	public boolean cancelAppointment(Long counsId) {
+		Patient p = (Patient) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		//Patient patient = patientService.findById(patId);
+		if(p == null)
+			return false;
+		Date now = new Date();
+		Calendar cal = new GregorianCalendar();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy MMM dd HH:mm:ss");
+		Counseling counseling = counselingService.findOne(counsId);
+		Date cdate = counseling.getStartDate();
+		if(counseling.getStartDate().getTime() < (new Date()).getTime()) {
+			return false;
+		}
+		Calendar counsDate = new GregorianCalendar();
+		counsDate.setTime(counseling.getStartDate());
+		if(counseling.getPatient() == null)
+			return false;
+		if(!counseling.getPatient().getId().equals(p.getId()))
+			return false;
+		if(checkIfDayEarlier(counsDate, cal)) {
+			return false;
+		}
+		System.out.println(sdf.format(cal.getTime()));
+		System.out.println(sdf.format(counsDate.getTime()));
+		counselingService.cancelAppointment(counseling.getId());
+		return true;
+	}
 	
 	@PostMapping("/setReport")
 	@PreAuthorize("hasRole('DERM')")
@@ -175,6 +258,39 @@ public class CounselingController {
 		return counselingService.isDermFree(derm.getId(), new Date(startDate), new Date(endDate));
 	}
 	
+	@PostMapping("/scheduleCounseling")
+	@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<Integer> scheduleCounseling(@RequestBody Map<String, Object> params) {
+		PharmacyAdmin admin = (PharmacyAdmin) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Date start = new Date(Long.parseLong(params.get("start").toString()));
+		Integer duration = Integer.parseInt(params.get("duration").toString());
+		Float price = Float.parseFloat(params.get("price").toString());
+		Long dermId = Long.parseLong(params.get("dermId").toString());
+		if(start == null || duration == null || price == null || dermId == null) {
+			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+		}
+		Long dwcId = getCurrDermWP(start, dermId, admin.getPharmacy().getId());
+		if(dwcId == null) {
+			return new ResponseEntity<>(-1, HttpStatus.OK);
+		}
+		if(!counselingService.createCounseling(start, duration, price, dwcId, dermId, admin.getPharmacy().getId())) {
+			return new ResponseEntity<>(-2, HttpStatus.OK);
+		}
+		
+		return new ResponseEntity<>(1, HttpStatus.OK);
+		
+	}
+	
+	public Long getCurrDermWP(Date start, Long dermId, Long pharmId) {
+		try {
+			PeriodDTO dwc = dWCService.findDermWorkCalendarForDermAndDate(pharmId, dermId, start);
+			return dwc.getId();
+		}
+		catch (Exception e) {
+			return null;
+		}
+	}
+	
 	public List<Pharmacy> findAllPharmaciesByDermatologist(Long dermatologistId) {
 		return counselingService.findAllPharmaciesByDermatologist(dermatologistId);
 	}
@@ -201,6 +317,58 @@ public class CounselingController {
 		} catch(Exception e){
 			return false;
 		}
+		return true;
+	}
+	
+	@GetMapping("/findAllCounselingsForPharmacy")
+	@PreAuthorize("hasRole('PATIENT')")
+	public List<Counseling> findAllCounselingsForPharmacy(Long pharmId){
+			List<Counseling> counselings = counselingService.findAllByPharmId(pharmId);
+			List<Counseling> ret = new ArrayList<Counseling>();
+			for(Counseling s: counselings) {
+				if(s.getPatient() == null)
+					ret.add(s);
+			}
+			return ret;
+	}
+	
+	@GetMapping("/findAllByPatientId")
+	@PreAuthorize("hasRole('PATIENT')")
+	public List<Counseling> findAllByPatientId(Long patId){
+			List<Counseling> counselings = counselingService.findAllByPatientId(patId);
+			List<Counseling> ret = new ArrayList<Counseling>();
+			for(Counseling s: counselings) {
+				if(s.getPatient() != null)
+					if(s.getPatient().getId().equals(patId))
+						ret.add(s);
+			}
+			return ret;
+	}
+	
+	@GetMapping("/findDermatologistForCounseling")
+	@PreAuthorize("hasRole('PATIENT')")
+	public Dermatologist findDermatologistForCounseling(Long counsId){
+			Dermatologist derm = counselingService.findDermatologistForCounseling(counsId);
+			return derm;
+	}
+	
+	@GetMapping("/findOneCounseling")
+	@PreAuthorize("hasRole('PATIENT')")
+	public Counseling findOne(Long counsId){
+			Counseling c = counselingService.findOne(counsId);
+			return c;
+	}
+	
+	boolean checkIfDayEarlier(Calendar cc, Calendar c) {
+		if(cc.get(Calendar.YEAR) != c.get(Calendar.YEAR))
+			return false;
+		else if(cc.get(Calendar.MONTH) != c.get(Calendar.MONTH))
+			return false;
+		else if(cc.get(Calendar.DAY_OF_MONTH) != c.get(Calendar.DAY_OF_MONTH))
+			return false;
+		else if(cc.get(Calendar.HOUR_OF_DAY) -1 < c.get(Calendar.HOUR_OF_DAY))
+			return true;
+			
 		return true;
 	}
 }

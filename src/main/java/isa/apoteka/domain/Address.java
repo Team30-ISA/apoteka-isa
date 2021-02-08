@@ -29,7 +29,15 @@ public class Address {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "city_id", referencedColumnName = "id")
     private City city;
-    
+
+    public Address() {
+    }
+
+    public Address(String address, City city) {
+        this.city = city;
+        this.street = address;
+    }
+
     public Long getId() {
         return id;
     }

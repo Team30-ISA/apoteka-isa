@@ -2,14 +2,19 @@ package isa.apoteka.async.service;
 
 import java.text.SimpleDateFormat;
 
+import javax.mail.internet.MimeMessage;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import isa.apoteka.domain.Counseling;
+import isa.apoteka.domain.Offer;
 import isa.apoteka.domain.Patient;
 import isa.apoteka.domain.Promotion;
 import isa.apoteka.domain.ReservedMedicine;
@@ -36,7 +41,29 @@ public class EmailService {
 		mail.setText("Pozdrav " + user.getFirstName() + ",\n" + "\nPočetak promocije: " + new SimpleDateFormat("dd. MMM yyyy.").format(promotion.getStartOfPromotion())
 				+ "\nKraj promocije: " + new SimpleDateFormat("dd. MMM yyyy.").format(promotion.getEndOfPromotion()) + "\n\n" + promotion.getContent());
 		javaMailSender.send(mail);
+	}
 
+	@Async
+	public void sendVerificationEmail(User user, String hashedEmail) throws MailException{
+
+		try {
+			MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+			mimeMessage.setContent(
+					"<p>Verify your account bt clicking on the following link: <a href=\"http://localhost:8081/verifiedAccount.html?userId=" + user.getId()
+							+ "&hash=" + hashedEmail +"\">Verify my account</a></p>", "text/html");
+			MimeMessageHelper mail = new MimeMessageHelper(mimeMessage, "utf-8");
+			mail.setTo(user.getEmail());
+			if (env.getProperty("spring.mail.username") == null) {
+				return;
+			}
+			mail.setFrom(env.getProperty("spring.mail.username"));
+			mail.setSubject("Verify your account");
+
+			javaMailSender.send(mimeMessage);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return;
+		}
 	}
 	
 	@Async
@@ -55,6 +82,40 @@ public class EmailService {
 	}
 	
 	@Async
+	public void sendCounselingReservation(Counseling c, Patient p) throws MailException{
+		SimpleMailMessage mail = new SimpleMailMessage();
+		mail.setTo(p.getEmail());
+		if(env.getProperty("spring.mail.username") == null) {
+			return;
+		}
+		mail.setFrom(env.getProperty("spring.mail.username"));
+		mail.setSubject("Rezervacija pregleda kod dermatologa");
+		mail.setText("Pozdrav, " + p.getFirstName() + "\n" + "\nPregled je rezervisan za datum: " + c.getStartDate()
+				+ "\nNaziv dermatologa: " + c.getDermatologistWorkCalendar().getDermatologist().getFirstName() + " " + c.getDermatologistWorkCalendar().getDermatologist().getLastName() + "\n ");
+		javaMailSender.send(mail);
+
+	}
+	
+	@Async
+	public void sendOfferNotificaitionAsync(Offer offer) throws MailException{
+		SimpleMailMessage mail = new SimpleMailMessage();
+		mail.setTo(offer.getSupplier().getEmail());
+		if(env.getProperty("spring.mail.username") == null) {
+			return;
+		}
+		mail.setFrom(env.getProperty("spring.mail.username"));
+		mail.setSubject("Ponuda za narudzbenicu");
+		if(offer.getIsApproved() == true) {
+		mail.setText("Pozdrav " + offer.getSupplier().getFirstName() + ",\n" + "\nVaša ponuda za narudžbenicu broj " + offer.getErrand().getId() + " je odobrena.");
+
+		}else {
+			mail.setText("Pozdrav " + offer.getSupplier().getFirstName() + ",\n" + "\nVaša ponuda za narudžbenicu broj " + offer.getErrand().getId() + "je nažalost odbijena.");
+		}
+		
+		javaMailSender.send(mail);
+	}
+	
+	@Async
 	public void issuedMedicineReservation(String uid, Patient p) throws MailException{
 		SimpleMailMessage mail = new SimpleMailMessage();
 		mail.setTo(p.getEmail());
@@ -66,7 +127,6 @@ public class EmailService {
 		mail.setText("Pozdrav, " + p.getFirstName() + "\n" + "\nRezervacija broj " + uid
 				+ " je uspesno preuzeta!");
 		javaMailSender.send(mail);
-
 	}
 
 }

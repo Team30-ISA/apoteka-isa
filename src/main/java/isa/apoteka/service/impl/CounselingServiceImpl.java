@@ -9,11 +9,15 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import isa.apoteka.async.service.EmailService;
 import isa.apoteka.domain.Counseling;
+import isa.apoteka.domain.Dermatologist;
 import isa.apoteka.domain.Patient;
 import isa.apoteka.domain.Pharmacy;
+import isa.apoteka.domain.ReservedMedicine;
 import isa.apoteka.dto.ExaminationDTO;
 import isa.apoteka.repository.CounselingRepository;
 import isa.apoteka.repository.DermatologistRepository;
@@ -27,6 +31,9 @@ public class CounselingServiceImpl implements CounselingService {
 
 	@Autowired
 	private DermatologistRepository dermatologistRepository;
+	
+	@Autowired
+	private EmailService emailService;
 
 	@Override
 	public List<ExaminationDTO> findAllTermsByDay(Long pharmacyId, Long dermatologistId, Date start) {
@@ -230,6 +237,12 @@ public class CounselingServiceImpl implements CounselingService {
 		counselingRepository.update(patientId, counselingId);
 
 	}
+	
+	@Override
+	public void makeAppointment(Long patId, Long counsId) {
+		counselingRepository.makeAppointment(patId, counsId);
+
+	}
 
 	@Override
 	public void updateReport(String report, Long counselingId) {
@@ -253,6 +266,71 @@ public class CounselingServiceImpl implements CounselingService {
 		if(counselingRepository.countAllTerms(dermatologistId, start, end) > 0)
 			return false;
 		return true;
+	}
+	
+	@Override
+	public Boolean createCounseling(Date start, int duration, Float price, Long dwcId, Long dermId, Long pharmacyId) {
+		Calendar calendar = new GregorianCalendar();
+		calendar.setTime(start);
+		calendar.add(Calendar.MINUTE, duration);
+		Date end = calendar.getTime();
+		if(isDermatologistFree(start, end, dermId, pharmacyId) == false) {
+			return false;
+		}
+		counselingRepository.createCounseling(start, duration, price, dwcId);
+		return true;
+	}
+	
+	public Boolean isDermatologistFree(Date start, Date end, Long dermId, Long pharmacyId){
+		Calendar calendar = new GregorianCalendar();
+		calendar.setTime(start);
+		calendar.add(Calendar.DATE, -1);
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		Date startDate = calendar.getTime();
+		calendar.add(Calendar.DATE, 2);
+		Date endDate = calendar.getTime();
+		List<Counseling> counselings = counselingRepository.findAllTerms(pharmacyId, dermId, startDate, endDate);
+		for(Counseling c : counselings) {
+			calendar.setTime(c.getStartDate());
+			calendar.add(Calendar.MINUTE, c.getDuration());
+			endDate = calendar.getTime();
+			if((c.getStartDate().getTime() <= start.getTime() && endDate.getTime() > start.getTime())
+					|| (c.getStartDate().getTime() < end.getTime() && endDate.getTime() >= end.getTime()) 
+					|| (c.getStartDate().getTime() >= start.getTime() && endDate.getTime() <= end.getTime())) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	public List<Counseling> findAllByPharmId(Long pharmId){
+		return counselingRepository.findAllByPharmId(pharmId);
+	}
+	
+	public Dermatologist findDermatologistForCounseling(Long counsId) {
+		return counselingRepository.findDermatologistForCounseling(counsId);
+	}
+	
+	@Override
+	public void sendCounselingReservation(Counseling c){
+		Patient patient = (Patient) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		try {
+				emailService.sendCounselingReservation(c, patient);
+		}catch(Exception e) {
+			System.out.println("Greska pri slanju emaila");
+		}
+	}
+	
+	@Override
+	public List<Counseling> findAllByPatientId(Long patId){
+		return counselingRepository.findAllByPatientId(patId);
+	}
+	
+	@Override
+	public void cancelAppointment(Long counsId) {
+		counselingRepository.cancelAppointment(counsId);
 	}
 
 }

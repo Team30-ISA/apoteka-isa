@@ -34,37 +34,28 @@ public class CustomUserDetailsService implements UserDetailsService {
 
 	// Funkcija koja na osnovu username-a iz baze vraca objekat User-a
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		User user = userRepository.findByUsername(username);
+	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+		User user = userRepository.findUserByEmail(email);
 		if (user == null) {
-			throw new UsernameNotFoundException(String.format("No user found with username '%s'.", username));
+			throw new UsernameNotFoundException(String.format("No user found with email '%s'.", email));
 		} else {
 			return user;
 		}
 	}
 
 	public void changePassword(String oldPassword, String newPassword) {
-
-		// Ocitavamo trenutno ulogovanog korisnika
-		Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
-		String username = currentUser.getName();
+		User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();;
+		String email = currentUser.getEmail();
 
 		if (authenticationManager != null) {
-			LOGGER.debug("Re-authenticating user '" + username + "' for password change request.");
-
-			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, oldPassword));
+			LOGGER.debug("Re-authenticating user '" + email + "' for password change request.");
+			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, oldPassword));
 		} else {
 			LOGGER.debug("No authentication manager set. can't change Password!");
-
 			return;
 		}
-
-		LOGGER.debug("Changing password for user '" + username + "'");
-
-		User user = (User) loadUserByUsername(username);
-
-		// pre nego sto u bazu upisemo novu lozinku, potrebno ju je hesirati
-		// ne zelimo da u bazi cuvamo lozinke u plain text formatu
+		LOGGER.debug("Changing password for user '" + email + "'");
+		User user = (User) loadUserByUsername(email);
 		user.setPassword(passwordEncoder.encode(newPassword));
 		userRepository.save(user);
 

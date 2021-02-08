@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
 import isa.apoteka.domain.Counseling;
+import isa.apoteka.domain.Dermatologist;
 
 public interface CounselingRepository extends JpaRepository<Counseling, Long>{
 	
@@ -31,10 +32,34 @@ public interface CounselingRepository extends JpaRepository<Counseling, Long>{
 	
 	@Modifying
     @Transactional
+    @Query(value = "update counseling c set patient_id = ?1 where c.id = ?2", nativeQuery = true)
+    void makeAppointment(Long patId, Long counsId);
+	
+	@Modifying
+    @Transactional
     @Query(value = "update counseling set report = ?1 where id = ?2", nativeQuery = true)
     void updateReport(String report, Long counselingId);
 	
+	@Modifying
+    @Transactional
+    @Query(value = "update counseling c set patient_id = null where c.id = ?1", nativeQuery = true)
+    void cancelAppointment(Long counsId);
+	
 	@Query("from Counseling c join c.dermatologistWorkCalendar d where d.dermatologist.id=:dermatologistId")
 	List<Counseling> findAllByDermId(Long dermatologistId);
+	
+	@Query("from Counseling c join c.dermatologistWorkCalendar.pharmacy p where p.id=:pharmId")
+	List<Counseling> findAllByPharmId(Long pharmId);
+	
+	@Query(value="select * from Counseling c", nativeQuery = true)
+	List<Counseling> findAllByPatientId(Long patId);
+	
+	@Query("from Counseling c join c.dermatologistWorkCalendar.dermatologist d where c.id=:counsId")
+	Dermatologist findDermatologistForCounseling(Long counsId);
+	
+	@Modifying
+    @Transactional
+	@Query(value = "insert into counseling (start_date, duration, price, dermatologist_work_calendar_id) values (:start,:duration,:price,:dwcId)", nativeQuery = true)
+	void createCounseling(Date start, int duration, Float price, Long dwcId);
 	
 }

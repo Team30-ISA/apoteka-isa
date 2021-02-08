@@ -20,65 +20,72 @@ public class PharmacistHoliday {
 	private Date endDate;
 	@ManyToOne
 	private Pharmacist pharmacist;
-	private Boolean approved;
+	private LeaveRequestStatus status;
 	
 	public PharmacistHoliday() {
 		super();
 	}
 	
-	public PharmacistHoliday(Date startDate, Date endDate, Pharmacist pharmacist) {
+	
+
+	public PharmacistHoliday(Date startDate, Date endDate, Pharmacist pharmacist, LeaveRequestStatus status) {
+		super();
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.pharmacist = pharmacist;
-		this.approved = false;
+		this.status = status;
 	}
 
-	public PharmacistHoliday(Long id, Date startDate, Date endDate, Pharmacist pharmacist) {
+
+
+	public PharmacistHoliday(Long id, Date startDate, Date endDate, Pharmacist pharmacist, LeaveRequestStatus status) {
+		super();
 		this.id = id;
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.pharmacist = pharmacist;
-		this.approved = false;
+		this.status = status;
 	}
 
 	public Long getId() {
 		return id;
 	}
 
-	public Date getStartDate() {
-		return startDate;
-	}
-
-	public Date getEndDate() {
-		return endDate;
-	}
-
-	public Pharmacist getPharmacist() {
-		return pharmacist;
-	}
-
-	public Boolean getApproved() {
-		return approved;
-	}
-
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public Date getStartDate() {
+		return startDate;
 	}
 
 	public void setStartDate(Date startDate) {
 		this.startDate = startDate;
 	}
 
+	public Date getEndDate() {
+		return endDate;
+	}
+
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
+	}
+
+	public Pharmacist getPharmacist() {
+		return pharmacist;
 	}
 
 	public void setPharmacist(Pharmacist pharmacist) {
 		this.pharmacist = pharmacist;
 	}
 
-	public void setApproved(Boolean approved) {
-		this.approved = approved;
-	}	
+	public LeaveRequestStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(LeaveRequestStatus status) {
+		this.status = status;
+	}
+	
 
 }
