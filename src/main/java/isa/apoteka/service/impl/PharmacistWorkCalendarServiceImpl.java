@@ -21,7 +21,7 @@ public class PharmacistWorkCalendarServiceImpl implements PharmacistWorkCalendar
 	private PharmacistWorkCalendarRepository pharmWCRepository;
 	
 	@Autowired
-	private PharmacistWorkCalendarServiceImpl(PharmacistWorkCalendarRepository pharmWCRepository){
+	public PharmacistWorkCalendarServiceImpl(PharmacistWorkCalendarRepository pharmWCRepository){
 		this.pharmWCRepository = pharmWCRepository;
 	}
 	
