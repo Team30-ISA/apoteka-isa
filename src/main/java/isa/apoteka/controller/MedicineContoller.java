@@ -142,6 +142,26 @@ public class MedicineContoller {
 		return new ResponseEntity<>(med, HttpStatus.OK);
 	}
 
+	@GetMapping(value = "/types")
+	@PreAuthorize("hasRole('SYS_ADMIN')")
+	public ResponseEntity<?> getAllTypes() {
+		try {
+			return new ResponseEntity<>(medicineService.getAllTypes(),HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+	}
+
+	@GetMapping(value = "/forms")
+	@PreAuthorize("hasRole('SYS_ADMIN')")
+	public ResponseEntity<?> getAllForms() {
+		try {
+			return new ResponseEntity<>(medicineService.getAllForms(),HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+	}
+
 	@PostMapping
 	@PreAuthorize("hasRole('SYS_ADMIN')")
 	public ResponseEntity<?> createMedicine(@RequestBody MedicineCreateDTO medicineDTO) {

@@ -161,4 +161,14 @@ public class MedicineServiceImpl implements MedicineService {
 		return medicine;
 	}
 
+	@Override
+	public List<DrugType> getAllTypes() {
+		return drugTypeRepository.findAll();
+	}
+
+	@Override
+	public List<DrugForm> getAllForms() {
+		return drugFormRepository.findAll();
+	}
+
 }

@@ -66,6 +66,7 @@ var app = new Vue({
           response.data != "PHARM" &&
           response.data != "SYS_ADMIN"
         ) {
+          localStorage.clear();
           window.location.href = "/login.html";
         }
         if (this.role == "ADMIN") {

@@ -37,7 +37,7 @@
 </head>
 
 <body id="body">
-<div id="manageUsers">
+<div id="manageMedications">
   <!--==========================
     Top Bar
   ============================-->
@@ -99,60 +99,47 @@
   ============================-->
   
   <main id="main">
-    <form @submit.prevent="createUser" class="text-center mt-5">
+    <form @submit.prevent="createMedicine" class="text-center mt-5">
         <div class="d-inline-block w-50 mx-3 mt-5">
-          <h6 style="color:#50d8af;"">Email</h6>
-          <input autofocus v-model="email" type="text" name="email" class="form-control" id="email" />
-        </div>
-        <div class="d-inline-block w-50 mx-3 mt-3">
-          <h6 style="color:#50d8af;"">Password</h6>
-          <input autofocus v-model="password" type="password" name="password" class="form-control" id="password" />
-        </div>
-        <div class="d-inline-block w-50 mx-3 mt-3">
-          <h6 style="color:#50d8af;"">First name</h6>
-          <input autofocus v-model="firstName" type="text" name="firstName" class="form-control" id="firstName" />
-        </div>
-        <div class="d-inline-block w-50 mx-3 mt-3">
-          <h6 style="color:#50d8af;"">Last name</h6>
-          <input autofocus v-model="lastName" type="text" name="lastName" class="form-control" id="lastName" />
-        </div>
-        <div class="d-inline-block w-50 mx-3 mt-3">
-          <h6 style="color:#50d8af;"">Phone number</h6>
-          <input autofocus v-model="phonenumber" type="text" name="phonenumber" class="form-control" id="phonenumber" />
-        </div>
-        <div class="form-row d-inline-block w-50 mx-3 mt-3">
-          <div class="form-group col-md-12">
-            <select v-model="country" class="form-control">
-              <option disabled value="">Select country</option>
-              <option v-for="item in countryOptions" :value="item" :key="item.id">
-                {{ item.country }}
-              </option>
-            </select>
-          </div>
-        </div>
-        <div class="form-row d-inline-block w-50 mx-3 mt-2">
-          <div class="form-group col-md-12">
-            <select v-model="city" class="form-control">
-              <option disabled value="">Select city</option>
-              <option v-for="item in cityOptions" :value="item" :key="item.id">
-                {{ item.city }}
-              </option>
-            </select>
-          </div>
-        </div>
-        <div class="d-inline-block w-50 mx-3 mt-3">
-          <h6 style="color:#50d8af;"">Address</h6>
-          <input autofocus v-model="addressString" type="text" name="addressString" class="form-control" id="addressString" />
+          <h6 style="color:#50d8af;"">Name</h6>
+          <input autofocus v-model="name" type="text" name="name" class="form-control" id="name" />
         </div>
         <div class="form-row d-inline-block w-50 mx-3 mt-3">
             <div class="form-group col-md-12">
-              <select v-model="selectedUserType" class="form-control">
-                <option value="ROLE_SYS_ADMIN">System administrator</option>
-                <option value="ROLE_DERM">Dermatologist</option>
-                <option value="ROLE_SUPL">Supplier</option>
-              </select>
+                <select v-model="type" class="form-control">
+                <option disabled value="">Select type</option>
+                <option v-for="type in types" :value="item" :key="item.id">
+                    {{ type.name }}
+                </option>
+                </select>
             </div>
-          </div>
+        </div>
+        <div class="form-row d-inline-block w-50 mx-3 mt-3">
+            <div class="form-group col-md-12">
+                <select v-model="form" class="form-control">
+                <option disabled value="">Select form</option>
+                <option v-for="form in forms" :value="item" :key="item.id">
+                    {{ form.name }}
+                </option>
+                </select>
+            </div>
+        </div>
+        <div class="d-inline-block w-50 mx-3 mt-3">
+          <h6 style="color:#50d8af;"">Contraindications</h6>
+          <input autofocus v-model="contraindications" type="text" name="contraindications" class="form-control" id="contraindications" />
+        </div>
+        <div class="d-inline-block w-50 mx-3 mt-3">
+          <h6 style="color:#50d8af;"">Composition</h6>
+          <input autofocus v-model="composition" type="text" name="composition" class="form-control" id="composition" />
+        </div>
+        <div class="d-inline-block w-50 mx-3 mt-3">
+          <h6 style="color:#50d8af;"">Recommended Intake Per Day</h6>
+          <input autofocus v-model="recommendedIntakePerDay" type="text" name="recommendedIntakePerDay" class="form-control" id="recommendedIntakePerDay" />
+        </div>
+        <div class="d-inline-block w-50 mx-3 mt-3">
+          <h6 style="color:#50d8af;"">Manufacturer</h6>
+          <input autofocus v-model="manufacturer" type="text" name="manufacturer" class="form-control" id="manufacturer" />
+        </div>
         <button class="btn d-inline-block w-50 mx-3 my-5">Submit</button>
       </form>
   </main>
@@ -175,7 +162,7 @@
   <!-- Template Main Javascript File -->
   <script src="../js/main.js"></script>
   <script src="../axios.js"></script>
-  <script src="manageUsers.js"></script>
+  <script src="manageMedications.js"></script>
 
 </body>
 </html>

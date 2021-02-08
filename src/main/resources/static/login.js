@@ -29,7 +29,7 @@ var app = new Vue({
           } else if (response.data == "PATIENT") {
             window.location.href = "profile.html";
           } else if (response.data == "SYS_ADMIN") {
-            window.location.href = "sysadmin/profile.html";
+            window.location.href = "sysAdmin/profile.html";
           } else {
             window.location.href = "changePassword.html";
           }
@@ -82,7 +82,7 @@ var app = new Vue({
               } else if (response.data == "PATIENT") {
                 window.location.href = "profile.html";
               } else if (response.data == "SYS_ADMIN") {
-                window.location.href = "/systemAdmin/profile.html";
+                window.location.href = "sysAdmin/profile.html";
               } else {
                 window.location.href = "changePassword.html";
               }
