@@ -104,7 +104,6 @@ var app = new Vue({
     			    'Authorization': "Bearer " + localStorage.getItem('access_token')
     			  },
     			  params: {
-    				  pharmacyId: this.pharmId,
     				  start: date.getTime()
     			  }
             })
@@ -277,6 +276,17 @@ var app = new Vue({
     	     .then(response => {
     	    	 let th = this;
     	    	 if(response.data == false){
+    	    		 axios
+		 	     	  .post('/api/notification/noMedicineInStock',
+		 	     			 {
+		 	     		  		date: (new Date()).getTime(),
+		 	     		  		pharmacyId: th.pharmId,
+		 	     		  		message: "Lek " + th.selectedDrug.name + " (id: " + th.selectedDrug.id + ") vise nije dostupan!"
+			     			  },{
+			     				 headers: {
+			     					 'Authorization': "Bearer " + localStorage.getItem('access_token')
+			 	     			 }
+				    	   })
     	    		 JSAlert.confirm("Lek nije dostupan u apoteci, prikazi zamene?").then(function(av) {
      	     		    if (!av)
      	     		        return;

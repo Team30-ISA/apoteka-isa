@@ -145,4 +145,13 @@ public class Pharmacy {
 	public String toString() {
 		return "Pharmacy [id=" + id + ", name=" + name + ", address=" + address + "]";
 	}
+
+	public List<PharmacyAdmin> getPharmacyAdmins() {
+		return pharmacyAdmins;
+	}
+
+	public void setPharmacyAdmins(List<PharmacyAdmin> pharmacyAdmins) {
+		this.pharmacyAdmins = pharmacyAdmins;
+	}
+	
 }
