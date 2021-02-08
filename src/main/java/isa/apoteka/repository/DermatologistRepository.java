@@ -19,12 +19,10 @@ public interface DermatologistRepository extends JpaRepository<Dermatologist, Lo
 	
 
     @Modifying
-    @Transactional
 	@Query(value = "insert into pharmacy_dermatologist (user_id, pharmacy_id) values (:dermId,:pharmacyId)", nativeQuery = true)
 	void hireDerm(Long dermId, Long pharmacyId);
     
     @Modifying
-    @Transactional
 	@Query(value = "delete from pharmacy_dermatologist where user_id=:dermId and pharmacy_id=:pharmacyId", nativeQuery = true)
 	void fireDerm(Long dermId, Long pharmacyId);
 
@@ -32,7 +30,6 @@ public interface DermatologistRepository extends JpaRepository<Dermatologist, Lo
 	List<Pharmacy> getDermPharmacies(Long dermatologistId);
 	
 	@Modifying
-    @Transactional
     @Query("update Dermatologist p set p.firstName = ?1, p.lastName = ?2 where p.id = ?3")
     void update(String firstName, String lastName, Long id);
 	

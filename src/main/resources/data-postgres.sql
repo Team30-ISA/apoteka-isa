@@ -109,7 +109,11 @@ insert into medicine_in_pharmacy (quantity, pharmacy_id, medicine_id) VALUES (5,
 insert into medicine_in_pharmacy (quantity, pharmacy_id, medicine_id) VALUES (21, 3, 3);
 insert into medicine_in_pharmacy (quantity, pharmacy_id, medicine_id) VALUES (7, 4, 3);
 insert into medicine_in_pharmacy (quantity, pharmacy_id, medicine_id) VALUES (8, 3, 2);
-insert into reserved_medicine (uid, quantity, date, patient_id, medicine_id) VALUES ('9441acaf-c350-421e-a33d-c64522e5135f', 1, '20210218 10:00:00 AM', 13, 3);
+insert into reserved_medicine (uid, quantity, date, patient_id, medicine_id, pharmacy_id, approved) VALUES ('9441acaf-c350-421e-a33d-c64522e5135f', 1, '20210218 10:00:00 AM', 13, 3, 1, false);
+insert into reserved_medicine (uid, quantity, date, patient_id, medicine_id, pharmacy_id, approved) VALUES ('12', 1, '20210210 10:00:00 AM', 13, 3, 1, false);
+insert into reserved_medicine (uid, quantity, date, patient_id, medicine_id, pharmacy_id, approved) VALUES ('13', 1, '20210211 11:03:00 AM', 13, 3, 1, false);
+insert into reserved_medicine (uid, quantity, date, patient_id, medicine_id, pharmacy_id, approved) VALUES ('14', 1, '20210212 10:00:00 AM', 13, 3, 1, false);
+insert into reserved_medicine (uid, quantity, date, patient_id, medicine_id, pharmacy_id, approved) VALUES ('15', 1, '20210212 10:00:00 AM', 13, 3, 2, false);
 
 insert into dermatologist_work_calendar (dermatologist_id, pharmacy_id, start_date, end_date) VALUES (3, 1, '20210218 10:00:00 AM', '20210218 10:00:00 PM');
 insert into dermatologist_work_calendar (dermatologist_id, pharmacy_id, start_date, end_date) VALUES (3, 2, '20210219 10:00:00 AM', '20210219 10:00:00 PM');
@@ -171,7 +175,6 @@ insert into medicine_price(id, end_of_price, price, start_of_price, medicine_id,
 insert into medicine_price(id, end_of_price, price, start_of_price, medicine_id, pharmacy_id) values (101, '20210216 08:00:00 PM',300, '20210215 10:00:00 AM', 2, 1);
 insert into medicine_price(id, end_of_price, price, start_of_price, medicine_id, pharmacy_id) values (102, '20210216 08:00:00 PM',400, '20210215 10:00:00 AM', 2, 2);
 
-
 INSERT INTO supplier (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, gender, address_id) VALUES (25, 'admin8', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', 'Strahinja', 'Nikolic', 'apoteka.isa2021+strn@gmail.com', true, '2017-10-01 18:57:58.508-07', 1, 7);
 INSERT INTO supplier (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, gender, address_id) VALUES (26, 'admin8', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', 'Ana', 'Nikolic', 'apoteka.isa2021+stra@gmail.com', true, '2017-10-01 18:57:58.508-07', 1, 7);
 INSERT INTO system_admin (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, gender, address_id) VALUES (27, 'sysadmin', '$2a$10$2affw9vkXuEbQOoiKqN2XuVQ1sVZLQ6XBRAZ1IHeCT6W8.qJOXkhe', 'Ana', 'Nikolic', 'apoteka.isa2021+sys@gmail.com', true, '2017-10-01 18:57:58.508-07', 1, 7);
@@ -196,3 +199,6 @@ insert into offer (id, price, supply_deadline, errand_id, supplier_id, is_approv
 
 insert into dermatologist_holiday(start_date, end_date, dermatologist_id, status) values ('20210214 12:00:00 AM','20210216 12:00:00 PM',5, 2);
 insert into pharmacist_holiday(start_date, end_date, pharmacist_id, status) values ('20210210 12:00:00 AM','20210213 12:00:00 PM',4, 2);
+insert into dermatologist_holiday(start_date, end_date, dermatologist_id, status) values ('20210210 12:00:00 AM','20210213 12:00:00 PM',5, 2);
+insert into pharmacist_holiday(start_date, end_date, pharmacist_id, status) values ('20210210 12:00:00 AM','20210213 12:00:00 PM',4, 2);
+

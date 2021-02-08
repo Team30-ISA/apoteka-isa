@@ -26,7 +26,6 @@ import isa.apoteka.dto.ExaminationDTO;
 import isa.apoteka.dto.PeriodDTO;
 import isa.apoteka.service.ExaminationService;
 import isa.apoteka.service.PatientService;
-import isa.apoteka.service.PharmacistHolidayService;
 import isa.apoteka.service.PharmacistWorkCalendarService;
 
 @RestController
@@ -41,9 +40,6 @@ public class ExaminationController {
 	
 	@Autowired
 	private PatientService patientService;
-	
-	@Autowired
-	private PharmacistHolidayService pharmacistHolidayService;
 	
 	@Nullable
 	@GetMapping("/findAllTermsByDay")
@@ -136,9 +132,6 @@ public class ExaminationController {
 		if(pwcId == null) {
 			return new ResponseEntity<>(-2, HttpStatus.OK);
 		}
-		/*if(pharmacistHolidayService.isPharmOnHolidays(pharmacistId, start)) {
-			return new ResponseEntity<>(-3, HttpStatus.OK);
-		}*/
 		if(!examintaionService.createExamination(start, duration, patientId, pwcId, pharmacistId)) {
 			return new ResponseEntity<>(-3, HttpStatus.OK);
 		}
