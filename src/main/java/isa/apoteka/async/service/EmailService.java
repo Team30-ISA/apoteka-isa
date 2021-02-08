@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import javax.mail.internet.MimeMessage;
 import org.springframework.mail.javamail.MimeMessageHelper;
 
+import isa.apoteka.domain.Counseling;
 import isa.apoteka.domain.Offer;
 import isa.apoteka.domain.Patient;
 import isa.apoteka.domain.Promotion;
@@ -76,6 +77,21 @@ public class EmailService {
 		mail.setSubject("Rezervacija leka");
 		mail.setText("Pozdrav, " + p.getFirstName() + "\n" + "\nLek je rezervisan do: " + rm.getDate()
 				+ "\nNaziv leka: " + rm.getMedicine().getName() + "\n Sifra rezervacije: " + rm.getUid());
+		javaMailSender.send(mail);
+
+	}
+	
+	@Async
+	public void sendCounselingReservation(Counseling c, Patient p) throws MailException{
+		SimpleMailMessage mail = new SimpleMailMessage();
+		mail.setTo(p.getEmail());
+		if(env.getProperty("spring.mail.username") == null) {
+			return;
+		}
+		mail.setFrom(env.getProperty("spring.mail.username"));
+		mail.setSubject("Rezervacija pregleda kod dermatologa");
+		mail.setText("Pozdrav, " + p.getFirstName() + "\n" + "\nPregled je rezervisan za datum: " + c.getStartDate()
+				+ "\nNaziv dermatologa: " + c.getDermatologistWorkCalendar().getDermatologist().getFirstName() + " " + c.getDermatologistWorkCalendar().getDermatologist().getLastName() + "\n ");
 		javaMailSender.send(mail);
 
 	}
