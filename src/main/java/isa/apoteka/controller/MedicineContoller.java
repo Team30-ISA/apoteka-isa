@@ -102,7 +102,7 @@ public class MedicineContoller {
 		try {
 			Dermatologist dermatologist = (Dermatologist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			if(!counseling.getDermatologistWorkCalendar().getDermatologist().getId().equals(dermatologist.getId()))
-				return false;
+				return false;  
 		} catch(Exception e){
 			return false;
 		}
@@ -112,6 +112,14 @@ public class MedicineContoller {
 	@GetMapping(value = "/findAllMedicineInPharmacy")
 	public ResponseEntity<List<MedicineDTO>> findAllMedicineInPharmacy() {
 		List<MedicineDTO> med = medicineService.findAllMedicineInPharmacy();
+		return new ResponseEntity<>(med, HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/findAllMedicineAvailableInPharmacy")
+	public ResponseEntity<List<MedicineDTO>> findAllMedicineAvailableInPharmacy(Long pharmacyId) {
+		System.out.println("*****************");
+		System.out.println(pharmacyId);
+		List<MedicineDTO> med = medicineService.findAllMedicineAvailableInPharmacy(pharmacyId);
 		return new ResponseEntity<>(med, HttpStatus.OK);
 	}
 	

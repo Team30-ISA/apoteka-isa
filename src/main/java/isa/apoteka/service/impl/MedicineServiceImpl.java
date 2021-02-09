@@ -170,5 +170,29 @@ public class MedicineServiceImpl implements MedicineService {
 	public List<DrugForm> getAllForms() {
 		return drugFormRepository.findAll();
 	}
+	
+	public List<MedicineDTO> findAllMedicineAvailableInPharmacy(Long pharmacyId) {
+		List<MedicineDTO> dto = new ArrayList<MedicineDTO>();
+		List<MedicineInPharmacy> medicineInPharmacy = medInPharmacyService.getAvailableMedicineInPharmacy(pharmacyId);
+		System.out.println("*****************");
+		System.out.println(medicineInPharmacy.size());
+		for(MedicineInPharmacy m : medicineInPharmacy) { 			
+			Long medId = m.getMedicine().getId();
+			String name = m.getMedicine().getName();
+			int quantity = m.getQuantity();
+			MedicinePrice medPrice = medPriceService.findMedicinePrice(pharmacyId, medId);
+			int price;
+			if(medPrice.getPrice() == null) {
+				price = 0;
+			}else {
+				price = medPrice.getPrice();
+			}
+			Date start = medPrice.getStartOfPrice();
+			Date end = medPrice.getEndOfPrice();
+			dto.add(new MedicineDTO(medId, name, quantity, price, start,end ));
+		}
+		
+		return dto;
+	}
 
 }

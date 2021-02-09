@@ -25,4 +25,5 @@ public interface MedicineService {
 	List<DrugType> getAllTypes();
 
 	List<DrugForm> getAllForms();
+	List<MedicineDTO> findAllMedicineAvailableInPharmacy(Long pharmacyId);
 }

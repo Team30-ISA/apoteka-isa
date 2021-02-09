@@ -1,7 +1,3 @@
-insert into pharmacy (name, address) values ('Helenina Apoteka','Teslina ulica 34');
-insert into pharmacy (name, address) values ('Nikolina Apoteka', 'Njegoševa 8');
-insert into pharmacy (name, address) values ('Milanova Apoteka', 'Petra Konjovica 1');
-insert into pharmacy (name, address) values ('Aleksandrova Apoteka', 'Laze Lazarevica 234');
 
 INSERT INTO Country (id, country) VALUES (1, 'Srbija');
 INSERT INTO Country (id, country) VALUES (2, 'Bosna i Hercegovina');
@@ -11,10 +7,16 @@ INSERT INTO City (id, city, country_id) VALUES (2, 'Novi Sad', 1);
 INSERT INTO City (id, city, country_id) VALUES (3, 'Beograd', 1);
 INSERT INTO City (id, city, country_id) VALUES (4, 'Mostar', 2);
 
-INSERT INTO Address (id, street, city_id) VALUES (6, 'Mirka Lazica 3a', 1);
-INSERT INTO Address (id, street, city_id) VALUES (7, 'Kumiciceva 6', 1);
-INSERT INTO Address (id, street, city_id) VALUES (8, 'Laze Kostica 9', 2);
-INSERT INTO Address (id, street, city_id) VALUES (9, 'Kisacka 9', 2);
+INSERT INTO Address (id, street, city_id) VALUES (6, 'Beogradski put 24', 1);
+INSERT INTO Address (id, street, city_id) VALUES (7, 'Zetska 10', 1);
+INSERT INTO Address (id, street, city_id) VALUES (8, 'Bulevar oslobodjenja 52', 2);
+INSERT INTO Address (id, street, city_id) VALUES (9, 'Brace Ribnikara 65', 2);
+
+insert into pharmacy (name, street, city, description) values ('Helenina Apoteka','Beogradski put 24','Subotica', 'Helenina Apoteka je apoteka koju odlikuje nov i moderan pristup u sprovođenju farmaceutske usluge u oblasti medicinske zaštite i prevencije. ');
+insert into pharmacy (name, street, city, description) values ('Nikolina Apoteka','Zetska 10', 'Subotica', 'Helenina Apoteka je apoteka koju odlikuje nov i moderan pristup u sprovođenju farmaceutske usluge u oblasti medicinske zaštite i prevencije. ');
+insert into pharmacy (name, street, city, description) values ('Milanova Apoteka','Lasla Gala 22','Novi Sad', 'Helenina Apoteka je apoteka koju odlikuje nov i moderan pristup u sprovođenju farmaceutske usluge u oblasti medicinske zaštite i prevencije. ');
+insert into pharmacy (name, street, city, description) values ('Aleksandrova Apoteka' ,'Cirpanova 34', 'Novi Sad', 'Helenina Apoteka je apoteka koju odlikuje nov i moderan pristup u sprovođenju farmaceutske usluge u oblasti medicinske zaštite i prevencije.');
+
 
 INSERT INTO dermatologist (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, gender, address_id, grade) VALUES (3, 'ale', '$2a$10$2affw9vkXuEbQOoiKqN2XuVQ1sVZLQ6XBRAZ1IHeCT6W8.qJOXkhe', 'Aleksandra', 'Gojkovic', 'apoteka.isa2021+ale@gmail.com', true, '2017-10-01 18:57:58.508-07', 0, 6, 10);
 INSERT INTO dermatologist (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, gender, address_id, grade) VALUES (5, 'mile', '$2a$10$2affw9vkXuEbQOoiKqN2XuVQ1sVZLQ6XBRAZ1IHeCT6W8.qJOXkhe', 'Mile', 'Micic', 'apoteka.isa2021+mile@gmail.com', true, '2017-10-01 18:57:58.508-07', 1, 6, 9);
@@ -144,7 +146,6 @@ insert into counseling (start_date, duration, dermatologist_work_calendar_id, pr
 insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, patient_id) VALUES ('20210220 11:12:00 AM', 20, 3, 500.00, 13);
 
 insert into promotion_notification (patient_id, pharmacy_id) values (13, 1);
-insert into promotion_notification (patient_id, pharmacy_id) values (14, 2);
 insert into promotion_notification (patient_id, pharmacy_id) values (15, 3);
 
 insert into pharmacist_work_calendar (pharmacist_id, pharmacy_id, start_date, end_date) VALUES (4, 1, '20210215 10:00:00 AM', '20210215 08:00:00 PM');
@@ -177,6 +178,11 @@ insert into pharmacist_grade (id, grade, pharmacist_id, patient_id) values (4, 3
 insert into medicine_price(id, end_of_price, price, start_of_price, medicine_id, pharmacy_id) values (100, '20210216 08:00:00 PM',200, '20210215 10:00:00 AM', 1, 2);
 insert into medicine_price(id, end_of_price, price, start_of_price, medicine_id, pharmacy_id) values (101, '20210216 08:00:00 PM',300, '20210215 10:00:00 AM', 2, 1);
 insert into medicine_price(id, end_of_price, price, start_of_price, medicine_id, pharmacy_id) values (102, '20210216 08:00:00 PM',400, '20210215 10:00:00 AM', 2, 2);
+insert into medicine_price(id, end_of_price, price, start_of_price, medicine_id, pharmacy_id) values (103, '20210216 08:00:00 PM',400, '20210215 10:00:00 AM', 2, 3);
+insert into medicine_price(id, end_of_price, price, start_of_price, medicine_id, pharmacy_id) values (104, '20210216 08:00:00 PM',400, '20210215 10:00:00 AM', 3, 3);
+insert into medicine_price(id, end_of_price, price, start_of_price, medicine_id, pharmacy_id) values (103, '20210216 08:00:00 PM',400, '20210215 10:00:00 AM', 2, 4);
+insert into medicine_price(id, end_of_price, price, start_of_price, medicine_id, pharmacy_id) values (104, '20210216 08:00:00 PM',400, '20210215 10:00:00 AM', 3, 4);
+
 
 INSERT INTO supplier (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, gender, address_id) VALUES (25, 'admin8', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', 'Strahinja', 'Nikolic', 'apoteka.isa2021+strn@gmail.com', true, '2017-10-01 18:57:58.508-07', 1, 7);
 INSERT INTO supplier (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, gender, address_id) VALUES (26, 'admin9', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', 'Ana', 'Nikolic', 'apoteka.isa2021+stra@gmail.com', true, '2017-10-01 18:57:58.508-07', 1, 7);
@@ -198,9 +204,16 @@ insert into offer (id, price, supply_deadline, errand_id, supplier_id, is_approv
 insert into offer (id, price, supply_deadline, errand_id, supplier_id, is_approved) values (12, 10000, '2021-04-05 01:00:00', 11, 25, false);
 insert into offer (id, price, supply_deadline, errand_id, supplier_id, is_approved) values (13, 12000, '2021-03-25 01:00:00', 11, 26, false);
 
+insert into pharmacy_grade (id, grade, pharmacy_id, patient_id) values (1, 1, 1, 13);
+insert into pharmacy_grade (id, grade, pharmacy_id, patient_id) values (2, 3, 1, 13);
+insert into pharmacy_grade (id, grade, pharmacy_id, patient_id) values (3, 5, 2, 13);
+insert into pharmacy_grade (id, grade, pharmacy_id, patient_id) values (4, 1, 2, 13);
+insert into pharmacy_grade (id, grade, pharmacy_id, patient_id) values (5, 2, 3, 13);
+insert into pharmacy_grade (id, grade, pharmacy_id, patient_id) values (6, 4, 3, 13);
+insert into pharmacy_grade (id, grade, pharmacy_id, patient_id) values (7, 5, 4, 13);
+insert into pharmacy_grade (id, grade, pharmacy_id, patient_id) values (8, 1, 4, 13);
 
-insert into dermatologist_holiday(start_date, end_date, dermatologist_id, status) values ('20210214 12:00:00 AM','20210216 12:00:00 PM',5, 2);
-insert into pharmacist_holiday(start_date, end_date, pharmacist_id, status) values ('20210210 12:00:00 AM','20210213 12:00:00 PM',4, 2);
 insert into dermatologist_holiday(start_date, end_date, dermatologist_id, status) values ('20210210 12:00:00 AM','20210213 12:00:00 PM',5, 2);
 insert into pharmacist_holiday(start_date, end_date, pharmacist_id, status) values ('20210210 12:00:00 AM','20210213 12:00:00 PM',4, 2);
+
 

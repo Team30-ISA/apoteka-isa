@@ -161,7 +161,7 @@ var app = new Vue({
 		console.log(this.role)
 		
 		axios
-		.get('/api/pharmacy',
+		.get('/api/pharmacy/findAll',
 				{
 				headers: {
 				    'Authorization': "Bearer " + localStorage.getItem('access_token')
