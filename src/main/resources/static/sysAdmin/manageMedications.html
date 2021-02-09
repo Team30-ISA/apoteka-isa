@@ -108,7 +108,7 @@
             <div class="form-group col-md-12">
                 <select v-model="type" class="form-control">
                 <option disabled value="">Select type</option>
-                <option v-for="type in types" :value="item" :key="item.id">
+                <option v-for="type in types" :value="type.id" :key="item.id">
                     {{ type.name }}
                 </option>
                 </select>
@@ -118,7 +118,7 @@
             <div class="form-group col-md-12">
                 <select v-model="form" class="form-control">
                 <option disabled value="">Select form</option>
-                <option v-for="form in forms" :value="item" :key="item.id">
+                <option v-for="form in forms" :value="form.id" :key="item.id">
                     {{ form.name }}
                 </option>
                 </select>
@@ -140,6 +140,16 @@
           <h6 style="color:#50d8af;"">Manufacturer</h6>
           <input autofocus v-model="manufacturer" type="text" name="manufacturer" class="form-control" id="manufacturer" />
         </div>
+        <div class="form-row d-inline-block w-50 mx-3 mt-3">
+          <div class="form-group col-md-12">
+              <select v-model="substitutes" class="form-control" multiple>
+                <option disabled value="">Select medicines</option>
+                <option v-for="medicine in medicines" :value="medicine.id" :key="medicine.id">
+                    {{ medicine.name }}
+                </option>
+              </select>
+          </div>
+      </div>
         <button class="btn d-inline-block w-50 mx-3 my-5">Submit</button>
       </form>
   </main>

@@ -4,6 +4,7 @@ import isa.apoteka.domain.*;
 import isa.apoteka.dto.PharmacistDTO;
 import isa.apoteka.repository.DermatologistRepository;
 import isa.apoteka.repository.SupplierRepository;
+import isa.apoteka.repository.SysAdminRepository;
 import isa.apoteka.repository.UserRepository;
 import isa.apoteka.service.AddressService;
 import isa.apoteka.service.AuthorityService;
@@ -40,15 +41,18 @@ public class SysAdminServiceImpl implements SysAdminService {
     @Autowired
     private SupplierRepository supplierRepository;
 
+    @Autowired
+    private SysAdminRepository sysAdminRepository;
+
     @Override
-    public User update(UserRequest userRequest) throws Exception {
+    public SystemAdmin update(UserRequest userRequest) throws Exception {
         if(((User)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId() != userRequest.getId())
             throw new Exception("Unauthorized");
 
         userRequest.updateValidation();
-        User oldUser = userRepository.getOne(userRequest.getId());
+        SystemAdmin oldUser = sysAdminRepository.getOne(userRequest.getId());
 
-        User user = new User(userRequest);
+        SystemAdmin user = new SystemAdmin(userRequest);
         user.setEnabled(true);
         user.setPasswordForReset(oldUser.getPassword());
         user.setEmail(oldUser.getEmail());
@@ -87,11 +91,11 @@ public class SysAdminServiceImpl implements SysAdminService {
     }
 
     @Override
-    public User create(PharmacistDTO userRequest) {
+    public SystemAdmin create(PharmacistDTO userRequest) {
         Address address = this.createNewAddress(userRequest.getCityId(), userRequest.getAddressString());
         userRequest.setAddress(address);
-        User sysAdmin = this.createNewSysAdmin(userRequest);
-        userRepository.save(sysAdmin);
+        SystemAdmin sysAdmin = this.createNewSysAdmin(userRequest);
+        sysAdminRepository.save(sysAdmin);
         return sysAdmin;
     }
 
@@ -101,8 +105,8 @@ public class SysAdminServiceImpl implements SysAdminService {
         return addressService.insertNewAddress(newAddress);
     }
 
-    private User createNewSysAdmin(PharmacistDTO sysAdminData) {
-        User user = new User(sysAdminData);
+    private SystemAdmin createNewSysAdmin(PharmacistDTO sysAdminData) {
+        SystemAdmin user = new SystemAdmin(sysAdminData);
         List<Authority> auth = authorityService.findByname("ROLE_SYS_ADMIN");
         user.setPasswordForReset(passwordEncoder.encode(sysAdminData.getPassword()));
         user.setAuthorities(auth);

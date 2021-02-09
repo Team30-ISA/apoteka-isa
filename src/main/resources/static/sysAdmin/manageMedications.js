@@ -10,13 +10,37 @@ new Vue({
     manufacturer: "",
     forms: [],
     types: [],
-    medicines: []
+    medicines: [],
+    substitutes: []
   },
   methods: {
-    createMedicine() {}
+    async createMedicine() {
+      try {
+        await axios.post(
+          "/api/medicine",
+          {
+            name: this.name,
+            type: this.type,
+            form: this.form,
+            contraindications: this.contraindications,
+            composition: this.composition,
+            recommendedIntakePerDay: this.recommendedIntakePerDay,
+            substitutes: this.substitutes,
+            manufacturer: this.manufacturer
+          },
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("access_token")
+            }
+          }
+        );
+        alert("Successfully added new drug");
+      } catch (error) {
+        console.log(error);
+      }
+    }
   },
   async created() {
-    console.log("created");
     try {
       let resp = await axios.get("/api/medicine/types", {
         headers: {

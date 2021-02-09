@@ -6,6 +6,7 @@ new Vue({
     showAddPharmacyAdminForm: false,
     name: "",
     address: "",
+    city: "",
     pharmacySelected: false,
     pharmacyAdmins: [],
     email: "",
@@ -36,7 +37,7 @@ new Vue({
       try {
         await axios.post(
           "/api/pharmacy",
-          { name: this.name, address: this.address },
+          { name: this.name, address: this.address, city: this.city },
           {
             headers: {
               Authorization: "Bearer " + localStorage.getItem("access_token")
@@ -91,7 +92,6 @@ new Vue({
         this.showAddPharmacyAdminForm = false;
         this.firstName = "";
         this.lastName = "";
-        this.email = "";
         this.email = "";
         this.password = "";
         this.phonenumber = "";
