@@ -50,7 +50,7 @@
 	 border-radius: 0;
 	 box-shadow: none;
 	 font-size: 15px; display: block;
-	 width: 100%;
+	 width: 50%;
 	 padding: .275rem .75rem;
 	 font-size: 1rem;
 	 line-height: 2;
@@ -183,7 +183,7 @@ main ::-webkit-scrollbar-thumb:hover {
 						<br/>
 						<br/>
 						<br/>
-						<select name="cars" id="cars"  v-model="selected" @change="onChange(selected)">
+						<select name="cars" id="cars"  v-model="selected" @change="onChange(selected)" class="txtEnabled" style="width:25%;">
 						  <option value="2020">2020</option>
 						  <option value="2021" selected="selected">2021</option>
 						</select>
@@ -196,6 +196,51 @@ main ::-webkit-scrollbar-thumb:hover {
 						<br/>
 						<br/>
 						<div id="container6" style="width:100%; height:400px;">{{highcharts}}</div>
+						<br/>
+						<br/>
+						<br/>
+						<div id="container7" style="width:100%; height:400px;">{{highcharts}}</div>
+						<br/>
+						<br/>
+						<br/>
+						<div id="container8" style="width:100%; height:400px;">{{highcharts}}</div>
+						<br/>
+						<br/>
+						<br/>
+						<div id="container9" style="width:100%; height:400px;">{{highcharts}}</div>
+						<br/>
+						<br/>
+						<br/>
+						<table style="width:25%">
+							<tr>
+								<td style="width:50%">
+									<h6>Choose start date:</h6>
+								</td>
+								<td style="width:50%">
+									<h6>Choose end date:</h6>
+								</td>
+							</tr>
+							<tr>
+								<td style="width:50%; ">
+									<input type=date v-model="start" class="txtEnabled" style="width:100%; ">
+								</td>
+								<td style="width:50%; ">
+									<input type=date v-model="end" class="txtEnabled" style="width:100%">
+								</td>
+							</tr>
+							<tr >
+							<td style="width:50%; " colspan="2">
+								<input type="submit" value="Search" @click="searchEarning" style="background: #50d8af; border: 0; width:100%;border-radius: 3px; padding: 10px 30px; color: #fff; transition: 0.4s; cursor: pointer; margin-top:7.5%"/>
+							</td>
+							</tr>
+						</table>
+						
+						
+						
+						
+						
+						<div id="container10" style="width:100%; height:400px;">{{highcharts}}</div>
+						
 				</div>
 				
 			</section>

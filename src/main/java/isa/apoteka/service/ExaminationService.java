@@ -20,4 +20,5 @@ public interface ExaminationService {
 	Examination findOne(Long id);
 	Boolean isPharmFree(Long pharmacistId, Date start, Date end);
 	Boolean createExamination(Date start, int duration, Long patientId, Long pwcId, Long pharmacistId);
+	List<Examination> finishedExamination(Long pharmacyId, Date startDate, Date endDate);
 }

@@ -21,7 +21,10 @@ var app = new Vue({
 		finishOrder: false,
 		deadline: null,
 		takeBack:null,
-		grades: []
+		grades: [],
+		start: null,
+		end: null,
+		money: null
 		
 	},
 	methods: {
@@ -199,6 +202,8 @@ var app = new Vue({
 		    	 console.log(this.grades.percentageOfGrades)
 		    	 this.funkcija4();
 		    	 this.funkcija5();
+		    	 this.funkcija7();
+		    	 this.funkcija8();
 		    	 
 		     })
 		},
@@ -574,7 +579,276 @@ var app = new Vue({
 						    json.plotOptions = plotOptions;  
 						    json.credits = credits;
 						    $('#container6').highcharts(json);
-						}
+						},
+						
+					funkcija7(){
+						    var chart = {
+								       type: 'column'
+								    };
+								    var title = {
+								       text: 'Monthly medicine usage'   
+								    };
+								
+								
+								    var month = [];
+								    for (var a = 0; a < this.grades.monthlyUsage.length; a++) {	              
+								    	month.push(this.grades.monthlyUsage[a]);
+								    }
+								    
+								   console.log(month)
+								
+								    var xAxis = {
+								               categories: ['Jan','Feb','Mar','Apr','May','Jun','Jul',
+								                  'Aug','Sep','Oct','Nov','Dec'],
+								               crosshair: true
+								    };
+								    
+								    var yAxis = {
+								       min: 0,
+								       title: {
+								          text: 'Number'         
+								       }      
+								    };
+								    var tooltip = {
+								       headerFormat: '<span style = "font-size:10px">{point.key}</span><table>',
+								       pointFormat: '<tr><td style = "color:{series.color};padding:0">{series.name}: </td>' +
+								          '<td style = "padding:0"><b>{point.y:.1f}</b></td></tr>',
+								       footerFormat: '</table>',
+								       shared: true,
+								       useHTML: true
+								    };
+								    var plotOptions = {
+								       column: {
+								          pointPadding: 0.2,
+								          borderWidth: 0
+								       }
+								    };  
+								    var credits = {
+								       enabled: false
+								    };
+								    var series= [
+								       {
+								          name: 'Number of used medicine',
+								          data: month
+								       }, 
+								    ];     
+								 
+								    var json = {};   
+								    json.chart = chart; 
+								    json.title = title;    
+								    json.tooltip = tooltip;
+								    json.xAxis = xAxis;
+								    json.yAxis = yAxis;  
+								    json.series = series;
+								    json.plotOptions = plotOptions;  
+								    json.credits = credits;
+								    $('#container7').highcharts(json);
+								},
+								funkcija8(){
+								    var chart = {
+										       type: 'column'
+										    };
+										    var title = {
+										       text: 'Quarterly medicine usage'   
+										    };
+										
+										
+										    var quarter = [];
+										    for (var a = 0; a < this.grades.quarterlyUsage.length; a++) {	              
+										    	quarter.push(this.grades.quarterlyUsage[a]);
+										    }
+										    
+										   console.log(quarter)
+										
+										    var xAxis = {
+										               categories: ['I','II','III','IV'],
+										               crosshair: true
+										    };
+										    
+										    var yAxis = {
+										       min: 0,
+										       title: {
+										          text: 'Number'         
+										       }      
+										    };
+										    var tooltip = {
+										       headerFormat: '<span style = "font-size:10px">{point.key}</span><table>',
+										       pointFormat: '<tr><td style = "color:{series.color};padding:0">{series.name}: </td>' +
+										          '<td style = "padding:0"><b>{point.y:.1f}</b></td></tr>',
+										       footerFormat: '</table>',
+										       shared: true,
+										       useHTML: true
+										    };
+										    var plotOptions = {
+										       column: {
+										          pointPadding: 0.2,
+										          borderWidth: 0
+										       }
+										    };  
+										    var credits = {
+										       enabled: false
+										    };
+										    var series= [
+										       {
+										          name: 'Number of used medicine',
+										          data: quarter
+										       }, 
+										    ];     
+										 
+										    var json = {};   
+										    json.chart = chart; 
+										    json.title = title;    
+										    json.tooltip = tooltip;
+										    json.xAxis = xAxis;
+										    json.yAxis = yAxis;  
+										    json.series = series;
+										    json.plotOptions = plotOptions;  
+										    json.credits = credits;
+										    $('#container8').highcharts(json);
+										},
+										funkcija9(){
+										    var chart = {
+												       type: 'column'
+												    };
+												    var title = {
+												       text: 'Yearly medicine usage'   
+												    };
+												
+												
+												    var quarter = [];
+												    for (var a = 0; a < this.grades.yearlyUsage.length; a++) {	              
+												    	quarter.push(this.grades.yearlyUsage[a]);
+												    }
+												    
+												   console.log(quarter)
+												
+												    var xAxis = {
+												               categories: ['2020','2021'],
+												               crosshair: true
+												    };
+												    
+												    var yAxis = {
+												       min: 0,
+												       title: {
+												          text: 'Number'         
+												       }      
+												    };
+												    var tooltip = {
+												       headerFormat: '<span style = "font-size:10px">{point.key}</span><table>',
+												       pointFormat: '<tr><td style = "color:{series.color};padding:0">{series.name}: </td>' +
+												          '<td style = "padding:0"><b>{point.y:.1f}</b></td></tr>',
+												       footerFormat: '</table>',
+												       shared: true,
+												       useHTML: true
+												    };
+												    var plotOptions = {
+												       column: {
+												          pointPadding: 0.2,
+												          borderWidth: 0
+												       }
+												    };  
+												    var credits = {
+												       enabled: false
+												    };
+												    var series= [
+												       {
+												          name: 'Number of used medicine',
+												          data: quarter
+												       }, 
+												    ];     
+												 
+												    var json = {};   
+												    json.chart = chart; 
+												    json.title = title;    
+												    json.tooltip = tooltip;
+												    json.xAxis = xAxis;
+												    json.yAxis = yAxis;  
+												    json.series = series;
+												    json.plotOptions = plotOptions;  
+												    json.credits = credits;
+												    $('#container9').highcharts(json);
+												},
+												funkcija10(){
+												    var chart = {
+														       type: 'column'
+														    };
+														    var title = {
+														       text: 'Earnings for a period'   
+														    };
+														
+														
+														    var quarter = [];
+														                 
+														    	quarter.push(this.money.earningE);
+														    	quarter.push(this.money.earningC);
+														    	quarter.push(this.money.earningM);
+														    
+														   console.log(quarter)
+														
+														    var xAxis = {
+														               categories: ['Examination', 'Counseling','Medicine'],
+														               crosshair: true
+														    };
+														    
+														    var yAxis = {
+														       min: 0,
+														       title: {
+														          text: 'Money'         
+														       }      
+														    };
+														    var tooltip = {
+														       headerFormat: '<span style = "font-size:10px">{point.key}</span><table>',
+														       pointFormat: '<tr><td style = "color:{series.color};padding:0">{series.name}: </td>' +
+														          '<td style = "padding:0"><b>{point.y:.1f}</b></td></tr>',
+														       footerFormat: '</table>',
+														       shared: true,
+														       useHTML: true
+														    };
+														    var plotOptions = {
+														       column: {
+														          pointPadding: 0.2,
+														          borderWidth: 0
+														       }
+														    };  
+														    var credits = {
+														       enabled: false
+														    };
+														    var series= [
+														       {
+														          name: 'Money earned',
+														          data: quarter
+														       }, 
+														    ];     
+														 
+														    var json = {};   
+														    json.chart = chart; 
+														    json.title = title;    
+														    json.tooltip = tooltip;
+														    json.xAxis = xAxis;
+														    json.yAxis = yAxis;  
+														    json.series = series;
+														    json.plotOptions = plotOptions;  
+														    json.credits = credits;
+														    $('#container10').highcharts(json);
+														},
+												searchEarning(){
+													axios
+													.get('/api/pharmacy/getReportEarnings',
+															{
+														params:{
+															start: new Date(this.start).getTime(),
+															end: new Date(this.end).getTime(),
+														},
+													headers: {
+													    'Authorization': "Bearer " + localStorage.getItem('access_token')
+													  }
+												
+													})
+												     .then(response => {
+												    	 this.money = response.data
+												    	 console.log(this.money)
+												    	 this.funkcija10();})
+												}
 	},
 	created() {
 		axios
@@ -619,6 +893,9 @@ var app = new Vue({
 		    	 this.funkcija4();
 		    	 this.funkcija5();
 		    	 this.funkcija6();
+		    	 this.funkcija7();
+		    	 this.funkcija8();
+		    	 this.funkcija9();
 		    	 
 		     })
 		    
