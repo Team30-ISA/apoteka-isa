@@ -128,8 +128,15 @@
     Intro Section
   ============================-->
 
-		<main id="main">
-	
+		<main id="main" class="text-center mt-5">
+            <div v-if="pharmacies.length == 0">
+                No subscriptions yet.
+            </div>
+            <div class="d-inline-block w-50">
+                <ul class="list-group">
+                    <li class="list-group-item" v-for="pharmacy in pharmacies">{{pharmacy.name}}<button class="btn" style="float: right;" @click="unsubscribe(pharmacy.id)">Unsubcribe</button></li>
+                  </ul>
+            </div>
 		</main>
 
 		<a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>

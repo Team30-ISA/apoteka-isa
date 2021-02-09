@@ -1,9 +1,12 @@
 package isa.apoteka.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import isa.apoteka.domain.Pharmacy;
+import isa.apoteka.dto.PharmacyDTO;
+import isa.apoteka.repository.PatientRepository;
 import isa.apoteka.repository.PharmacyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,7 +27,10 @@ public class PromotionServiceImpl implements PromotionService{
 	private PatientService patientService;
 	private EmailService emailService;
 	private PromotionRepository promotionRepository;
-	
+
+	@Autowired
+	private PatientRepository patientRepository;
+
 	@Autowired 
 	public PromotionServiceImpl(PatientService patientService, EmailService emailService, PromotionRepository promotionRepository) {
 		this.patientService = patientService;
@@ -66,15 +72,25 @@ public class PromotionServiceImpl implements PromotionService{
 		Pharmacy pharmacy = pharmacyRepository.getOne(pharmacyId);
 		if(pharmacy.getPatients().stream().filter(p -> p.getId() == patient.getId()).collect(Collectors.toList()).size() > 0)
 			throw new Exception("Already subscribed");
-		pharmacy.getPatients().add(patient);
+		Patient dbPatient = patientService.findById(patient.getId()); // Mora iz baze jer se ovaj iz konteksta razlikuje pa ga necemo moci obrisati jer je uvek drugaciji
+		pharmacy.getPatients().add(dbPatient);
 		pharmacyRepository.save(pharmacy);
 	}
 
 	@Override
+	@Transactional(readOnly = false)
 	public void unsubscribe(Long pharmacyId) {
 		Patient patient = (Patient) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		Pharmacy pharmacy = pharmacyRepository.getOne(pharmacyId);
-		pharmacy.setPatients(pharmacy.getPatients().stream().filter(p -> p.getId() != patient.getId()).collect(Collectors.toList()));
+		Patient dbPatient = patientService.findById(patient.getId());
+		pharmacy.getPatients().remove(dbPatient);
 		pharmacyRepository.save(pharmacy);
+	}
+
+	@Override
+	public List<PharmacyDTO> findAllUserSubscribedPharmacies() {
+		Patient patient = (Patient) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Patient dbPatient = patientService.findById(patient.getId());
+		return dbPatient.getPharmacies().stream().map(p -> new PharmacyDTO(p)).collect(Collectors.toList());
 	}
 }
