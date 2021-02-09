@@ -6,13 +6,10 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import isa.apoteka.dto.UserVerificationDTO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -22,18 +19,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import isa.apoteka.auth.JwtAuthenticationRequest;
 import isa.apoteka.domain.User;
 import isa.apoteka.domain.UserRequest;
 import isa.apoteka.domain.UserTokenState;
+import isa.apoteka.dto.UserVerificationDTO;
 import isa.apoteka.exception.ResourceConflictException;
 import isa.apoteka.security.TokenUtils;
 import isa.apoteka.service.UserService;
 import isa.apoteka.service.impl.CustomUserDetailsService;
 
-//Kontroler zaduzen za autentifikaciju korisnika
 @RestController
 @RequestMapping(value = "/auth", produces = MediaType.APPLICATION_JSON_VALUE)
 public class AuthenticationController {
@@ -90,7 +86,6 @@ public class AuthenticationController {
 		}
 	}
 
-
 	@PostMapping(value = "/refresh")
 	public ResponseEntity<UserTokenState> refreshAuthenticationToken(HttpServletRequest request) {
 
@@ -119,7 +114,6 @@ public class AuthenticationController {
 	}
 
 	@PostMapping("/logout")
-	// @ResponseStatus(HttpStatus.OK)
 	public void logout() {
 		SecurityContextHolder.clearContext();
 	}

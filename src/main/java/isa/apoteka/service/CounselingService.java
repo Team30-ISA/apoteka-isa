@@ -4,8 +4,10 @@ import java.util.Date;
 import java.util.List;
 
 import isa.apoteka.domain.Counseling;
+import isa.apoteka.domain.Dermatologist;
 import isa.apoteka.domain.Patient;
 import isa.apoteka.domain.Pharmacy;
+import isa.apoteka.domain.ReservedMedicine;
 import isa.apoteka.dto.ExaminationDTO;
 
 public interface CounselingService {
@@ -24,4 +26,11 @@ public interface CounselingService {
 	void update(Long patientId, Long counselingId);
 	void updateReport(String report, Long counselingId);
 	public Boolean createCounseling(Date start, int duration, Float price, Long dwcId, Long dermId, Long pharmacyId);
+	List<Counseling> findAllByPharmId(Long pharmId);
+	Dermatologist findDermatologistForCounseling(Long counsId);
+	void makeAppointment(Long patId, Long counsId);
+	void sendCounselingReservation(Counseling c);
+	List<Counseling> findAllByPatientId(Long patId);
+	void cancelAppointment(Long counsId);
+	
 }
