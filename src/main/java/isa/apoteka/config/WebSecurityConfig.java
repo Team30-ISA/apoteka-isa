@@ -93,7 +93,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				http.cors();
 				http.csrf().disable();
 
-	}
+	}  
 	
 	
 
@@ -102,8 +102,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	public void configure(WebSecurity web) throws Exception {
 		// TokenAuthenticationFilter ce ignorisati sve ispod navedene putanje
 		web.ignoring().antMatchers(HttpMethod.POST, "/auth/login", "/auth/logout", "/auth/signup", "/auth/verify");
-		web.ignoring().antMatchers(HttpMethod.GET, "/", "/webjars/**", "/favicon.ico", "/**/*.png",
-				"/**/*.css", "/**/*.js", "/**/*.woff2",  "/**/*.woff", "/**/*.html", "/*.html", "/img/zena.jpg", "/img/musko.jpg");
+		web.ignoring().antMatchers(HttpMethod.GET, "/", "/webjars/**", "/favicon.ico", "/**/*.png", "/api/pharmacy/findById", "/api/pharmacy/findAllPharmsInPharmacy", "/api/pharmacy/findAllDermsInPharmacy","/api/medicine/findAllMedicineAvailableInPharmacy",
+				"/**/*.css", "/**/*.js", "/**/*.woff2",  "/**/*.woff", "/**/*.html", "/*.html", "/img/zena.jpg", "/img/musko.jpg", "/img/medication-safety-and-kids.jpg");
 	}
 	
 

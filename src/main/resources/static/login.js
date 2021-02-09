@@ -41,7 +41,7 @@ var app = new Vue({
                 response.data == "ADMIN" &&
                 this.email !== this.password
               ) {
-                window.location.href = "pharmacyAdmin/pharmacyAdminHome.html";
+                window.location.href = "pharmacy.html";
               } else if (response.data == "PATIENT") {
                 window.location.href = "profile.html";
               }else if (response.data == "SYS_ADMIN"){

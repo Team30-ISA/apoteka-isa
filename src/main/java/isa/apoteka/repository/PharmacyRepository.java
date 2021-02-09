@@ -38,4 +38,9 @@ public interface PharmacyRepository extends JpaRepository<Pharmacy, Long>{
     @Transactional
     @Query("update MedicineInPharmacy mp set mp.quantity = mp.quantity - ?3 where mp.medicine.id = ?2 and mp.pharmacy.id = ?1")
     void updateMedicineInPharmacy(Long pharmId, Long medId, int quantity);
+
+    @Modifying
+    @Transactional
+    @Query("update Pharmacy p set p.name=:name, p.street=:address, p.city=:city, p.description=:description where p.id=:id")
+	void update(Long id, String name, String address, String city, String description);
 }

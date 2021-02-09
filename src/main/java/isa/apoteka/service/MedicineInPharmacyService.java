@@ -10,4 +10,5 @@ public interface MedicineInPharmacyService {
 	int getQuantityForMedicineInPharmacy(Long medId, Long pharmacyId);
 	List<MedicineInPharmacy> getMedicineInPharmacy(Long pharmacyId);
 	List<MedicineInPharmacy> searchMedicineInPharmacy(Long pharmacyId, String name);
+	List<MedicineInPharmacy> getAvailableMedicineInPharmacy(Long id);
 }

@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -23,10 +24,13 @@ public class Pharmacy {
 	private Long id;
 
 	@Column(unique = true, nullable = false)
-	String name;
+	private String name;
 	
-	@Column(unique = true, nullable = false)
-	String address;
+	private String street;
+	
+	private String city;
+	
+	private String description;
 	
 	@JsonIgnore
 	@ManyToMany(fetch = FetchType.LAZY)
@@ -53,35 +57,30 @@ public class Pharmacy {
 	@OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
 	private List<Promotion> promotions;
 
-	public Pharmacy(Long id, String name, String address) {
+	public Pharmacy() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public Pharmacy(Long id, String name, String street, String city, String description,
+			List<Dermatologist> dermatologists, List<Patient> patients, List<MedicineInPharmacy> medicineInpharmacy,
+			List<Pharmacist> pharmacists, List<PharmacyAdmin> pharmacyAdmins, List<Promotion> promotions) {
 		super();
 		this.id = id;
 		this.name = name;
-		this.address = address;
-	}
-
-	public Pharmacy() {
-		super();
+		this.street = street;
+		this.city = city;
+		this.description = description;
+		this.dermatologists = dermatologists;
+		this.patients = patients;
+		this.medicineInpharmacy = medicineInpharmacy;
+		this.pharmacists = pharmacists;
+		this.pharmacyAdmins = pharmacyAdmins;
+		this.promotions = promotions;
 	}
 
 	public Long getId() {
 		return id;
-	}
-
-	public List<Dermatologist> getDermatologists() {
-		return dermatologists;
-	}
-
-	public void setDermatologists(List<Dermatologist> dermatologists) {
-		this.dermatologists = dermatologists;
-	}
-
-	public List<Pharmacist> getPharmacists() {
-		return pharmacists;
-	}
-
-	public void setPharmacists(List<Pharmacist> pharmacists) {
-		this.pharmacists = pharmacists;
 	}
 
 	public void setId(Long id) {
@@ -96,54 +95,60 @@ public class Pharmacy {
 		this.name = name;
 	}
 
-	public String getAddress() {
-		return address;
+	public String getStreet() {
+		return street;
 	}
 
-	public void setAddress(String address) {
-		this.address = address;
+	public void setStreet(String street) {
+		this.street = street;
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((address == null) ? 0 : address.hashCode());
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		return result;
+	public String getCity() {
+		return city;
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Pharmacy other = (Pharmacy) obj;
-		if (address == null) {
-			if (other.address != null)
-				return false;
-		} else if (!address.equals(other.address))
-			return false;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
-			return false;
-		return true;
+	public void setCity(String city) {
+		this.city = city;
 	}
 
-	@Override
-	public String toString() {
-		return "Pharmacy [id=" + id + ", name=" + name + ", address=" + address + "]";
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public List<Dermatologist> getDermatologists() {
+		return dermatologists;
+	}
+
+	public void setDermatologists(List<Dermatologist> dermatologists) {
+		this.dermatologists = dermatologists;
+	}
+
+	public List<Patient> getPatients() {
+		return patients;
+	}
+
+	public void setPatients(List<Patient> patients) {
+		this.patients = patients;
+	}
+
+	public List<MedicineInPharmacy> getMedicineInpharmacy() {
+		return medicineInpharmacy;
+	}
+
+	public void setMedicineInpharmacy(List<MedicineInPharmacy> medicineInpharmacy) {
+		this.medicineInpharmacy = medicineInpharmacy;
+	}
+
+	public List<Pharmacist> getPharmacists() {
+		return pharmacists;
+	}
+
+	public void setPharmacists(List<Pharmacist> pharmacists) {
+		this.pharmacists = pharmacists;
 	}
 
 	public List<PharmacyAdmin> getPharmacyAdmins() {
@@ -153,5 +158,14 @@ public class Pharmacy {
 	public void setPharmacyAdmins(List<PharmacyAdmin> pharmacyAdmins) {
 		this.pharmacyAdmins = pharmacyAdmins;
 	}
+
+	public List<Promotion> getPromotions() {
+		return promotions;
+	}
+
+	public void setPromotions(List<Promotion> promotions) {
+		this.promotions = promotions;
+	}
+
 	
 }
