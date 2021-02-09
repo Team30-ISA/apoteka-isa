@@ -4,6 +4,23 @@ var app = new Vue({
     pharmacies: []
   },
   methods: {
+    async checkRole() {
+      axios
+        .get("/auth/getRole", {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("access_token")
+          }
+        })
+        .then((response) => {
+          this.role = response.data;
+          if (response.data != "PATIENT") {
+            window.location.href = "/login.html";
+          }
+        })
+        .catch(function () {
+          window.location.href = "/login.html";
+        });
+    },
     logout() {
       axios
         .post("/auth/logout", null, {
@@ -32,6 +49,8 @@ var app = new Vue({
     }
   },
   async created() {
+    await this.checkRole();
+
     try {
       const { data } = await axios.get("/api/promotion", {
         headers: {
