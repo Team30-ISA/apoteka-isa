@@ -14,6 +14,18 @@ new Vue({
     substitutes: []
   },
   methods: {
+	logout() {
+     axios
+        .post("/auth/logout", null, {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("access_token")
+          }
+        })
+        .then(function () {
+          localStorage.clear();
+          window.location.href = "/login.html";
+        });
+    },
     async createMedicine() {
       try {
         await axios.post(
