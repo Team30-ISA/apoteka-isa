@@ -51,4 +51,12 @@ public class PromotionServiceImpl implements PromotionService{
 			return false;
 		}
 	}
+
+	@Override
+	@Transactional(readOnly = false)
+	public void subscribe(Long pharmacyId) {
+		Patient patient = (Patient) SecurityContextHolder.getContext().getAuthentication().getPrincipal();	
+		promotionRepository.newSubscription(patient.getId(), pharmacyId);
+		
+	}
 }

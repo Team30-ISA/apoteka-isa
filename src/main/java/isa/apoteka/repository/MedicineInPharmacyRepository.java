@@ -26,4 +26,7 @@ public interface MedicineInPharmacyRepository extends JpaRepository<MedicineInPh
 	
 	@Query("from MedicineInPharmacy m join m.pharmacy mp join m.medicine mm where mp.id=:pharmacyId and mm.name like %:name%")
 	List<MedicineInPharmacy> searchMedicineInPharmacy(Long pharmacyId, String name);
+
+	@Query("from MedicineInPharmacy m join m.pharmacy mp where mp.id=:id and m.quantity > 0")
+	List<MedicineInPharmacy> getAvailableMedicineInPharmacy(Long id);
 }
