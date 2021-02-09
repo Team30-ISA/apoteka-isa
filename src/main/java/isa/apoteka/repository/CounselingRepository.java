@@ -1,5 +1,6 @@
 package isa.apoteka.repository;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -61,5 +62,11 @@ public interface CounselingRepository extends JpaRepository<Counseling, Long>{
     @Transactional
 	@Query(value = "insert into counseling (start_date, duration, price, dermatologist_work_calendar_id) values (:start,:duration,:price,:dwcId)", nativeQuery = true)
 	void createCounseling(Date start, int duration, Float price, Long dwcId);
+
+	@Query("from Counseling c join c.dermatologistWorkCalendar.pharmacy p where c.report != null and c.report != '' and c.startDate<= :kraj and c.startDate>= :pocetak and p.id=:id")
+	List<Counseling> finishedCounseling(Long id, Date pocetak, Date kraj);
+
+	@Query("from Counseling c join c.dermatologistWorkCalendar.pharmacy p where c.report != null and c.report != '' and p.id=:id")
+	List<Counseling> allFinishedCounseling(Long id);
 	
 }

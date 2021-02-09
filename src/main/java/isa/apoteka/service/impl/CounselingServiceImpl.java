@@ -333,4 +333,16 @@ public class CounselingServiceImpl implements CounselingService {
 		counselingRepository.cancelAppointment(counsId);
 	}
 
+	@Override
+	public List<Counseling> finishedCounseling(Long id, Date pocetak, Date kraj) {
+		return counselingRepository.finishedCounseling(id, pocetak, kraj);
+	}
+
+	@Override
+	public List<Counseling> AllfinishedCounseling(Long id) {
+		return counselingRepository.allFinishedCounseling(id);
+	}
+
+	
+	
 }

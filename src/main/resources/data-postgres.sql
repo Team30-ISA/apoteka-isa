@@ -23,7 +23,7 @@ INSERT INTO dermatologist (id, username, password, first_name, last_name, email,
 INSERT INTO dermatologist (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, gender, address_id, grade) VALUES (6, 'pero', '$2a$10$2affw9vkXuEbQOoiKqN2XuVQ1sVZLQ6XBRAZ1IHeCT6W8.qJOXkhe', 'Petar', 'Petrovic', 'apoteka.isa2021+pero@gmail.com', true, '2017-10-01 18:57:58.508-07', 1, 6, 8);
 INSERT INTO pharmacist (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, pharmacy_id, gender, address_id) VALUES (4,'jeca', '$2a$10$2affw9vkXuEbQOoiKqN2XuVQ1sVZLQ6XBRAZ1IHeCT6W8.qJOXkhe', 'Jelena', 'Cvetkovska', 'apoteka.isa2021+jeca@gmail.com', true, '2017-10-01 18:57:58.508-07',1, 0,6);
 INSERT INTO pharmacist (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, pharmacy_id, gender, address_id) VALUES (7,'a', '$2a$10$2affw9vkXuEbQOoiKqN2XuVQ1sVZLQ6XBRAZ1IHeCT6W8.qJOXkhe', 'Mila', 'Peric', 'apoteka.isa2021+a@gmail.com', true, '2017-10-01 18:57:58.508-07',1, 0, 6);
-INSERT INTO pharmacist (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, pharmacy_id, gender, address_id) VALUES (8,'b', '$2a$10$2affw9vkXuEbQOoiKqN2XuVQ1sVZLQ6XBRAZ1IHeCT6W8.qJOXkhe', 'Vasa', 'Vasic', 'apoteka.isa2021+b@gmail.com', true, '2017-10-01 18:57:58.508-07',2, 1, 6);
+INSERT INTO pharmacist (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, pharmacy_id, gender, address_id) VALUES (8,'b', '$2a$10$2affw9vkXuEbQOoiKqN2XuVQ1sVZLQ6XBRAZ1IHeCT6W8.qJOXkhe', 'Vasa', 'Vasic', 'apoteka.isa2021+b@gmail.com', true, '2017-10-01 18:57:58.508-07',1, 1, 6);
 INSERT INTO pharmacist (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, pharmacy_id, gender, address_id) VALUES (9,'c', '$2a$10$2affw9vkXuEbQOoiKqN2XuVQ1sVZLQ6XBRAZ1IHeCT6W8.qJOXkhe', 'Nenad', 'Milic', 'apoteka.isa2021+c@gmail.com', true, '2017-10-01 18:57:58.508-07',3, 1, 6);
 
 INSERT INTO pharmacyAdmin (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, pharmacy_id, gender, address_id) VALUES (10,'marko', '$2a$10$2affw9vkXuEbQOoiKqN2XuVQ1sVZLQ6XBRAZ1IHeCT6W8.qJOXkhe', 'Marko', 'Markovic', 'apoteka.isa2021+marko@gmail.com', true, '2017-10-01 18:57:58.508-07',1, 1, 6);
@@ -123,10 +123,31 @@ insert into dermatologist_work_calendar (dermatologist_id, pharmacy_id, start_da
 insert into dermatologist_work_calendar (dermatologist_id, pharmacy_id, start_date, end_date) VALUES (5, 1, '20210220 05:00:00 AM', '20210220 05:00:00 PM');
 insert into dermatologist_work_calendar (dermatologist_id, pharmacy_id, start_date, end_date) VALUES (5, 2, '20210215 05:00:00 AM', '20210215 05:00:00 PM');
 
-insert into counseling (start_date, duration, dermatologist_work_calendar_id, price) VALUES ('20210208 08:53:00 PM', 5, 1, 1999.99);
-insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, patient_id) VALUES ('20210204 11:35:00 AM', 60, 2, 999.99, 13);
-insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, patient_id) VALUES ('20210219 12:00:00 PM', 30, 1, 999.99, 13);
-insert into counseling (start_date, duration, dermatologist_work_calendar_id, price) VALUES ('20210220 11:00:00 AM', 15, 1, 1999.99);
+insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, report) VALUES ('20200208 08:53:00 PM', 5, 1, 1999.99, 'nesto');
+insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, report) VALUES ('20200208 08:53:00 PM', 5, 1, 1999.99, 'nesto');
+insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, report) VALUES ('20200208 08:53:00 PM', 5, 1, 1999.99, 'nesto');
+insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, report) VALUES ('20200208 08:53:00 PM', 5, 1, 1999.99, 'nesto');
+insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, report) VALUES ('20200208 08:53:00 PM', 5, 1, 1999.99, 'nesto');
+insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, report) VALUES ('20200208 08:53:00 PM', 5, 1, 1999.99, 'nesto');
+insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, report) VALUES ('20200108 08:53:00 PM', 5, 1, 1999.99, 'nesto');
+insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, report) VALUES ('20200108 08:53:00 PM', 5, 1, 1999.99, 'nesto');
+insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, report) VALUES ('20200108 08:53:00 PM', 5, 1, 1999.99, 'nesto');
+insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, report) VALUES ('20200408 08:53:00 PM', 5, 1, 1999.99, 'nesto');
+insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, report) VALUES ('20200308 08:53:00 PM', 5, 1, 1999.99, 'nesto');
+insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, report) VALUES ('20200308 08:53:00 PM', 5, 1, 1999.99, 'nesto');
+insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, report) VALUES ('20200808 08:53:00 PM', 5, 1, 1999.99, 'nesto');
+insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, report) VALUES ('20200708 08:53:00 PM', 5, 1, 1999.99, 'nesto');
+insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, report) VALUES ('20200608 08:53:00 PM', 5, 1, 1999.99, 'nesto');
+insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, report) VALUES ('20201008 08:53:00 PM', 5, 1, 1999.99, 'nesto');
+insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, report) VALUES ('20201008 08:53:00 PM', 5, 1, 1999.99, 'nesto');
+insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, report) VALUES ('20201108 08:53:00 PM', 5, 1, 1999.99, 'nesto');
+insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, report) VALUES ('20201208 08:53:00 PM', 5, 1, 1999.99, 'nesto');
+insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, report) VALUES ('20201208 08:53:00 PM', 5, 1, 1999.99, 'nesto');
+insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, report) VALUES ('20201208 08:53:00 PM', 5, 1, 1999.99, ''); 
+
+insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, patient_id, report) VALUES ('20210204 11:35:00 AM', 60, 2, 999.99, 13, 'nesto');
+insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, patient_id, report) VALUES ('20210219 12:00:00 PM', 30, 1, 999.99, 13, 'nesto');
+insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, report) VALUES ('20210220 11:00:00 AM', 15, 1, 1999.99, 'nesto');
 insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, patient_id) VALUES ('20210220 11:15:00 AM', 30, 1, 1999.99, 13);
 insert into counseling (start_date, duration, dermatologist_work_calendar_id, price) VALUES ('20210220 12:00:00 PM', 60, 1, 2999.99);
 insert into counseling (start_date, duration, dermatologist_work_calendar_id, price) VALUES ('20210220 01:00:00 PM', 5, 1, 99.99);
@@ -166,19 +187,21 @@ insert into dermatologist_grade (id, grade, dermatologist_id, patient_id) values
 insert into dermatologist_grade (id, grade, dermatologist_id, patient_id) values (3, 4, 6, 13);
 insert into dermatologist_grade (id, grade, dermatologist_id, patient_id) values (4, 3, 3, 13);
 
-   
-insert into pharmacist_grade (id, grade, pharmacist_id, patient_id) values (1, 2, 4, 13);
+insert into pharmacist_grade (id, grade, pharmacist_id, patient_id) values (1, 5, 4, 13);   
+insert into pharmacist_grade (id, grade, pharmacist_id, patient_id) values (7, 2, 4, 13);
 insert into pharmacist_grade (id, grade, pharmacist_id, patient_id) values (2, 5, 4, 13);
 insert into pharmacist_grade (id, grade, pharmacist_id, patient_id) values (3, 4, 7, 13);
 insert into pharmacist_grade (id, grade, pharmacist_id, patient_id) values (4, 3, 7, 13);
+insert into pharmacist_grade (id, grade, pharmacist_id, patient_id) values (5, 1, 8, 13);
+insert into pharmacist_grade (id, grade, pharmacist_id, patient_id) values (6, 2, 8, 13);
 
 insert into medicine_price(id, end_of_price, price, start_of_price, medicine_id, pharmacy_id) values (100, '20210216 08:00:00 PM',200, '20210215 10:00:00 AM', 1, 2);
 insert into medicine_price(id, end_of_price, price, start_of_price, medicine_id, pharmacy_id) values (101, '20210216 08:00:00 PM',300, '20210215 10:00:00 AM', 2, 1);
 insert into medicine_price(id, end_of_price, price, start_of_price, medicine_id, pharmacy_id) values (102, '20210216 08:00:00 PM',400, '20210215 10:00:00 AM', 2, 2);
 insert into medicine_price(id, end_of_price, price, start_of_price, medicine_id, pharmacy_id) values (103, '20210216 08:00:00 PM',400, '20210215 10:00:00 AM', 2, 3);
 insert into medicine_price(id, end_of_price, price, start_of_price, medicine_id, pharmacy_id) values (104, '20210216 08:00:00 PM',400, '20210215 10:00:00 AM', 3, 3);
-insert into medicine_price(id, end_of_price, price, start_of_price, medicine_id, pharmacy_id) values (103, '20210216 08:00:00 PM',400, '20210215 10:00:00 AM', 2, 4);
-insert into medicine_price(id, end_of_price, price, start_of_price, medicine_id, pharmacy_id) values (104, '20210216 08:00:00 PM',400, '20210215 10:00:00 AM', 3, 4);
+insert into medicine_price(id, end_of_price, price, start_of_price, medicine_id, pharmacy_id) values (105, '20210216 08:00:00 PM',400, '20210215 10:00:00 AM', 2, 4);
+insert into medicine_price(id, end_of_price, price, start_of_price, medicine_id, pharmacy_id) values (106, '20210216 08:00:00 PM',400, '20210215 10:00:00 AM', 3, 4);
 
 
 INSERT INTO supplier (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, gender, address_id) VALUES (25, 'admin8', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', 'Strahinja', 'Nikolic', 'apoteka.isa2021+strn@gmail.com', true, '2017-10-01 18:57:58.508-07', 1, 7);

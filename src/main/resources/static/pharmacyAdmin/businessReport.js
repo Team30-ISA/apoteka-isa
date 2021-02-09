@@ -20,7 +20,8 @@ var app = new Vue({
 		orderedMedication: [],
 		finishOrder: false,
 		deadline: null,
-		takeBack:null
+		takeBack:null,
+		grades: []
 		
 	},
 	methods: {
@@ -179,7 +180,401 @@ var app = new Vue({
 			}
 			else
 				this.changeOrder = true;
-		}
+		},
+		onChange(godina){
+			console.log(godina)
+			axios
+			.get('/api/pharmacy/getReportByYear',
+					{
+				params:{
+					year: godina
+				},
+			headers: {
+			    'Authorization': "Bearer " + localStorage.getItem('access_token')
+			  }
+		
+			})
+		     .then(response => {
+		    	 this.grades = response.data
+		    	 console.log(this.grades.percentageOfGrades)
+		    	 this.funkcija4();
+		    	 this.funkcija5();
+		    	 
+		     })
+		},
+		funkcija1(){
+	            var chart = {
+	               plotBackgroundColor: null,
+	               plotBorderWidth: null,
+	               plotShadow: false
+	            };
+	            var title = {
+	               text: 'Pharmacy grades'   
+	            };
+	            var tooltip = {
+	               pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+	            };
+	            var plotOptions = {
+	               pie: {
+	                  allowPointSelect: true,
+	                  cursor: 'pointer',
+	                  
+	                  dataLabels: {
+	                     enabled: true,
+	                     format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+	                     style: {
+	                        color: (Highcharts.theme && Highcharts.theme.contrastTextColor)||
+	                        'black'
+	                     }
+	                  }
+	               }
+	            };
+	            var series = [{
+	               type: 'pie',
+	               name: 'Pharmacy grades',
+	               data: [
+	                  ['Grade 1',this.grades.percentageOfGrades[0]],
+	                  ['Grade 2',this.grades.percentageOfGrades[1]],
+	                  ['Grade 3',this.grades.percentageOfGrades[2]],
+	                  ['Grade 4',this.grades.percentageOfGrades[3]],
+	                  ['Grade 5',this.grades.percentageOfGrades[4]]
+	               ]
+	            }];
+	            var json = {};   
+	            json.chart = chart; 
+	            json.title = title;     
+	            json.tooltip = tooltip;  
+	            json.series = series;
+	            json.plotOptions = plotOptions;
+	            $('#container1').highcharts(json);  
+		},
+		funkcija2(){
+	            var chart = {
+	               type: 'column'
+	            };
+	            var title = {
+	               text: 'Pharmacist average grade'   
+	            };
+
+	            
+	            var str = [];
+	            for (var a = 0; a < this.grades.pharmacistGrades.length; a++) {	              
+	              str.push(this.grades.pharmacistGrades[a].firstName);
+	            }
+	            
+	            console.log(str);
+
+	            var grades = [];
+	            for (var a = 0; a < this.grades.pharmacistGrades.length; a++) {	              
+	            	grades.push(this.grades.pharmacistGrades[a].grade);
+	            }
+	            
+	            console.log(str);
+	            
+
+	            var xAxis = {
+	            		
+	               categories: str,
+	               crosshair: true
+	            };
+	            var yAxis = {
+	               min: 0,
+	               title: {
+	                  text: 'Grades'         
+	               }      
+	            };
+	            var tooltip = {
+	               headerFormat: '<span style = "font-size:10px">{point.key}</span><table>',
+	               pointFormat: '<tr><td style = "color:{series.color};padding:0">{series.name}: </td>' +
+	                  '<td style = "padding:0"><b>{point.y:.1f}</b></td></tr>',
+	               footerFormat: '</table>',
+	               shared: true,
+	               useHTML: true
+	            };
+	            var plotOptions = {
+	               column: {
+	                  pointPadding: 0.2,
+	                  borderWidth: 0
+	               }
+	            };  
+	            var credits = {
+	               enabled: false
+	            };
+	            var series= [
+	               {
+	                  name: 'Average grade',
+	                  data: grades
+	               }, 
+	            ];     
+	         
+	            var json = {};   
+	            json.chart = chart; 
+	            json.title = title;    
+	            json.tooltip = tooltip;
+	            json.xAxis = xAxis;
+	            json.yAxis = yAxis;  
+	            json.series = series;
+	            json.plotOptions = plotOptions;  
+	            json.credits = credits;
+	            $('#container2').highcharts(json);
+	},
+	funkcija3(){
+        var chart = {
+           type: 'column'
+        };
+        var title = {
+           text: 'Dermatologist average grade'   
+        };
+
+        
+        var str = [];
+        for (var a = 0; a < this.grades.dermatologistGrades.length; a++) {	              
+          str.push(this.grades.dermatologistGrades[a].firstName);
+        }
+        
+        console.log(str);
+
+        var grades = [];
+        for (var a = 0; a < this.grades.dermatologistGrades.length; a++) {	              
+        	grades.push(this.grades.dermatologistGrades[a].grade);
+        }
+        
+        console.log(str);
+        
+
+        var xAxis = {
+        		
+           categories: str,
+           crosshair: true
+        };
+        var yAxis = {
+           min: 0,
+           title: {
+              text: 'Grades'         
+           }      
+        };
+        var tooltip = {
+           headerFormat: '<span style = "font-size:10px">{point.key}</span><table>',
+           pointFormat: '<tr><td style = "color:{series.color};padding:0">{series.name}: </td>' +
+              '<td style = "padding:0"><b>{point.y:.1f}</b></td></tr>',
+           footerFormat: '</table>',
+           shared: true,
+           useHTML: true
+        };
+        var plotOptions = {
+           column: {
+              pointPadding: 0.2,
+              borderWidth: 0
+           }
+        };  
+        var credits = {
+           enabled: false
+        };
+        var series= [
+           {
+              name: 'Average grade',
+              data: grades
+           }, 
+        ];     
+     
+        var json = {};   
+        json.chart = chart; 
+        json.title = title;    
+        json.tooltip = tooltip;
+        json.xAxis = xAxis;
+        json.yAxis = yAxis;  
+        json.series = series;
+        json.plotOptions = plotOptions;  
+        json.credits = credits;
+        $('#container3').highcharts(json);
+},
+		funkcija4(){
+		    var chart = {
+		       type: 'column'
+		    };
+		    var title = {
+		       text: 'Monthly finished examinations'   
+		    };
+		
+		
+		    var month = [];
+		    for (var a = 0; a < this.grades.monthlyCounseling.length; a++) {	              
+		    	month.push(this.grades.monthlyCounseling[a]);
+		    }
+		    
+		   console.log(month)
+		
+		    var xAxis = {
+		               categories: ['Jan','Feb','Mar','Apr','May','Jun','Jul',
+		                  'Aug','Sep','Oct','Nov','Dec'],
+		               crosshair: true
+		    };
+		    
+		    var yAxis = {
+		       min: 0,
+		       title: {
+		          text: 'Number'         
+		       }      
+		    };
+		    var tooltip = {
+		       headerFormat: '<span style = "font-size:10px">{point.key}</span><table>',
+		       pointFormat: '<tr><td style = "color:{series.color};padding:0">{series.name}: </td>' +
+		          '<td style = "padding:0"><b>{point.y:.1f}</b></td></tr>',
+		       footerFormat: '</table>',
+		       shared: true,
+		       useHTML: true
+		    };
+		    var plotOptions = {
+		       column: {
+		          pointPadding: 0.2,
+		          borderWidth: 0
+		       }
+		    };  
+		    var credits = {
+		       enabled: false
+		    };
+		    var series= [
+		       {
+		          name: 'Number of examinations',
+		          data: month
+		       }, 
+		    ];     
+		 
+		    var json = {};   
+		    json.chart = chart; 
+		    json.title = title;    
+		    json.tooltip = tooltip;
+		    json.xAxis = xAxis;
+		    json.yAxis = yAxis;  
+		    json.series = series;
+		    json.plotOptions = plotOptions;  
+		    json.credits = credits;
+		    $('#container4').highcharts(json);
+		},
+		funkcija5(){
+		    var chart = {
+				       type: 'column'
+				    };
+				    var title = {
+				       text: 'Quarterly finished examinations'   
+				    };
+				
+				
+				    var quarter = [];
+				    for (var a = 0; a < this.grades.quarterlyCounseling.length; a++) {	              
+				    	quarter.push(this.grades.quarterlyCounseling[a]);
+				    }
+				    
+				   console.log(quarter)
+				
+				    var xAxis = {
+				               categories: ['I','II','III','IV'],
+				               crosshair: true
+				    };
+				    
+				    var yAxis = {
+				       min: 0,
+				       title: {
+				          text: 'Number'         
+				       }      
+				    };
+				    var tooltip = {
+				       headerFormat: '<span style = "font-size:10px">{point.key}</span><table>',
+				       pointFormat: '<tr><td style = "color:{series.color};padding:0">{series.name}: </td>' +
+				          '<td style = "padding:0"><b>{point.y:.1f}</b></td></tr>',
+				       footerFormat: '</table>',
+				       shared: true,
+				       useHTML: true
+				    };
+				    var plotOptions = {
+				       column: {
+				          pointPadding: 0.2,
+				          borderWidth: 0
+				       }
+				    };  
+				    var credits = {
+				       enabled: false
+				    };
+				    var series= [
+				       {
+				          name: 'Number of examinations',
+				          data: quarter
+				       }, 
+				    ];     
+				 
+				    var json = {};   
+				    json.chart = chart; 
+				    json.title = title;    
+				    json.tooltip = tooltip;
+				    json.xAxis = xAxis;
+				    json.yAxis = yAxis;  
+				    json.series = series;
+				    json.plotOptions = plotOptions;  
+				    json.credits = credits;
+				    $('#container5').highcharts(json);
+				},
+				funkcija6(){
+				    var chart = {
+						       type: 'column'
+						    };
+						    var title = {
+						       text: 'Yearly finished examinations'   
+						    };
+						
+						
+						    var quarter = [];
+						    for (var a = 0; a < this.grades.yearlyCounseling.length; a++) {	              
+						    	quarter.push(this.grades.yearlyCounseling[a]);
+						    }
+						    
+						   console.log(quarter)
+						
+						    var xAxis = {
+						               categories: ['2020','2021'],
+						               crosshair: true
+						    };
+						    
+						    var yAxis = {
+						       min: 0,
+						       title: {
+						          text: 'Number'         
+						       }      
+						    };
+						    var tooltip = {
+						       headerFormat: '<span style = "font-size:10px">{point.key}</span><table>',
+						       pointFormat: '<tr><td style = "color:{series.color};padding:0">{series.name}: </td>' +
+						          '<td style = "padding:0"><b>{point.y:.1f}</b></td></tr>',
+						       footerFormat: '</table>',
+						       shared: true,
+						       useHTML: true
+						    };
+						    var plotOptions = {
+						       column: {
+						          pointPadding: 0.2,
+						          borderWidth: 0
+						       }
+						    };  
+						    var credits = {
+						       enabled: false
+						    };
+						    var series= [
+						       {
+						          name: 'Number of examinations',
+						          data: quarter
+						       }, 
+						    ];     
+						 
+						    var json = {};   
+						    json.chart = chart; 
+						    json.title = title;    
+						    json.tooltip = tooltip;
+						    json.xAxis = xAxis;
+						    json.yAxis = yAxis;  
+						    json.series = series;
+						    json.plotOptions = plotOptions;  
+						    json.credits = credits;
+						    $('#container6').highcharts(json);
+						}
 	},
 	created() {
 		axios
@@ -204,37 +599,31 @@ var app = new Vue({
 	     })
 	     .then(response => {
 	     	this.admin = response.data
-	     })
-	     axios
-			.get('/api/pharmacyAdmin/getPharmacy',{
-				  headers: {
-					    'Authorization': "Bearer " + localStorage.getItem('access_token')
-				  }
-		     })
+	     	axios
+			.get('/api/pharmacy/getReportByYear',
+					{
+				params:{
+					year: 2021
+				},
+			headers: {
+			    'Authorization': "Bearer " + localStorage.getItem('access_token')
+			  }
+		
+	})
 		     .then(response => {
-		    	 this.pharmacyId = response.data
-		    	 axios
-					.get('/api/medicine/findAllMedicineInPharmacy',
-							{
-							headers: {
-							    'Authorization': "Bearer " + localStorage.getItem('access_token')
-							  }
-						
-					})
-					.then(response => {
-						this.medicine = response.data
-						axios
-						.get('/api/medicine/findAllMedicine',
-								{
-								headers: {
-								    'Authorization': "Bearer " + localStorage.getItem('access_token')
-								  }
-							
-						})
-						.then(response => {
-							this.newMedication = response.data
-						})
-					})
-		     })	    
+		    	 this.grades = response.data
+		    	 console.log(this.grades.percentageOfGrades)
+		    	 this.funkcija1();
+		    	 this.funkcija2();
+		    	 this.funkcija3();
+		    	 this.funkcija4();
+		    	 this.funkcija5();
+		    	 this.funkcija6();
+		    	 
+		     })
+		    
+	     })
+	     
 	}
 })
+
