@@ -30,7 +30,7 @@ INSERT INTO pharmacyAdmin (id, username, password, first_name, last_name, email,
 INSERT INTO pharmacyAdmin (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, pharmacy_id, gender, address_id) VALUES (11,'ana', '$2a$10$2affw9vkXuEbQOoiKqN2XuVQ1sVZLQ6XBRAZ1IHeCT6W8.qJOXkhe', 'Ana', 'Mikic', 'apoteka.isa2021+ana@gmail.com', true, '2017-10-01 18:57:58.508-07',2, 0, 7);
 INSERT INTO pharmacyAdmin (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, pharmacy_id, gender, address_id) VALUES (12,'adam', '$2a$10$2affw9vkXuEbQOoiKqN2XuVQ1sVZLQ6XBRAZ1IHeCT6W8.qJOXkhe', 'Adam', 'Adamovic', 'apoteka.isa2021+adam@gmail.com', true, '2017-10-01 18:57:58.508-07',3, 1, 8);
 INSERT INTO patient (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, gender, address_id) VALUES (13,'pacijent1', '$2a$10$2affw9vkXuEbQOoiKqN2XuVQ1sVZLQ6XBRAZ1IHeCT6W8.qJOXkhe', 'Milena', 'Vracar', 'apoteka.isa2021+m@gmail.com', true, '2017-10-01 18:57:58.508-07', 0, 8);
-INSERT INTO patient (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, gender) VALUES (14,'pacijent2', '$2a$10$2affw9vkXuEbQOoiKqN2XuVQ1sVZLQ6XBRAZ1IHeCT6W8.qJOXkhe', 'Matija', 'Vracar', 'apoteka.isa2021+matija@gmail.com', true, '2017-10-01 18:57:58.508-07', 1);
+INSERT INTO patient (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, gender) VALUES (14,'pacijent2', '$2a$10$2affw9vkXuEbQOoiKqN2XuVQ1sVZLQ6XBRAZ1IHeCT6W8.qJOXkhe', 'Matija', 'Vracar', 'pacijent@gmail.com', true, '2017-10-01 18:57:58.508-07', 1);
 INSERT INTO patient (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, gender) VALUES (15,'pacijent3', '$2a$10$2affw9vkXuEbQOoiKqN2XuVQ1sVZLQ6XBRAZ1IHeCT6W8.qJOXkhe', 'Marjan', 'Vracar', 'apoteka.isa2021+marjan@gmail.com', true, '2017-10-01 18:57:58.508-07', 1);
 INSERT INTO patient (id, username, password, first_name, last_name, email, address_id, enabled, last_password_reset_date, gender) VALUES (16,'pacijent123', '$2a$10$2affw9vkXuEbQOoiKqN2XuVQ1sVZLQ6XBRAZ1IHeCT6W8.qJOXkhe', 'Gojko', 'Marinkovic', 'apoteka.isa2021+m@gmail.com', 6, true, '2017-10-01 18:57:58.508-07', 1);
 
@@ -177,8 +177,8 @@ insert into medicine_price(id, end_of_price, price, start_of_price, medicine_id,
 insert into medicine_price(id, end_of_price, price, start_of_price, medicine_id, pharmacy_id) values (102, '20210216 08:00:00 PM',400, '20210215 10:00:00 AM', 2, 2);
 insert into medicine_price(id, end_of_price, price, start_of_price, medicine_id, pharmacy_id) values (103, '20210216 08:00:00 PM',400, '20210215 10:00:00 AM', 2, 3);
 insert into medicine_price(id, end_of_price, price, start_of_price, medicine_id, pharmacy_id) values (104, '20210216 08:00:00 PM',400, '20210215 10:00:00 AM', 3, 3);
-insert into medicine_price(id, end_of_price, price, start_of_price, medicine_id, pharmacy_id) values (103, '20210216 08:00:00 PM',400, '20210215 10:00:00 AM', 2, 4);
-insert into medicine_price(id, end_of_price, price, start_of_price, medicine_id, pharmacy_id) values (104, '20210216 08:00:00 PM',400, '20210215 10:00:00 AM', 3, 4);
+insert into medicine_price(id, end_of_price, price, start_of_price, medicine_id, pharmacy_id) values (105, '20210216 08:00:00 PM',400, '20210215 10:00:00 AM', 2, 4);
+insert into medicine_price(id, end_of_price, price, start_of_price, medicine_id, pharmacy_id) values (106, '20210216 08:00:00 PM',400, '20210215 10:00:00 AM', 3, 4);
 
 
 INSERT INTO supplier (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, gender, address_id) VALUES (25, 'admin8', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', 'Strahinja', 'Nikolic', 'apoteka.isa2021+strn@gmail.com', true, '2017-10-01 18:57:58.508-07', 1, 7);

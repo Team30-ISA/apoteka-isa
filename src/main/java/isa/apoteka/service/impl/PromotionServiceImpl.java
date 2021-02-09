@@ -1,6 +1,10 @@
 package isa.apoteka.service.impl;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
+import isa.apoteka.domain.Pharmacy;
+import isa.apoteka.repository.PharmacyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -28,6 +32,9 @@ public class PromotionServiceImpl implements PromotionService{
 		this.promotionRepository = promotionRepository;
 	}
 
+	@Autowired
+	private PharmacyRepository pharmacyRepository;
+
 	@Transactional(readOnly = false)
 	public Promotion saveAndSendNotification(Promotion promotion) {
 		Promotion newPromotion = promotionRepository.save(promotion);
@@ -54,9 +61,20 @@ public class PromotionServiceImpl implements PromotionService{
 
 	@Override
 	@Transactional(readOnly = false)
-	public void subscribe(Long pharmacyId) {
-		Patient patient = (Patient) SecurityContextHolder.getContext().getAuthentication().getPrincipal();	
-		promotionRepository.newSubscription(patient.getId(), pharmacyId);
-		
+	public void subscribe(Long pharmacyId) throws Exception {
+		Patient patient = (Patient) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Pharmacy pharmacy = pharmacyRepository.getOne(pharmacyId);
+		if(pharmacy.getPatients().stream().filter(p -> p.getId() == patient.getId()).collect(Collectors.toList()).size() > 0)
+			throw new Exception("Already subscribed");
+		pharmacy.getPatients().add(patient);
+		pharmacyRepository.save(pharmacy);
+	}
+
+	@Override
+	public void unsubscribe(Long pharmacyId) {
+		Patient patient = (Patient) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Pharmacy pharmacy = pharmacyRepository.getOne(pharmacyId);
+		pharmacy.setPatients(pharmacy.getPatients().stream().filter(p -> p.getId() != patient.getId()).collect(Collectors.toList()));
+		pharmacyRepository.save(pharmacy);
 	}
 }
