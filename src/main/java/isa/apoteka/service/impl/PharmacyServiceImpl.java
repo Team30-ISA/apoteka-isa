@@ -10,6 +10,7 @@ import isa.apoteka.domain.Medicine;
 import isa.apoteka.domain.MedicineDisplay;
 import isa.apoteka.domain.Pharmacist;
 import isa.apoteka.domain.Pharmacy;
+import isa.apoteka.dto.PharmacyDTO;
 import isa.apoteka.repository.PharmacyRepository;
 import isa.apoteka.service.PharmacyService;
 
@@ -73,5 +74,11 @@ public class PharmacyServiceImpl implements PharmacyService{
 	@Override
 	public Pharmacy findById(Long id) {
 		return pharmacyRepository.findById(id).orElse(null);
+	}
+
+	@Override
+	public void update(PharmacyDTO pharmacyDTO) {
+		pharmacyRepository.update(pharmacyDTO.getId(),pharmacyDTO.getName(),pharmacyDTO.getAddress(),pharmacyDTO.getCity(),pharmacyDTO.getDescription());
+		
 	}
 }

@@ -24,10 +24,13 @@ public class Pharmacy {
 	private Long id;
 
 	@Column(unique = true, nullable = false)
-	String name;
+	private String name;
 	
-	@ManyToOne
-	Address address;
+	private String street;
+	
+	private String city;
+	
+	private String description;
 	
 	@JsonIgnore
 	@ManyToMany(fetch = FetchType.LAZY)
@@ -59,13 +62,15 @@ public class Pharmacy {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Pharmacy(Long id, String name, Address address, List<Dermatologist> dermatologists, List<Patient> patients,
-			List<MedicineInPharmacy> medicineInpharmacy, List<Pharmacist> pharmacists,
-			List<PharmacyAdmin> pharmacyAdmins, List<Promotion> promotions) {
+	public Pharmacy(Long id, String name, String street, String city, String description,
+			List<Dermatologist> dermatologists, List<Patient> patients, List<MedicineInPharmacy> medicineInpharmacy,
+			List<Pharmacist> pharmacists, List<PharmacyAdmin> pharmacyAdmins, List<Promotion> promotions) {
 		super();
 		this.id = id;
 		this.name = name;
-		this.address = address;
+		this.street = street;
+		this.city = city;
+		this.description = description;
 		this.dermatologists = dermatologists;
 		this.patients = patients;
 		this.medicineInpharmacy = medicineInpharmacy;
@@ -90,12 +95,28 @@ public class Pharmacy {
 		this.name = name;
 	}
 
-	public Address getAddress() {
-		return address;
+	public String getStreet() {
+		return street;
 	}
 
-	public void setAddress(Address address) {
-		this.address = address;
+	public void setStreet(String street) {
+		this.street = street;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public List<Dermatologist> getDermatologists() {
@@ -146,5 +167,6 @@ public class Pharmacy {
 		this.promotions = promotions;
 	}
 
+	
 	
 }

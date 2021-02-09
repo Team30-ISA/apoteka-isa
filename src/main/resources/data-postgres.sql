@@ -12,10 +12,10 @@ INSERT INTO Address (id, street, city_id) VALUES (7, 'Zetska 10', 1);
 INSERT INTO Address (id, street, city_id) VALUES (8, 'Bulevar oslobodjenja 52', 2);
 INSERT INTO Address (id, street, city_id) VALUES (9, 'Brace Ribnikara 65', 2);
 
-insert into pharmacy (name, address_id) values ('Helenina Apoteka',6);
-insert into pharmacy (name, address_id) values ('Nikolina Apoteka', 8);
-insert into pharmacy (name, address_id) values ('Milanova Apoteka', 8);
-insert into pharmacy (name, address_id) values ('Aleksandrova Apoteka', 9);
+insert into pharmacy (name, street, city, description) values ('Helenina Apoteka','Beogradski put 24','Subotica', 'Helenina Apoteka je apoteka koju odlikuje nov i moderan pristup u sprovođenju farmaceutske usluge u oblasti medicinske zaštite i prevencije. ');
+insert into pharmacy (name, street, city, description) values ('Nikolina Apoteka','Zetska 10', 'Subotica', 'Helenina Apoteka je apoteka koju odlikuje nov i moderan pristup u sprovođenju farmaceutske usluge u oblasti medicinske zaštite i prevencije. ');
+insert into pharmacy (name, street, city, description) values ('Milanova Apoteka','Lasla Gala 22','Novi Sad', 'Helenina Apoteka je apoteka koju odlikuje nov i moderan pristup u sprovođenju farmaceutske usluge u oblasti medicinske zaštite i prevencije. ');
+insert into pharmacy (name, street, city, description) values ('Aleksandrova Apoteka' ,'Cirpanova 34', 'Novi Sad', 'Helenina Apoteka je apoteka koju odlikuje nov i moderan pristup u sprovođenju farmaceutske usluge u oblasti medicinske zaštite i prevencije.');
 
 
 INSERT INTO dermatologist (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, gender, address_id) VALUES (3, 'ale', '$2a$10$2affw9vkXuEbQOoiKqN2XuVQ1sVZLQ6XBRAZ1IHeCT6W8.qJOXkhe', 'Aleksandra', 'Gojkovic', 'apoteka.isa2021+ale@gmail.com', true, '2017-10-01 18:57:58.508-07', 0, 6);
@@ -136,7 +136,6 @@ insert into counseling (start_date, duration, dermatologist_work_calendar_id, pr
 insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, patient_id) VALUES ('20210220 11:12:00 AM', 20, 3, 500.00, 13);
 
 insert into promotion_notification (patient_id, pharmacy_id) values (13, 1);
-insert into promotion_notification (patient_id, pharmacy_id) values (14, 2);
 insert into promotion_notification (patient_id, pharmacy_id) values (15, 3);
 
 insert into pharmacist_work_calendar (pharmacist_id, pharmacy_id, start_date, end_date) VALUES (4, 1, '20210215 10:00:00 AM', '20210215 08:00:00 PM');

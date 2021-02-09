@@ -56,6 +56,7 @@ public class MedicineInPharmacyServiceImpl implements MedicineInPharmacyService{
 
 	@Override
 	public List<MedicineInPharmacy> getAvailableMedicineInPharmacy(Long id) {
+		System.out.println(id);
 		return medInPharmacyRepository.getAvailableMedicineInPharmacy(id);
 	}
 

@@ -1,12 +1,18 @@
 package isa.apoteka.dto;
 
+import javax.validation.constraints.Size;
+
 import isa.apoteka.domain.Pharmacy;
 
 public class PharmacyDTO {
 	private Long id;
+	@Size(min=2, max=50, message="Name has to have at least 2 characters.")
 	private String name;
+	@Size(min=2, max=50, message="Address has to have at least 2 characters.")
 	private String address;
+	@Size(min=2, max=50, message="City has to have at least 2 characters.")
 	private String city;
+	private String description;
 
 	public PharmacyDTO() {
 		
@@ -15,17 +21,18 @@ public class PharmacyDTO {
 
 	
 	public PharmacyDTO(Pharmacy pharmacy) {
-		this(pharmacy.getId(), pharmacy.getName(), pharmacy.getAddress().getStreet(), pharmacy.getAddress().getCity().getCity());
+		this(pharmacy.getId(), pharmacy.getName(), pharmacy.getStreet(), pharmacy.getCity(), pharmacy.getDescription());
 	}
 
 
 
-	public PharmacyDTO(Long id, String name, String address, String city) {
+	public PharmacyDTO(Long id, String name, String address, String city, String description) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.address = address;
 		this.city = city;
+		this.description = description;
 	}
 
 
@@ -74,6 +81,18 @@ public class PharmacyDTO {
 
 	public void setCity(String city) {
 		this.city = city;
+	}
+
+
+
+	public String getDescription() {
+		return description;
+	}
+
+
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	

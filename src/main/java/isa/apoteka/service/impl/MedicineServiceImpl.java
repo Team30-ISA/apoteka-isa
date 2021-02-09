@@ -146,16 +146,16 @@ public class MedicineServiceImpl implements MedicineService {
 	}
 
 	@Override
-	public List<MedicineDTO> findAllMedicineAvailableInPharmacy() {
+	public List<MedicineDTO> findAllMedicineAvailableInPharmacy(Long pharmacyId) {
 		List<MedicineDTO> dto = new ArrayList<MedicineDTO>();
-		PharmacyAdmin admin = (PharmacyAdmin) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		List<MedicineInPharmacy> medicineInPharmacy = medInPharmacyService.getAvailableMedicineInPharmacy(admin.getPharmacy().getId());
-		
+		List<MedicineInPharmacy> medicineInPharmacy = medInPharmacyService.getAvailableMedicineInPharmacy(pharmacyId);
+		System.out.println("*****************");
+		System.out.println(medicineInPharmacy.size());
 		for(MedicineInPharmacy m : medicineInPharmacy) { 			
 			Long medId = m.getMedicine().getId();
 			String name = m.getMedicine().getName();
 			int quantity = m.getQuantity();
-			MedicinePrice medPrice = medPriceService.findMedicinePrice(admin.getPharmacy().getId(), medId);
+			MedicinePrice medPrice = medPriceService.findMedicinePrice(pharmacyId, medId);
 			int price;
 			if(medPrice.getPrice() == null) {
 				price = 0;

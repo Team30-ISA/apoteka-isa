@@ -18,7 +18,10 @@ var app = new Vue({
 		grad: null,
 		pharms: [],
 		derms: [],
-		medicine: []
+		medicine: [],
+		pharmacyId: null,
+		role: null,
+		patient: null
 	},
 	methods: {
 		logout(){
@@ -83,13 +86,14 @@ var app = new Vue({
 				this.changeData = false;
 				if(this.admin.firstName != "" && this.admin.lastName != "" && this.admin.address != ""){
 		     	axios
-		        .post('/api/pharmacyAdmin/save',
+		        .post('/api/pharmacy/save',
 		        	
 		        	{
-		        		firstName: this.admin.firstName,
-		        		lastName: this.admin.lastName,
-		        		street: this.admin.address.street,
-		        		cityId: this.selectedCity.id
+		        		id: this.pharmacy.id,
+		        		name: this.pharmacy.name,
+		        		address: this.pharmacy.address,
+		        		city: this.pharmacy.city,
+		        		description:this.pharmacy.description
 		            },{
 		        	
 		    		headers: {
@@ -99,33 +103,23 @@ var app = new Vue({
 					  
 		        })
 		        .then(response => {
-	        		JSAlert.alert("You have successfully updated your profile!");
-	        		axios
-	        		.get('/api/pharmacyAdmin/getLoggedUser',{
-	        			  headers: {
-	        				    'Authorization': "Bearer " + localStorage.getItem('access_token')
-	        			  }
-	        	     })
-	        	     .then(response => {
-	        	     	this.admin = response.data
-	        	     })
+	        		JSAlert.alert("You have successfully updated pharmacy profile!");
+	        		window.location.href = '/pharmacy.html';
 		            
 		        })
 		        .catch(error => {
-		            console.log(error)
 		            if (error.response.status == 401 || error.response.status == 400 || error.response.status == 500) {
-		                JSAlert.alert("Fields cannot be empty. Please try again.");
+		                JSAlert.alert(error.response.data.errors[0].defaultMessage);
 		                axios
-		        		.get('/api/pharmacyAdmin/getLoggedUser',{
-		        			  headers: {
+		        		.get('/api/pharmacy/findPharmacyForAdmin',
+		        				{
+		        				headers: {
 		        				    'Authorization': "Bearer " + localStorage.getItem('access_token')
-		        			  }
-		        	     })
-		        	     .then(response => {
-		        	     	this.admin = response.data
-		        	     })
-		            } 
-		            
+		        				  }       			
+		        		})
+		        		.then(response => {
+		        			this.pharmacy = response.data})
+		            }		            
 		        })
 				}else{
 					JSAlert.alert("Fields cannot be empty. Please try again.");
@@ -148,14 +142,14 @@ var app = new Vue({
 		discardDataCh(){
 			this.changeData = false;
 			axios
-			.get('/api/pharmacyAdmin/getLoggedUser',{
-				  headers: {
-					    'Authorization': "Bearer " + localStorage.getItem('access_token')
-				  }
-		     })
-		     .then(response => {
-		     	this.admin = response.data
-		     })
+    		.get('/api/pharmacy/findPharmacyForAdmin',
+    				{
+    				headers: {
+    				    'Authorization': "Bearer " + localStorage.getItem('access_token')
+    				  }       			
+    		})
+    		.then(response => {
+    			this.pharmacy = response.data})
 		},
 		findCity(){
 			console.log
@@ -173,14 +167,104 @@ var app = new Vue({
 	     	this.cities = response.data	
 	     })
 		},
-		init(){ 
-		    this.myMap = new ymaps.Map("map", {
-		        center: [this.first[1],this.first[0]],
-		        zoom: 15
-		    });
+		
+		 fun(){
+		     	
+		    	console.log(this.pharmacy.address)
+				console.log(this.pharmacy.city)
+				this.ulica = this.pharmacy.address.replace(/\s/g, '+');
+				this.grad = this.pharmacy.city.replace(/\s/g, '+');
+				console.log(this.ulica)
+				console.log(this.ulica)
+				
+				axios
+				.get("https://geocode-maps.yandex.ru/1.x/?format=json&apikey=3399ed0d-4b2b-455e-aedb-bdf2f1619fc7&lang=sr_Latn_RS&geocode="+this.grad+"+"+this.ulica)
+				 .then(response => {
+				 	console.log(response.data)
+				 	console.log(this.coords = response.data.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos)
+				 	console.log(this.first = this.coords.split(" "))
+				 	console.log();
+				 	 
+				 })
+				ymaps.ready(this.init);
+				console.log(this.pharmacy.id)
+				axios
+				.get('/api/pharmacy/findAllPharmsInPharmacy',
+						{
+							params:{
+								id: this.pharmacy.id
+							},
+							headers: {
+							    'Authorization': "Bearer " + localStorage.getItem('access_token')
+							  }
+					
+				})
+				.then(response => {
+					this.pharms = response.data
+					axios
+					.get('/api/pharmacy/findAllDermsInPharmacy',
+							{
+								params:{
+									id: this.pharmacy.id
+								}
+						
+					})
+					.then(response => {
+						this.derms = response.data;
+						axios
+						.get('/api/medicine/findAllMedicineAvailableInPharmacy',
+								{
+							params:{
+								pharmacyId: this.pharmacy.id
+							}
+					
+						})
+						.then(response => {
+							this.medicine = response.data})
+					})
+				})
+		 },
+		 init(){ 
+			    this.myMap = new ymaps.Map("map", {
+			        center: [this.first[1],this.first[0]],
+			        zoom: 15
+			    });
+			    
+			    
+			    
+			    this.myMap.geoObjects
+		        .add(new ymaps.Placemark([this.first[1],this.first[0]], {
+		            balloonContent: 'the color of <strong>the water on Bondi Beach</strong>'
+		        }, {
+		            preset: 'islands#icon',
+		            iconColor: '#0095b6'
+		        }));
+		        
+			 },
+		 /*
+		 subscribe(){
+			 JSAlert.confirm("Are you sure you want to subscribe?").then(function(result) {
+	     		    if (!result)
+	     		        return;
+	     		   axios
+			        .get('/api/promotion/subscribe',{
+							params:{
+								pharmacyId: this.pharmacyId
+							},
+						headers: {
+						    'Authorization': "Bearer " + localStorage.getItem('access_token')
+						  }
+				
+			        })
+			        .then(response => {});
+				 
+			 });
 		 }
+		 
+			 */
 	},
 	created() {
+		
 		axios
         .get('/auth/getRole',{
 			  headers: {
@@ -188,89 +272,78 @@ var app = new Vue({
 			  }
         })
         .then(response => {
-        	if(response.data != "ADMIN"){
-        		window.location.href = '/login.html';
+        	this.role = response.data;
+        	if(this.role == "ADMIN"){
+        		axios
+        		.get('/api/pharmacy/findPharmacyForAdmin',
+        				{
+        				headers: {
+        				    'Authorization': "Bearer " + localStorage.getItem('access_token')
+        				  }       			
+        		})
+        		.then(response => {
+        			this.pharmacy = response.data
+        			axios
+        			.get('/api/pharmacyAdmin/getLoggedUser',{
+        				  headers: {
+        					    'Authorization': "Bearer " + localStorage.getItem('access_token')
+        				  }
+        		     })
+        		     .then(response => {
+        		     	this.admin = response.data;
+        		     	 this.fun();
+        		     })
+        		     	
+        		})
+        	}else if(this.role == "PATIENT"){ 
+        		let url = new URL(window.location.href);
+            	this.pharmacyId = url.searchParams.get("id");
+            	console.log(this.pharmacyId)
+        		axios
+        		.get('/api/pharmacy/findById',
+						{
+							params:{
+								pharmacyId: this.pharmacyId
+							}
+					
+				})
+    	        .then(response => {
+    	        	this.pharmacy = response.data;
+    	        	axios
+        			.get('/api/patient/getLoggedUser',{
+        				  headers: {
+        					    'Authorization': "Bearer " + localStorage.getItem('access_token')
+        				  }
+        		     })
+        		     .then(response => {
+        		     	this.patient = response.data;
+        		     	 this.fun();
+        		     })
+    	        })
         	}
-        })
-        .catch(function() {
-        	window.location.href = '/login.html';
-	    })
-		axios
-		.get('/api/pharmacyAdmin/getLoggedUser',{
-			  headers: {
-				    'Authorization': "Bearer " + localStorage.getItem('access_token')
-			  }
-	     })
-	     .then(response => {
-	     	this.admin = response.data;
-	     	this.selC = this.admin.address.city.country.country;
-	     })
-	     axios
-		.get('/api/pharmacy/findPharmacyForAdmin',
-				{
-				headers: {
-				    'Authorization': "Bearer " + localStorage.getItem('access_token')
-				  }
-			
-		})
-		.then(response => {
-			this.pharmacy = response.data
-			console.log(this.pharmacy.address)
-			console.log(this.pharmacy.city)
-			this.ulica = this.pharmacy.address.replace(/\s/g, '+');
-			this.grad = this.pharmacy.city.replace(/\s/g, '+');
-			console.log(this.ulica)
-			console.log(this.ulica)
-			axios
-			.get("https://geocode-maps.yandex.ru/1.x/?format=json&apikey=3399ed0d-4b2b-455e-aedb-bdf2f1619fc7&lang=sr_Latn_RS&geocode=Subotica+Zetska")
-			 .then(response => {
-			 	console.log(response.data)
-			 	console.log(this.coords = response.data.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos)
-			 	console.log(this.first = this.coords.split(" "))
-			 	console.log();
-			 	 
-			 })
-			ymaps.ready(this.init);
-			axios
-			.get('/api/pharmacy/findAllPharmsInPharmacy',
+        	
+        	
+        }).catch(error => {
+        	let url = new URL(window.location.href);
+        	this.pharmacyId = url.searchParams.get("id");
+        	console.log(this.pharmacyId)
+    		axios
+    		.get('/api/pharmacy/findById',
 					{
 						params:{
-							id: this.pharmacy.id
+							pharmacyId: this.pharmacyId
 						},
 					headers: {
 					    'Authorization': "Bearer " + localStorage.getItem('access_token')
 					  }
 				
 			})
-			.then(response => {
-				this.pharms = response.data
-				axios
-				.get('/api/pharmacy/findAllDermsInPharmacy',
-						{
-							params:{
-								id: this.pharmacy.id
-							},
-						headers: {
-						    'Authorization': "Bearer " + localStorage.getItem('access_token')
-						  }
-					
-				})
-				.then(response => {
-					this.derms = response.data;
-					axios
-					.get('/api/medicine/findAllMedicineAvailableInPharmacy',
-							{
-								
-							headers: {
-							    'Authorization': "Bearer " + localStorage.getItem('access_token')
-							  }
-						
-					})
-					.then(response => {
-						this.medicine = response.data})
-				})
-			})
-		})
+	        .then(response => {
+	        	this.pharmacy = response.data;
+	        	 this.fun();
+	        })
+            
+        })	     
 		
 	}
 })

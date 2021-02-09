@@ -17,5 +17,5 @@ public interface MedicineService {
 	List<MedicineNameDTO> findAllMedicineNotInPharmacy();
 	List<MedicineDTO> searchMedicineInPharmacy(String name);
 	List<MedicineNameDTO> findAllMedicine();
-	List<MedicineDTO> findAllMedicineAvailableInPharmacy();
+	List<MedicineDTO> findAllMedicineAvailableInPharmacy(Long pharmacyId);
 }
