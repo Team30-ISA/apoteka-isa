@@ -31,6 +31,7 @@ import isa.apoteka.dto.ChangeDataDTO;
 import isa.apoteka.dto.DermatologistDTO;
 import isa.apoteka.dto.PharmacistDTO;
 import isa.apoteka.dto.PharmacyDTO;
+import isa.apoteka.service.PharmacyGradeService;
 import isa.apoteka.service.PharmacyService;
 
 
@@ -40,6 +41,9 @@ public class PharmacyController {
 	
 	@Autowired
 	private PharmacyService pharmacyService;
+	
+	@Autowired
+	private PharmacyGradeService pharmacyGradeService;
 	
 	@GetMapping(value = "/findAll")
 	public ResponseEntity<List<PharmacyDTO>> getAllPharmacies() {
@@ -69,9 +73,15 @@ public class PharmacyController {
 	public ResponseEntity<PharmacyDTO> findPharmacyForAdmin() {
 		PharmacyAdmin admin = (PharmacyAdmin) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		Pharmacy pharmacy = pharmacyService.findById(admin.getPharmacy().getId());
-
-		// convert students to DTOs
-		PharmacyDTO pharmacyDTO = new PharmacyDTO(pharmacy);
+		
+		double grade = pharmacyGradeService.findGradeForPharmacy(pharmacy.getId());
+		PharmacyDTO pharmacyDTO = new PharmacyDTO();
+		pharmacyDTO.setAddress(pharmacy.getStreet());
+		pharmacyDTO.setCity(pharmacy.getCity());
+		pharmacyDTO.setDescription(pharmacy.getDescription());
+		pharmacyDTO.setGrade(grade);
+		pharmacyDTO.setId(pharmacy.getId());
+		pharmacyDTO.setName(pharmacy.getName());
 		return new ResponseEntity<>(pharmacyDTO, HttpStatus.OK);
 	}
 	
@@ -173,7 +183,14 @@ public class PharmacyController {
 	public  ResponseEntity<PharmacyDTO> findPharmacyById(@RequestParam Long pharmacyId) {
 		Pharmacy pharmacy = pharmacyService.findById(pharmacyId);
 		// convert students to DTOs
-		PharmacyDTO pharmacyDTO = new PharmacyDTO(pharmacy);
+		double grade = pharmacyGradeService.findGradeForPharmacy(pharmacy.getId());
+		PharmacyDTO pharmacyDTO = new PharmacyDTO();
+		pharmacyDTO.setAddress(pharmacy.getStreet());
+		pharmacyDTO.setCity(pharmacy.getCity());
+		pharmacyDTO.setDescription(pharmacy.getDescription());
+		pharmacyDTO.setGrade(grade);
+		pharmacyDTO.setId(pharmacy.getId());
+		pharmacyDTO.setName(pharmacy.getName());
 		return new ResponseEntity<>(pharmacyDTO, HttpStatus.OK);
 		
 	}

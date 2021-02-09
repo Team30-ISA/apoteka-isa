@@ -212,6 +212,7 @@
 						<h5 style="text-align:left ;color: #0c2e8a;">O NAŠOJ APOTECI</h5>
 						<textarea type="text" v-model="pharmacy.description" :class="[changeData ? 'txtEnabled' : 'txtDisabled']"  :disabled="!changeData" style="width:90%; height:100px; margin-left:0%; margin-bottom:2rem">
 						</textarea>
+						<h6 style="text-align:left ;color: #0c2e8a;">Prosečna ocena: {{pharmacy.grade}}</h6>
 						<h5 style="color: #0c2e8a;">Naši farmaceuti:</h5>
 						<table style="width: 50%;  margin-bottom:2rem">
 									<tr v-for="pharm in pharms">

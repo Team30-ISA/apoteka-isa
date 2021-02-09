@@ -168,7 +168,10 @@ insert into pharmacist_grade (id, grade, pharmacist_id, patient_id) values (4, 3
 insert into medicine_price(id, end_of_price, price, start_of_price, medicine_id, pharmacy_id) values (100, '20210216 08:00:00 PM',200, '20210215 10:00:00 AM', 1, 2);
 insert into medicine_price(id, end_of_price, price, start_of_price, medicine_id, pharmacy_id) values (101, '20210216 08:00:00 PM',300, '20210215 10:00:00 AM', 2, 1);
 insert into medicine_price(id, end_of_price, price, start_of_price, medicine_id, pharmacy_id) values (102, '20210216 08:00:00 PM',400, '20210215 10:00:00 AM', 2, 2);
-
+insert into medicine_price(id, end_of_price, price, start_of_price, medicine_id, pharmacy_id) values (103, '20210216 08:00:00 PM',400, '20210215 10:00:00 AM', 2, 3);
+insert into medicine_price(id, end_of_price, price, start_of_price, medicine_id, pharmacy_id) values (104, '20210216 08:00:00 PM',400, '20210215 10:00:00 AM', 3, 3);
+insert into medicine_price(id, end_of_price, price, start_of_price, medicine_id, pharmacy_id) values (103, '20210216 08:00:00 PM',400, '20210215 10:00:00 AM', 2, 4);
+insert into medicine_price(id, end_of_price, price, start_of_price, medicine_id, pharmacy_id) values (104, '20210216 08:00:00 PM',400, '20210215 10:00:00 AM', 3, 4);
 
 INSERT INTO supplier (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, gender, address_id) VALUES (25, 'admin8', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', 'Strahinja', 'Nikolic', 'apoteka.isa2021+strn@gmail.com', true, '2017-10-01 18:57:58.508-07', 1, 7);
 INSERT INTO supplier (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, gender, address_id) VALUES (26, 'admin8', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', 'Ana', 'Nikolic', 'apoteka.isa2021+stra@gmail.com', true, '2017-10-01 18:57:58.508-07', 1, 7);
@@ -194,3 +197,14 @@ insert into offer (id, price, supply_deadline, errand_id, supplier_id, is_approv
 
 insert into dermatologist_holiday(start_date, end_date, dermatologist_id, status) values ('20210214 12:00:00 AM','20210216 12:00:00 PM',5, 2);
 insert into pharmacist_holiday(start_date, end_date, pharmacist_id, status) values ('20210210 12:00:00 AM','20210213 12:00:00 PM',4, 2);
+
+
+
+insert into pharmacy_grade (id, grade, pharmacy_id, patient_id) values (1, 1, 1, 13);
+insert into pharmacy_grade (id, grade, pharmacy_id, patient_id) values (2, 3, 1, 13);
+insert into pharmacy_grade (id, grade, pharmacy_id, patient_id) values (3, 5, 2, 13);
+insert into pharmacy_grade (id, grade, pharmacy_id, patient_id) values (4, 1, 2, 13);
+insert into pharmacy_grade (id, grade, pharmacy_id, patient_id) values (5, 2, 3, 13);
+insert into pharmacy_grade (id, grade, pharmacy_id, patient_id) values (6, 4, 3, 13);
+insert into pharmacy_grade (id, grade, pharmacy_id, patient_id) values (7, 5, 4, 13);
+insert into pharmacy_grade (id, grade, pharmacy_id, patient_id) values (8, 1, 4, 13);

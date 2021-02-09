@@ -13,6 +13,7 @@ public class PharmacyDTO {
 	@Size(min=2, max=50, message="City has to have at least 2 characters.")
 	private String city;
 	private String description;
+	private double grade;
 
 	public PharmacyDTO() {
 		
@@ -33,6 +34,16 @@ public class PharmacyDTO {
 		this.address = address;
 		this.city = city;
 		this.description = description;
+	}
+	
+	public PharmacyDTO(Long id, String name, String address, String city, String description, double grade) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.address = address;
+		this.city = city;
+		this.description = description;
+		this.grade = grade;
 	}
 
 
@@ -93,6 +104,18 @@ public class PharmacyDTO {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+
+
+	public double getGrade() {
+		return grade;
+	}
+
+
+
+	public void setGrade(double grade) {
+		this.grade = grade;
 	}
 
 	
