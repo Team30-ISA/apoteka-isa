@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -56,6 +57,16 @@ public class PharmacyController {
 		}
 
 		return new ResponseEntity<>(pharmacyDTO, HttpStatus.OK);
+	}
+
+	@PostMapping
+	@PreAuthorize("hasRole('SYS_ADMIN')")
+	public ResponseEntity<?> createPharmacy(@RequestBody PharmacyDTO pharmacyDTO) {
+		try {
+			return new ResponseEntity<>(pharmacyService.create(pharmacyDTO), HttpStatus.CREATED);
+		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
 	}
 
 	@GetMapping(value = "/findByName")
@@ -151,6 +162,16 @@ public class PharmacyController {
 		}
 
 		return new ResponseEntity<>(pharmDTO, HttpStatus.OK);
+	}
+
+	@GetMapping(value = "/{id}/admins")
+	@PreAuthorize("hasRole('SYS_ADMIN')")
+	public ResponseEntity<?> getPharmacyAdminsForPharmacy(@PathVariable(value="id") Long id) {
+		try {
+			return new ResponseEntity<>(pharmacyService.getPharmacyAdminsForPharmacy(id), HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 	}
 	
 	@GetMapping(value = "/searchMedicineInPharmacy")

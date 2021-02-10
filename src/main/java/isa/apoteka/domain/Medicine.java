@@ -16,6 +16,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import isa.apoteka.dto.MedicineCreateDTO;
 
 @Entity
 public class Medicine {
@@ -78,6 +79,17 @@ public class Medicine {
 		this.regime = regime;
 		this.notes = notes;
 		this.medicineInpharmacy = medicineInpharmacy;
+	}
+
+	public Medicine(MedicineCreateDTO medicineDTO, List<Medicine> substitutes, DrugType drugType, DrugForm drugForm) {
+		this.substitutes = substitutes;
+		this.type = drugType;
+		this.form = drugForm;
+		this.name = medicineDTO.getName();
+		this.composition = medicineDTO.getComposition();
+		this.contraindications = medicineDTO.getContraindications();
+		this.recommendedIntakePerDay = medicineDTO.getRecommendedIntakePerDay();
+		this.manufacturer = medicineDTO.getManufacturer();
 	}
 
 

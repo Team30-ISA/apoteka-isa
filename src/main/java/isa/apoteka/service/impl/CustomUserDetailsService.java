@@ -43,10 +43,11 @@ public class CustomUserDetailsService implements UserDetailsService {
 		}
 	}
 
-	public void changePassword(String oldPassword, String newPassword) {
-		User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();;
+	public void changePassword(String oldPassword, String newPassword) throws Exception {
+		User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		if(currentUser == null)
+			throw new Exception("User not found");
 		String email = currentUser.getEmail();
-
 		if (authenticationManager != null) {
 			LOGGER.debug("Re-authenticating user '" + email + "' for password change request.");
 			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, oldPassword));
@@ -58,6 +59,5 @@ public class CustomUserDetailsService implements UserDetailsService {
 		User user = (User) loadUserByUsername(email);
 		user.setPassword(passwordEncoder.encode(newPassword));
 		userRepository.save(user);
-
 	}
 }
