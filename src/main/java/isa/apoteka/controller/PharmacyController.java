@@ -1,13 +1,23 @@
 package isa.apoteka.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,9 +26,12 @@ import isa.apoteka.domain.Dermatologist;
 import isa.apoteka.domain.Medicine;
 import isa.apoteka.domain.Pharmacist;
 import isa.apoteka.domain.Pharmacy;
+import isa.apoteka.domain.PharmacyAdmin;
+import isa.apoteka.dto.ChangeDataDTO;
 import isa.apoteka.dto.DermatologistDTO;
 import isa.apoteka.dto.PharmacistDTO;
 import isa.apoteka.dto.PharmacyDTO;
+import isa.apoteka.service.PharmacyGradeService;
 import isa.apoteka.service.PharmacyService;
 
 
@@ -28,6 +41,9 @@ public class PharmacyController {
 	
 	@Autowired
 	private PharmacyService pharmacyService;
+	
+	@Autowired
+	private PharmacyGradeService pharmacyGradeService;
 	
 	@GetMapping(value = "/findAll")
 	public ResponseEntity<List<PharmacyDTO>> getAllPharmacies() {
@@ -43,6 +59,16 @@ public class PharmacyController {
 		return new ResponseEntity<>(pharmacyDTO, HttpStatus.OK);
 	}
 
+	@PostMapping
+	@PreAuthorize("hasRole('SYS_ADMIN')")
+	public ResponseEntity<?> createPharmacy(@RequestBody PharmacyDTO pharmacyDTO) {
+		try {
+			return new ResponseEntity<>(pharmacyService.create(pharmacyDTO), HttpStatus.CREATED);
+		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+	}
+
 	@GetMapping(value = "/findByName")
 	public ResponseEntity<PharmacyDTO> getPharmacyByName(@RequestParam String name) {
 
@@ -53,8 +79,23 @@ public class PharmacyController {
 		return new ResponseEntity<>(pharmacyDTO, HttpStatus.OK);
 	}
 	
+	@GetMapping(value = "/findPharmacyForAdmin")
+	public ResponseEntity<PharmacyDTO> findPharmacyForAdmin() {
+		PharmacyAdmin admin = (PharmacyAdmin) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Pharmacy pharmacy = pharmacyService.findById(admin.getPharmacy().getId());
+		
+		double grade = pharmacyGradeService.findGradeForPharmacy(pharmacy.getId());
+		PharmacyDTO pharmacyDTO = new PharmacyDTO();
+		pharmacyDTO.setAddress(pharmacy.getStreet());
+		pharmacyDTO.setCity(pharmacy.getCity());
+		pharmacyDTO.setDescription(pharmacy.getDescription());
+		pharmacyDTO.setGrade(grade);
+		pharmacyDTO.setId(pharmacy.getId());
+		pharmacyDTO.setName(pharmacy.getName());
+		return new ResponseEntity<>(pharmacyDTO, HttpStatus.OK);
+	}
+	
 	@GetMapping(value = "/findAllDermsInPharmacy")
-	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<List<DermatologistDTO>> findAllDermsWorkingInPharmacy(@RequestParam Long id) {
 
 		List<Dermatologist> derms = pharmacyService.findAllDermsWorkingInPharmacy(id);
@@ -122,6 +163,16 @@ public class PharmacyController {
 
 		return new ResponseEntity<>(pharmDTO, HttpStatus.OK);
 	}
+
+	@GetMapping(value = "/{id}/admins")
+	@PreAuthorize("hasRole('SYS_ADMIN')")
+	public ResponseEntity<?> getPharmacyAdminsForPharmacy(@PathVariable(value="id") Long id) {
+		try {
+			return new ResponseEntity<>(pharmacyService.getPharmacyAdminsForPharmacy(id), HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+	}
 	
 	@GetMapping(value = "/searchMedicineInPharmacy")
 	@PreAuthorize("hasRole('PATIENT')")
@@ -145,5 +196,31 @@ public class PharmacyController {
 		for (Medicine m : meds) {
 			medsDTO.add(new MedicineDTO(m));
 		}*/
+	}
+	
+	
+	@GetMapping(value = "/findById")
+	public  ResponseEntity<PharmacyDTO> findPharmacyById(@RequestParam Long pharmacyId) {
+		Pharmacy pharmacy = pharmacyService.findById(pharmacyId);
+		// convert students to DTOs
+		double grade = pharmacyGradeService.findGradeForPharmacy(pharmacy.getId());
+		PharmacyDTO pharmacyDTO = new PharmacyDTO();
+		pharmacyDTO.setAddress(pharmacy.getStreet());
+		pharmacyDTO.setCity(pharmacy.getCity());
+		pharmacyDTO.setDescription(pharmacy.getDescription());
+		pharmacyDTO.setGrade(grade);
+		pharmacyDTO.setId(pharmacy.getId());
+		pharmacyDTO.setName(pharmacy.getName());
+		return new ResponseEntity<>(pharmacyDTO, HttpStatus.OK);
+		
+	}
+	
+	@PostMapping(value= "/save", consumes = "application/json")
+	@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<PharmacyDTO> save(@RequestBody @Valid PharmacyDTO pharmacyDTO) {
+		
+		pharmacyService.update(pharmacyDTO);
+		return new ResponseEntity<>(pharmacyDTO, HttpStatus.CREATED);
+		
 	}
 }

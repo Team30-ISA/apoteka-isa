@@ -9,14 +9,11 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import isa.apoteka.dto.PharmacistDTO;
 
 @Entity
 @Table(name="pharmacyadmin")
-public class PharmacyAdmin extends User{
-
-	/**
-	 * 
-	 */
+public class PharmacyAdmin extends User {
 	private static final long serialVersionUID = -2945161513410505916L;
 
 	@JsonIgnore
@@ -36,6 +33,11 @@ public class PharmacyAdmin extends User{
 		super();
 		this.pharmacy = pharmacy;
 	}
+
+    public PharmacyAdmin(PharmacistDTO pharmacyAdminData, Pharmacy pharmacy) {
+		super(pharmacyAdminData);
+		this.pharmacy = pharmacy;
+    }
 
 	public Pharmacy getPharmacy() {
 		return pharmacy;
