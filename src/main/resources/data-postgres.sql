@@ -154,7 +154,7 @@ insert into pharmacist_work_calendar (pharmacist_id, pharmacy_id, start_date, en
 insert into pharmacist_work_calendar (pharmacist_id, pharmacy_id, start_date, end_date) VALUES (4, 1, '20210216 08:00:00 AM', '20210216 08:00:00 PM');
 insert into pharmacist_work_calendar (pharmacist_id, pharmacy_id, start_date, end_date) VALUES (4, 1, '20210217 04:00:00 PM', '20210218 04:00:00 AM');
 insert into pharmacist_work_calendar (pharmacist_id, pharmacy_id, start_date, end_date) VALUES (4, 1, '20210208 08:00:00 AM', '20210208 08:00:00 PM');
-insert into pharmacist_work_calendar (pharmacist_id, pharmacy_id, start_date, end_date) VALUES (4, 1, '20210210 04:00:00 PM', '20210210 04:00:00 AM');
+insert into pharmacist_work_calendar (pharmacist_id, pharmacy_id, start_date, end_date) VALUES (4, 1, '20210210 04:00:00 PM', '20210211 04:00:00 AM');
 
 insert into examination (start_date, duration, pharmacist_work_calendar_id, price, patient_id) VALUES ('20210205 12:35:00 PM', 30, 1, 99.99, 13);
 insert into examination (start_date, duration, pharmacist_work_calendar_id, price, patient_id) VALUES ('20210215 11:05:00 AM', 15, 1, 999.99, 14);
