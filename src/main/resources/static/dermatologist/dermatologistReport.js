@@ -150,10 +150,10 @@ var app = new Vue({
        			  }
                })
                .then(response => {
-               		//if(response.data == false){
-               			//JSAlert.alert("Pacijent nije slobodan!");
-               		//}
-               		//else{
+               		if(response.data == false){
+               			JSAlert.alert("Pacijent nije slobodan!");
+               		}
+               		else{
                			axios
                         .post('/api/counseling/setPatient',
                         		{
@@ -166,9 +166,12 @@ var app = new Vue({
                 			  }
                         })
                         .then(response =>{
+                        	if(response.data == -1){
+                        		JSAlert.alert("Greska, pokusajte kasnije!");
+                        	}
                         	t.getTerms(t.current);
                         })
-               		//}
+               		}
                })
      		    
      		});
