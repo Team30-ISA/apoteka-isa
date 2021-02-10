@@ -49,10 +49,12 @@ public class PharmacyGradeServiceImpl implements PharmacyGradeService{
 			System.out.println(zbir);
 			lista.add(broj.doubleValue());						
 		}
-		for(Double l : lista) {
-			m =( l / zbir)*100;
-			System.out.println(l);
-			gotova.add(m);
+		if(zbir!=0) {
+			for(Double l : lista) {
+				m =( l / zbir)*100;
+				System.out.println(l);
+				gotova.add(m);
+			}
 		}
 		dto.setPercentageOfGrades(gotova);
 		return dto;

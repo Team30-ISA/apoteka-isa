@@ -70,7 +70,7 @@ public class ErrandController {
 		List<ShowErrandDTO> errands = new ArrayList<ShowErrandDTO>();
 		List<Errand> list = errandService.findAllErrands();
 		for(Errand e : list) {
-			if(e.getFinished() == approved) {
+			if(e.getFinished().equals(approved)) {
 				ShowErrandDTO dto = new ShowErrandDTO();
 				List<MedicineForSupplyDTO> medicines = medicineQuantityService.getMedicineForErrand(e.getId());
 				List<SupplierDTO> suppliers = offerService.findAllOffersForErrand(e.getId());
