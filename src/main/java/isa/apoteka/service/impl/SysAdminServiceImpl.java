@@ -46,7 +46,7 @@ public class SysAdminServiceImpl implements SysAdminService {
 
     @Override
     public SystemAdmin update(UserRequest userRequest) throws Exception {
-        if(((User)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId() != userRequest.getId())
+        if(!((User)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId().equals(userRequest.getId()))
             throw new Exception("Unauthorized");
 
         userRequest.updateValidation();

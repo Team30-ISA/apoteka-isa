@@ -2,7 +2,9 @@ package isa.apoteka.domain;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
@@ -15,8 +17,11 @@ public class Dermatologist extends User{
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
-	@ManyToMany(mappedBy = "dermatologists")
+	private static final long serialVersionUID = 2354752262777558267L;
+
+	
+	@JsonIgnore
+	@ManyToMany(mappedBy = "dermatologists",cascade = CascadeType.MERGE)
 	private List<Pharmacy> pharmacies;
 	
 	private int grade;
