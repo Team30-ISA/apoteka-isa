@@ -1,12 +1,17 @@
 package isa.apoteka.repository;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.LockModeType;
+import javax.persistence.QueryHint;
+
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.jpa.repository.QueryHints;
 
 import isa.apoteka.domain.Counseling;
 import isa.apoteka.domain.Dermatologist;
@@ -26,22 +31,18 @@ public interface CounselingRepository extends JpaRepository<Counseling, Long>{
 	List<Counseling> findAllByDermAndStart(Long dermatologistId, Date start);
 	
 	@Modifying
-    @Transactional
     @Query(value = "update counseling set patient_id = ?1 where id = ?2", nativeQuery = true)
     void update(Long patientId, Long counselingId);
 	
 	@Modifying
-    @Transactional
     @Query(value = "update counseling c set patient_id = ?1 where c.id = ?2", nativeQuery = true)
     void makeAppointment(Long patId, Long counsId);
 	
 	@Modifying
-    @Transactional
     @Query(value = "update counseling set report = ?1 where id = ?2", nativeQuery = true)
     void updateReport(String report, Long counselingId);
 	
 	@Modifying
-    @Transactional
     @Query(value = "update counseling c set patient_id = null where c.id = ?1", nativeQuery = true)
     void cancelAppointment(Long counsId);
 	
@@ -58,8 +59,18 @@ public interface CounselingRepository extends JpaRepository<Counseling, Long>{
 	Dermatologist findDermatologistForCounseling(Long counsId);
 	
 	@Modifying
-    @Transactional
 	@Query(value = "insert into counseling (start_date, duration, price, dermatologist_work_calendar_id) values (:start,:duration,:price,:dwcId)", nativeQuery = true)
 	void createCounseling(Date start, int duration, Float price, Long dwcId);
+
+	@Query("from Counseling c join c.dermatologistWorkCalendar.pharmacy p where c.report != null and c.report != '' and c.startDate<= :kraj and c.startDate>= :pocetak and p.id=:id")
+	List<Counseling> finishedCounseling(Long id, Date pocetak, Date kraj);
+
+	@Query("from Counseling c join c.dermatologistWorkCalendar.pharmacy p where c.report != null and c.report != '' and p.id=:id")
+	List<Counseling> allFinishedCounseling(Long id);
+	
+	@Lock(LockModeType.PESSIMISTIC_WRITE)
+	@Query("from Counseling c where c.id=:id")
+	@QueryHints({@QueryHint(name = "javax.persistence.lock.timeout",value = "0")})
+	public Counseling findOneById(Long id);
 	
 }

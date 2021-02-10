@@ -7,6 +7,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import isa.apoteka.domain.User;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -19,40 +20,40 @@ import isa.apoteka.security.TokenUtils;
 //Sem nad putanjama navedenim u WebSecurityConfig.configure(WebSecurity web)
 public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
-	private TokenUtils tokenUtils;
+    private TokenUtils tokenUtils;
 
-	private UserDetailsService userDetailsService;
+    private UserDetailsService userDetailsService;
 
-	public TokenAuthenticationFilter(TokenUtils tokenHelper, UserDetailsService userDetailsService) {
-		this.tokenUtils = tokenHelper;
-		this.userDetailsService = userDetailsService;
-	}
+    public TokenAuthenticationFilter(TokenUtils tokenHelper, UserDetailsService userDetailsService) {
+        this.tokenUtils = tokenHelper;
+        this.userDetailsService = userDetailsService;
+    }
 
-	@Override
-	public void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
-			throws IOException, ServletException {
-		String authToken = tokenUtils.getToken(request);
+    @Override
+    public void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
+            throws IOException, ServletException {
+        String authToken = tokenUtils.getToken(request);
 
-		if (authToken != null) {
-			// uzmi username iz tokena
-			String email = tokenUtils.getEmailFromToken(authToken);
-			
-			if (email != null) {
-				// uzmi user-a na osnovu username-a
-				UserDetails userDetails = userDetailsService.loadUserByUsername(email);
-				
-				// proveri da li je prosledjeni token validan
-				if (tokenUtils.validateToken(authToken, userDetails)) {
-					// kreiraj autentifikaciju
-					TokenBasedAuthentication authentication = new TokenBasedAuthentication(userDetails);
-					authentication.setToken(authToken);
-					SecurityContextHolder.getContext().setAuthentication(authentication);
-				}
-			}
-		}
-		
-		// prosledi request dalje u sledeci filter
-		chain.doFilter(request, response);
-	}
+        if (authToken != null) {
+            String email = tokenUtils.getEmailFromToken(authToken);
+
+            if (email != null) {
+                UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+                User user = (User) userDetails;
+
+                if (tokenUtils.validateToken(authToken, userDetails) && (user.getLastPasswordResetDate() != null || isAllowedRoute(request))) {
+                    TokenBasedAuthentication authentication = new TokenBasedAuthentication(userDetails);
+                    authentication.setToken(authToken);
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                }
+            }
+        }
+
+        chain.doFilter(request, response);
+    }
+
+    private Boolean isAllowedRoute(HttpServletRequest request) {
+        return request.getServletPath().equals("/auth/change-password") || request.getServletPath().equals("/auth/getRole");
+    }
 
 }

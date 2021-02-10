@@ -12,7 +12,8 @@ var app = new Vue({
 		dermId: null,
 		searchDermFirst: "",
 		searchDermLast: "",
-		orderedMed: []
+		orderedMed: [],
+		status
 	},
 	methods: {
 		logout(){
@@ -102,6 +103,23 @@ var app = new Vue({
 				return false;
 			}
 			return true;
+		},
+		onChange(selected){
+			axios
+			.get('/api/errand/findAllErrands',
+					{
+					params:{
+						approved: this.status
+					},
+					headers: {
+					    'Authorization': "Bearer " + localStorage.getItem('access_token')
+					  }
+				
+			})
+			.then(response => {
+				this.orders = response.data
+
+			})
 		}
 	},
 	created() {
@@ -139,6 +157,9 @@ var app = new Vue({
 		    	 axios
 					.get('/api/errand/findAllErrands',
 							{
+							params:{
+								approved: this.status
+							},
 							headers: {
 							    'Authorization': "Bearer " + localStorage.getItem('access_token')
 							  }

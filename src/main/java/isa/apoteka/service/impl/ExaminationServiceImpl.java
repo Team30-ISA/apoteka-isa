@@ -41,6 +41,8 @@ public class ExaminationServiceImpl implements ExaminationService {
 	}
 	
 	public ExaminationDTO mapExaminationToExaminationDTO(Examination examination) {
+		if(examination == null)
+			return null;
 		String patientName = "";
 		if(examination.getPharmacistWorkCalendar() == null)
 			return null;
@@ -247,6 +249,11 @@ public class ExaminationServiceImpl implements ExaminationService {
 		if(examinationRepository.countTerms(pharmacistId, start, end) > 0)
 			return false;
 		return true;
+	}
+
+	@Override
+	public List<Examination> finishedExamination(Long pharmacyId, Date startDate, Date endDate) {
+		return examinationRepository.finishedExaminations(pharmacyId, startDate, endDate);
 	}
 
 }

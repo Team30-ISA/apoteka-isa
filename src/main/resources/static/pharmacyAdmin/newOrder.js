@@ -90,22 +90,6 @@ var app = new Vue({
 			this.medQuantity = null;
 			this.changeOrder = false;
 		},
-		search(){
-			axios
-			.get('/api/medicine/searchMedicineInPharmacy',
-					{
-						params:{
-							name: this.searchMedicine
-						},
-					headers: {
-					    'Authorization': "Bearer " + localStorage.getItem('access_token')
-					  }
-				
-			})
-			.then(response => {
-				this.medicine = response.data
-			})
-		},
 		formatDate(d){
 			let date = new Date(d)
 			return date.getDate() + "." + (date.getMonth() + 1) + "." + date.getFullYear() + ".";
@@ -150,11 +134,15 @@ var app = new Vue({
 						  }
 						})
 				.then(response => {
-					JSAlert.alert("You hae successfully created an order!");
+					JSAlert.alert("You have successfully created an order!");
 	                setTimeout(function () {
 						window.location.href = '/pharmacyAdmin/newOrder.html';
 					}, 3000);
-				})
+				}).catch(error => {
+		            if (error.response.status == 401 || error.response.status == 400 || error.response.status == 500) {
+		                JSAlert.alert("New order couldn't be made.");
+		            }		            
+		        })
 			}).catch(error => {
 	            if (error.response.status == 401 || error.response.status == 400 || error.response.status == 500) {
 	                JSAlert.alert(error.response.data.errors[0].defaultMessage);
@@ -213,16 +201,7 @@ var app = new Vue({
 		     })
 		     .then(response => {
 		    	 this.pharmacyId = response.data
-		    	 axios
-					.get('/api/medicine/findAllMedicineInPharmacy',
-							{
-							headers: {
-							    'Authorization': "Bearer " + localStorage.getItem('access_token')
-							  }
-						
-					})
-					.then(response => {
-						this.medicine = response.data
+		  
 						axios
 						.get('/api/medicine/findAllMedicine',
 								{
@@ -235,6 +214,6 @@ var app = new Vue({
 							this.newMedication = response.data
 						})
 					})
-		     })	    
+		       
 	}
 })

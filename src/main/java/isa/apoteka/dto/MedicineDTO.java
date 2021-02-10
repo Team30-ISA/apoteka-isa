@@ -10,7 +10,6 @@ import java.util.Date;
 
 
 public class MedicineDTO {
-	
 	private Long id;
 	private String name;
 	private DrugType type;

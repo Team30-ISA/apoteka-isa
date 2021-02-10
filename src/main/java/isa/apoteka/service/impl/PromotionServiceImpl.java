@@ -70,7 +70,7 @@ public class PromotionServiceImpl implements PromotionService{
 	public void subscribe(Long pharmacyId) throws Exception {
 		Patient patient = (Patient) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		Pharmacy pharmacy = pharmacyRepository.getOne(pharmacyId);
-		if(pharmacy.getPatients().stream().filter(p -> p.getId() == patient.getId()).collect(Collectors.toList()).size() > 0)
+		if(pharmacy.getPatients().stream().filter(p -> p.getId().equals(patient.getId())).collect(Collectors.toList()).size() > 0)
 			throw new Exception("Already subscribed");
 		Patient dbPatient = patientService.findById(patient.getId()); // Mora iz baze jer se ovaj iz konteksta razlikuje pa ga necemo moci obrisati jer je uvek drugaciji
 		pharmacy.getPatients().add(dbPatient);

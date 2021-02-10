@@ -3,6 +3,7 @@ package isa.apoteka.service.impl;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -74,5 +75,15 @@ public class MedicineReservationServiceImpl implements MedicineReservationServic
 		emailService.issuedMedicineReservation(uid, rm.getPatient());
 		
 		
+	}
+
+	@Override
+	public List<ReservedMedicine> findFinishedReservationByPharmacy(Long id, Date startDate, Date endDate) {
+		return mrRepository.findFinishedReservationByPharmacy(id,startDate,endDate);
+	}
+
+	@Override
+	public List<ReservedMedicine> allfinishedReservation(Long id) {
+		return mrRepository.findAllfinishedReservation(id);
 	}
 }

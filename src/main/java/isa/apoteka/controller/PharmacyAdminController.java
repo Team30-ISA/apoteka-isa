@@ -3,6 +3,7 @@ package isa.apoteka.controller;
 
 import javax.validation.Valid;
 
+import isa.apoteka.dto.PharmacistDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,7 +49,15 @@ public class PharmacyAdminController {
 		pharmacyAdminService.update(changeDataDTO.getFirstName(), changeDataDTO.getLastName(), admin.getId());
 		addressService.update(changeDataDTO.getStreet(), changeDataDTO.getCityId(), admin.getAddress().getId());
 		return new ResponseEntity<>(changeDataDTO, HttpStatus.CREATED);
-		
 	}
-	
+
+	@PostMapping(consumes = "application/json")
+	@PreAuthorize("hasRole('SYS_ADMIN')")
+	public ResponseEntity<?> createPharmacyAdmin(@RequestBody @Valid PharmacistDTO pharmacyAdmin) {
+		try {
+			return new ResponseEntity<>(pharmacyAdminService.create(pharmacyAdmin), HttpStatus.CREATED);
+		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+	}
 }

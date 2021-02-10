@@ -2,6 +2,7 @@ package isa.apoteka.service;
 
 import java.util.List;
 
+import isa.apoteka.domain.*;
 import javax.validation.Valid;
 
 import isa.apoteka.domain.Dermatologist;
@@ -41,6 +42,9 @@ public interface PharmacyService {
 	
 	void updateMedicineInPharmacy(Long pharmId, Long medId, int quantity);
 
+    public Pharmacy create(PharmacyDTO pharmacyDTO);
+
+    List<PharmacyAdmin> getPharmacyAdminsForPharmacy(Long id);
 	public Pharmacy findById(Long id);
 
 	public void update(PharmacyDTO pharmacyDTO);

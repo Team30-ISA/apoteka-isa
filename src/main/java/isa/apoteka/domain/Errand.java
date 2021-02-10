@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -11,6 +12,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.Future;
+
+import com.sun.istack.NotNull;
 
 @Entity
 public class Errand {
@@ -18,10 +22,19 @@ public class Errand {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
+	@Column(unique = false, nullable = false)
+	@Future
 	private Date deadline;
+	
+	@Column(unique = false, nullable = false)
 	private Date creationTime;
+	
 	@ManyToOne
+	@NotNull
 	private Pharmacy pharmacy;
+	
+	@Column(unique = false, nullable = false)
 	private Boolean finished;
 	
 	@OneToMany(mappedBy = "errand")
