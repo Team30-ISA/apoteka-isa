@@ -31,6 +31,13 @@ public class Patient extends User{
 	public Patient() {
 		super();
 	}
+	
+	public Patient(Long id,String firstName, String lastName) {
+		super();
+		this.setId(id);
+		this.setFirstName(firstName);
+		this.setLastName(lastName);
+	}
 
     public Patient(UserRequest userRequest) {
         super(userRequest);

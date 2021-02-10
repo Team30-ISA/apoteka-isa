@@ -352,7 +352,7 @@ var app = new Vue({
         	if(diffDays == 0 && diffHrs == 0){}
         	else if(diffHrs <= 1)
         		ret += diffHrs + " hour ";
-        	else if(diffDays > 1)
+        	else if(diffHrs > 1)
             	ret += diffHrs + " hours ";
         	if(diffDays == 0 && diffHrs == 0 && diffMins < 1)
         		ret = "less than one minute";
