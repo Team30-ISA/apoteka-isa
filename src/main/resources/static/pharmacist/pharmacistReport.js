@@ -8,7 +8,7 @@ var app = new Vue({
         today: new Date(),
         counselings: [],
         counts: [],
-        currentStep: "START",
+        currentStep: "SCHEDULE",
 		derm: null,
         examination: null,
         monthNames: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
@@ -419,6 +419,8 @@ var app = new Vue({
         		return;
         	}
         	else if(d < this.wpStart || d > this.wpEnd){
+        		console.log(this.wpStart)
+        		console.log(this.wpEnd)
         		JSAlert.alert("Lekar ne radi u ovom terminu u ovoj apoteci!");
         		return;
         	}
