@@ -99,7 +99,7 @@ main ::-webkit-scrollbar-thumb:hover {
 			<div class="container clearfix">
 				<div class="contact-info float-left">
 					<i class="fa fa-envelope-o"></i> <a
-						href="mailto:contact@example.com">contact@example.com</a> <i
+						href="mailto:contact@example.com">apoteka.isa2021@gmail.com</a> <i
 						class="fa fa-phone"></i> +1 5589 55488 55
 				</div>
 				<div class="social-links float-right">
@@ -120,7 +120,7 @@ main ::-webkit-scrollbar-thumb:hover {
 
 				<div id="logo" class="pull-left">
 					<h1>
-						<a href="pharmacyAdminHome.html" class="scrollto">Apote<span>ke</span></a>
+						<a href="../pharmacy.html" class="scrollto">Apote<span>ke</span></a>
 					</h1>
 					<!-- Uncomment below if you prefer to use an image logo -->
 					<!-- <a href="#body"><img src="img/logo.png" alt="" title="" /></a>-->
@@ -128,7 +128,7 @@ main ::-webkit-scrollbar-thumb:hover {
 
 				<nav id="nav-menu-container">
 					<ul class="nav-menu">
-						<li class="menu-active"><a href="pharmacyAdminHome.html">Home</a></li>
+						<li class="menu-active"><a href="../pharmacy.html">Home</a></li>
 						<li class="menu-has-children"><a href="#">Search</a>
 							<ul>
 								<li><a href="../filterDermatologist.html">Dermatologists</a></li>
@@ -138,22 +138,19 @@ main ::-webkit-scrollbar-thumb:hover {
 							<ul>
 								<li><a href="promotion.html">New Promotion</a></li>
 								<li><a href="newOrder.html">New Order</a></li>
-								<li><a href="managingDermatologists.html">Manage
-										Dermatologists</a></li>
-								<li><a href="managingPharmacists.html">Manage
-										Pharmacists</a></li>
+								<li><a href="managingDermatologists.html">Manage Dermatologists</a></li>
+								<li><a href="managingPharmacists.html">Manage Pharmacists</a></li>
 								<li><a href="managingMedication.html">Manage Medicine</a></li>
 								<li><a href="managingOrders.html">Manage supply offers</a></li>
 							</ul></li>
 						<li class="menu-has-children"><a href="#">{{admin.firstName}}
 								{{admin.lastName}}</a>
 							<ul>
-								<li><a href="pharmacyAdminProfile.html"><i
-										class="icon fa-user"></i>&nbsp&nbsp&nbspProfile</a></li>
+								<li><a href="pharmacyAdminProfile.html"><i class="icon fa-user"></i>&nbsp&nbsp&nbspProfile</a></li>
 								<li @click="logout"><a href="#"><i
 										class="icon fa-sign-out"></i>&nbsp&nbspLog out</a></li>
 							</ul></li>
-						<li><a href="#contact">Contact</a></li>
+							<li><a href="businessReport.html">Business report</a></li>
 					</ul>
 				</nav>
 				<!-- #nav-menu-container -->
@@ -179,6 +176,10 @@ main ::-webkit-scrollbar-thumb:hover {
 					<header class="special">
 						<h2>APPROVE SUPPLY ORDERS</h2>
 					</header>
+				    <select name="cars" id="cars"  v-model="status" @change="onChange()" class="txtEnabled" style="width:25%; margin-left:37.5%; margin-bottom:2rem">
+						  <option value="false" selected="selected">PENDING</option>
+						  <option value="true" >FINISHED</option>
+						</select>
 					<div class="highlight">
 						<section>
 							<div >							

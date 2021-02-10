@@ -11,8 +11,10 @@ public class MedicineQuantity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
 	@ManyToOne
 	private Medicine medicine;
+	
 	private int quantity;
 	
 	@ManyToOne

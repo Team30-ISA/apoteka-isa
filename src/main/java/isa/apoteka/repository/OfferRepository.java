@@ -14,12 +14,10 @@ public interface OfferRepository extends JpaRepository<Offer, Long> {
 	@Query("from Offer o join o.errand e where e.id=:errandId")
 	List<Offer> findAllOffersForErrand(Long errandId);
 	
-	@Transactional(readOnly = false)
 	@Modifying
 	@Query(value = "UPDATE offer SET is_approved = NOT COALESCE( is_approved, 't' ) WHERE id=:id", nativeQuery = true)
 	void offerApproval(Long id);
 	
-	@Transactional(readOnly = false)
 	@Modifying
 	@Query(value = "UPDATE errand SET finished = NOT COALESCE( finished, 't' ) WHERE id=:id", nativeQuery = true)
 	void finishErrand(Long id);

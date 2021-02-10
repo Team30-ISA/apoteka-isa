@@ -1,5 +1,6 @@
 package isa.apoteka.service;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -31,6 +32,8 @@ public interface CounselingService {
 	void sendCounselingReservation(Counseling c);
 	List<Counseling> findAllByPatientId(Long patId);
 	void cancelAppointment(Long counsId);
+	List<Counseling> finishedCounseling(Long id, Date pocetak, Date kraj);
+	List<Counseling> AllfinishedCounseling(Long id);
 	Counseling save(Counseling counseling);
-	
+
 }

@@ -23,8 +23,9 @@ var app = new Vue({
 		},
 		submit: function (){
 			console.log(new Date());
+			
 			if((this.startOfPromotion > this.endOfPromotion) || this.startOfPromotion < new Date() || this.endOfPromotion <= new Date){
-				JSAlert.alert("Publishing is incorrect! Please check the data you have entered.");
+				JSAlert.alert("Publishing is incorrect! Start date is is after end date.");
 			}else{
 			axios
 			.get('/api/pharmacyAdmin/getPharmacy',{
@@ -62,11 +63,9 @@ var app = new Vue({
 		            
 		        })
 		        .catch(error => {
-		            console.log(error)
 		            if (error.response.status == 401 || error.response.status == 400 || error.response.status == 500) {
-		                JSAlert.alert("Publishing is incorrect! Please check the data you have entered.");
-		            } 
-		            
+		                JSAlert.alert(error.response.data.errors[0].defaultMessage);
+		            }		            
 		        })
 		     })
 			}

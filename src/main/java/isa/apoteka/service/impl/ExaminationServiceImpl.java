@@ -251,4 +251,9 @@ public class ExaminationServiceImpl implements ExaminationService {
 		return true;
 	}
 
+	@Override
+	public List<Examination> finishedExamination(Long pharmacyId, Date startDate, Date endDate) {
+		return examinationRepository.finishedExaminations(pharmacyId, startDate, endDate);
+	}
+
 }

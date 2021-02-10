@@ -352,6 +352,15 @@ public class CounselingServiceImpl implements CounselingService {
 	}
 
 	@Override
+	public List<Counseling> finishedCounseling(Long id, Date pocetak, Date kraj) {
+		return counselingRepository.finishedCounseling(id, pocetak, kraj);
+	}
+
+	@Override
+	public List<Counseling> AllfinishedCounseling(Long id) {
+		return counselingRepository.allFinishedCounseling(id);
+	}
+
 	public Counseling save(Counseling counseling) {
 		return counselingRepository.save(counseling);
 	}
