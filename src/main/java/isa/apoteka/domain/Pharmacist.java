@@ -20,6 +20,13 @@ public class Pharmacist extends User{
 	public Pharmacist() {
 		super();
 	}
+	
+	public Pharmacist(Long id,String firstName, String lastName) {
+		super();
+		this.setId(id);
+		this.setFirstName(firstName);
+		this.setLastName(lastName);
+	}
 
 	public Pharmacy getPharmacy() {
 		return pharmacy;

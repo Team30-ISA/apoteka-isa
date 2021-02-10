@@ -7,23 +7,25 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import isa.apoteka.async.service.EmailService;
 import isa.apoteka.domain.Counseling;
 import isa.apoteka.domain.Dermatologist;
 import isa.apoteka.domain.Patient;
 import isa.apoteka.domain.Pharmacy;
-import isa.apoteka.domain.ReservedMedicine;
 import isa.apoteka.dto.ExaminationDTO;
 import isa.apoteka.repository.CounselingRepository;
 import isa.apoteka.repository.DermatologistRepository;
 import isa.apoteka.service.CounselingService;
 
 @Service
+@Transactional(readOnly = true)
 public class CounselingServiceImpl implements CounselingService {
 
 	@Autowired
@@ -47,12 +49,14 @@ public class CounselingServiceImpl implements CounselingService {
 		Date endDate = calendar.getTime();
 		List<Counseling> counseling = counselingRepository.findAllTerms(pharmacyId, dermatologistId, startDate,
 				endDate);
-		List<ExaminationDTO> dtos = mapListCounselingToListCounselingDTO(counseling);
+		List<ExaminationDTO> dtos = mapListCounselingToListExaminationDTO(counseling);
 		Collections.sort(dtos, new Sortbyroll());
 		return dtos;
 	}
 
-	public ExaminationDTO mapCounselingToCounselingDTO(Counseling counseling) {
+	public ExaminationDTO mapCounselingToExaminationDTO(Counseling counseling) {
+		if(counseling == null)
+			return null;
 		String patientName = "";
 		if (counseling.getDermatologistWorkCalendar() == null)
 			return null;
@@ -65,10 +69,10 @@ public class CounselingServiceImpl implements CounselingService {
 				counseling.getReport());
 	}
 
-	public List<ExaminationDTO> mapListCounselingToListCounselingDTO(List<Counseling> counselings) {
+	public List<ExaminationDTO> mapListCounselingToListExaminationDTO(List<Counseling> counselings) {
 		List<ExaminationDTO> counselingDTOs = new ArrayList<>();
 		for (Counseling c : counselings) {
-			ExaminationDTO dto = mapCounselingToCounselingDTO(c);
+			ExaminationDTO dto = mapCounselingToExaminationDTO(c);
 			if (dto == null)
 				continue;
 			counselingDTOs.add(dto);
@@ -149,7 +153,7 @@ public class CounselingServiceImpl implements CounselingService {
 
 	@Override
 	public ExaminationDTO findOneDTO(Long id) {
-		return mapCounselingToCounselingDTO(counselingRepository.findById(id).orElse(null));
+		return mapCounselingToExaminationDTO(counselingRepository.findById(id).orElse(null));
 	}
 
 	@Override
@@ -229,22 +233,34 @@ public class CounselingServiceImpl implements CounselingService {
 		Counseling counseling = getNearestCounseling(pharmacistId, start, finished);
 		if (counseling == null)
 			return null;
-		return mapCounselingToCounselingDTO(counseling);
+		return mapCounselingToExaminationDTO(counseling);
 	}
 
 	@Override
-	public void update(Long patientId, Long counselingId) {
-		counselingRepository.update(patientId, counselingId);
-
+	@Transactional(readOnly = false)
+	public Boolean update(Patient patient, Long counselingId) {
+		try {
+			Counseling c = counselingRepository.findOneById(counselingId);
+			if(c.getPatient() != null) {
+				return false;
+			}
+			c.setPatient(patient);
+			counselingRepository.save(c);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
 	}
 	
 	@Override
+	@Transactional(readOnly = false)
 	public void makeAppointment(Long patId, Long counsId) {
 		counselingRepository.makeAppointment(patId, counsId);
 
 	}
 
 	@Override
+	@Transactional(readOnly = false)
 	public void updateReport(String report, Long counselingId) {
 		counselingRepository.updateReport(report, counselingId);
 	}
@@ -269,6 +285,7 @@ public class CounselingServiceImpl implements CounselingService {
 	}
 	
 	@Override
+	@Transactional(readOnly = false)
 	public Boolean createCounseling(Date start, int duration, Float price, Long dwcId, Long dermId, Long pharmacyId) {
 		Calendar calendar = new GregorianCalendar();
 		calendar.setTime(start);
@@ -329,6 +346,7 @@ public class CounselingServiceImpl implements CounselingService {
 	}
 	
 	@Override
+	@Transactional(readOnly = false)
 	public void cancelAppointment(Long counsId) {
 		counselingRepository.cancelAppointment(counsId);
 	}
@@ -343,6 +361,8 @@ public class CounselingServiceImpl implements CounselingService {
 		return counselingRepository.allFinishedCounseling(id);
 	}
 
-	
-	
+	public Counseling save(Counseling counseling) {
+		return counselingRepository.save(counseling);
+	}
+
 }

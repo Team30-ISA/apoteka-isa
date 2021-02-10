@@ -41,6 +41,8 @@ public class ExaminationServiceImpl implements ExaminationService {
 	}
 	
 	public ExaminationDTO mapExaminationToExaminationDTO(Examination examination) {
+		if(examination == null)
+			return null;
 		String patientName = "";
 		if(examination.getPharmacistWorkCalendar() == null)
 			return null;

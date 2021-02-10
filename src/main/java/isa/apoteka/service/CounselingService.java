@@ -8,7 +8,6 @@ import isa.apoteka.domain.Counseling;
 import isa.apoteka.domain.Dermatologist;
 import isa.apoteka.domain.Patient;
 import isa.apoteka.domain.Pharmacy;
-import isa.apoteka.domain.ReservedMedicine;
 import isa.apoteka.dto.ExaminationDTO;
 
 public interface CounselingService {
@@ -24,7 +23,7 @@ public interface CounselingService {
 	ExaminationDTO getNearestCounselingDTO(Long dermatologistId, Date start, boolean finished);
 	Counseling getNearestCounseling(Long dermatologistId, Date start, boolean finished);
 	Boolean isDermFree(Long dermatologistId, Date start, Date end);
-	void update(Long patientId, Long counselingId);
+	Boolean update(Patient patient, Long counselingId);
 	void updateReport(String report, Long counselingId);
 	public Boolean createCounseling(Date start, int duration, Float price, Long dwcId, Long dermId, Long pharmacyId);
 	List<Counseling> findAllByPharmId(Long pharmId);
@@ -35,4 +34,6 @@ public interface CounselingService {
 	void cancelAppointment(Long counsId);
 	List<Counseling> finishedCounseling(Long id, Date pocetak, Date kraj);
 	List<Counseling> AllfinishedCounseling(Long id);
+	Counseling save(Counseling counseling);
+
 }

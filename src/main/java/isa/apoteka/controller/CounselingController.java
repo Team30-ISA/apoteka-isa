@@ -133,16 +133,18 @@ public class CounselingController {
 	
 	@PostMapping("/setPatient")
 	@PreAuthorize("hasRole('DERM')")
-	public void setPatient(@RequestBody Map<String, Object> params, HttpServletResponse response) {
+	public ResponseEntity<Integer> setPatient(@RequestBody Map<String, Object> params) {
 		Patient patient = counselingService.getPatientInCounseling(Long.parseLong(params.get("currCounselingId").toString()));
 		if(patient == null)
-			return;
+			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		Counseling counseling = counselingService.findOne(Long.parseLong(params.get("newCounselingId").toString()));
 		if(counseling.getStartDate().getTime() < (new Date()).getTime()) {
-			response.setStatus(400);
-			return;
+			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}
-		counselingService.update(patient.getId(), Long.parseLong(params.get("newCounselingId").toString()));
+		if(counselingService.update(patient, Long.parseLong(params.get("newCounselingId").toString()))) 
+			return new ResponseEntity<>(1, HttpStatus.OK);
+		else
+			return new ResponseEntity<>(-1, HttpStatus.OK);
 	}
 	@Nullable
 	@PostMapping("/makeAppointment")
@@ -157,7 +159,7 @@ public class CounselingController {
 		if(counseling.getStartDate().getTime() < (new Date()).getTime()) {
 			return false;
 		}
-		counselingService.makeAppointment(p.getId(), counseling.getId());
+		counselingService.update(p, counseling.getId());
 		return true;
 	}
 	

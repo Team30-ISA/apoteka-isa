@@ -2,15 +2,13 @@ package isa.apoteka.controller;
 
 import java.util.List;
 
+import isa.apoteka.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import isa.apoteka.domain.Counseling;
 import isa.apoteka.domain.Dermatologist;
@@ -144,11 +142,42 @@ public class MedicineContoller {
 	}
 	
 	@GetMapping(value = "/findAllMedicine")
-	@PreAuthorize("hasRole('ADMIN')")
+	@PreAuthorize("hasRole('ADMIN') or hasRole('SYS_ADMIN')")
 	public ResponseEntity<List<MedicineNameDTO>> findAllMedicine() {
 
 		List<MedicineNameDTO> med = medicineService.findAllMedicine();
 
 		return new ResponseEntity<>(med, HttpStatus.OK);
+	}
+
+	@GetMapping(value = "/types")
+	@PreAuthorize("hasRole('SYS_ADMIN')")
+	public ResponseEntity<?> getAllTypes() {
+		try {
+			return new ResponseEntity<>(medicineService.getAllTypes(),HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+	}
+
+	@GetMapping(value = "/forms")
+	@PreAuthorize("hasRole('SYS_ADMIN')")
+	public ResponseEntity<?> getAllForms() {
+		try {
+			return new ResponseEntity<>(medicineService.getAllForms(),HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+	}
+
+	@PostMapping
+	@PreAuthorize("hasRole('SYS_ADMIN')")
+	public ResponseEntity<?> createMedicine(@RequestBody MedicineCreateDTO medicineDTO) {
+		try {
+			medicineService.create(medicineDTO);
+			return new ResponseEntity<>(medicineDTO, HttpStatus.CREATED);
+		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
 	}
 }

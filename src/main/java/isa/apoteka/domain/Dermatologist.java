@@ -2,11 +2,14 @@ package isa.apoteka.domain;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import isa.apoteka.dto.PharmacistDTO;
 
 @Entity
 @Table(name="dermatologist")
@@ -14,8 +17,11 @@ public class Dermatologist extends User{
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
-	@ManyToMany(mappedBy = "dermatologists")
+	private static final long serialVersionUID = 2354752262777558267L;
+
+	
+	@JsonIgnore
+	@ManyToMany(mappedBy = "dermatologists",cascade = CascadeType.MERGE)
 	private List<Pharmacy> pharmacies;
 	
 	private int grade;
@@ -25,8 +31,19 @@ public class Dermatologist extends User{
 		super();
 
 	}
+	
+	public Dermatologist(Long id,String firstName, String lastName) {
+		super();
+		this.setId(id);
+		this.setFirstName(firstName);
+		this.setLastName(lastName);
+	}
 
-	public List<Pharmacy> getPharmacies() {
+    public Dermatologist(PharmacistDTO dermatologistData) {
+		super(dermatologistData);
+    }
+
+    public List<Pharmacy> getPharmacies() {
 		return pharmacies;
 	}
 
