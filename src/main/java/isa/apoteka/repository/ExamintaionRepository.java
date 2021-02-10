@@ -33,4 +33,7 @@ public interface ExamintaionRepository extends JpaRepository<Examination, Long> 
 	
 	@Query("from Examination e join e.pharmacistWorkCalendar p where p.pharmacist.id=:pharmacistId")
 	List<Examination> findAllByPharmId(Long pharmacistId);
+
+	@Query("from Examination e join e.pharmacistWorkCalendar.pharmacy p where e.report != null and e.report != '' and e.startDate<= :endDate and e.startDate>= :startDate and p.id=:pharmacyId")
+	List<Examination> finishedExaminations(Long pharmacyId, Date startDate, Date endDate);
 }

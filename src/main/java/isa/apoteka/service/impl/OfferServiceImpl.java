@@ -15,7 +15,7 @@ import isa.apoteka.repository.OfferRepository;
 import isa.apoteka.service.OfferService;
 
 @Service
-//@Transactional(readOnly = true)
+@Transactional(readOnly = true)
 public class OfferServiceImpl implements OfferService{
 	
 	private OfferRepository offerRepository;
@@ -38,11 +38,10 @@ public class OfferServiceImpl implements OfferService{
 	}
 
 	@Override
+	@Transactional(readOnly = false)
 	public Boolean approveOffer(Long id, Long errandId) {
 		offerRepository.finishErrand(errandId);
 		List<Offer> offers =  offerRepository.findAllOffersForErrand(errandId);
-		System.out.println("*******************");
-		System.out.println(offers.size());
 		for(Offer o : offers) {
 			if(o.getId().equals(id)) {
 				offerRepository.offerApproval(id);
@@ -54,8 +53,6 @@ public class OfferServiceImpl implements OfferService{
 	@Override
 	public Boolean sendMail(Long errandId) {
 		List<Offer> offers1 =  offerRepository.findAllOffersForErrand(errandId);
-		System.out.println("*******************");
-		System.out.println(offers1.size());
 		for(Offer o : offers1) {
 			System.out.println(o);
 			System.out.println(o.getIsApproved());

@@ -40,8 +40,53 @@
     License: https://bootstrapmade.com/license/
   ======================================================= -->
 </head>
+<style>
+	.txtDisabled{
+		border-color: transparent;
+		background-color: white;
+	}
+	.txtEnabled{
+	 padding: 5px 5px;
+	 border-radius: 0;
+	 box-shadow: none;
+	 font-size: 15px; display: block;
+	 width: 50%;
+	 padding: .275rem .75rem;
+	 font-size: 1rem;
+	 line-height: 2;
+	 color: #495057;
+     background-color: #fff;
+	 background-clip: padding-box;
+	 border: 1px solid #ced4da;
+	 border-radius: .25rem;
+	 transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+	}
+main ::-webkit-scrollbar {
+    width: 8px;
+}
+main ::-webkit-scrollbar-button {
+    width: 8px;
+    height:5px;
+}
+main ::-webkit-scrollbar-track {
+    background:#eee;
+    border: thin solid lightgray;
+    box-shadow: 0px 0px 3px #dfdfdf inset;
+    border-radius:10px;
+}
+main ::-webkit-scrollbar-thumb {
+    background:#999;
+    border: thin solid gray;
+    border-radius:10px;
+}
+main ::-webkit-scrollbar-thumb:hover {
+    background:#7d7d7d;
+}
+
+	
+</style>
 <body id="body">
-	<div id="pharmacyAdmin">
+	<div id="manageDerm">
 		<!--==========================
     Top Bar
   ============================-->
@@ -92,7 +137,6 @@
 								<li><a href="managingPharmacists.html">Manage Pharmacists</a></li>
 								<li><a href="managingMedication.html">Manage Medicine</a></li>
 								<li><a href="managingOrders.html">Manage supply offers</a></li>
-								<li><a href="pharmacistHoliday.html">Manage leave requests</a></li>
 							</ul></li>
 						<li class="menu-has-children"><a href="#">{{admin.firstName}}
 								{{admin.lastName}}</a>
@@ -101,7 +145,7 @@
 								<li @click="logout"><a href="#"><i
 										class="icon fa-sign-out"></i>&nbsp&nbspLog out</a></li>
 							</ul></li>
-						<li><a href="pharmacyAdmin/businessReport.html">Business report</a></li>
+						<li><a href="#contact">Contact</a></li>
 					</ul>
 				</nav>
 				<!-- #nav-menu-container -->
@@ -125,9 +169,80 @@
 			<section id="wrapper">
 				<div class="inner">
 					<header class="special">
-						<h2>Welcome {{admin.firstName}} {{admin.lastName}}</h2>
+						<h2>BUSINESS REPORT</h2>
 					</header>
+						<div id="container1" style="width:100%; height:400px;">{{highcharts}}</div>
+						<br/>
+						<br/>
+						<br/>
+						<div id="container2" style="width:100%; height:400px;">{{highcharts}}</div>
+						<br/>
+						<br/>
+						<br/>
+						<div id="container3" style="width:100%; height:400px;">{{highcharts}}</div>
+						<br/>
+						<br/>
+						<br/>
+						<select name="cars" id="cars"  v-model="selected" @change="onChange(selected)" class="txtEnabled" style="width:25%;">
+						  <option value="2020">2020</option>
+						  <option value="2021" selected="selected">2021</option>
+						</select>
+						<div id="container4" style="width:100%; height:400px;">{{highcharts}}</div>
+						<br/>
+						<br/>
+						<br/>
+						<div id="container5" style="width:100%; height:400px;">{{highcharts}}</div>
+						<br/>
+						<br/>
+						<br/>
+						<div id="container6" style="width:100%; height:400px;">{{highcharts}}</div>
+						<br/>
+						<br/>
+						<br/>
+						<div id="container7" style="width:100%; height:400px;">{{highcharts}}</div>
+						<br/>
+						<br/>
+						<br/>
+						<div id="container8" style="width:100%; height:400px;">{{highcharts}}</div>
+						<br/>
+						<br/>
+						<br/>
+						<div id="container9" style="width:100%; height:400px;">{{highcharts}}</div>
+						<br/>
+						<br/>
+						<br/>
+						<table style="width:25%">
+							<tr>
+								<td style="width:50%">
+									<h6>Choose start date:</h6>
+								</td>
+								<td style="width:50%">
+									<h6>Choose end date:</h6>
+								</td>
+							</tr>
+							<tr>
+								<td style="width:50%; ">
+									<input type=date v-model="start" class="txtEnabled" style="width:100%; ">
+								</td>
+								<td style="width:50%; ">
+									<input type=date v-model="end" class="txtEnabled" style="width:100%">
+								</td>
+							</tr>
+							<tr >
+							<td style="width:50%; " colspan="2">
+								<input type="submit" value="Search" @click="searchEarning" style="background: #50d8af; border: 0; width:100%;border-radius: 3px; padding: 10px 30px; color: #fff; transition: 0.4s; cursor: pointer; margin-top:7.5%"/>
+							</td>
+							</tr>
+						</table>
+						
+						
+						
+						
+						
+						<div id="container10" style="width:100%; height:400px;">{{highcharts}}</div>
+						
 				</div>
+				
 			</section>
 			<!-- #services -->
 
@@ -147,6 +262,8 @@
 	<script src="../lib/owlcarousel/owl.carousel.min.js"></script>
 	<script src="../lib/magnific-popup/magnific-popup.min.js"></script>
 	<script src="../lib/sticky/sticky.js"></script>
+	<script src="https://code.highcharts.com/highcharts.src.js"></script>
+	<script src="https://npmcdn.com/js-alert/dist/jsalert.min.js"></script>
 
 	<!-- Contact Form JavaScript File -->
 	<script
@@ -154,7 +271,7 @@
 	<!-- Template Main Javascript File -->
 	<script src="../js/main.js"></script>
 	<script src="../axios.js"></script>
-	<script src="pharmacyAdminHome.js"></script>
-
+	<script src="businessReport.js"></script>
+	<script></script>
 </body>
 </html>

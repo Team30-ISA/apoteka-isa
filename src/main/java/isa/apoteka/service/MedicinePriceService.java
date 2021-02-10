@@ -1,5 +1,6 @@
 package isa.apoteka.service;
 
+import java.util.Date;
 import java.util.List;
 
 import isa.apoteka.domain.MedicinePrice;
@@ -10,4 +11,5 @@ public interface MedicinePriceService {
 	MedicinePrice findMedicinePrice(Long pharmacyId, Long medId);
 	void addMedicinePrice(Long medicineId, Long pharmacyId);
 	void changePrice(ChangePriceDTO dto);
+	Integer getPrice(Long medId, Long pharmId, Date date);
 }
