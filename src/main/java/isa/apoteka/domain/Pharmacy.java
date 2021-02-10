@@ -41,8 +41,8 @@ public class Pharmacy {
             joinColumns = @JoinColumn(name = "pharmacy_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
     private List<Dermatologist> dermatologists;
-	
-	@ManyToMany(fetch = FetchType.LAZY)
+
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "promotion_notification",
             joinColumns = @JoinColumn(name = "pharmacy_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "patient_id", referencedColumnName = "id"))
