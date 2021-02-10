@@ -23,6 +23,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
+import isa.apoteka.dto.PharmacistDTO;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -44,7 +45,7 @@ public class User implements UserDetails {
     @Column(name = "id", unique=true, nullable=false)
     private Long id;
 
-    @Column(name = "username")
+    @Column(name = "username", unique=true)
     private String username;
 
     @JsonIgnore
@@ -59,7 +60,7 @@ public class User implements UserDetails {
     @Column(name = "last_name", nullable = false)
     private String lastName;
 
-    @Column(name = "email")
+    @Column(name = "email", unique=true)
     private String email;
     
     @OneToOne(cascade = CascadeType.ALL)
@@ -87,10 +88,22 @@ public class User implements UserDetails {
     public User(){}
 
     public User(UserRequest userRequest) {
+        this.id = userRequest.getId();
         this.email = userRequest.getEmail();
         this.firstName = userRequest.getFirstname();
         this.lastName = userRequest.getLastname();
         this.username = userRequest.getUsername();
+    }
+
+    public User(PharmacistDTO pharmacyAdminData) {
+        this.username = pharmacyAdminData.getUsername();
+        this.email = pharmacyAdminData.getEmail();
+        this.firstName = pharmacyAdminData.getFirstName();
+        this.lastName = pharmacyAdminData.getLastName();
+        this.username = pharmacyAdminData.getUsername();
+        this.address = pharmacyAdminData.getAddress();
+        this.phonenumber = pharmacyAdminData.getPhonenumber();
+        this.enabled = true;
     }
 
     public Long getId() {
@@ -212,5 +225,8 @@ public class User implements UserDetails {
 		this.gender = gender;
 	}
 
-    
+
+    public void setPasswordForReset(String password) {
+        this.password = password;
+    }
 }
