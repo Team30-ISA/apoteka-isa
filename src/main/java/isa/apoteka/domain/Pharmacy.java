@@ -64,6 +64,14 @@ public class Pharmacy {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	
+
+	public Pharmacy(Long id, @NotBlank String name, String street) {
+		this.id = id;
+		this.name = name;
+		this.street = street;
+	}
+
 
 	public Pharmacy(Long id, String name, String street, String city, String description,
 			List<Dermatologist> dermatologists, List<Patient> patients, List<MedicineInPharmacy> medicineInpharmacy,

@@ -10,6 +10,7 @@ public class UserTokenState {
     public UserTokenState() {
         this.accessToken = null;
         this.expiresIn = null;
+        this.user = null;
     }
 
     public UserTokenState(String accessToken, long expiresIn, User user) {
@@ -34,11 +35,12 @@ public class UserTokenState {
         this.expiresIn = expiresIn;
     }
 
-    public User getUser() {
-        return user;
-    }
+	public User getUser() {
+		return user;
+	}
 
-    public void setUser(User user) {
-        this.user = user;
-    }
+	public void setUser(User user) {
+		this.user = user;
+	}
+    
 }

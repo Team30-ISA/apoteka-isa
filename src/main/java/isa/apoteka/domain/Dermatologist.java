@@ -31,6 +31,13 @@ public class Dermatologist extends User{
 		super();
 
 	}
+	
+	public Dermatologist(Long id,String firstName, String lastName) {
+		super();
+		this.setId(id);
+		this.setFirstName(firstName);
+		this.setLastName(lastName);
+	}
 
     public Dermatologist(PharmacistDTO dermatologistData) {
 		super(dermatologistData);

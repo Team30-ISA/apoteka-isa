@@ -8,7 +8,7 @@ var app = new Vue({
         today: new Date(),
         counselings: [],
         counts: [],
-        currentStep: "START",
+        currentStep: "REPORT",
 		derm: null,
         examination: null,
         monthNames: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
@@ -108,6 +108,7 @@ var app = new Vue({
             })
         },
         getStartTime(date){
+        	date = new Date(date);
         	let h = date.getHours();
         	if(h < 10)
         		h = "0" + h;
@@ -149,10 +150,10 @@ var app = new Vue({
        			  }
                })
                .then(response => {
-               		if(response.data == false){
-               			JSAlert.alert("Pacijent nije slobodan!");
-               		}
-               		else{
+               		//if(response.data == false){
+               			//JSAlert.alert("Pacijent nije slobodan!");
+               		//}
+               		//else{
                			axios
                         .post('/api/counseling/setPatient',
                         		{
@@ -167,7 +168,7 @@ var app = new Vue({
                         .then(response =>{
                         	t.getTerms(t.current);
                         })
-               		}
+               		//}
                })
      		    
      		});
@@ -364,7 +365,7 @@ var app = new Vue({
         	if(diffDays == 0 && diffHrs == 0){}
         	else if(diffHrs <= 1)
         		ret += diffHrs + " hour ";
-        	else if(diffDays > 1)
+        	else if(diffHrs > 1)
             	ret += diffHrs + " hours ";
         	if(diffDays == 0 && diffHrs == 0 && diffMins < 1)
         		ret = "less than one minute";
