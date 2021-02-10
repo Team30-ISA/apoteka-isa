@@ -38,9 +38,6 @@ public class CounselingServiceTest {
 	@InjectMocks
 	private CounselingServiceImpl counselingService;
 
-	// Funckija trazi termin koji nije zauzet, a koji je najblizi prosledjenom
-	// datumu
-	// Ishod: nije pronadjen ni jedan termin
 	@Test
 	public void testGetNearestCounselingNotFound() {
 		when(counselingRepositoryMock.findAllByDermAndStart(DERMATOLOGIST_ID, NOW_MINUS_1)).thenReturn(Arrays.asList());
@@ -51,9 +48,6 @@ public class CounselingServiceTest {
 
 	}
 
-	// Funckija trazi termin koji nije zauzet, a koji je najblizi prosledjenom
-	// datumu
-	// Ishod: pronadjen je termin
 	@Test
 	public void testGetNearestCounselingFound() {
 		when(counselingRepositoryMock.findAllByDermAndStart(DERMATOLOGIST_ID, NOW_MINUS_1))
@@ -65,9 +59,6 @@ public class CounselingServiceTest {
 
 	}
 
-	// Funckija izracunava broj termina po danu pocevsi od zadatog datuma, pa za
-	// onoliko dana za koliko je podesen poslednji parametar(broj_dana)
-	// Ishod: prebrojani termini za jedan dan
 	@Test
 	public void testCountAllTermsByDays() {
 		when(counselingRepositoryMock.countAllTerms(DERMATOLOGIST_ID, DWC_1_START_DATE, DWC_1_END_DATE))
@@ -80,8 +71,6 @@ public class CounselingServiceTest {
 
 	}
 
-	// Funckija mapira Counseling na ExaminationDTO
-	// Scenario uspesnog mapiranja
 	@Test
 	public void testMapCounselingToCounselingDTO() {
 		ExaminationDTO dto = counselingService.mapCounselingToExaminationDTO(COUNSELING);
@@ -97,8 +86,6 @@ public class CounselingServiceTest {
 
 	}
 
-	// Funckija mapira null na ExaminationDTO
-	// Scenario (ne)uspesnog mapiranja
 	@Test
 	public void testMapCounselingToCounselingDTONull() {
 		ExaminationDTO dto = counselingService.mapCounselingToExaminationDTO(null);

@@ -38,9 +38,6 @@ public class ExamintaionServiceTest {
 	@InjectMocks
 	private ExaminationServiceImpl examinationService;
 
-	// Funckija trazi termin koji nije zauzet, a koji je najblizi prosledjenom
-	// datumu
-	// Ishod: nije pronadjen ni jedan termin
 	@Test
 	public void testGetNearestExaminationNotFound() {
 		when(examintaionRepositoryMock.findAllByPharmAndStart(PHARMACIST_ID, NOW_MINUS_1)).thenReturn(Arrays.asList());
@@ -51,9 +48,6 @@ public class ExamintaionServiceTest {
 
 	}
 
-	// Funckija trazi termin koji nije zauzet, a koji je najblizi prosledjenom
-	// datumu
-	// Ishod: pronadjen je termin
 	@Test
 	public void testGetNearestExaminationFound() {
 		when(examintaionRepositoryMock.findAllByPharmAndStart(PHARMACIST_ID, NOW_MINUS_1))
@@ -65,9 +59,6 @@ public class ExamintaionServiceTest {
 
 	}
 
-	// Funckija izracunava broj termina po danu pocevsi od zadatog datuma, pa za
-	// onoliko dana za koliko je podesen poslednji parametar(broj_dana)
-	// Ishod: prebrojani termini za jedan dan
 	@Test
 	public void testCountAllTermsByDays() {
 		when(examintaionRepositoryMock.countTerms(PHARMACIST_ID, PWC_1_START_DATE, PWC_1_END_DATE))
@@ -80,8 +71,6 @@ public class ExamintaionServiceTest {
 
 	}
 
-	// Funckija mapira Examination na ExaminationDTO
-	// Scenario uspesnog mapiranja
 	@Test
 	public void testMapExaminationToExaminationDTO() {
 		ExaminationDTO dto = examinationService.mapExaminationToExaminationDTO(EXAMINATION);
@@ -97,8 +86,6 @@ public class ExamintaionServiceTest {
 
 	}
 
-	// Funckija mapira null na ExaminationDTO
-	// Scenario (ne)uspesnog mapiranja
 	@Test
 	public void testMapExaminationToExaminationDTONull() {
 		ExaminationDTO dto = examinationService.mapExaminationToExaminationDTO(null);
