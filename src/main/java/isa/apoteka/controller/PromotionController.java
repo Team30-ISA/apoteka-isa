@@ -1,5 +1,7 @@
 package isa.apoteka.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +33,7 @@ public class PromotionController {
 	
 	@PostMapping(value= "/save", consumes = "application/json")
 	@PreAuthorize("hasRole('ADMIN')")
-	public ResponseEntity<?> savePromotion(@RequestBody PromotionDTO promotionDTO) {
+	public ResponseEntity<?> savePromotion(@RequestBody @Valid PromotionDTO promotionDTO) {
 
 		if(promotionDTO.getStartOfPromotion().after(promotionDTO.getEndOfPromotion())) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST);

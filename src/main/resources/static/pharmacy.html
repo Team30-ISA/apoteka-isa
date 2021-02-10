@@ -101,7 +101,7 @@
 
 				<div id="logo" class="pull-left">
 					<h1>
-						<a href="pharmacyAdminHome.html" class="scrollto">Apote<span>ke</span></a>
+						<a href="pharmacy.html" class="scrollto">Apote<span>ke</span></a>
 					</h1>
 					<!-- Uncomment below if you prefer to use an image logo -->
 					<!-- <a href="#body"><img src="img/logo.png" alt="" title="" /></a>-->
@@ -109,7 +109,7 @@
 
 				<nav id="nav-menu-container" v-if="role == 'ADMIN'">
 					<ul class="nav-menu">
-						<li class="menu-active"><a href="pharmacyAdminHome.html">Home</a></li>
+						<li class="menu-active"><a href="pharmacy.html">Home</a></li>
 						<li class="menu-has-children"><a href="#">Search</a>
 							<ul>
 								<li><a href="../filterDermatologist.html">Dermatologists</a></li>
@@ -117,21 +117,21 @@
 							</ul></li>
 						<li class="menu-has-children"><a href="#">Tools</a>
 							<ul>
-								<li><a href="promotion.html">New Promotion</a></li>
-								<li><a href="newOrder.html">New Order</a></li>
-								<li><a href="managingDermatologists.html">Manage Dermatologists</a></li>
-								<li><a href="managingPharmacists.html">Manage Pharmacists</a></li>
-								<li><a href="managingMedication.html">Manage Medicine</a></li>
-								<li><a href="managingOrders.html">Manage supply offers</a></li>
+								<li><a href="pharmacyAdmin/promotion.html">New Promotion</a></li>
+								<li><a href="pharmacyAdmin/newOrder.html">New Order</a></li>
+								<li><a href="pharmacyAdmin/managingDermatologists.html">Manage Dermatologists</a></li>
+								<li><a href="pharmacyAdmin/managingPharmacists.html">Manage Pharmacists</a></li>
+								<li><a href="pharmacyAdmin/managingMedication.html">Manage Medicine</a></li>
+								<li><a href="pharmacyAdmin/managingOrders.html">Manage supply offers</a></li>
 							</ul></li>
 						<li class="menu-has-children"><a href="#">{{admin.firstName}}
 								{{admin.lastName}}</a>
 							<ul>
-								<li><a href="#"><i class="icon fa-user"></i>&nbsp&nbsp&nbspProfile</a></li>
+								<li><a href="pharmacyAdmin/pharmacyAdminProfile.html"><i class="icon fa-user"></i>&nbsp&nbsp&nbspProfile</a></li>
 								<li @click="logout"><a href="#"><i
 										class="icon fa-sign-out"></i>&nbsp&nbspLog out</a></li>
 							</ul></li>
-							<li><a href="businessReport.html">Business report</a></li>
+							<li><a href="pharmacyAdmin/businessReport.html">Business report</a></li>
 					</ul>
 				</nav>
 

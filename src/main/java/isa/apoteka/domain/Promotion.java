@@ -25,7 +25,7 @@ public class Promotion {
 	@Size(min=2, max=240)
 	String title;
 	
-	@Size(min=2, max=240)
+	@Size(min=2, max=255)
 	@Column(unique = false, nullable = false)
 	String content;
 

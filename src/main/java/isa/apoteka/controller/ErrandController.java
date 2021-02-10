@@ -4,9 +4,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
 import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,12 +14,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import isa.apoteka.domain.Dermatologist;
 import isa.apoteka.domain.Errand;
 import isa.apoteka.dto.ErrandDTO;
 import isa.apoteka.dto.MedicineForSupplyDTO;
@@ -70,21 +65,24 @@ public class ErrandController {
 	}
 	
 	@GetMapping("/findAllErrands")
-	public ResponseEntity<List<ShowErrandDTO>> findallErrands() {
+	@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<List<ShowErrandDTO>> findallErrands(Boolean approved) {
 		List<ShowErrandDTO> errands = new ArrayList<ShowErrandDTO>();
 		List<Errand> list = errandService.findAllErrands();
 		for(Errand e : list) {
-			ShowErrandDTO dto = new ShowErrandDTO();
-			List<MedicineForSupplyDTO> medicines = medicineQuantityService.getMedicineForErrand(e.getId());
-			List<SupplierDTO> suppliers = offerService.findAllOffersForErrand(e.getId());
-			dto.setMedicines(medicines);
-			dto.setSuppliers(suppliers);
-			dto.setId(e.getId());
-			dto.setDeadline(e.getDeadline());
-			dto.setStart(e.getCreationTime());
-			dto.setFinished(e.getFinished());
-			
-			errands.add(dto);
+			if(e.getFinished() == approved) {
+				ShowErrandDTO dto = new ShowErrandDTO();
+				List<MedicineForSupplyDTO> medicines = medicineQuantityService.getMedicineForErrand(e.getId());
+				List<SupplierDTO> suppliers = offerService.findAllOffersForErrand(e.getId());
+				dto.setMedicines(medicines);
+				dto.setSuppliers(suppliers);
+				dto.setId(e.getId());
+				dto.setDeadline(e.getDeadline());
+				dto.setStart(e.getCreationTime());
+				dto.setFinished(e.getFinished());
+				
+				errands.add(dto);
+			}
 		}
 		return new ResponseEntity<>(errands, HttpStatus.OK);
 	}
