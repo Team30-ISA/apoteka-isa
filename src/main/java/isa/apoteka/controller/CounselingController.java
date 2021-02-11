@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sun.istack.Nullable;
 
+import isa.apoteka.async.service.EmailService;
 import isa.apoteka.domain.Counseling;
 import isa.apoteka.domain.Dermatologist;
 import isa.apoteka.domain.Patient;
@@ -42,6 +43,8 @@ public class CounselingController {
 	private PatientService patientService;
 	@Autowired
 	private DermatologistWorkCalendarService dWCService;
+	@Autowired
+	private EmailService emailService;
 	
 	@Nullable
 	@GetMapping("/findAllTermsByDay")
@@ -140,8 +143,10 @@ public class CounselingController {
 			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}
 		try {
-			if(counselingService.update(patient, Long.parseLong(params.get("newCounselingId").toString()))) 
+			if(counselingService.update(patient, Long.parseLong(params.get("newCounselingId").toString()))) {
+				emailService.sendCounselingReservation(counseling, patient);
 				return new ResponseEntity<>(1, HttpStatus.OK);
+			}
 			else
 				return new ResponseEntity<>(-1, HttpStatus.OK);
 		} catch (Exception e) {
