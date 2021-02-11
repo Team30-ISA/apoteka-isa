@@ -39,6 +39,9 @@ public class DermatologistWorkCalendarServiceImpl implements DermatologistWorkCa
 	@Transactional(readOnly = false)
 	public Boolean save(Long dermId, Pharmacy pharm, Date start, Date end) throws Exception{
 		Dermatologist derm = dermReposiotory.findById(dermId).orElse(null);
+		if(derm == null) {
+			return false;
+		}
 		Calendar calendar = new GregorianCalendar();
 		calendar.setTime(start);
 		calendar.set(Calendar.HOUR_OF_DAY, 0);
