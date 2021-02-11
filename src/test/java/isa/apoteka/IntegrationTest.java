@@ -105,7 +105,7 @@ public class IntegrationTest {
 	@Test
 	@Transactional
 	@Rollback(true)
-	public void testSetReportBadRequest() throws Exception {
+	public void testSetReportBad() throws Exception {
 		MvcResult result = login(DERM_EMAIL, DERM_PASSWORD);
 
 		UserTokenState userTokenState = JSON.parse(result.getResponse().getContentAsString(), UserTokenState.class);
@@ -117,7 +117,8 @@ public class IntegrationTest {
 
 		mockMvc.perform(MockMvcRequestBuilders.post(URL_PREFIX + "/setReport")
 				.header("Authorization", "Bearer " + userTokenState.getAccessToken()).contentType(contentType)
-				.content(p)).andExpect(status().is(400));
+				.content(p)).andExpect(status().is(200))
+				.andExpect(jsonPath("$").value(false));;
 	}
 
 	@Test
