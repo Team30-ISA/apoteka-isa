@@ -45,31 +45,28 @@ public class SysAdminServiceImpl implements SysAdminService {
     private SysAdminRepository sysAdminRepository;
 
     @Override
-    public SystemAdmin update(UserRequest userRequest) throws Exception {
+    public UserRequest update(UserRequest userRequest) throws Exception {
         if(!((User)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId().equals(userRequest.getId()))
             throw new Exception("Unauthorized");
 
         userRequest.updateValidation();
-        SystemAdmin oldUser = sysAdminRepository.getOne(userRequest.getId());
+        SystemAdmin user = sysAdminRepository.getOne(userRequest.getId());
 
-        SystemAdmin user = new SystemAdmin(userRequest);
-        user.setEnabled(true);
-        user.setPasswordForReset(oldUser.getPassword());
-        user.setEmail(oldUser.getEmail());
-        user.setUsername(oldUser.getUsername());
-        user.setLastPasswordResetDate(oldUser.getLastPasswordResetDate());
+        user.setFirstName(userRequest.getFirstname());
+        user.setLastName(userRequest.getLastname());
+        user.setPhonenumber(userRequest.getPhoneNumber());
 
-        if(!oldUser.getAddress().getStreet().equals(userRequest.getAddress())) {
+        if(!user.getAddress().getStreet().equals(userRequest.getAddress())) {
             City city = cityService.findCityById(userRequest.getCityId().longValue());
             Address address = new Address(userRequest.getAddress(), city);
             user.setAddress(address);
             addressService.insertNewAddress(address);
         } else {
-            user.setAddress(oldUser.getAddress());
+            user.setAddress(user.getAddress());
         }
 
-        userRepository.save(user);
-        return user;
+        sysAdminRepository.save(user);
+        return userRequest;
     }
 
     @Override

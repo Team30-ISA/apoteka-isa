@@ -4,7 +4,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import isa.apoteka.dto.ErrandPreviewDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -51,6 +53,11 @@ public class ErrandServiceImpl implements ErrandService{
 	public List<Errand> findAllErrands() {
 		PharmacyAdmin admin = (PharmacyAdmin) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		return errandRepository.findAllByPharmacy(admin.getPharmacy().getId());
+	}
+
+	@Override
+	public List<ErrandPreviewDTO> findAllValidErrands() {
+		return errandRepository.findAll().stream().filter(e -> e.getDeadline().after(new Date())).collect(Collectors.toList()).stream().map(e -> new ErrandPreviewDTO(e)).collect(Collectors.toList());
 	}
 
 }
