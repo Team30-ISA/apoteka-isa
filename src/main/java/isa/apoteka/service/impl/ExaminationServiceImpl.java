@@ -7,13 +7,8 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
-import javax.persistence.OptimisticLockException;
-
-import org.hibernate.StaleObjectStateException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -222,12 +217,6 @@ public class ExaminationServiceImpl implements ExaminationService {
 		}
 		// DOBAVI RADNO VREME
 		PharmacistWorkCalendar pwc = pwcService.findById(pwcId);
-		try {
-			TimeUnit.SECONDS.sleep(7);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		// SACUVAJ TERMIN
 		examinationRepository.createExamination(start, duration, patientId, pwcId);
 		// SACUVAJ RADNO VREME (AZURIRAJ VERISON)
