@@ -31,6 +31,7 @@ public class PharmacistWorkCalendar {
 	
 	public PharmacistWorkCalendar() {
 		super();
+		this.version = 0L;
 	}
 
 	public PharmacistWorkCalendar(Pharmacist pharmacist, Pharmacy pharmacy, Date startDate, Date endDate, Date lastReqDate) {
@@ -39,6 +40,7 @@ public class PharmacistWorkCalendar {
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.lastReqDate = lastReqDate;
+		this.version = 0L;
 	}
 
 	public Long getId() {

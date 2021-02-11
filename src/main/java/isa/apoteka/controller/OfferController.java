@@ -27,15 +27,13 @@ public class OfferController {
 	@GetMapping("/approveOffer")
 	@PreAuthorize("hasRole('ADMIN')")	
 	public Boolean approveOffer(Long offerId, Long errandId){
-		offerService.approveOffer(offerId, errandId);
-		return true;
+		return offerService.approveOffer(offerId, errandId);
 	}
 	
 	@GetMapping("/sendEmail")
 	@PreAuthorize("hasRole('ADMIN')")	
 	public Boolean sendEmail(Long offerId, Long errandId){
-		offerService.sendMail(errandId);
-		return true;
+		return offerService.sendMail(errandId);
 	}
 
 	@PostMapping

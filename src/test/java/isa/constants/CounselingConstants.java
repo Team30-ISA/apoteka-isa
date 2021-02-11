@@ -20,8 +20,8 @@ public class CounselingConstants {
     public static final Date COUNSELING_4_START = new Date(1612976400000L); //10.02.2021. 18h
     public static final Patient PATIENT = new Patient(1L, "Jelena", "Jelenovic");
 	public static final Pharmacy PHARMACY = new Pharmacy(1L, "Apoteka 1", "Ulica 1");
-	public static final Dermatologist DERMATOLOGIST = new Dermatologist(1L, "Petar", "Petrovic");
-	public static final DermatologistWorkCalendar DWC = new DermatologistWorkCalendar(DERMATOLOGIST, PHARMACY, DWC_1_START_DATE, DWC_1_END_DATE);
+	public static final Dermatologist DERMATOLOGIST = new Dermatologist(1L, "Petar", "Petrovic", new Date());
+	public static final DermatologistWorkCalendar DWC = new DermatologistWorkCalendar(DERMATOLOGIST, PHARMACY, DWC_1_START_DATE, DWC_1_END_DATE, new Date());
 	public static final Counseling COUNSELING = new Counseling(0L, COUNSELING_2_START, 30, DWC, PATIENT, 1000f, "");
 	public static final Counseling COUNSELING0 = new Counseling(5L,COUNSELING_2_START, 30, null, null, 1000f, "");
 	public static final Counseling COUNSELING1 = new Counseling(1L, COUNSELING_1_START, 15, DWC, null, 1000f, "");

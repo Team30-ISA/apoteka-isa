@@ -54,7 +54,7 @@ public interface CounselingRepository extends JpaRepository<Counseling, Long>{
 	Dermatologist findDermatologistForCounseling(Long counsId);
 	
 	@Modifying
-	@Query(value = "insert into counseling (start_date, duration, price, dermatologist_work_calendar_id) values (:start,:duration,:price,:dwcId)", nativeQuery = true)
+	@Query(value = "insert into counseling (start_date, duration, price, dermatologist_work_calendar_id, version) values (:start,:duration,:price,:dwcId, 0)", nativeQuery = true)
 	void createCounseling(Date start, int duration, Float price, Long dwcId);
 
 	@Query("from Counseling c join c.dermatologistWorkCalendar.pharmacy p where c.report != null and c.report != '' and c.startDate<= :kraj and c.startDate>= :pocetak and p.id=:id")

@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,7 +27,8 @@ public class PharmacistWorkCalendarServiceImpl implements PharmacistWorkCalendar
 	}
 	
 	@Override
-	public Boolean save(PharmacistWorkCalendar derm) {
+	public Boolean save(PharmacistWorkCalendar derm) throws Exception{
+		TimeUnit.SECONDS.sleep(15);
 		PharmacistWorkCalendar d = pharmWCRepository.save(derm);
 		if(d != null)
 			return true;

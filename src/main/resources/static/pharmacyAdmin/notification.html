@@ -50,7 +50,7 @@
 	 border-radius: 0;
 	 box-shadow: none;
 	 font-size: 15px; display: block;
-	 width: 170%;
+	 width: 100%;
 	 padding: .275rem .75rem;
 	 font-size: 1rem;
 	 line-height: 2;
@@ -86,7 +86,7 @@ main ::-webkit-scrollbar-thumb:hover {
 	
 </style>
 <body id="body">
-	<div id="managePharm">
+	<div id="manageDerm">
 		<!--==========================
     Top Bar
   ============================-->
@@ -169,123 +169,15 @@ main ::-webkit-scrollbar-thumb:hover {
 			<section id="wrapper">
 				<div class="inner">
 					<header class="special">
-						<h2>MANAGE PHARMACISTS</h2>
+						<h2>REQUESTS FOR MEDICATION</h2>
 					</header>
-						<div class="highlight" >
+						<div class="highlight">
 						<section>
-						    <table style="width: 40%; margin-left:30%; margin-bottom:7.5%">
-								<tr width="100%">
-									<td width="40%">First Name: </td>
-									<td width="40%">&nbsp&nbspLast Name:</td>
-									<td width="20%">&nbsp</td>
-								</tr>
-								<tr width="100%">
-									<td width="10%"><input type="text" v-model="searchPharmFirst" style=" width: 100%;" class="txtEnabled"></td>
-									<td width="10%"><input type="text" v-model="searchPharmLast" style=" width: 100%; margin-left:5%" class="txtEnabled"></td>							
-									<td width="80%"><input type="button" @click="search" value="Search" style="background: #50d8af; border: 0; width:100%;border-radius: 3px; padding: 10px 30px; color: #fff; transition: 0.4s; cursor: pointer; margin-left:15%"></td>
+							<table style="width: 20%; margin-left:40%; margin-bottom:7.5%">
+								<tr width="100%" v-for="m in messages">
+									<td width="40%" style="margin-bottom:5rem">--{{m}}--</td>
 								</tr>
 							</table>
-							<table style="width: 50%; margin-left:25rem;margin-right:25rem; margin-bottom:2rem">
-								<tr v-for="pharm in pharms">
-									<td style="width: 50%; font-size:1.5rem">
-										{{pharm.firstName}}&nbsp{{pharm.lastName}}
-									</td>
-									<td style="width: 10%;">
-									<a href="#" class="icon fa-ban" style="font-size:20px; color:red" @click="firePharm(pharm.id)"><span class="label">Icon</span></a>
-									</td>
-									<td style="width: 50%;">
-									<a href="pharmacistCalendar.html" class="icon fa-clock-o" style="font-size:20px;" @click="pharmCal(pharm.id)"><span class="label">Icon</span></a>
-									</td>
-								</tr>
-							</table>
-								<a  class="icon fa-user-plus" style="font-size:50px; color:#50d8af; margin-left:35rem;  cursor:pointer" @click="changeState"><span class="label">Icon</span></a>
-						</section>
-						</div>
-						
-						<div v-if="changePass" style="box-shadow: 0px 15px 25px rgba(0, 0, 0, 0.1); position: absolute; width:600px; height: 500px; background: rgb(248, 248, 248); left: calc(50% - 300px); top:calc(50% - 250px); border-radius: 5px;">
-						<section>
-							<a href="#" @click="discardPassCh" class="icon fa-close" style="left: 560px;"></a>
-							<h5 style=" margin-top:10px; text-align:center"><strong>Register pharmacist</strong></h5>
-							<div class="nesto">
-							<table style="width: 80%; margin-left:10%">
-								<tr width="100%">
-									<td style="width: 40%">
-										<b>USERNAME</b>
-									</td>
-									<td style="width: 60%;  background-color: #ffffff";>
-										<input type="text" v-model="newPharm.username"  style=" width: 100%;" class="txtEnabled">
-									</td>
-								</tr>
-								<tr width="100%">
-									<td style="width: 40%;">
-										<b>FIRST NAME</b>
-									</td>
-									<td style="width: 60%;">
-										<input type="text" v-model="newPharm.firstName" style=" width: 100%;" class="txtEnabled">
-									</td>
-								</tr>
-								<tr width="100%">
-									<td style="width: 40%;">
-										<b>LAST NAME</b>
-									</td>
-									<td style="width: 60%;">
-										<input type="text" v-model="newPharm.lastName" style=" width: 100%;" class="txtEnabled">
-									</td>
-								</tr>
-								<tr width="100%">
-									<td style="width: 40%;">
-										<b>EMAIL &nbsp</b>
-									</td>
-									<td style="width: 60%;">
-										<input type="text" v-model="newPharm.email" style=" width: 100%;" class="txtEnabled">
-									</td>
-								</tr>
-								<tr width="100%">
-									<td style="width: 40%;">
-										<b>COUNTRY</b>
-									</td>
-									<td style="width: 70%;">
-										<select class="txtEnabled" v-model="selectedCountry" @change="findCity" style="width: 100%;">
-											<option v-for="country in countries" : value="country.value" v-bind:value="{ id: country.id }"">{{country.country}}</option>
-											
-										</select>
-										<!-- <h1>{{selected.id}}</h1> -->
-									</td>
-								</tr>
-								<tr width="100%">
-									<td style="width:40%;">
-										<b>CITY</b>
-									</td>
-									<td style="width: 60%;">
-										<select class="txtEnabled" v-model="selectedCity" @change="findAddresses" style="width: 100%;">
-											<option v-for="city in cities" : value="city.value" v-bind:value="{ id: city.id }">{{city.city}}</option>									
-										</select>
-									</td>
-								</tr>
-								<tr width="100%">
-									<td style="width: 40%;">
-										<b>ADDRESS</b>
-									</td>
-									<td style="width: 60%;">
-										<input type="text" v-model="newPharm.street" style=" width: 100%;" class="txtEnabled">
-									</td>
-								</tr>
-								<tr width="100%">
-									<td style="width: 40%;">
-										<b>GENDER</b>
-									</td>
-									<td style="width: 60%;" align="center">
-										<input checked="checked" v-model="newPharm.gender" type="radio" value="0" >Female</input>
-                                        <input v-model="newPharm.gender" type="radio" value="1" style="margin-left:10%">Male</input>
-									</td>
-								</tr>
-								<tr width="100%">
-									<td colspan="2" align="center">
-										<input type="button" @click="changeState" value="Register" style="background: #50d8af; border: 0; width:40%;border-radius: 3px; padding: 10px 30px; color: #fff; transition: 0.4s; cursor: pointer; margin-top:7.5%">
-									</td>
-								</tr>
-							</table>
-							</div>
 						</section>
 						</div>
 				</div>
@@ -317,7 +209,7 @@ main ::-webkit-scrollbar-thumb:hover {
 	<!-- Template Main Javascript File -->
 	<script src="../js/main.js"></script>
 	<script src="../axios.js"></script>
-	<script src="managingPharmacists.js"></script>
+	<script src="notification.js"></script>
 
 </body>
 </html>

@@ -23,4 +23,7 @@ public interface MedicineReservationRepository extends JpaRepository<ReservedMed
 
 	@Query("from ReservedMedicine r join r.pharmacy p where p.id=:id")
 	List<ReservedMedicine> findAllfinishedReservation(Long id);
+
+	@Query("from ReservedMedicine r join r.pharmacy p join r.medicine m where p.id=:pharmacyId and m.id=:medicineId")
+	List<ReservedMedicine> findReservationForMedicineAndPharmacyNotFinished(Long medicineId, Long pharmacyId);
 }
