@@ -187,7 +187,9 @@ main ::-webkit-scrollbar-thumb:hover {
 								<tr width="100%" style=" height:1rem">
 									<td colspan= "2" width="30%" style="font-size:1.5rem;"><b>Supply order {{o.id}}</b> &nbsp <a href="#" class="icon fa-info-circle"
 											style="font-size: 20px; color: #50d8af;"
-											@click="showMedicine(o.medicines)"><span class="label">Icon</span></a></td>
+											@click="showMedicine(o.medicines)"><span class="label">Icon</span></a> &nbsp <a href="#" class="icon fa-ban"
+											style="font-size: 20px; color: red;"
+											@click="deleteErrand(o)"><span class="label">Icon</span></a></td>
 									<td width="30%"></td>
 									<td width="20%"><b>&nbsp</b></td>
 									<td width="20%">&nbsp</td>

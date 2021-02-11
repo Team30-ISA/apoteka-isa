@@ -9,7 +9,7 @@ import isa.apoteka.domain.Pharmacy;
 import isa.apoteka.dto.PeriodDTO;
 
 public interface DermatologistWorkCalendarService {
-	Boolean save(Dermatologist derm, Pharmacy pharm, Date start, Date end);
+	Boolean save(Long dermatologistId, Pharmacy pharm, Date start, Date end) throws Exception;
 	List<DermatologistWorkCalendar> findAllDermWorkCalendarByDermId(Long id);
 	List<PeriodDTO> findAllDermWorkCalendarByDermIdAndPeriod(Long pharmacyId, Long dermatologistId, Date start, Date end);
 	void deleteDermWorkCalendarByDate(Date start, Long dermId);
@@ -18,4 +18,6 @@ public interface DermatologistWorkCalendarService {
 	PeriodDTO findDermWorkCalendarForDermAndDate(Long pharmacyId, Long dermatologistId, Date start);
 	List<PeriodDTO> findAllDermWorkCalendarByPeriod(Long dermatologistId, Date start, Date end);
 	void deleteDermWorkCalendarByDateAllPharmacies(Date start, Long dermId);
+	DermatologistWorkCalendar findById(Long dwcId);
+	void save(DermatologistWorkCalendar dwc);
 }

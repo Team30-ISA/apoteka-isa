@@ -60,4 +60,11 @@ public class MedicineInPharmacyServiceImpl implements MedicineInPharmacyService{
 		return medInPharmacyRepository.getAvailableMedicineInPharmacy(id);
 	}
 
+	@Override
+	@Transactional(readOnly = false)
+	public void changeQuantity(Long id, int quantity, Long pharmacyId) {
+		medInPharmacyRepository.changeQuantity(id, quantity, pharmacyId);
+		
+	}
+
 }

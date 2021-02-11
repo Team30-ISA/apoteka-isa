@@ -283,8 +283,12 @@ public class CounselingController {
 		if(dwcId == null) {
 			return new ResponseEntity<>(-1, HttpStatus.OK);
 		}
-		if(!counselingService.createCounseling(start, duration, price, dwcId, dermId, admin.getPharmacy().getId())) {
-			return new ResponseEntity<>(-2, HttpStatus.OK);
+		try {
+			if(!counselingService.createCounseling(start, duration, price, dwcId, dermId, admin.getPharmacy().getId())) {
+				return new ResponseEntity<>(-2, HttpStatus.OK);
+			}
+		} catch (Exception e) {
+			return new ResponseEntity<>(-3, HttpStatus.OK);
 		}
 		
 		return new ResponseEntity<>(1, HttpStatus.OK);

@@ -5,6 +5,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,7 @@ import isa.apoteka.domain.DermatologistWorkCalendar;
 import isa.apoteka.domain.Pharmacy;
 import isa.apoteka.domain.PharmacyAdmin;
 import isa.apoteka.dto.PeriodDTO;
+import isa.apoteka.repository.DermatologistRepository;
 import isa.apoteka.repository.DermatologistWorkCalendarRepository;
 import isa.apoteka.service.DermatologistWorkCalendarService;
 
@@ -24,16 +27,18 @@ public class DermatologistWorkCalendarServiceImpl implements DermatologistWorkCa
 
 
 	private DermatologistWorkCalendarRepository dermWCRepository;
+	private DermatologistRepository dermReposiotory;
 	
 	@Autowired
-	public DermatologistWorkCalendarServiceImpl(DermatologistWorkCalendarRepository dermWCRepository) {
+	public DermatologistWorkCalendarServiceImpl(DermatologistWorkCalendarRepository dermWCRepository, DermatologistRepository dermReposiotory) {
 		this.dermWCRepository = dermWCRepository;
+		this.dermReposiotory = dermReposiotory;
 	}
 	
 	@Override
 	@Transactional(readOnly = false)
-	public Boolean save(Dermatologist derm, Pharmacy pharm, Date start, Date end) {
-		
+	public Boolean save(Long dermId, Pharmacy pharm, Date start, Date end) throws Exception{
+		Dermatologist derm = dermReposiotory.findById(dermId).orElse(null);
 		Calendar calendar = new GregorianCalendar();
 		calendar.setTime(start);
 		calendar.set(Calendar.HOUR_OF_DAY, 0);
@@ -42,8 +47,7 @@ public class DermatologistWorkCalendarServiceImpl implements DermatologistWorkCa
 		Date startDate = calendar.getTime();
 		calendar.add(Calendar.DATE, 1);
 		Date endDate = calendar.getTime();
-		List<DermatologistWorkCalendar> dWC = dermWCRepository.findAllDermWorkCalendarByDermIdInPeriod(derm.getId(),startDate, endDate);
-		
+		List<DermatologistWorkCalendar> dWC = dermWCRepository.findAllDermWorkCalendarByDermIdInPeriod(dermId,startDate, endDate);
 		for(DermatologistWorkCalendar d : dWC) {
 			if(start.after(d.getStartDate()) && start.before(d.getEndDate())) {
 				return false;
@@ -53,8 +57,12 @@ public class DermatologistWorkCalendarServiceImpl implements DermatologistWorkCa
 				return false;
 			}
 		}
-		DermatologistWorkCalendar dwc = new DermatologistWorkCalendar(derm, pharm, start, end);
+		TimeUnit.SECONDS.sleep(15);
+		
+		DermatologistWorkCalendar dwc = new DermatologistWorkCalendar(derm, pharm, start, end, new Date());
 		DermatologistWorkCalendar d = dermWCRepository.save(dwc);
+		derm.setLastReqDate(new Date());
+		dermReposiotory.save(derm);
 		if(d != null)
 			return true;
 		return false;
@@ -154,6 +162,16 @@ public class DermatologistWorkCalendarServiceImpl implements DermatologistWorkCa
 			return null;
 		}
 		return new PeriodDTO(dwc.getStartDate(), dwc.getEndDate(), dwc.getId());
+	}
+
+	@Override
+	public DermatologistWorkCalendar findById(Long dwcId) {
+		return dermWCRepository.findById(dwcId).orElse(null);
+	}
+
+	@Override
+	public void save(DermatologistWorkCalendar dwc) {
+		dermWCRepository.save(dwc);
 	}
 
 }

@@ -67,6 +67,7 @@ var app = new Vue({
 						
 					})
 					.then(response => {
+						console.log(response.data)
 						if(response.data == true){
 							axios
 							.get('/api/offer/sendEmail',
@@ -87,6 +88,8 @@ var app = new Vue({
 									}, 3000);
 								}
 							})
+						}else{
+							JSAlert.alert("You can't approve this offer, because another admin created the supply request.");
 						}
 					})
 			
@@ -120,6 +123,25 @@ var app = new Vue({
 				this.orders = response.data
 
 			})
+		},
+		deleteErrand(o){
+			axios
+	        .delete('/api/errand/delete/' + o.id,{
+
+	    		headers: {
+					'Authorization': "Bearer " + localStorage.getItem('access_token'),
+				    "Content-Type": "application/json"
+				  }
+				  
+	        })
+	        .then(response => {
+	        	window.location.href = '/pharmacyAdmin/managingOrders.html';
+	        }).catch(error => {
+	            console.log(error)
+	            if (error.response.status == 401 || error.response.status == 400 || error.response.status == 500) {
+	                JSAlert.alert("This supply request has offers. It cannot be deleted.");
+	            }
+	        })
 		}
 	},
 	created() {

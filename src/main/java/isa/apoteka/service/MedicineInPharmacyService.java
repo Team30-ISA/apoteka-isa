@@ -11,4 +11,6 @@ public interface MedicineInPharmacyService {
 	List<MedicineInPharmacy> getMedicineInPharmacy(Long pharmacyId);
 	List<MedicineInPharmacy> searchMedicineInPharmacy(Long pharmacyId, String name);
 	List<MedicineInPharmacy> getAvailableMedicineInPharmacy(Long id);
+	void changeQuantity(Long id, int quantity, Long long1);
+
 }

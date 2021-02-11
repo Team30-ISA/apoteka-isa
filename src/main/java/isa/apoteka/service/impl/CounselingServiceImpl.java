@@ -7,6 +7,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,12 +17,14 @@ import org.springframework.transaction.annotation.Transactional;
 import isa.apoteka.async.service.EmailService;
 import isa.apoteka.domain.Counseling;
 import isa.apoteka.domain.Dermatologist;
+import isa.apoteka.domain.DermatologistWorkCalendar;
 import isa.apoteka.domain.Patient;
 import isa.apoteka.domain.Pharmacy;
 import isa.apoteka.dto.ExaminationDTO;
 import isa.apoteka.repository.CounselingRepository;
 import isa.apoteka.repository.DermatologistRepository;
 import isa.apoteka.service.CounselingService;
+import isa.apoteka.service.DermatologistWorkCalendarService;
 
 @Service
 @Transactional(readOnly = true)
@@ -35,6 +38,9 @@ public class CounselingServiceImpl implements CounselingService {
 
 	@Autowired
 	private EmailService emailService;
+	
+	@Autowired
+	private DermatologistWorkCalendarService dwcService;
 
 	@Override
 	public List<ExaminationDTO> findAllTermsByDay(Long pharmacyId, Long dermatologistId, Date start) {
@@ -291,7 +297,7 @@ public class CounselingServiceImpl implements CounselingService {
 
 	@Override
 	@Transactional(readOnly = false)
-	public Boolean createCounseling(Date start, int duration, Float price, Long dwcId, Long dermId, Long pharmacyId) {
+	public Boolean createCounseling(Date start, int duration, Float price, Long dwcId, Long dermId, Long pharmacyId) throws Exception {
 		Calendar calendar = new GregorianCalendar();
 		calendar.setTime(start);
 		calendar.add(Calendar.MINUTE, duration);
@@ -299,7 +305,11 @@ public class CounselingServiceImpl implements CounselingService {
 		if (isDermatologistFree(start, end, dermId, pharmacyId) == false) {
 			return false;
 		}
+		TimeUnit.SECONDS.sleep(10);
+		DermatologistWorkCalendar dwc = dwcService.findById(dwcId);
 		counselingRepository.createCounseling(start, duration, price, dwcId);
+		dwc.setLastReqDate(new Date());
+		dwcService.save(dwc);
 		return true;
 	}
 
