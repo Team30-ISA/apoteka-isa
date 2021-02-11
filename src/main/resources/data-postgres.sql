@@ -245,4 +245,5 @@ insert into pharmacy_grade (id, grade, pharmacy_id, patient_id) values (8, 1, 4,
 insert into dermatologist_holiday(start_date, end_date, dermatologist_id, status) values ('20210210 12:00:00 AM','20210213 12:00:00 PM',5, 2);
 insert into pharmacist_holiday(start_date, end_date, pharmacist_id, status) values ('20210210 12:00:00 AM','20210213 12:00:00 PM',4, 2);
 
-
+insert into notification(date, user_id, message) values ('20210210 12:00:00 AM', 10, 'Nema vise bensedina');
+insert into notification(date, user_id, message) values ('20210210 12:00:00 AM', 10, 'Fali brufen 400mg');
