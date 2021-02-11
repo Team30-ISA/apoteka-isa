@@ -7,7 +7,6 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -240,6 +239,8 @@ public class CounselingServiceImpl implements CounselingService {
 	@Transactional(readOnly = false)
 	public Boolean update(Patient patient, Long counselingId) throws Exception {
 		Counseling c = counselingRepository.findById(counselingId).orElse(null);
+		if(c == null)
+			return false;
 		if (c.getPatient() != null) {
 			return false;
 		}
@@ -259,6 +260,8 @@ public class CounselingServiceImpl implements CounselingService {
 	@Transactional(readOnly = false)
 	public Boolean updateReport(String report, Long counselingId)  throws Exception {
 		Counseling counseling = counselingRepository.findById(counselingId).orElse(null);
+		if(counseling == null)
+			return false;
 		if(counseling.getReport() != null && !counseling.getReport().equals("")) {
 			return false;
 		}
