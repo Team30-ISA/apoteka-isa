@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import isa.apoteka.domain.CategoryType;
 import isa.apoteka.domain.LoyaltyProgram;
 import isa.apoteka.repository.LoyaltyProgramRepository;
 import isa.apoteka.service.LoyaltyProgramService;
@@ -34,11 +33,4 @@ public class LoyaltyProgramServiceImpl implements LoyaltyProgramService {
 	public LoyaltyProgram save(LoyaltyProgram loyaltyProgram) {
 		return this.loyaltyProgramRepository.save(loyaltyProgram);
 	}
-
-	@Override
-	public List<CategoryType> findAllCategoryType() {
-		
-		return null;
-	}
-
 }
