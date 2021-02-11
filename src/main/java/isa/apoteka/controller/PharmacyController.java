@@ -67,8 +67,6 @@ public class PharmacyController {
 	public ResponseEntity<List<PharmacyDTO>> getAllPharmacies() {
 
 		List<Pharmacy> pharmacies = pharmacyService.findAll();
-
-		// convert students to DTOs
 		List<PharmacyDTO> pharmacyDTO = new ArrayList<>();
 		for (Pharmacy p : pharmacies) {
 			pharmacyDTO.add(new PharmacyDTO(p));

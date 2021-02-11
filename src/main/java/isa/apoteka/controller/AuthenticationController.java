@@ -58,7 +58,7 @@ public class AuthenticationController {
         String jwt = tokenUtils.generateToken(user.getEmail());
         int expiresIn = tokenUtils.getExpiredIn();
 
-        return ResponseEntity.ok(new UserTokenState(jwt, expiresIn));
+        return ResponseEntity.ok(new UserTokenState(jwt, expiresIn, user));
     }
 
     @PostMapping("/signup")
@@ -97,7 +97,7 @@ public class AuthenticationController {
             String refreshedToken = tokenUtils.refreshToken(token);
             int expiresIn = tokenUtils.getExpiredIn();
 
-            return ResponseEntity.ok(new UserTokenState(refreshedToken, expiresIn));
+            return ResponseEntity.ok(new UserTokenState(refreshedToken, expiresIn, user));
         } else {
             UserTokenState userTokenState = new UserTokenState();
             return ResponseEntity.badRequest().body(userTokenState);

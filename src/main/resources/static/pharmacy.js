@@ -184,9 +184,9 @@ var app = new Vue({
 				 	console.log(this.coords = response.data.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos)
 				 	console.log(this.first = this.coords.split(" "))
 				 	console.log();
-				 	 
+				 	ymaps.ready(this.init);
 				 })
-				ymaps.ready(this.init);
+				
 				console.log(this.pharmacy.id)
 				axios
 				.get('/api/pharmacy/findAllPharmsInPharmacy',

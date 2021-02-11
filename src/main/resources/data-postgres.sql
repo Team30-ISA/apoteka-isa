@@ -111,6 +111,7 @@ insert into medicine_substitutes (medicine_id, sub_medicine_id) VALUES (3, 1);
 
 insert into medicine_in_pharmacy (quantity, pharmacy_id, medicine_id) VALUES (10, 2, 1);
 insert into medicine_in_pharmacy (quantity, pharmacy_id, medicine_id) VALUES (6, 2, 2);
+insert into medicine_in_pharmacy (quantity, pharmacy_id, medicine_id) VALUES (6, 2, 3);
 insert into medicine_in_pharmacy (quantity, pharmacy_id, medicine_id) VALUES (20, 1, 2);
 insert into medicine_in_pharmacy (quantity, pharmacy_id, medicine_id) VALUES (5, 4, 2);
 insert into medicine_in_pharmacy (quantity, pharmacy_id, medicine_id) VALUES (21, 3, 3);
