@@ -128,45 +128,45 @@ insert into dermatologist_work_calendar (dermatologist_id, pharmacy_id, start_da
 insert into dermatologist_work_calendar (dermatologist_id, pharmacy_id, start_date, end_date) VALUES (5, 1, '20210220 05:00:00 AM', '20210220 05:00:00 PM');
 insert into dermatologist_work_calendar (dermatologist_id, pharmacy_id, start_date, end_date) VALUES (5, 2, '20210215 05:00:00 AM', '20210215 05:00:00 PM');
 
-insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, report) VALUES ('20200208 08:53:00 PM', 5, 1, 1999.99, 'nesto');
-insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, report) VALUES ('20200208 08:53:00 PM', 5, 1, 1999.99, 'nesto');
-insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, report) VALUES ('20200208 08:53:00 PM', 5, 1, 1999.99, 'nesto');
-insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, report) VALUES ('20200208 08:53:00 PM', 5, 1, 1999.99, 'nesto');
-insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, report) VALUES ('20200208 08:53:00 PM', 5, 1, 1999.99, 'nesto');
-insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, report) VALUES ('20200208 08:53:00 PM', 5, 1, 1999.99, 'nesto');
-insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, report) VALUES ('20200108 08:53:00 PM', 5, 1, 1999.99, 'nesto');
-insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, report) VALUES ('20200108 08:53:00 PM', 5, 1, 1999.99, 'nesto');
-insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, report) VALUES ('20200108 08:53:00 PM', 5, 1, 1999.99, 'nesto');
-insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, report) VALUES ('20200408 08:53:00 PM', 5, 1, 1999.99, 'nesto');
-insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, report) VALUES ('20200308 08:53:00 PM', 5, 1, 1999.99, 'nesto');
-insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, report) VALUES ('20200308 08:53:00 PM', 5, 1, 1999.99, 'nesto');
-insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, report) VALUES ('20200808 08:53:00 PM', 5, 1, 1999.99, 'nesto');
-insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, report) VALUES ('20200708 08:53:00 PM', 5, 1, 1999.99, 'nesto');
-insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, report) VALUES ('20200608 08:53:00 PM', 5, 1, 1999.99, 'nesto');
-insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, report) VALUES ('20201008 08:53:00 PM', 5, 1, 1999.99, 'nesto');
-insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, report) VALUES ('20201008 08:53:00 PM', 5, 1, 1999.99, 'nesto');
-insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, report) VALUES ('20201108 08:53:00 PM', 5, 1, 1999.99, 'nesto');
-insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, report) VALUES ('20201208 08:53:00 PM', 5, 1, 1999.99, 'nesto');
-insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, report) VALUES ('20201208 08:53:00 PM', 5, 1, 1999.99, 'nesto');
-insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, report) VALUES ('20201208 08:53:00 PM', 5, 1, 1999.99, ''); 
+insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, report, version) VALUES ('20200208 08:53:00 PM', 5, 1, 1999.99, 'nesto', 0);
+insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, report, version) VALUES ('20200208 08:53:00 PM', 5, 1, 1999.99, 'nesto', 0);
+insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, report, version) VALUES ('20200208 08:53:00 PM', 5, 1, 1999.99, 'nesto', 0);
+insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, report, version) VALUES ('20200208 08:53:00 PM', 5, 1, 1999.99, 'nesto', 0);
+insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, report, version) VALUES ('20200208 08:53:00 PM', 5, 1, 1999.99, 'nesto', 0);
+insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, report, version) VALUES ('20200208 08:53:00 PM', 5, 1, 1999.99, 'nesto', 0);
+insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, report, version) VALUES ('20200108 08:53:00 PM', 5, 1, 1999.99, 'nesto', 0);
+insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, report, version) VALUES ('20200108 08:53:00 PM', 5, 1, 1999.99, 'nesto', 0);
+insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, report, version) VALUES ('20200108 08:53:00 PM', 5, 1, 1999.99, 'nesto', 0);
+insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, report, version) VALUES ('20200408 08:53:00 PM', 5, 1, 1999.99, 'nesto', 0);
+insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, report, version) VALUES ('20200308 08:53:00 PM', 5, 1, 1999.99, 'nesto', 0);
+insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, report, version) VALUES ('20200308 08:53:00 PM', 5, 1, 1999.99, 'nesto', 0);
+insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, report, version) VALUES ('20200808 08:53:00 PM', 5, 1, 1999.99, 'nesto', 0);
+insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, report, version) VALUES ('20200708 08:53:00 PM', 5, 1, 1999.99, 'nesto', 0);
+insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, report, version) VALUES ('20200608 08:53:00 PM', 5, 1, 1999.99, 'nesto', 0);
+insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, report, version) VALUES ('20201008 08:53:00 PM', 5, 1, 1999.99, 'nesto', 0);
+insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, report, version) VALUES ('20201008 08:53:00 PM', 5, 1, 1999.99, 'nesto', 0);
+insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, report, version) VALUES ('20201108 08:53:00 PM', 5, 1, 1999.99, 'nesto', 0);
+insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, report, version) VALUES ('20201208 08:53:00 PM', 5, 1, 1999.99, 'nesto', 0);
+insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, report, version) VALUES ('20201208 08:53:00 PM', 5, 1, 1999.99, 'nesto', 0);
+insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, report, version) VALUES ('20201208 08:53:00 PM', 5, 1, 1999.99, '', 0); 
 
-insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, patient_id, report) VALUES ('20210204 11:35:00 AM', 60, 2, 999.99, 13, 'nesto');
-insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, patient_id, report) VALUES ('20210219 12:00:00 PM', 30, 1, 999.99, 13, 'nesto');
-insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, report) VALUES ('20210220 11:00:00 AM', 15, 1, 1999.99, 'nesto');
-insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, patient_id) VALUES ('20210220 11:15:00 AM', 30, 1, 1999.99, 13);
-insert into counseling (start_date, duration, dermatologist_work_calendar_id, price) VALUES ('20210220 12:00:00 PM', 60, 1, 2999.99);
-insert into counseling (start_date, duration, dermatologist_work_calendar_id, price) VALUES ('20210220 01:00:00 PM', 5, 1, 99.99);
-insert into counseling (start_date, duration, dermatologist_work_calendar_id, price) VALUES ('20210220 01:05:00 PM', 15, 1, 999.99);
-insert into counseling (start_date, duration, dermatologist_work_calendar_id, price) VALUES ('20210220 01:20:00 PM', 30, 1, 699.99);
-insert into counseling (start_date, duration, dermatologist_work_calendar_id, price) VALUES ('20210220 01:50:00 PM', 10, 1, 599.99);
-insert into counseling (start_date, duration, dermatologist_work_calendar_id, price) VALUES ('20210220 02:00:00 PM', 20, 1, 799.99);
-insert into counseling (start_date, duration, dermatologist_work_calendar_id, price) VALUES ('20210220 03:30:00 PM', 25, 1, 899.99);
-insert into counseling (start_date, duration, dermatologist_work_calendar_id, price) VALUES ('20210220 03:55:00 PM', 5, 1, 99.99);
-insert into counseling (start_date, duration, dermatologist_work_calendar_id, price) VALUES ('20210220 05:00:00 PM', 15, 1, 999.99);
-insert into counseling (start_date, duration, dermatologist_work_calendar_id, price) VALUES ('20210220 01:00:00 PM', 5, 4, 68.00);
-insert into counseling (start_date, duration, dermatologist_work_calendar_id, price) VALUES ('20210208 09:00:00 PM', 5, 4, 2.00);
+insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, patient_id, report, version) VALUES ('20210204 11:35:00 AM', 60, 2, 999.99, 13, 'nesto', 0);
+insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, patient_id, report, version) VALUES ('20210219 12:00:00 PM', 30, 1, 999.99, 13, 'nesto', 0);
+insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, report, version) VALUES ('20210220 11:00:00 AM', 15, 1, 1999.99, 'nesto', 0);
+insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, patient_id, version) VALUES ('20210220 11:15:00 AM', 30, 1, 1999.99, 13, 0);
+insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, version) VALUES ('20210220 12:00:00 PM', 60, 1, 2999.99, 0);
+insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, version) VALUES ('20210220 01:00:00 PM', 5, 1, 99.99, 0);
+insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, version) VALUES ('20210220 01:05:00 PM', 15, 1, 999.99, 0);
+insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, version) VALUES ('20210220 01:20:00 PM', 30, 1, 699.99, 0);
+insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, version) VALUES ('20210220 01:50:00 PM', 10, 1, 599.99, 0);
+insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, version) VALUES ('20210220 02:00:00 PM', 20, 1, 799.99, 0);
+insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, version) VALUES ('20210220 03:30:00 PM', 25, 1, 899.99, 0);
+insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, version) VALUES ('20210220 03:55:00 PM', 5, 1, 99.99, 0);
+insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, version) VALUES ('20210220 05:00:00 PM', 15, 1, 999.99, 0);
+insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, version) VALUES ('20210220 01:00:00 PM', 5, 4, 68.00, 0);
+insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, version) VALUES ('20210208 09:00:00 PM', 5, 4, 2.00, 0);
 
-insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, patient_id) VALUES ('20210220 11:12:00 AM', 20, 3, 500.00, 13);
+insert into counseling (start_date, duration, dermatologist_work_calendar_id, price, patient_id, version) VALUES ('20210220 11:12:00 AM', 20, 3, 500.00, 13, 0);
 
 insert into promotion_notification (patient_id, pharmacy_id) values (13, 1);
 insert into promotion_notification (patient_id, pharmacy_id) values (15, 3);
@@ -174,11 +174,11 @@ insert into promotion_notification (patient_id, pharmacy_id) values (13, 2);
 insert into promotion_notification (patient_id, pharmacy_id) values (15, 2);
 insert into promotion_notification (patient_id, pharmacy_id) values (13, 4);
 
-insert into pharmacist_work_calendar (pharmacist_id, pharmacy_id, start_date, end_date) VALUES (4, 1, '20210215 10:00:00 AM', '20210215 08:00:00 PM');
-insert into pharmacist_work_calendar (pharmacist_id, pharmacy_id, start_date, end_date) VALUES (4, 1, '20210216 08:00:00 AM', '20210216 08:00:00 PM');
-insert into pharmacist_work_calendar (pharmacist_id, pharmacy_id, start_date, end_date) VALUES (4, 1, '20210217 04:00:00 PM', '20210218 04:00:00 AM');
-insert into pharmacist_work_calendar (pharmacist_id, pharmacy_id, start_date, end_date) VALUES (4, 1, '20210208 08:00:00 AM', '20210208 08:00:00 PM');
-insert into pharmacist_work_calendar (pharmacist_id, pharmacy_id, start_date, end_date) VALUES (4, 1, '20210210 04:00:00 PM', '20210211 04:00:00 AM');
+insert into pharmacist_work_calendar (pharmacist_id, pharmacy_id, start_date, end_date, version) VALUES (4, 1, '20210215 10:00:00 AM', '20210215 08:00:00 PM', 0);
+insert into pharmacist_work_calendar (pharmacist_id, pharmacy_id, start_date, end_date, version) VALUES (4, 1, '20210216 08:00:00 AM', '20210216 08:00:00 PM', 0);
+insert into pharmacist_work_calendar (pharmacist_id, pharmacy_id, start_date, end_date, version) VALUES (4, 1, '20210217 04:00:00 PM', '20210218 04:00:00 AM', 0);
+insert into pharmacist_work_calendar (pharmacist_id, pharmacy_id, start_date, end_date, version) VALUES (4, 1, '20210208 08:00:00 AM', '20210208 08:00:00 PM', 0);
+insert into pharmacist_work_calendar (pharmacist_id, pharmacy_id, start_date, end_date, version) VALUES (4, 1, '20210210 04:00:00 PM', '20210211 04:00:00 AM', 0);
 
 insert into examination (start_date, duration, pharmacist_work_calendar_id, price, patient_id) VALUES ('20210205 12:35:00 PM', 30, 1, 99.99, 13);
 insert into examination (start_date, duration, pharmacist_work_calendar_id, price, patient_id) VALUES ('20210215 11:05:00 AM', 15, 1, 999.99, 14);
@@ -212,11 +212,15 @@ insert into medicine_price(id, end_of_price, price, start_of_price, medicine_id,
 insert into medicine_price(id, end_of_price, price, start_of_price, medicine_id, pharmacy_id) values (106, '20210216 08:00:00 PM',400, '20210215 10:00:00 AM', 3, 4);
 
 
-INSERT INTO supplier (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, gender, address_id) VALUES (25, 'admin8', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', 'Strahinja', 'Nikolic', 'apoteka.isa2021+strn@gmail.com', true, '2017-10-01 18:57:58.508-07', 1, 7);
-INSERT INTO supplier (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, gender, address_id) VALUES (26, 'admin9', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', 'Ana', 'Nikolic', 'apoteka.isa2021+stra@gmail.com', true, '2017-10-01 18:57:58.508-07', 1, 7);
+INSERT INTO supplier (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, gender, address_id) VALUES (26, 'admin8', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', 'Strahinja', 'Nikolic', 'apoteka.isa2021+strn@gmail.com', true, '2017-10-01 18:57:58.508-07', 1, 7);
+INSERT INTO supplier (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, gender, address_id) VALUES (27, 'admin9', '$2a$10$2affw9vkXuEbQOoiKqN2XuVQ1sVZLQ6XBRAZ1IHeCT6W8.qJOXkhe', 'Ana', 'Nikolic', 'supplier@gmail.com', true, '2017-10-01 18:57:58.508-07', 1, 7);
+INSERT INTO supplier (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, gender, address_id) VALUES (28, 'admin10', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', 'Ana', 'Nikolic', 'apoteka.isa2021+stra@gmail.com', true, '2017-10-01 18:57:58.508-07', 1, 7);
+
+INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (27, 7);
 
 insert into errand (id, creation_time, deadline, pharmacy_id, finished) values (10, '2021-02-06 10:38:09.147', '2021-02-06 20:01:00', 2, false);
 insert into errand (id, creation_time, deadline, pharmacy_id, finished) values (11, '2021-02-20 10:38:09.147', '2021-02-20 20:01:00', 2, false);
+insert into errand (id, creation_time, deadline, pharmacy_id, finished) values (12, '2021-02-20 10:38:09.147', '2021-02-20 20:01:00', 2, false);
 
 insert into medicine_quantity (id, quantity, errand_id, medicine_id) values (10, 5, 10, 2);
 insert into medicine_quantity (id, quantity, errand_id, medicine_id) values (12, 7, 10, 5);
@@ -224,13 +228,17 @@ insert into medicine_quantity (id, quantity, errand_id, medicine_id) values (13,
 
 insert into medicine_quantity (id, quantity, errand_id, medicine_id) values (14, 5, 11, 2);   
 insert into medicine_quantity (id, quantity, errand_id, medicine_id) values (15, 7, 11, 5);
-insert into medicine_quantity (id, quantity, errand_id, medicine_id) values (16, 3, 11, 7);
+insert into medicine_quantity (id, quantity, errand_id, medicine_id) values (16, 7, 11, 7);
 
-insert into offer (id, price, supply_deadline, errand_id, supplier_id, is_approved) values (10, 10000, '2021-04-05 01:00:00', 10, 25, false);
-insert into offer (id, price, supply_deadline, errand_id, supplier_id, is_approved) values (11, 12000, '2021-03-25 01:00:00', 10, 26, false);
+insert into medicine_quantity (id, quantity, errand_id, medicine_id) values (17, 5, 12, 1);
+insert into medicine_quantity (id, quantity, errand_id, medicine_id) values (18, 5, 12, 2);
 
-insert into offer (id, price, supply_deadline, errand_id, supplier_id, is_approved) values (12, 10000, '2021-04-05 01:00:00', 11, 25, false);
-insert into offer (id, price, supply_deadline, errand_id, supplier_id, is_approved) values (13, 12000, '2021-03-25 01:00:00', 11, 26, false);
+insert into offer (id, price, supply_deadline, errand_id, supplier_id, is_approved) values (10, 10000, '2021-04-05 01:00:00', 10, 26, null);
+insert into offer (id, price, supply_deadline, errand_id, supplier_id, is_approved) values (11, 10000, '2021-03-25 01:00:00', 11, 27, null);
+
+insert into offer (id, price, supply_deadline, errand_id, supplier_id, is_approved) values (12, 10000, '2021-04-05 01:00:00', 11, 26, false);
+insert into offer (id, price, supply_deadline, errand_id, supplier_id, is_approved) values (13, 12000, '2021-03-25 01:00:00', 12, 27, false);
+insert into offer (id, price, supply_deadline, errand_id, supplier_id, is_approved) values (14, 14000, '2021-03-25 01:00:00', 10, 27, true);
 
 insert into pharmacy_grade (id, grade, pharmacy_id, patient_id) values (1, 1, 1, 13);
 insert into pharmacy_grade (id, grade, pharmacy_id, patient_id) values (2, 3, 1, 13);
@@ -244,5 +252,7 @@ insert into pharmacy_grade (id, grade, pharmacy_id, patient_id) values (8, 1, 4,
 insert into dermatologist_holiday(start_date, end_date, dermatologist_id, status) values ('20210210 12:00:00 AM','20210213 12:00:00 PM',5, 2);
 insert into pharmacist_holiday(start_date, end_date, pharmacist_id, status) values ('20210210 12:00:00 AM','20210213 12:00:00 PM',4, 2);
 
---insert into loyalty_program(id, counseling_points, discount, examination_points, min_points, type) values (1,9,1000,10,5,0);
+insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (1, 6, 27, 1);
+insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (2, 8, 27, 2);
+insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (3, 10, 27, 3);
 

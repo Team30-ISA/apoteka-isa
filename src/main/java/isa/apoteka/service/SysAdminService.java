@@ -1,14 +1,11 @@
 package isa.apoteka.service;
 
-import isa.apoteka.domain.Authority;
 import isa.apoteka.domain.User;
 import isa.apoteka.domain.UserRequest;
 import isa.apoteka.dto.PharmacistDTO;
 
-import java.util.List;
-
 public interface SysAdminService {
-    public User update(UserRequest userRequest) throws Exception;
+    public UserRequest update(UserRequest userRequest) throws Exception;
 
     public User create(PharmacistDTO userRequest);
 

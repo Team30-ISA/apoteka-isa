@@ -1,6 +1,7 @@
 package isa.apoteka.async.service;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.mail.internet.MimeMessage;
 
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import isa.apoteka.domain.Counseling;
 import isa.apoteka.domain.Offer;
 import isa.apoteka.domain.Patient;
+import isa.apoteka.domain.PharmacistWorkCalendar;
 import isa.apoteka.domain.Promotion;
 import isa.apoteka.domain.ReservedMedicine;
 import isa.apoteka.domain.User;
@@ -92,6 +94,21 @@ public class EmailService {
 		mail.setSubject("Rezervacija pregleda kod dermatologa");
 		mail.setText("Pozdrav, " + p.getFirstName() + "\n" + "\nPregled je rezervisan za datum: " + c.getStartDate()
 				+ "\nNaziv dermatologa: " + c.getDermatologistWorkCalendar().getDermatologist().getFirstName() + " " + c.getDermatologistWorkCalendar().getDermatologist().getLastName() + "\n ");
+		javaMailSender.send(mail);
+
+	}
+	
+	@Async
+	public void sendExaminationReservation(Date start, PharmacistWorkCalendar pwc, Patient p) throws MailException{
+		SimpleMailMessage mail = new SimpleMailMessage();
+		mail.setTo(p.getEmail());
+		if(env.getProperty("spring.mail.username") == null) {
+			return;
+		}
+		mail.setFrom(env.getProperty("spring.mail.username"));
+		mail.setSubject("Rezervacija pregleda kod farmaceuta");
+		mail.setText("Pozdrav, " + p.getFirstName() + "\n" + "\nPregled je rezervisan za datum: " + start
+				+ "\nNaziv dermatologa: " + pwc.getPharmacist().getFirstName() + " " + pwc.getPharmacist().getLastName() + "\n ");
 		javaMailSender.send(mail);
 
 	}

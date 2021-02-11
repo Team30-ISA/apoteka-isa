@@ -8,7 +8,7 @@ var app = new Vue({
         today: new Date(),
         counselings: [],
         counts: [],
-        currentStep: "START",
+        currentStep: "SCHEDULE",
 		derm: null,
         examination: null,
         monthNames: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
@@ -403,7 +403,19 @@ var app = new Vue({
                    	}
                 })
                 .then(response =>{
-                	window.location.href = "/dermatologist/dermatologistHome.html";
+                	if(response.data == true){
+                		JSAlert.alert("Uspesno!");
+	                	setTimeout(function () {
+	                        window.location.href = "/dermatologist/dermatologistHome.html";
+	                      }, 3000);
+                		
+                	}
+                	else{
+                		JSAlert.alert("Neuspesno!");
+                		setTimeout(function () {
+	                        window.location.href = "/dermatologist/dermatologistHome.html";
+	                      }, 3000);
+                	}
                 })
                 .catch(error => {
                 	if(error.response.status == 400)
