@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import isa.apoteka.async.service.EmailService;
 import isa.apoteka.domain.Examination;
 import isa.apoteka.domain.Patient;
 import isa.apoteka.domain.PharmacistWorkCalendar;
@@ -30,6 +31,9 @@ public class ExaminationServiceImpl implements ExaminationService {
 
 	@Autowired
 	private PharmacistWorkCalendarService pwcService;
+	
+	@Autowired
+	private EmailService emailService;
 
 	@Override
 	public List<ExaminationDTO> findAllTermsByDay(Long dermatologistId, Date start) {
@@ -206,7 +210,7 @@ public class ExaminationServiceImpl implements ExaminationService {
 
 	@Override
 	@Transactional(readOnly = false)
-	public Boolean createExamination(Date start, int duration, Long patientId, Long pwcId, Long pharmacistId) throws Exception {
+	public Boolean createExamination(Date start, int duration, Patient patient, Long pwcId, Long pharmacistId) throws Exception {
 		// PROVERI DA LI JE FARMACEUT SLOBODAN
 		Calendar calendar = new GregorianCalendar();
 		calendar.setTime(start);
@@ -218,10 +222,11 @@ public class ExaminationServiceImpl implements ExaminationService {
 		// DOBAVI RADNO VREME
 		PharmacistWorkCalendar pwc = pwcService.findById(pwcId);
 		// SACUVAJ TERMIN
-		examinationRepository.createExamination(start, duration, patientId, pwcId);
+		examinationRepository.createExamination(start, duration, patient.getId(), pwcId);
 		// SACUVAJ RADNO VREME (AZURIRAJ VERISON)
 		pwc.setLastReqDate(new Date());
 		pwcService.save(pwc);
+		emailService.sendExaminationReservation(start, pwc, patient);
 		return true;
 	}
 

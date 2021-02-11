@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sun.istack.Nullable;
 
+import isa.apoteka.domain.Patient;
 import isa.apoteka.domain.Pharmacist;
 import isa.apoteka.dto.ExaminationDTO;
 import isa.apoteka.dto.PeriodDTO;
@@ -116,16 +117,16 @@ public class ExaminationController {
 		if(start == null || duration == null || currExaminationId == null) {
 			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}
-		Long patientId;
+		Patient patient;
 		Long pharmacistId;
 		try{
-			patientId = examintaionService.findOne(currExaminationId).getPatient().getId();
+			patient = examintaionService.findOne(currExaminationId).getPatient();
 			pharmacistId = pharm.getId();
 		}
 		catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}
-		if(!isPatientFree(patientId, start, duration)) {
+		if(!isPatientFree(patient.getId(), start, duration)) {
 			return new ResponseEntity<>(-1, HttpStatus.OK);
 		}
 		Long pwcId = getCurrPharmWP(start, pharmacistId);
@@ -133,7 +134,7 @@ public class ExaminationController {
 			return new ResponseEntity<>(-2, HttpStatus.OK);
 		}
 		try {
-			if(!examintaionService.createExamination(start, duration, patientId, pwcId, pharmacistId)) {
+			if(!examintaionService.createExamination(start, duration, patient, pwcId, pharmacistId)) {
 				return new ResponseEntity<>(-3, HttpStatus.OK);
 			}
 		} catch (Exception e) {
