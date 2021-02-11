@@ -23,8 +23,8 @@ public interface CounselingService {
 	ExaminationDTO getNearestCounselingDTO(Long dermatologistId, Date start, boolean finished);
 	Counseling getNearestCounseling(Long dermatologistId, Date start, boolean finished);
 	Boolean isDermFree(Long dermatologistId, Date start, Date end);
-	Boolean update(Patient patient, Long counselingId);
-	void updateReport(String report, Long counselingId);
+	Boolean update(Patient patient, Long counselingId) throws Exception;
+	Boolean updateReport(String report, Long counselingId) throws Exception;
 	public Boolean createCounseling(Date start, int duration, Float price, Long dwcId, Long dermId, Long pharmacyId);
 	List<Counseling> findAllByPharmId(Long pharmId);
 	Dermatologist findDermatologistForCounseling(Long counsId);

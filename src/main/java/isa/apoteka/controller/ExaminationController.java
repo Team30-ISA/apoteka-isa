@@ -108,7 +108,7 @@ public class ExaminationController {
 	
 	@PostMapping("/scheduleExamination")
 	@PreAuthorize("hasRole('PHARM')")
-	public ResponseEntity<Integer> scheduleExamination(@RequestBody Map<String, Object> params) {
+	public ResponseEntity<Integer> scheduleExamination(@RequestBody Map<String, Object> params) throws Exception {
 		Pharmacist pharm = (Pharmacist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		Date start = new Date(Long.parseLong(params.get("start").toString()));
 		Integer duration = Integer.parseInt(params.get("duration").toString());
@@ -132,8 +132,12 @@ public class ExaminationController {
 		if(pwcId == null) {
 			return new ResponseEntity<>(-2, HttpStatus.OK);
 		}
-		if(!examintaionService.createExamination(start, duration, patientId, pwcId, pharmacistId)) {
-			return new ResponseEntity<>(-3, HttpStatus.OK);
+		try {
+			if(!examintaionService.createExamination(start, duration, patientId, pwcId, pharmacistId)) {
+				return new ResponseEntity<>(-3, HttpStatus.OK);
+			}
+		} catch (Exception e) {
+			return new ResponseEntity<>(-4, HttpStatus.OK);
 		}
 		
 		return new ResponseEntity<>(1, HttpStatus.OK);

@@ -4,14 +4,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.LockModeType;
-import javax.persistence.QueryHint;
-
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.jpa.repository.QueryHints;
 
 import isa.apoteka.domain.Counseling;
 import isa.apoteka.domain.Dermatologist;
@@ -67,10 +62,5 @@ public interface CounselingRepository extends JpaRepository<Counseling, Long>{
 
 	@Query("from Counseling c join c.dermatologistWorkCalendar.pharmacy p where c.report != null and c.report != '' and p.id=:id")
 	List<Counseling> allFinishedCounseling(Long id);
-	
-	@Lock(LockModeType.PESSIMISTIC_WRITE)
-	@Query("from Counseling c where c.id=:id")
-	@QueryHints({@QueryHint(name = "javax.persistence.lock.timeout",value = "0")})
-	public Counseling findOneById(Long id);
 	
 }

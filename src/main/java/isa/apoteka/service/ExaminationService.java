@@ -19,6 +19,6 @@ public interface ExaminationService {
 	void updateReport(String report, Long examinationId);
 	Examination findOne(Long id);
 	Boolean isPharmFree(Long pharmacistId, Date start, Date end);
-	Boolean createExamination(Date start, int duration, Long patientId, Long pwcId, Long pharmacistId);
+	Boolean createExamination(Date start, int duration, Long patientId, Long pwcId, Long pharmacistId) throws Exception;
 	List<Examination> finishedExamination(Long pharmacyId, Date startDate, Date endDate);
 }

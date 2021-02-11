@@ -8,8 +8,6 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -141,10 +139,14 @@ public class CounselingController {
 		if(counseling.getStartDate().getTime() < (new Date()).getTime()) {
 			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}
-		if(counselingService.update(patient, Long.parseLong(params.get("newCounselingId").toString()))) 
-			return new ResponseEntity<>(1, HttpStatus.OK);
-		else
+		try {
+			if(counselingService.update(patient, Long.parseLong(params.get("newCounselingId").toString()))) 
+				return new ResponseEntity<>(1, HttpStatus.OK);
+			else
+				return new ResponseEntity<>(-1, HttpStatus.OK);
+		} catch (Exception e) {
 			return new ResponseEntity<>(-1, HttpStatus.OK);
+		}
 	}
 	@Nullable
 	@PostMapping("/makeAppointment")
@@ -159,7 +161,11 @@ public class CounselingController {
 		if(counseling.getStartDate().getTime() < (new Date()).getTime()) {
 			return false;
 		}
+		try {
 		counselingService.update(p, counseling.getId());
+		} catch (Exception e) {
+			return false;
+		}
 		return true;
 	}
 	
@@ -213,13 +219,15 @@ public class CounselingController {
 	
 	@PostMapping("/setReport")
 	@PreAuthorize("hasRole('DERM')")
-	public void setReport(@RequestBody Map<String, Object> params, HttpServletResponse response) {
+	public Boolean setReport(@RequestBody Map<String, Object> params) {
 		String report = params.get("report").toString();
-		if(report == null || report.equals("")) {
-			response.setStatus(400);
-			return;
+		try {
+			if(!counselingService.updateReport(report, Long.parseLong(params.get("counselingId").toString())))
+				return false;
+		} catch (Exception e) {
+			return false;
 		}
-		counselingService.updateReport(report, Long.parseLong(params.get("counselingId").toString()));
+		return true;
 	}
 	
 	@PostMapping("/addCounseling")
