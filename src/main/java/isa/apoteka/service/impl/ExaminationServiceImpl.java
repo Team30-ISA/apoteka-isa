@@ -211,6 +211,8 @@ public class ExaminationServiceImpl implements ExaminationService {
 	@Override
 	@Transactional(readOnly = false)
 	public Boolean createExamination(Date start, int duration, Patient patient, Long pwcId, Long pharmacistId) throws Exception {
+		// DOBAVI RADNO VREME
+		PharmacistWorkCalendar pwc = pwcService.findById(pwcId);
 		// PROVERI DA LI JE FARMACEUT SLOBODAN
 		Calendar calendar = new GregorianCalendar();
 		calendar.setTime(start);
@@ -219,8 +221,6 @@ public class ExaminationServiceImpl implements ExaminationService {
 		if (isPharmacistFree(start, end, pharmacistId) == false) {
 			return false;
 		}
-		// DOBAVI RADNO VREME
-		PharmacistWorkCalendar pwc = pwcService.findById(pwcId);
 		// SACUVAJ TERMIN
 		examinationRepository.createExamination(start, duration, patient.getId(), pwcId);
 		// SACUVAJ RADNO VREME (AZURIRAJ VERISON)
