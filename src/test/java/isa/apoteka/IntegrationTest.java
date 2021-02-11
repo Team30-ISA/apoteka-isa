@@ -6,6 +6,7 @@ import java.nio.charset.Charset;
 
 import javax.transaction.Transactional;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

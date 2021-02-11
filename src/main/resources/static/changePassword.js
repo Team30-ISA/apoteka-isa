@@ -64,7 +64,8 @@ var app = new Vue({
           response.data != "ADMIN" &&
           response.data != "DERM" &&
           response.data != "PHARM" &&
-          response.data != "SYS_ADMIN"
+          response.data != "SYS_ADMIN" &&
+          response.data != "SUPL"
         ) {
           localStorage.clear();
           window.location.href = "/login.html";
