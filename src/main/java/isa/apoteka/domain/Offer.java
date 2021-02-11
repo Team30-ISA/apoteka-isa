@@ -1,5 +1,7 @@
 package isa.apoteka.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -44,7 +46,15 @@ public class Offer {
 		this.isApproved = approved;
 	}
 
-	public Long getId() {
+    public Offer(Errand errand, Supplier supplier, double price, Date supplyDeadline) {
+		this.errand = errand;
+		this.supplier = supplier;
+		this.price = price;
+		this.supplyDeadline = supplyDeadline;
+		this.isApproved = null;
+    }
+
+    public Long getId() {
 		return id;
 	}
 
