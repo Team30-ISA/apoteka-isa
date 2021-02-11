@@ -15,4 +15,6 @@ public interface DermatologistService {
 	List<Dermatologist> findAll();
 	List<FilteredDTO> searchDerms(SearchFilterDTO derms);
 	List<PatientDTO> findAllExaminedPatients(Long pharmacistId);
+
+    List<Dermatologist> getAllExaminationDermatologistsByPatientId(Long id);
 }

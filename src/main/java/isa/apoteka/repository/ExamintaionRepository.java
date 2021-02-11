@@ -8,7 +8,9 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import isa.apoteka.domain.Examination;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface ExamintaionRepository extends JpaRepository<Examination, Long> {
 
 	@Query("from Examination e join e.pharmacistWorkCalendar p where p.pharmacist.id=:pharmacistId and e.startDate >= :start and e.startDate <= :end")
@@ -33,4 +35,6 @@ public interface ExamintaionRepository extends JpaRepository<Examination, Long> 
 
 	@Query("from Examination e join e.pharmacistWorkCalendar.pharmacy p where e.report != null and e.report != '' and e.startDate<= :endDate and e.startDate>= :startDate and p.id=:pharmacyId")
 	List<Examination> finishedExaminations(Long pharmacyId, Date startDate, Date endDate);
+
+    List<Examination> findByPatientId(Long id);
 }

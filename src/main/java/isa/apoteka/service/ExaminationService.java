@@ -5,6 +5,7 @@ import java.util.List;
 
 import isa.apoteka.domain.Examination;
 import isa.apoteka.domain.Patient;
+import isa.apoteka.domain.Pharmacist;
 import isa.apoteka.domain.Pharmacy;
 import isa.apoteka.dto.ExaminationDTO;
 
@@ -21,4 +22,5 @@ public interface ExaminationService {
 	Boolean isPharmFree(Long pharmacistId, Date start, Date end);
 	Boolean createExamination(Date start, int duration, Long patientId, Long pwcId, Long pharmacistId) throws Exception;
 	List<Examination> finishedExamination(Long pharmacyId, Date startDate, Date endDate);
+	List<Pharmacist> getAllExaminationPharmacistsByPatientId(Long id);
 }

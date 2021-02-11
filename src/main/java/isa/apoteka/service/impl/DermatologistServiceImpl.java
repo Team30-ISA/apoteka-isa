@@ -2,16 +2,14 @@ package isa.apoteka.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import isa.apoteka.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import isa.apoteka.domain.Counseling;
-import isa.apoteka.domain.Dermatologist;
-import isa.apoteka.domain.Pharmacy;
-import isa.apoteka.domain.PharmacyAdmin;
 import isa.apoteka.dto.FilteredDTO;
 import isa.apoteka.dto.PatientDTO;
 import isa.apoteka.dto.PharmacyDTO;
@@ -161,5 +159,11 @@ public class DermatologistServiceImpl implements DermatologistService {
 		}
 		return patients;
 	}
-	
+
+	@Override
+	public List<Dermatologist> getAllExaminationDermatologistsByPatientId(Long id) {
+		List<Counseling> counselings = counselingRepository.findByPatientId(id);
+		return counselings.stream().map(c -> c.getDermatologistWorkCalendar().getDermatologist()).collect(Collectors.toList());
+	}
+
 }

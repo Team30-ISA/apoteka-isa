@@ -48,5 +48,6 @@ public interface PharmacyService {
 	public Pharmacy findById(Long id);
 
 	public void update(PharmacyDTO pharmacyDTO);
-	
+
+    List<Pharmacy> getPharmaciesAsociatedWithUser(Long id);
 }

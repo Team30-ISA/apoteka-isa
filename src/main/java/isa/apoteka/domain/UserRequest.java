@@ -23,7 +23,18 @@ public class UserRequest {
 
 	private String phoneNumber;
 
-	public void registerValidation() throws Exception {
+	public UserRequest() {
+	}
+
+	public UserRequest(User p) {
+		this.id = p.getId();
+		this.email = p.getEmail();
+		this.username = p.getUsername();
+		this.firstname = p.getFirstName();
+		this.lastname = p.getLastName();
+	}
+
+    public void registerValidation() throws Exception {
 		if(email.isEmpty() || password.isEmpty() || firstname.isEmpty() || lastname.isEmpty() || stateId == null || cityId == null || address.isEmpty() || password == null || password.length() < PASSWORD_LENGTH)
 			throw new Exception("Validation failed");
 	}
