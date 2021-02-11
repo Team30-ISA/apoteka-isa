@@ -86,4 +86,9 @@ public class PharmacistWorkCalendarServiceImpl implements PharmacistWorkCalendar
 			return null;
 		return new PeriodDTO(pwc.getStartDate(), pwc.getEndDate(), pwc.getId());
 	}
+
+	@Override
+	public PharmacistWorkCalendar findById(Long id) {
+		return pharmWCRepository.findById(id).orElse(null);
+	}
 }

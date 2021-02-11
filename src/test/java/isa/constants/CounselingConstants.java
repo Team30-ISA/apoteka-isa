@@ -30,4 +30,9 @@ public class CounselingConstants {
     public static final Counseling COUNSELING4 = new Counseling(4L, COUNSELING_4_START, 15, DWC, PATIENT, 4000f, "");
     public static final Long COUNSELING_COUNT = 4L;
     public static final Long DERMATOLOGIST_ID = 1L;
+    public static final Long COUNSELING_ID = 1L;
+    public static final String  COUNSELING_DATE = "20210208 08:53:00 PM";
+    public static final String COUNSELING_DURATION = "5";
+    public static final String COUNSELING_PRICE = "1999.99";
+    public static final String REPORT = "Izvestaj...";
 }
