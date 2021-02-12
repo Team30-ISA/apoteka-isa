@@ -71,6 +71,7 @@ var app = new Vue({
 	     }).then(response => {
 					this.patient = response.data
 					this.pId = response.data.id
+					console.log(this.patient.id)
 					
 					axios
 						.get('/api/counseling/findAllByPatientId',{
@@ -96,6 +97,7 @@ var app = new Vue({
 			  }
 	     }).then(response => {
 					this.counselings = response.data
+					console.log(this.counselings)
 			})
 			
 		

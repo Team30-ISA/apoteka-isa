@@ -16,6 +16,9 @@ import isa.apoteka.domain.Pharmacy;
 public interface PharmacyRepository extends JpaRepository<Pharmacy, Long>{
 	Pharmacy findOneByName(String name);
 	
+	@Query("from Pharmacy p where LOWER(p.name) like %:name%")
+	List<Pharmacy> searchPharmaciesByName(String name);
+	
     @Query("from Dermatologist d join d.pharmacies p where p.id=:id")
 	List<Dermatologist> findAllDermsWorkingInPharmacy(Long id);
     

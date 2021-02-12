@@ -94,4 +94,9 @@ public class PharmacyServiceImpl implements PharmacyService{
 		pharmacyRepository.update(pharmacyDTO.getId(),pharmacyDTO.getName(),pharmacyDTO.getAddress(),pharmacyDTO.getCity(),pharmacyDTO.getDescription());
 		
 	}
+	
+	@Override
+	public List<Pharmacy> searchPharmaciesByName(String name){
+		return pharmacyRepository.searchPharmaciesByName(name);
+	}
 }

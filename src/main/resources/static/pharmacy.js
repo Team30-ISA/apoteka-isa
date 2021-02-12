@@ -330,12 +330,12 @@ var app = new Vue({
     		axios
     		.get('/api/pharmacy/findById',
 					{
+						headers: {
+						    'Authorization': "Bearer " + localStorage.getItem('access_token')
+						  },
 						params:{
 							pharmacyId: this.pharmacyId
 						},
-					headers: {
-					    'Authorization': "Bearer " + localStorage.getItem('access_token')
-					  }
 				
 			})
 	        .then(response => {
