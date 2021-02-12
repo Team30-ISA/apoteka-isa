@@ -146,4 +146,16 @@ public class EmailService {
 		javaMailSender.send(mail);
 	}
 
+	@Async
+    public void sendComplaintAnswer(String recipientName, String response, String email) {
+		SimpleMailMessage mail = new SimpleMailMessage();
+		mail.setTo(email);
+		if(env.getProperty("spring.mail.username") == null) {
+			return;
+		}
+		mail.setFrom(env.getProperty("spring.mail.username"));
+		mail.setSubject("Odgovor na zalbu");
+		mail.setText("Odgovor na Vasu zalbu za " + recipientName + ". \n" + response);
+		javaMailSender.send(mail);
+    }
 }

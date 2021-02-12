@@ -30,4 +30,5 @@ public interface ExaminationService {
 
 	Boolean createExamination(Date start, int duration, Patient patient, Long pwcId, Long pharmacistId) throws Exception;
 	List<Examination> finishedExamination(Long pharmacyId, Date startDate, Date endDate);
+	List<Pharmacist> getAllExaminationPharmacistsByPatientId(Long id);
 }
