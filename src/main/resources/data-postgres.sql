@@ -1,8 +1,4 @@
 
-insert into pharmacy (name, street, grade, counselingPrice) values ('Helenina Apoteka','Teslina ulica 34', 10, 500.89);
-insert into pharmacy (name, street, grade, counselingPrice) values ('Nikolina Apoteka', 'Njegoševa 8', 9, 467.00);
-insert into pharmacy (name, street, grade, counselingPrice) values ('Milanova Apoteka', 'Petra Konjovica 1', 8, 668.10);
-insert into pharmacy (name, street, grade, counselingPrice) values ('Aleksandrova Apoteka', 'Laze Lazarevica 234', 7, 900.99);
 
 INSERT INTO Country (id, country) VALUES (1, 'Srbija');
 INSERT INTO Country (id, country) VALUES (2, 'Bosna i Hercegovina');
@@ -12,31 +8,37 @@ INSERT INTO City (id, city, country_id) VALUES (2, 'Novi Sad', 1);
 INSERT INTO City (id, city, country_id) VALUES (3, 'Beograd', 1);
 INSERT INTO City (id, city, country_id) VALUES (4, 'Mostar', 2);
 
-INSERT INTO Address (id, street, city_id) VALUES (6, 'Mirka Lazica 3a', 1);
-INSERT INTO Address (id, street, city_id) VALUES (7, 'Kumiciceva 6', 1);
-INSERT INTO Address (id, street, city_id) VALUES (8, 'Laze Kostica 9', 2);
-INSERT INTO Address (id, street, city_id) VALUES (9, 'Kisacka 9', 2);
 
-INSERT INTO dermatologist (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, gender, address_id, grade) VALUES (3, 'ale', '$2a$10$2affw9vkXuEbQOoiKqN2XuVQ1sVZLQ6XBRAZ1IHeCT6W8.qJOXkhe', 'Aleksandra', 'Gojkovic', 'apoteka.isa2021+ale@gmail.com', true, '2017-10-01 18:57:58.508-07', 0, 6, 10);
-INSERT INTO dermatologist (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, gender, address_id, grade) VALUES (5, 'mile', '$2a$10$2affw9vkXuEbQOoiKqN2XuVQ1sVZLQ6XBRAZ1IHeCT6W8.qJOXkhe', 'Mile', 'Micic', 'apoteka.isa2021+mile@gmail.com', true, '2017-10-01 18:57:58.508-07', 1, 6, 9);
-INSERT INTO dermatologist (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, gender, address_id, grade) VALUES (6, 'pero', '$2a$10$2affw9vkXuEbQOoiKqN2XuVQ1sVZLQ6XBRAZ1IHeCT6W8.qJOXkhe', 'Petar', 'Petrovic', 'apoteka.isa2021+pero@gmail.com', true, '2017-10-01 18:57:58.508-07', 1, 6, 8);
-INSERT INTO pharmacist (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, pharmacy_id, gender, address_id, grade) VALUES (4,'jeca', '$2a$10$2affw9vkXuEbQOoiKqN2XuVQ1sVZLQ6XBRAZ1IHeCT6W8.qJOXkhe', 'Jelena', 'Cvetkovska', 'apoteka.isa2021+jeca@gmail.com', true, '2017-10-01 18:57:58.508-07',1, 0,6, 10);
-INSERT INTO pharmacist (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, pharmacy_id, gender, address_id, grade) VALUES (7,'a', '$2a$10$2affw9vkXuEbQOoiKqN2XuVQ1sVZLQ6XBRAZ1IHeCT6W8.qJOXkhe', 'Mila', 'Peric', 'apoteka.isa2021+a@gmail.com', true, '2017-10-01 18:57:58.508-07',1, 0, 6, 9);
-INSERT INTO pharmacist (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, pharmacy_id, gender, address_id, grade) VALUES (8,'b', '$2a$10$2affw9vkXuEbQOoiKqN2XuVQ1sVZLQ6XBRAZ1IHeCT6W8.qJOXkhe', 'Vasa', 'Vasic', 'apoteka.isa2021+b@gmail.com', true, '2017-10-01 18:57:58.508-07',2, 1, 6, 8);
-INSERT INTO pharmacist (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, pharmacy_id, gender, address_id, grade) VALUES (9,'c', '$2a$10$2affw9vkXuEbQOoiKqN2XuVQ1sVZLQ6XBRAZ1IHeCT6W8.qJOXkhe', 'Nenad', 'Milic', 'apoteka.isa2021+c@gmail.com', true, '2017-10-01 18:57:58.508-07',3, 1, 6, 7);
+INSERT INTO Address (id, street, city_id) VALUES (6, 'Beogradski put 24', 1);
+INSERT INTO Address (id, street, city_id) VALUES (7, 'Zetska 10', 1);
+INSERT INTO Address (id, street, city_id) VALUES (8, 'Bulevar oslobodjenja 52', 2);
+INSERT INTO Address (id, street, city_id) VALUES (9, 'Brace Ribnikara 65', 2);
 
-INSERT INTO pharmacyAdmin (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, pharmacy_id, gender, address_id) VALUES (10,'marko', '$2a$10$2affw9vkXuEbQOoiKqN2XuVQ1sVZLQ6XBRAZ1IHeCT6W8.qJOXkhe', 'Marko', 'Markovic', 'apoteka.isa2021+marko@gmail.com', true, '2017-10-01 18:57:58.508-07',1, 1, 6);
-INSERT INTO pharmacyAdmin (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, pharmacy_id, gender, address_id) VALUES (11,'ana', '$2a$10$2affw9vkXuEbQOoiKqN2XuVQ1sVZLQ6XBRAZ1IHeCT6W8.qJOXkhe', 'Ana', 'Mikic', 'apoteka.isa2021+ana@gmail.com', true, '2017-10-01 18:57:58.508-07',2, 0, 7);
-INSERT INTO pharmacyAdmin (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, pharmacy_id, gender, address_id) VALUES (12,'adam', '$2a$10$2affw9vkXuEbQOoiKqN2XuVQ1sVZLQ6XBRAZ1IHeCT6W8.qJOXkhe', 'Adam', 'Adamovic', 'apoteka.isa2021+adam@gmail.com', true, '2017-10-01 18:57:58.508-07',3, 1, 8);
-INSERT INTO patient (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, gender, address_id) VALUES (13,'pacijent1', '$2a$10$2affw9vkXuEbQOoiKqN2XuVQ1sVZLQ6XBRAZ1IHeCT6W8.qJOXkhe', 'Milena', 'Vracar', 'apoteka.isa2021+m1@gmail.com', true, '2017-10-01 18:57:58.508-07', 0, 8);
-INSERT INTO patient (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, gender, address_id) VALUES (14,'pacijent2', '$2a$10$2affw9vkXuEbQOoiKqN2XuVQ1sVZLQ6XBRAZ1IHeCT6W8.qJOXkhe', 'Matija', 'Vracar', 'apoteka.isa2021+matija@gmail.com', true, '2017-10-01 18:57:58.508-07', 1, 7);
-INSERT INTO patient (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, gender, address_id) VALUES (15,'pacijent3', '$2a$10$2affw9vkXuEbQOoiKqN2XuVQ1sVZLQ6XBRAZ1IHeCT6W8.qJOXkhe', 'Marjan', 'Vracar', 'apoteka.isa2021+marjan@gmail.com', true, '2017-10-01 18:57:58.508-07', 1, 9);
-INSERT INTO patient (id, username, password, first_name, last_name, email, address_id, enabled, last_password_reset_date, gender) VALUES (16,'pacijent123', '$2a$10$2affw9vkXuEbQOoiKqN2XuVQ1sVZLQ6XBRAZ1IHeCT6W8.qJOXkhe', 'Gojko', 'Marinkovic', 'apoteka.isa2021+m@gmail.com', 6, true, '2017-10-01 18:57:58.508-07', 1);
+insert into pharmacy (name, street, city, description, counselingPrice, grade) values ('Helenina Apoteka','Beogradski put 24','Subotica', 'Helenina Apoteka je apoteka koju odlikuje nov i moderan pristup u sprovođenju farmaceutske usluge u oblasti medicinske zaštite i prevencije. ', 500.89, 10);
+insert into pharmacy (name, street, city, description, counselingPrice, grade) values ('Nikolina Apoteka','Zetska 10', 'Subotica', 'Helenina Apoteka je apoteka koju odlikuje nov i moderan pristup u sprovođenju farmaceutske usluge u oblasti medicinske zaštite i prevencije. ', 467.00, 9);
+insert into pharmacy (name, street, city, description, counselingPrice, grade) values ('Milanova Apoteka','Lasla Gala 22','Novi Sad', 'Helenina Apoteka je apoteka koju odlikuje nov i moderan pristup u sprovođenju farmaceutske usluge u oblasti medicinske zaštite i prevencije. ', 668.10,8);
+insert into pharmacy (name, street, city, description, counselingPrice, grade) values ('Aleksandrova Apoteka' ,'Cirpanova 34', 'Novi Sad', 'Helenina Apoteka je apoteka koju odlikuje nov i moderan pristup u sprovođenju farmaceutske usluge u oblasti medicinske zaštite i prevencije.', 900.99,7);
 
-insert into pharmacy (name, street, city, description, grade, counselingPrice) values ('Helenina Apoteka 1','Beogradski put 24','Subotica', 'Helenina Apoteka je apoteka koju odlikuje nov i moderan pristup u sprovođenju farmaceutske usluge u oblasti medicinske zaštite i prevencije. ', 11, 5020.89);
-insert into pharmacy (name, street, city, description, grade, counselingPrice) values ('Nikolina Apoteka 2','Zetska 10', 'Subotica', 'Helenina Apoteka je apoteka koju odlikuje nov i moderan pristup u sprovođenju farmaceutske usluge u oblasti medicinske zaštite i prevencije. ', 12, 5300.89);
-insert into pharmacy (name, street, city, description, grade, counselingPrice) values ('Milanova Apoteka 3','Lasla Gala 22','Novi Sad', 'Helenina Apoteka je apoteka koju odlikuje nov i moderan pristup u sprovođenju farmaceutske usluge u oblasti medicinske zaštite i prevencije. ', 13, 5500.89);
-insert into pharmacy (name, street, city, description, grade, counselingPrice) values ('Aleksandrova Apoteka 4' ,'Cirpanova 34', 'Novi Sad', 'Helenina Apoteka je apoteka koju odlikuje nov i moderan pristup u sprovođenju farmaceutske usluge u oblasti medicinske zaštite i prevencije.', 14, 5006.89);
+
+INSERT INTO dermatologist (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, gender, address_id, grade, version) VALUES (3, 'ale', '$2a$10$2affw9vkXuEbQOoiKqN2XuVQ1sVZLQ6XBRAZ1IHeCT6W8.qJOXkhe', 'Aleksandra', 'Gojkovic', 'apoteka.isa2021+ale@gmail.com', true, '2017-10-01 18:57:58.508-07', 0, 6, 10, 0);
+INSERT INTO dermatologist (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, gender, address_id, grade, version) VALUES (5, 'mile', '$2a$10$2affw9vkXuEbQOoiKqN2XuVQ1sVZLQ6XBRAZ1IHeCT6W8.qJOXkhe', 'Mile', 'Micic', 'apoteka.isa2021+mile@gmail.com', true, '2017-10-01 18:57:58.508-07', 1, 6, 9, 0);
+INSERT INTO dermatologist (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, gender, address_id, grade, version) VALUES (6, 'pero', '$2a$10$2affw9vkXuEbQOoiKqN2XuVQ1sVZLQ6XBRAZ1IHeCT6W8.qJOXkhe', 'Petar', 'Petrovic', 'apoteka.isa2021+pero@gmail.com', true, '2017-10-01 18:57:58.508-07', 1, 6, 8, 0);
+
+INSERT INTO pharmacist (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, pharmacy_id, gender, address_id, version, grade) VALUES (4,'jeca', '$2a$10$2affw9vkXuEbQOoiKqN2XuVQ1sVZLQ6XBRAZ1IHeCT6W8.qJOXkhe', 'Jelena', 'Cvetkovska', 'apoteka.isa2021+jeca@gmail.com', true, '2017-10-01 18:57:58.508-07',1, 0, 6, 0, 10);
+INSERT INTO pharmacist (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, pharmacy_id, gender, address_id, version, grade) VALUES (7,'a', '$2a$10$2affw9vkXuEbQOoiKqN2XuVQ1sVZLQ6XBRAZ1IHeCT6W8.qJOXkhe', 'Mila', 'Peric', 'apoteka.isa2021+a@gmail.com', true, '2017-10-01 18:57:58.508-07',1, 0, 6, 0, 9);
+INSERT INTO pharmacist (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, pharmacy_id, gender, address_id, version, grade) VALUES (8,'b', '$2a$10$2affw9vkXuEbQOoiKqN2XuVQ1sVZLQ6XBRAZ1IHeCT6W8.qJOXkhe', 'Vasa', 'Vasic', 'apoteka.isa2021+b@gmail.com', true, '2017-10-01 18:57:58.508-07',1, 1, 6, 0, 8);
+INSERT INTO pharmacist (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, pharmacy_id, gender, address_id, version, grade) VALUES (9,'c', '$2a$10$2affw9vkXuEbQOoiKqN2XuVQ1sVZLQ6XBRAZ1IHeCT6W8.qJOXkhe', 'Nenad', 'Milic', 'apoteka.isa2021+c@gmail.com', true, '2017-10-01 18:57:58.508-07',3, 1, 6, 0, 7);
+
+
+INSERT INTO pharmacyAdmin (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, pharmacy_id, gender, address_id, version) VALUES (10,'marko', '$2a$10$2affw9vkXuEbQOoiKqN2XuVQ1sVZLQ6XBRAZ1IHeCT6W8.qJOXkhe', 'Marko', 'Markovic', 'apoteka.isa2021+marko@gmail.com', true, '2017-10-01 18:57:58.508-07',1, 1, 6, 0);
+INSERT INTO pharmacyAdmin (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, pharmacy_id, gender, address_id, version) VALUES (11,'ana', '$2a$10$2affw9vkXuEbQOoiKqN2XuVQ1sVZLQ6XBRAZ1IHeCT6W8.qJOXkhe', 'Ana', 'Mikic', 'apoteka.isa2021+ana@gmail.com', true, '2017-10-01 18:57:58.508-07',2, 0, 7, 0);
+INSERT INTO pharmacyAdmin (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, pharmacy_id, gender, address_id, version) VALUES (12,'adam', '$2a$10$2affw9vkXuEbQOoiKqN2XuVQ1sVZLQ6XBRAZ1IHeCT6W8.qJOXkhe', 'Adam', 'Adamovic', 'apoteka.isa2021+adam@gmail.com', true, '2017-10-01 18:57:58.508-07',1, 1, 8, 0);
+
+INSERT INTO patient (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, gender, address_id, version) VALUES (13,'pacijent1', '$2a$10$2affw9vkXuEbQOoiKqN2XuVQ1sVZLQ6XBRAZ1IHeCT6W8.qJOXkhe', 'Milena', 'Vracar', 'apoteka.isa2021+m1@gmail.com', true, '2017-10-01 18:57:58.508-07', 0, 8, 0);
+INSERT INTO patient (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, gender, version, address_id) VALUES (14,'pacijent2', '$2a$10$2affw9vkXuEbQOoiKqN2XuVQ1sVZLQ6XBRAZ1IHeCT6W8.qJOXkhe', 'Matija', 'Vracar', 'apoteka.isa2021+matija@gmail.com', true, '2017-10-01 18:57:58.508-07', 1, 0, 6);
+
+INSERT INTO patient (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, gender, version, address_id) VALUES (15,'pacijent3', '$2a$10$2affw9vkXuEbQOoiKqN2XuVQ1sVZLQ6XBRAZ1IHeCT6W8.qJOXkhe', 'Marjan', 'Vracar', 'apoteka.isa2021+marjan@gmail.com', true, '2017-10-01 18:57:58.508-07', 1, 0,7);
+INSERT INTO patient (id, username, password, first_name, last_name, email, address_id, enabled, last_password_reset_date, gender, version) VALUES (16,'pacijent123', '$2a$10$2affw9vkXuEbQOoiKqN2XuVQ1sVZLQ6XBRAZ1IHeCT6W8.qJOXkhe', 'Gojko', 'Marinkovic', 'apoteka.isa2021+m@gmail.com', 6, true, '2017-10-01 18:57:58.508-07', 1, 0);
 
 INSERT INTO dermatologist (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, gender, address_id, grade, version) VALUES (17, 'admin1', '$2a$10$2affw9vkXuEbQOoiKqN2XuVQ1sVZLQ6XBRAZ1IHeCT6W8.qJOXkhe', 'Natasa', 'Gojkovic', 'apoteka.isa2021+natasa@gmail.com', true, '2017-10-01 18:57:58.508-07', 0, 6, 0, 0);
 INSERT INTO dermatologist (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, gender, address_id, grade, version) VALUES (18, 'admin2', '$2a$10$2affw9vkXuEbQOoiKqN2XuVQ1sVZLQ6XBRAZ1IHeCT6W8.qJOXkhe', 'Ivan', 'Gojkovic', 'apoteka.isa2021+ivan@gmail.com', true, '2017-10-01 18:57:58.508-07', 1, 7, 0, 0);
@@ -264,5 +266,5 @@ insert into notification(date, user_id, message) values ('20210210 12:00:00 AM',
 
 insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (1, 6, 27, 1);
 insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (2, 8, 27, 2);
-insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (3, 10, 27, 3);
+insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (3, 10, 27, 3); 
 

@@ -138,4 +138,9 @@ public class PharmacistServiceImpl implements PharmacistService{
 		return patients;
 	}
 
+	@Override
+	public void save(Pharmacist pharmacist) {
+		pharmacistRepository.save(pharmacist);
+	}
+
 }

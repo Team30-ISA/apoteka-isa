@@ -122,6 +122,9 @@ var app = new Vue({
 		  			  }
 		        })
 	        .then(response => {
+	        	if(response.data == false){
+	        		JSAlert.alert("Greska. Molimo vas pokusajte kasnije");
+	        	}
 	        	this.pharmWC = response.data
 	        	this.periods = []
 	        	this.reloadData()

@@ -1,9 +1,14 @@
 package isa.apoteka.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import isa.apoteka.domain.*;
 import isa.apoteka.dto.PharmacyDTO;
+import isa.apoteka.repository.CounselingRepository;
+import isa.apoteka.repository.ExamintaionRepository;
+import isa.apoteka.repository.ReservedMedicineRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
@@ -21,7 +26,16 @@ import isa.apoteka.service.PharmacyService;
 public class PharmacyServiceImpl implements PharmacyService{
 	@Autowired
 	private PharmacyRepository pharmacyRepository;
-	
+
+	@Autowired
+	private ExamintaionRepository examintaionRepository;
+
+	@Autowired
+	private CounselingRepository counselingRepository;
+
+	@Autowired
+	private ReservedMedicineRepository reservedMedicineRepository;
+
 	public Pharmacy findOne(Long id) {
 		return pharmacyRepository.findById(id).orElse(null);
 	}
@@ -93,6 +107,30 @@ public class PharmacyServiceImpl implements PharmacyService{
 	public void update(PharmacyDTO pharmacyDTO) {
 		pharmacyRepository.update(pharmacyDTO.getId(),pharmacyDTO.getName(),pharmacyDTO.getAddress(),pharmacyDTO.getCity(),pharmacyDTO.getDescription());
 		
+	}
+
+	@Override
+	public List<Pharmacy> getPharmaciesAsociatedWithUser(Long id) {
+		List<Examination> examinations = examintaionRepository.findByPatientId(id);
+		List<Counseling> counselings = counselingRepository.findByPatientId(id);
+
+		List<Pharmacy> pharmacies = examinations.stream().map(e -> e.getPharmacistWorkCalendar().getPharmacy()).collect(Collectors.toList());
+
+		for(Counseling e : counselings) {
+			if(pharmacies.stream().anyMatch(p -> p.getId().equals(e.getDermatologistWorkCalendar().getPharmacy().getId())))
+				continue;
+			pharmacies.add(e.getDermatologistWorkCalendar().getPharmacy());
+		}
+
+		List<ReservedMedicine> reservedMedicines = reservedMedicineRepository.findByPatientId(id);
+
+		for(ReservedMedicine r : reservedMedicines) {
+			if(pharmacies.stream().anyMatch(p -> p.getId().equals(r.getPharmacy().getId())))
+				continue;
+			pharmacies.add(r.getPharmacy());
+		}
+
+		return pharmacies;
 	}
 	
 	@Override

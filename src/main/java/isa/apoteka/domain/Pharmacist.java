@@ -1,5 +1,7 @@
 package isa.apoteka.domain;
 
+import java.util.Date;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,24 +20,38 @@ public class Pharmacist extends User{
 	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
 	private Pharmacy pharmacy;
 	
-	@Column(unique = true, nullable = true)
+	@Column(unique = false, nullable = true)
 	int grade;
+	private Date lastReqDate;
 	
 	public Pharmacist() {
 		super();
+		this.version = 0L;
 	}
 	
+
 	public Pharmacist(int grade) {
 		super();
 		this.grade = grade;
+		this.version = 0L;
 	}
 	public Pharmacist(Long id,String firstName, String lastName, int grade) {
-
 		super();
 		this.setId(id);
 		this.setFirstName(firstName);
 		this.setLastName(lastName);
-    this.setGrade(grade);
+		this.setGrade(grade);
+		this.version = 0L;
+	}
+
+	public Pharmacist(Long id,String firstName, String lastName, Date lastReqDate) {
+		super();
+		this.setId(id);
+		this.setFirstName(firstName);
+		this.setLastName(lastName);
+		this.setGrade(grade);
+		this.lastReqDate = lastReqDate;
+		this.version = 0L;
 	}
 
 	public Pharmacy getPharmacy() {
@@ -52,5 +68,13 @@ public class Pharmacist extends User{
 
 	public void setGrade(int grade) {
 		this.grade = grade;
+	}
+
+	public Date getLastReqDate() {
+		return lastReqDate;
+	}
+
+	public void setLastReqDate(Date lastReqDate) {
+		this.lastReqDate = lastReqDate;
 	}
 }
