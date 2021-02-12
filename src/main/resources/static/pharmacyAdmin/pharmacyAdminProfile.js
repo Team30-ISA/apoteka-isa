@@ -27,7 +27,10 @@ var app = new Vue({
 		},
 		changeState(){
 			if(this.changePass == true){
-				this.changePass = false;
+				if(this.newPass.length < 6){
+					JSAlert.alert("Password min length is 6 characters.");
+					return;
+				}
 				if(this.newPass == this.repeatPass){
 					axios
 			        .post('/auth/change-password',
@@ -44,7 +47,11 @@ var app = new Vue({
 			        	this.info = response.data;
 			        	console.log(this.info)
 			        	if(this.info.result == 'success'){
+			        		this.changePass = false;
 			        		JSAlert.alert("You have successfully updated your password!");
+			        		setTimeout(function () {
+								window.location.href = '/login.html';
+							}, 3000);
 			        	}
 			            
 			        })

@@ -19,19 +19,14 @@ var app = new Vue({
             }
           })
           .then((response) => {
-            if (!user.lastPasswordResetDate)
+            if (!user.lastPasswordResetDate){
               window.location.href = "changePassword.html";
-            else if (response.data == "DERM" && this.email !== this.password) {
+            }
+            else if (response.data == "DERM") {
               window.location.href = "dermatologist/dermatologistHome.html";
-            } else if (
-              response.data == "PHARM" &&
-              this.email !== this.password
-            ) {
+            } else if (response.data == "PHARM") {
               window.location.href = "pharmacist/pharmacistHome.html";
-            } else if (
-              response.data == "ADMIN" &&
-              this.email !== this.password
-            ) {
+            } else if (response.data == "ADMIN") {
               window.location.href = "pharmacyAdmin/pharmacyAdminHome.html";
             } else if (response.data == "PATIENT") {
               window.location.href = "profile.html";
