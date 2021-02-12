@@ -140,7 +140,7 @@ public class PharmacistServiceImpl implements PharmacistService{
 	
 	public Boolean patientExists(List<PatientDTO> patients, PatientDTO patient) {
 		for(PatientDTO p : patients) {
-			if(p.getId() == patient.getId()) {
+			if(p.getId().equals(patient.getId())) {
 				return true;
 			}
 		}

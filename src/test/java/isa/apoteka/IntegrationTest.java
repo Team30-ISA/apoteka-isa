@@ -119,8 +119,8 @@ public class IntegrationTest {
 
 		mockMvc.perform(MockMvcRequestBuilders.post(URL_PREFIX + "/setReport")
 				.header("Authorization", "Bearer " + userTokenState.getAccessToken()).contentType(contentType)
-				.content(p)).andExpect(status().is(200))
-				.andExpect(jsonPath("$").value(false));;
+				.content(p)).andExpect(status().is(400))
+				.andExpect(jsonPath("$").value(false));
 	}
 
 	@Test
