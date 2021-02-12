@@ -37,6 +37,9 @@ public interface PharmacyRepository extends JpaRepository<Pharmacy, Long>{
     @Query("from Medicine m join m.medicineInpharmacy mp where mp.pharmacy.id = ?1 and m.name = ?2")
    	Medicine searchMedicineInPharmacy(Long id, String name);
     
+    @Query(value="select * from pharmacy", nativeQuery = true)
+    List<Pharmacy> getAllPharmacies();
+    
     @Modifying
     @Transactional
     @Query("update MedicineInPharmacy mp set mp.quantity = mp.quantity - ?3 where mp.medicine.id = ?2 and mp.pharmacy.id = ?1")
