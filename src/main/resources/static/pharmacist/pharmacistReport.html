@@ -139,7 +139,7 @@ main ::-webkit-scrollbar-thumb:hover {
   ============================-->
 
 		<main id="main">
-			<a v-if="currentStep != 'START'" style="left: 50px;"
+			<a v-if="currentStep != 'START' && currentStep != 'REPORT'" style="left: 50px;"
 				class="arrow left" @click="goLeft()"></a> <a
 				v-if="currentStep != 'START' && currentStep != 'SCHEDULE'"
 				style="right: 50px;" class="arrow right" @click="goRight()"></a>

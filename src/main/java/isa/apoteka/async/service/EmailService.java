@@ -51,7 +51,7 @@ public class EmailService {
 		try {
 			MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 			mimeMessage.setContent(
-					"<p>Verify your account bt clicking on the following link: <a href=\"http://localhost:8081/verifiedAccount.html?userId=" + user.getId()
+					"<p>Verify your account bt clicking on the following link: <a href=\"/verifiedAccount.html?userId=" + user.getId()
 							+ "&hash=" + hashedEmail +"\">Verify my account</a></p>", "text/html");
 			MimeMessageHelper mail = new MimeMessageHelper(mimeMessage, "utf-8");
 			mail.setTo(user.getEmail());
@@ -146,4 +146,16 @@ public class EmailService {
 		javaMailSender.send(mail);
 	}
 
+	@Async
+    public void sendComplaintAnswer(String recipientName, String response, String email) {
+		SimpleMailMessage mail = new SimpleMailMessage();
+		mail.setTo(email);
+		if(env.getProperty("spring.mail.username") == null) {
+			return;
+		}
+		mail.setFrom(env.getProperty("spring.mail.username"));
+		mail.setSubject("Odgovor na zalbu");
+		mail.setText("Odgovor na Vasu zalbu za " + recipientName + ". \n" + response);
+		javaMailSender.send(mail);
+    }
 }

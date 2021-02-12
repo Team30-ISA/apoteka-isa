@@ -6,6 +6,7 @@ import java.util.List;
 import isa.apoteka.domain.Medicine;
 import isa.apoteka.domain.Patient;
 import isa.apoteka.domain.PatientUpdateForm;
+import isa.apoteka.dto.ComplaintsListsDTO;
 import isa.apoteka.dto.PatientDTO;
 
 public interface PatientService {
@@ -23,4 +24,6 @@ public interface PatientService {
 	Boolean hasCounselings(Long patientId, Date start, Date end);
 	Boolean hasExaminations(Long patientId, Date start, Date end);
 	List<PatientDTO> findAllByName(String firstName, String lastName);
+
+    ComplaintsListsDTO findAllEntitiesToComplain();
 }
