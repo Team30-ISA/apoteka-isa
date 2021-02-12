@@ -339,8 +339,10 @@ public class CounselingController {
 			List<Counseling> ret = new ArrayList<Counseling>();
 			for(Counseling s: counselings) {
 				if(s.getPatient() != null)
-					if(s.getPatient().getId().equals(patId))
+					if(s.getPatient().getId().equals(patId)) {
+						System.out.println(s.getPatient().getId() + " ==  " + patId);
 						ret.add(s);
+					}
 			}
 			return ret;
 	}

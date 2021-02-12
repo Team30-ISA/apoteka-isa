@@ -2,18 +2,11 @@ var app = new Vue({
 	el: '#pharmacies',
 	data: {
 		counselings: [],
-		dwc: [],
 		derm: [],
 		patient: null,
-		columns: [ 'id', 'price', 'startDate', 'duration'],
+		columns: [ 'id', 'startDate', 'duration'],
 		sortKey: 'price',
 		reverse: 1,
-		rev: false,
-		btnId: 0,
-		couns: null,
-		patCounselings: [],
-		pId: 0,
-		
 	},
 	methods: {
         sortBy(sortKey) {
@@ -26,39 +19,21 @@ var app = new Vue({
     	btnClick(btnId){
     		console.log(btnId)
 			axios
-				.get('/api/counseling/makeAnAppointment',{
+				.get('/api/examination/cancelAppointment',{
 			  		headers: {
 				    	'Authorization': "Bearer " + localStorage.getItem('access_token')
 			  		},
 			  		params: {
 			  			//patId: this.patient.id,
-			  			counsId: btnId,
+			  			examId: btnId,
 			  		}
 	     }).then(response => {
-					alert('Uspesno zakazan pregled')
 					console.log(response.data)
-			})
-    		
-    	},
-    	
-    	btnCancelClick(btnCancelId){
-    		console.log(btnCancelId)
-			axios
-				.get('/api/counseling/cancelAppointment',{
-			  		headers: {
-				    	'Authorization': "Bearer " + localStorage.getItem('access_token')
-			  		},
-			  		params: {
-			  			//patId: this.patient.id,
-			  			counsId: btnCancelId,
-			  		}
-	     }).then(response => {
-	     			console.log(response.data)
 	     			if(response.data == true)
 						alert('Uspesno je otkazan pregled')
 					else
 						alert('Neuspesno je otkazan pregled, do pregleda je ostalo manje od 24 sata')
-			})			
+			})
     		
     	}
 	},
@@ -74,31 +49,15 @@ var app = new Vue({
 					console.log(this.patient.id)
 					
 					axios
-						.get('/api/counseling/findAllByPatientId',{
+						.get('/api/examination/getExaminationsForPatient',{
 			  				headers: {
 				    			'Authorization': "Bearer " + localStorage.getItem('access_token')
 			  			},
-			  			params: {
-			  				patId: this.patient.id,
-			  			}
 	     }).then(response => {
-					this.patCounselings = response.data
+					this.counselings = response.data
 					console.log(response.data)
 			})
 			})
-			
-		axios
-		.get('/api/counseling/findAllCounselingsForPharmacy',{
-			  headers: {
-				    'Authorization': "Bearer " + localStorage.getItem('access_token')
-			  },
-			  params: {
-			  	pharmId: 1,
-			  }
-	     }).then(response => {
-					this.counselings = response.data
-			})
-			
 		
 
 

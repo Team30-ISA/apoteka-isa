@@ -1,10 +1,15 @@
 package isa.apoteka.controller;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -21,12 +26,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sun.istack.Nullable;
 
+import isa.apoteka.domain.Counseling;
+import isa.apoteka.domain.Examination;
+import isa.apoteka.domain.Patient;
 import isa.apoteka.domain.Pharmacist;
+import isa.apoteka.domain.Pharmacy;
 import isa.apoteka.dto.ExaminationDTO;
 import isa.apoteka.dto.PeriodDTO;
 import isa.apoteka.service.ExaminationService;
 import isa.apoteka.service.PatientService;
 import isa.apoteka.service.PharmacistHolidayService;
+import isa.apoteka.service.PharmacistService;
 import isa.apoteka.service.PharmacistWorkCalendarService;
 
 @RestController
@@ -38,6 +48,9 @@ public class ExaminationController {
 	
 	@Autowired
 	private PharmacistWorkCalendarService pwcService;
+	
+	@Autowired
+	private PharmacistService pharmacistService;
 	
 	@Autowired
 	private PatientService patientService;
@@ -147,6 +160,134 @@ public class ExaminationController {
 		
 	}
 	
+	@GetMapping("/scheduleExaminationPatient")
+	//@PostMapping("/scheduleExaminationPatient")
+	@PreAuthorize("hasRole('PATIENT')")
+	public int scheduleExaminationPatient(String date, int duration, Long pharmacistId) {
+		System.out.println("GGGGGGG" + pharmacistId);
+		Patient patient = (Patient) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String[] s = date.split("-", 3);
+		String[] st = s[2].split("T", 2);
+		String[] time = st[1].split(":", 2);
+		String s2 = s[0] + "/" + s[1] + "/" + st[0] + " " + st[1];
+		System.out.println("JJJJJJJJJJ" + s2);
+		DateFormat formatter = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+		Date start = null;
+		Long patientId;
+		try {
+			start = formatter.parse(s2);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		//Long currExaminationId = Long.parseLong(params.get("currExaminationId").toString());
+		if(start == null) {
+			return 2;
+		}
+		try{
+			patientId = patient.getId();
+		}
+		catch (Exception e) {
+			return 3;
+		}
+		if(!isPatientFree(patientId, start, duration)) {
+			return 4;
+		}
+		Long pwcId = getCurrPharmWP(start, pharmacistId);
+		if(pwcId == null) {
+			return 5;
+		}
+		/*if(pharmacistHolidayService.isPharmOnHolidays(pharmacistId, start)) {
+			return new ResponseEntity<>(-3, HttpStatus.OK);
+		}*/
+		if(!examintaionService.createExamination(start, duration, patientId, pwcId, pharmacistId)) {
+			return 6;
+		}
+		
+		return 1;
+		
+	}
+	
+	@GetMapping("/findAllPharmsByDate")
+	@PreAuthorize("hasRole('PATIENT')")
+	public ResponseEntity<List<Pharmacy>> findAllPharmsByDate(String date) {
+		System.out.println("aaaaaaaaaaaaaaa");
+		String[] s = date.split("-", 3);
+		String[] st = s[2].split("T", 2);
+		String[] time = st[1].split(":", 2);
+		String s2 = st[0] + "/" + s[1] + "/" + s[0] + " " + st[1];
+		DateFormat formatter = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+		Date newDate = null;
+		try {
+			newDate = formatter.parse(s2);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("DATE " + newDate);
+		return new ResponseEntity<>(examintaionService.getAvailablePharmacies(newDate), HttpStatus.OK);
+	}
+	
+	@GetMapping("/getExaminationsForPatient")
+	@PreAuthorize("hasRole('PATIENT')")
+	public List<Examination> getExaminationsForPatient(){
+		Patient patient = (Patient) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Long patientId = patient.getId();
+		List<Examination> ret = examintaionService.getExaminationsForPatient(patientId);
+		return ret;
+	}
+	
+	@GetMapping("/cancelAppointment")
+	@PostMapping("/cancelAppointment")
+	@PreAuthorize("hasRole('PATIENT')")
+	public boolean cancelAppointment(Long examId) {
+		Patient p = (Patient) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		//Patient patient = patientService.findById(patId);
+		if(p == null)
+			return false;
+		Date now = new Date();
+		Calendar cal = new GregorianCalendar();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy MMM dd HH:mm:ss");
+		Examination examination = examintaionService.findOne(examId);
+		Date cdate = examination.getStartDate();
+		if(examination.getStartDate().getTime() < (new Date()).getTime()) {
+			return false;
+		}
+		Calendar examDate = new GregorianCalendar();
+		examDate.setTime(examination.getStartDate());
+		if(examination.getPatient() == null)
+			return false;
+		if(!examination.getPatient().getId().equals(p.getId()))
+			return false;
+		if(checkIfDayEarlier(examDate, cal)) {
+			return false;
+		}
+		System.out.println(sdf.format(cal.getTime()));
+		System.out.println(sdf.format(examDate.getTime()));
+		examintaionService.cancelAppointment(examination.getId());
+		return true;
+	}
+	
+	@GetMapping("/getAvailablePharmacistsByPharmIdAndDate")
+	@PreAuthorize("hasRole('PATIENT')")
+	public List<Pharmacist> getAvailablePharmacistsByPharmIdAndDate(Long pharmId, String date){
+		System.out.println("aaaaaaaaaaaaaaa");
+		String[] s = date.split("-", 3);
+		String[] st = s[2].split("T", 2);
+		String[] time = st[1].split(":", 2);
+		String s2 = st[0] + "/" + s[1] + "/" + s[0] + " " + st[1];
+		DateFormat formatter = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+		Date newDate = null;
+		try {
+			newDate = formatter.parse(s2);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("DATE " + newDate);
+		return examintaionService.getAvailablePharmacistsByPharmIdAndDate(pharmId, newDate);
+	}
+	
 	public Boolean isPatientFree(Long patientId, Date start, int duration) {
 		Calendar calendar = new GregorianCalendar();
 		calendar.setTime(start);
@@ -160,12 +301,29 @@ public class ExaminationController {
 	
 	public Long getCurrPharmWP(Date start, Long pharmId) {
 		try {
+			System.out.println(start);
 			PeriodDTO pwc = pwcService.findPharmWorkCalendarByPharmIdAndDate(pharmId, start);
+			System.out.println(pwc);
 			return pwc.getId();
 		}
 		catch (Exception e) {
 			return null;
 		}
 	}
+	
+	boolean checkIfDayEarlier(Calendar cc, Calendar c) {
+		if(cc.get(Calendar.YEAR) != c.get(Calendar.YEAR))
+			return false;
+		else if(cc.get(Calendar.MONTH) != c.get(Calendar.MONTH))
+			return false;
+		else if(cc.get(Calendar.DAY_OF_MONTH) != c.get(Calendar.DAY_OF_MONTH))
+			return false;
+		else if(cc.get(Calendar.HOUR_OF_DAY) -1 < c.get(Calendar.HOUR_OF_DAY))
+			return true;
+			
+		return true;
+	}
+	
+	
 	
 }

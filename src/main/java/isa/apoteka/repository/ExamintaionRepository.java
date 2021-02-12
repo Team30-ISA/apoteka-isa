@@ -33,4 +33,12 @@ public interface ExamintaionRepository extends JpaRepository<Examination, Long> 
 	
 	@Query("from Examination e join e.pharmacistWorkCalendar p where p.pharmacist.id=:pharmacistId")
 	List<Examination> findAllByPharmId(Long pharmacistId);
+	
+	@Query("from Examination e join e.patient p where p.id=:patId")
+	List<Examination> getExaminationsForPatient(Long patId);
+	
+	@Modifying
+    @Transactional
+    @Query(value = "update examination e set patient_id = null where e.id = ?1", nativeQuery = true)
+    void cancelAppointment(Long examId);
 }

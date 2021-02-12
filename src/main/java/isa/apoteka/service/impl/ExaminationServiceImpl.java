@@ -14,8 +14,10 @@ import org.springframework.stereotype.Service;
 import isa.apoteka.domain.Examination;
 import isa.apoteka.domain.Patient;
 import isa.apoteka.domain.Pharmacy;
+import isa.apoteka.domain.Pharmacist;
 import isa.apoteka.dto.ExaminationDTO;
 import isa.apoteka.repository.ExamintaionRepository;
+import isa.apoteka.repository.PharmacyRepository;
 import isa.apoteka.service.ExaminationService;
 
 @Service
@@ -23,6 +25,9 @@ public class ExaminationServiceImpl implements ExaminationService {
 	
 	@Autowired
 	private ExamintaionRepository examinationRepository;
+	
+	@Autowired
+	private PharmacyRepository pharmacyRepository;
 
 	@Override
 	public List<ExaminationDTO> findAllTermsByDay(Long dermatologistId, Date start) {
@@ -229,6 +234,43 @@ public class ExaminationServiceImpl implements ExaminationService {
 		}
 		return true;
 	}
+	
+	@Override
+	public List<Pharmacist> getAvailablePharmacistsByPharmIdAndDate(Long pharmId, Date start){
+		Date end = new Date(start.getTime());
+		end.setHours(start.getHours() + 1);
+		Pharmacy pharmacy = pharmacyRepository.getOne(pharmId);
+		List<Pharmacist> pharmacists = pharmacy.getPharmacists();
+		List<Pharmacist> ret = new ArrayList<Pharmacist>();
+		for(Pharmacist p : pharmacists) {
+			if(isPharmacistFree(start, end, p.getId())) {
+				ret.add(p);
+			}
+		}
+		return ret;
+	}
+	
+	@Override
+	public List<Pharmacy> getAvailablePharmacies(Date start){
+		List<Pharmacy> pharms = pharmacyRepository.getAllPharmacies();
+		Date end = new Date(start.getTime());
+		end.setHours(start.getHours() + 1);
+		List<Pharmacy> ret = new ArrayList<Pharmacy>();
+		System.out.println("START: " + start);
+		System.out.println("END: " + end);
+		for(Pharmacy p : pharms) {
+			List<Pharmacist> pharmacists = p.getPharmacists();
+			for(Pharmacist ph : pharmacists) {
+				if(isPharmacistFree(start, end, ph.getId())) {
+					System.out.println("T ");
+					ret.add(p);
+					break;
+				}
+					
+			}
+		}
+		return ret;
+	}
 
 	@Override
 	public Boolean isPharmFree(Long pharmacistId, Date start, Date end) {
@@ -247,6 +289,16 @@ public class ExaminationServiceImpl implements ExaminationService {
 		if(examinationRepository.countTerms(pharmacistId, start, end) > 0)
 			return false;
 		return true;
+	}
+	
+	@Override
+	public List<Examination> getExaminationsForPatient(Long patId){
+		return examinationRepository.getExaminationsForPatient(patId);
+	}
+	
+	@Override
+	public void cancelAppointment(Long examId) {
+		examinationRepository.cancelAppointment(examId);
 	}
 
 }

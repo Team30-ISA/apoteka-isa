@@ -5,6 +5,7 @@ import java.util.List;
 
 import isa.apoteka.domain.Examination;
 import isa.apoteka.domain.Patient;
+import isa.apoteka.domain.Pharmacist;
 import isa.apoteka.domain.Pharmacy;
 import isa.apoteka.dto.ExaminationDTO;
 
@@ -20,4 +21,8 @@ public interface ExaminationService {
 	Examination findOne(Long id);
 	Boolean isPharmFree(Long pharmacistId, Date start, Date end);
 	Boolean createExamination(Date start, int duration, Long patientId, Long pwcId, Long pharmacistId);
+	List<Pharmacy> getAvailablePharmacies(Date start);
+	List<Pharmacist> getAvailablePharmacistsByPharmIdAndDate(Long pharmId, Date start);
+	List<Examination> getExaminationsForPatient(Long patId);
+	void cancelAppointment(Long examId);
 }

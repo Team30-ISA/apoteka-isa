@@ -52,12 +52,20 @@ public class Pharmacy {
 	
 	@OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
 	private List<Promotion> promotions;
+	
+	@Column(unique = true, nullable = false)
+	int grade;
+	
+	@Column(unique = true, nullable = false)
+	double counselingprice;
 
-	public Pharmacy(Long id, String name, String address) {
+	public Pharmacy(Long id, String name, String address, int grade, double counselingprice) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.address = address;
+		this.grade = grade;
+		this.counselingprice = counselingprice;
 	}
 
 	public Pharmacy() {
@@ -102,6 +110,22 @@ public class Pharmacy {
 
 	public void setAddress(String address) {
 		this.address = address;
+	}
+	
+	public int getGrade() {
+		return grade;
+	}
+
+	public void setGrade(int grade) {
+		this.grade = grade;
+	}
+	
+	public double getCounselingprice() {
+		return counselingprice;
+	}
+
+	public void setCounselingprice(double counselingprice) {
+		this.counselingprice = counselingprice;
 	}
 
 	@Override
