@@ -16,7 +16,6 @@ public class LoyaltyProgram {
 	@Column(name = "id", unique = true, nullable = false)
 	private Long id;
 
-	//@JsonIgnore
 	@Column(name = "Type")
 	private CategoryType type;
 	
