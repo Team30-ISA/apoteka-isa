@@ -191,16 +191,18 @@ var app = new Vue({
 				axios
 				.get('/api/pharmacy/findAllPharmsInPharmacy',
 						{
+						headers: {
+							    'Authorization': "Bearer " + localStorage.getItem('access_token')
+							  },
 							params:{
 								id: this.pharmacy.id
-							},
-							headers: {
-							    'Authorization': "Bearer " + localStorage.getItem('access_token')
-							  }
+							}
+							
 					
 				})
 				.then(response => {
 					this.pharms = response.data
+					
 					axios
 					.get('/api/pharmacy/findAllDermsInPharmacy',
 							{

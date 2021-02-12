@@ -18,7 +18,7 @@ public class Pharmacist extends User{
 	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
 	private Pharmacy pharmacy;
 	
-	@Column(unique = true, nullable = true)
+	@Column(unique = false, nullable = true)
 	int grade;
 	
 	public Pharmacist() {

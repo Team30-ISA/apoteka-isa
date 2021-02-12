@@ -62,10 +62,10 @@ public class Pharmacy {
 	@OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
 	private List<Promotion> promotions;
 	
-	@Column(unique = true, nullable = false)
+	@Column(unique = false, nullable = true)
 	int grade;
 	
-	@Column(unique = true, nullable = false)
+	@Column(unique = false, nullable = true)
 	double counselingprice;
 
 	public Pharmacy() {

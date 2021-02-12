@@ -135,6 +135,7 @@ public class PharmacyController {
 		return new ResponseEntity<>(dermDTO, HttpStatus.OK);
 	}
 	
+	
 	@GetMapping(value = "/findAllPharmsInPharmacy")
 	public ResponseEntity<List<PharmacistDTO>> findAllPharmsWorkingInPharmacy(@RequestParam Long id) {
 

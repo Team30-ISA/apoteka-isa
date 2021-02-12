@@ -127,43 +127,43 @@
 					</header>
 					<div class="highlights">
 						<section>
-							<div class="content" @click="redirect('/patientList.html')">
+							<div class="content" @click="redirect('/counselingAppointments.html')">
 								<header>
 									<a href="#" class="icon fa-list-alt"><span class="label">Icon</span></a>
-									<h3>List of examined clients</h3>
+									<h3>Dermatologist Appointments</h3>
 								</header>
-								<p>List of all examined clients.</p>
+								<p>List of scheduled appointments at dermatologist.</p>
 							</div>
 						</section>
 						<section>
-							<div class="content" @click="redirect('/pharmacist/pharmacistReport.html')">
+							<div class="content" @click="redirect('/pharm.html')">
 								<header>
 									<a href="#" class="icon fa-clock-o"><span class="label">Icon</span></a>
-									<h3>Start counseling</h3>
+									<h3>Schedule Dermatologist Appointment</h3>
 								</header>
-								<p>Start the counseling and enter counseling information.</p>
+								<p>Schedule appointment at dermatologist.</p>
 							</div>
 						</section>
 						<section>
-							<div class="content"  @click="redirect('/pharmacist/workCalendar.html')">
+							<div class="content"  @click="redirect('/examinationAppointments.html')">
 								<header>
 									<a href="#" class="icon fa-calendar"><span class="label">Icon</span></a>
-									<h3>Work calendar</h3>
+									<h3>Scheduled Counselings</h3>
 								</header>
 								<p>View scheduled counselings.</p>
 							</div>
 						</section>
 						<section>
-							<div class="content" @click="redirect('/pharmacist/leaveRequest.html')">
+							<div class="content" @click="redirect('/drugreservation.html')">
 								<header>
 									<a href="#" class="icon fa-suitcase"><span class="label">Icon</span></a>
-									<h3>Create a leave request</h3>
+									<h3>Reserve Medicine</h3>
 								</header>
-								<p>Creating a request for vacation or leave.</p>
+								<p>Reserve new medications, you can see reserved ones on your profile page.</p>
 							</div>
 						</section>
 						<section>
-							<div class="content" @click="redirect('/pharmacist/pharmacistReport.html?schedule=true')">
+							<div class="content" @click="redirect('/reserveCounseling.html')">
 								<header>
 									<a href="#" class="icon fa-plus"><span class="label">Icon</span></a>
 									<h3>Scheduling a new counseling</h3>
@@ -171,15 +171,15 @@
 								<p>Scheduling a new counseling.</p>
 							</div>
 						</section>
-						<section>
-							<div class="content">
+						<!--<section>
+							<div class="content" @click="redirect('/drugreservation.html')">
 								<header>
 									<a href="#" class="icon fa-hospital-o"><span class="label">Icon</span></a>
-									<h3>Issue a drug</h3>
+									<h3>Reserve a drug</h3>
 								</header>
-								<p>Issue a drug to patients.</p>
+								<p>Page for medicine reservation.</p>
 							</div>
-						</section>
+						</section>-->
 						<section>
 							<div class="content" @click="redirect('/profile.html')">
 								<header>
