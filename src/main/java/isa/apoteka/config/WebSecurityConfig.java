@@ -79,7 +79,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 							"/api/country/getAllCountries",
 							"/api/city/getAllCitiesForCountry",
 							"/api/medicine/allMedicine/*",
-							"/api/medicine/*"
+							"/api/medicine/*",
 							"/api/loyalty/**"
 					).permitAll()
 				
