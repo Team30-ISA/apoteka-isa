@@ -3,6 +3,7 @@ package isa.apoteka.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -63,8 +64,9 @@ public class PharmacyAdminServiceImpl implements PharmacyAdminService {
     private PharmacyAdmin createNewPharmacyAdmin(PharmacistDTO pharmacyAdminData) {
         Pharmacy pharmacy = pharmacyService.findOne(pharmacyAdminData.getPharmacyId());
         PharmacyAdmin pharmacyAdmin = new PharmacyAdmin(pharmacyAdminData, pharmacy);
-        //pharmacyAdmin.setPasswordForReset(passwordEncoder.encode(pharmacyAdminData.getPassword()));
-        pharmacyAdmin.setPasswordForReset(pharmacyAdminData.getPassword());
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        pharmacyAdmin.setPasswordForReset(passwordEncoder.encode(pharmacyAdminData.getPassword()));
+        //pharmacyAdmin.setPasswordForReset(pharmacyAdminData.getPassword());
         List<Authority> auth = authorityService.findByname("ROLE_ADMIN");
         pharmacyAdmin.setAuthorities(auth);
         return pharmacyAdmin;

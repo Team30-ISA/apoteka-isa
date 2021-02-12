@@ -10,6 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import isa.apoteka.domain.User;
@@ -57,8 +58,9 @@ public class CustomUserDetailsService implements UserDetailsService {
 		}
 		LOGGER.debug("Changing password for user '" + email + "'");
 		User user = (User) loadUserByUsername(email);
-		//user.setPassword(passwordEncoder.encode(newPassword));
-		user.setPassword(newPassword);
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		user.setPassword(passwordEncoder.encode(newPassword));
+		//user.setPassword(newPassword);
 		userRepository.save(user);
 	}
 }

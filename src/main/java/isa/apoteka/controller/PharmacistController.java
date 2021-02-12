@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -105,8 +106,8 @@ public class PharmacistController {
 		pharmacist.setFirstName(newPharmacistDTO.getFirstName());
 		pharmacist.setLastName(newPharmacistDTO.getLastName());
 		pharmacist.setEmail(newPharmacistDTO.getEmail());
-		//pharmacist.setPassword(passwordEncoder.encode(newPharmacistDTO.getUsername()));
-		pharmacist.setPassword(newPharmacistDTO.getUsername());
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		pharmacist.setPassword(passwordEncoder.encode(newPharmacistDTO.getUsername()));
 		pharmacist.setAuthorities(auth);
 		pharmacist.setAddress(newAddress);
 		pharmacist.setEnabled(true);
