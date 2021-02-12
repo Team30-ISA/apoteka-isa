@@ -3,18 +3,15 @@ package isa.apoteka.service.impl;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import isa.apoteka.domain.*;
-import isa.apoteka.dto.MedicineCreateDTO;
-import isa.apoteka.repository.DrugFormRepository;
-import isa.apoteka.repository.DrugTypeRepository;
+import isa.apoteka.dto.*;
+import isa.apoteka.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import isa.apoteka.dto.MedicineDTO;
-import isa.apoteka.dto.MedicineNameDTO;
-import isa.apoteka.repository.MedicineRepository;
 import isa.apoteka.service.MedicineInPharmacyService;
 import isa.apoteka.service.MedicinePriceService;
 import isa.apoteka.service.MedicineService;
@@ -39,6 +36,12 @@ public class MedicineServiceImpl implements MedicineService {
 
 	@Autowired
 	private DrugTypeRepository drugTypeRepository;
+
+	@Autowired
+	private MedicineInPharmacyRepository medicineInPharmacyRepository;
+
+	@Autowired
+	private MedicinePriceRepository medicinePriceRepository;
 
 	@Override
 	public List<Medicine> findAll() {
@@ -199,5 +202,31 @@ public class MedicineServiceImpl implements MedicineService {
 		
 		return dto;
 	}
- 
+
+	@Override
+	public List<MedicinePreviewDTO> getAllMedicines(String medicineName) {
+		List<Medicine> medicines = medicineRepository.findByNameContaining(medicineName);
+		List<Long> ids = medicines.stream().map(m -> m.getId()).collect(Collectors.toList());
+		List<MedicineInPharmacy> medicineInPharmacies = medicineInPharmacyRepository.findByMedicineIdIn(ids);
+		List<MedicinePrice> medicinePrices = medicinePriceRepository.findByMedicineIdIn(ids);
+
+		List<MedicinePreviewDTO> medicinePreviewDTOList = new ArrayList<>();
+		for(MedicineInPharmacy medicine : medicineInPharmacies) {
+			for(MedicinePrice medicinePrice : medicinePrices) {
+				if(medicine.getMedicine().getId().equals(medicinePrice.getMedicine().getId()) && medicine.getPharmacy().getId().equals(medicinePrice.getPharmacy().getId())) {
+					medicinePreviewDTOList.add(new MedicinePreviewDTO(medicine.getMedicine(), medicine.getPharmacy(), medicine.getQuantity(), medicinePrice.getPrice()));
+					continue;
+				}
+			}
+		}
+
+		return medicinePreviewDTOList;
+	}
+
+	@Override
+	public MedicineSpecificationDTO getMedicine(Long id) {
+		Medicine medicine = medicineRepository.getOne(id);
+		return new MedicineSpecificationDTO(medicine);
+	}
+
 }

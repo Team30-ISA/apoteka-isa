@@ -6,7 +6,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import isa.apoteka.domain.Medicine;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface MedicineRepository  extends JpaRepository<Medicine, Long>  {
 	
 	@Query("from Medicine m where LOWER(m.name) like %:name%")
@@ -29,6 +31,7 @@ public interface MedicineRepository  extends JpaRepository<Medicine, Long>  {
 	
 	@Query("from Medicine m join m.medicineInpharmacy mp left join mp.pharmacy p where ((not p.id=:id) or p.id=null) and m.id not in (select med.id from Medicine as med join med.medicineInpharmacy mm join mm.pharmacy pp where pp.id=:id)") 
 	List<Medicine> findAllMedicineNotInPharmacy(Long id);
-	
-	
+
+
+    List<Medicine> findByNameContaining(String namr);
 }
