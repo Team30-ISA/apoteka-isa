@@ -339,8 +339,7 @@ public class CounselingController {
 		}
 		return true;
 	}
-	
-	@JsonIgnore
+
 	@GetMapping("/findAllCounselingsForPharmacy")
 	@PreAuthorize("hasRole('PATIENT')")
 	public List<Counseling> findAllCounselingsForPharmacy(Long pharmId){

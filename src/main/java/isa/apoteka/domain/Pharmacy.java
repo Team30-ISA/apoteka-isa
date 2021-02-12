@@ -47,10 +47,12 @@ public class Pharmacy {
             joinColumns = @JoinColumn(name = "pharmacy_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "patient_id", referencedColumnName = "id"))
     private List<Patient> patients;
-
+	
+	@JsonIgnore
 	@OneToMany(mappedBy = "medicine")
 	private List<MedicineInPharmacy> medicineInpharmacy;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
 	private List<Pharmacist> pharmacists;
 	
