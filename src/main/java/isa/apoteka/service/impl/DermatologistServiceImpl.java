@@ -4,12 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import isa.apoteka.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import isa.apoteka.domain.Counseling;
+import isa.apoteka.domain.Dermatologist;
+import isa.apoteka.domain.Pharmacy;
+import isa.apoteka.domain.PharmacyAdmin;
 import isa.apoteka.dto.FilteredDTO;
 import isa.apoteka.dto.PatientDTO;
 import isa.apoteka.dto.PharmacyDTO;
@@ -152,12 +155,21 @@ public class DermatologistServiceImpl implements DermatologistService {
 				continue;
 			if(c.getPatient() != null) {
 				PatientDTO dto = new PatientDTO(c.getPatient());
-				if(!patients.contains(dto)) {
+				if(!patientExists(patients, dto)) {
 					patients.add(dto);
 				}
 			}
 		}
 		return patients;
+	}
+	
+	public Boolean patientExists(List<PatientDTO> patients, PatientDTO patient) {
+		for(PatientDTO p : patients) {
+			if(p.getId() == patient.getId()) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	@Override

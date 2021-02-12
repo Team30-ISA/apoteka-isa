@@ -8,6 +8,8 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -225,8 +227,12 @@ public class CounselingController {
 	
 	@PostMapping("/setReport")
 	@PreAuthorize("hasRole('DERM')")
-	public Boolean setReport(@RequestBody Map<String, Object> params) {
+	public Boolean setReport(@RequestBody Map<String, Object> params, HttpServletResponse response) {
 		String report = params.get("report").toString();
+		if(report == null || report.equals("")) {
+			response.setStatus(400);
+			return false;
+		}
 		try {
 			if(!counselingService.updateReport(report, Long.parseLong(params.get("counselingId").toString())))
 				return false;
