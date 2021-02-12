@@ -20,7 +20,6 @@ Napomene:
   
   Testovi:
   Student 2 - MedicineServiceTest, MedicinePriceServiceTest i poslednjih pet testova u IntegrationTest
-  
   Student 3 - ExamintaionServiceTest, CounselingServiceTest i prvih pet testova u IntegrationTest
 
 
