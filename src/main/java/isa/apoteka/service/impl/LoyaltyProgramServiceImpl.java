@@ -21,7 +21,7 @@ public class LoyaltyProgramServiceImpl implements LoyaltyProgramService {
 	
 	@Override
 	public LoyaltyProgram findById(Long id) {
-		 return loyaltyProgramRepository.findById(id).get();
+		 return loyaltyProgramRepository.findById(id).orElseThrow();
 	}
 
 	@Override

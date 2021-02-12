@@ -95,24 +95,23 @@ main ::-webkit-scrollbar-thumb:hover {
 		<!--==========================
     Top Bar
   ============================-->
-		<section id="topbar" class="d-none d-lg-block">
-			<div class="container clearfix">
-				<div class="contact-info float-left">
-					<i class="fa fa-envelope-o"></i> <a
-						href="mailto:contact@example.com">apoteka.isa2021@gmail.com</a> <i
-						class="fa fa-phone"></i> +1 5589 55488 55
-				</div>
-				<div class="social-links float-right">
-					<a href="#" class="twitter"><i class="fa fa-twitter"></i></a> <a
-						href="#" class="facebook"><i class="fa fa-facebook"></i></a> <a
-						href="#" class="instagram"><i class="fa fa-instagram"></i></a> <a
-						href="#" class="google-plus"><i class="fa fa-google-plus"></i></a>
-					<a href="#" class="linkedin"><i class="fa fa-linkedin"></i></a>
-				</div>
-			</div>
-		</section>
+		 <section id="topbar" class="d-none d-lg-block">
+    <div class="container clearfix">
+      <div class="contact-info float-left">
+        <i class="fa fa-envelope-o"></i> <a href="mailto:contact@example.com">apoteka.isa2021@gmail.com</a>
+        <i class="fa fa-phone"></i> +1 5589 55488 55
+      </div>
+      <div class="social-links float-right">
+        <a href="#" class="twitter"><i class="fa fa-twitter"></i></a>
+        <a href="#" class="facebook"><i class="fa fa-facebook"></i></a>
+        <a href="#" class="instagram"><i class="fa fa-instagram"></i></a>
+        <a href="#" class="google-plus"><i class="fa fa-google-plus"></i></a>
+        <a href="#" class="linkedin"><i class="fa fa-linkedin"></i></a>
+      </div>
+    </div>
+  </section>
 
-		<!--==========================
+  <!--==========================
     Header
   ============================-->
 		<header id="header">
@@ -142,6 +141,7 @@ main ::-webkit-scrollbar-thumb:hover {
 								<li><a href="managingPharmacists.html">Manage Pharmacists</a></li>
 								<li><a href="managingMedication.html">Manage Medicine</a></li>
 								<li><a href="managingOrders.html">Manage supply offers</a></li>
+								<li><a href="notification.html">Requests for medicine</a></li>
 							</ul></li>
 						<li class="menu-has-children"><a href="#">{{admin.firstName}}
 								{{admin.lastName}}</a>
@@ -187,7 +187,9 @@ main ::-webkit-scrollbar-thumb:hover {
 								<tr width="100%" style=" height:1rem">
 									<td colspan= "2" width="30%" style="font-size:1.5rem;"><b>Supply order {{o.id}}</b> &nbsp <a href="#" class="icon fa-info-circle"
 											style="font-size: 20px; color: #50d8af;"
-											@click="showMedicine(o.medicines)"><span class="label">Icon</span></a></td>
+											@click="showMedicine(o.medicines)"><span class="label">Icon</span></a> &nbsp <a href="#" class="icon fa-ban"
+											style="font-size: 20px; color: red;"
+											@click="deleteErrand(o)"><span class="label">Icon</span></a></td>
 									<td width="30%"></td>
 									<td width="20%"><b>&nbsp</b></td>
 									<td width="20%">&nbsp</td>

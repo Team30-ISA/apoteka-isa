@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import isa.apoteka.domain.Notification;
 import isa.apoteka.domain.PharmacyAdmin;
 import isa.apoteka.repository.NotificationReposiotry;
 import isa.apoteka.service.NotificationService;
@@ -35,5 +36,10 @@ public class NotificationServiceImpl implements NotificationService {
 			notificationReposiotry.addMessage(date, p.getId(), message);
 		}
 		
+	}
+
+	@Override
+	public List<Notification> findAllMessages(Long id) {
+		return notificationReposiotry.findAllByUser(id);
 	}
 }

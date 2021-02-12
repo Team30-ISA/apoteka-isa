@@ -10,13 +10,20 @@ import isa.apoteka.dto.OfferPreviewDTO;
 import isa.apoteka.repository.ErrandRepository;
 import isa.apoteka.repository.SupplierMedicineRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import isa.apoteka.async.service.EmailService;
+import isa.apoteka.domain.Errand;
+import isa.apoteka.domain.Offer;
+import isa.apoteka.domain.PharmacyAdmin;
 import isa.apoteka.dto.SupplierDTO;
+import isa.apoteka.repository.ErrandRepository;
 import isa.apoteka.repository.OfferRepository;
+import isa.apoteka.service.ErrandService;
+import isa.apoteka.service.MedicineQuantityService;
 import isa.apoteka.service.OfferService;
 
 @Service
@@ -25,17 +32,17 @@ public class OfferServiceImpl implements OfferService{
 	
 	private OfferRepository offerRepository;
 	private EmailService emailService;
-
-	@Autowired
+	private ErrandRepository errandRepository;
+	private MedicineQuantityService medQuantityService;
 	private SupplierMedicineRepository supplierMedicineRepository;
 
 	@Autowired
-	private ErrandRepository errandRepository;
-
-	@Autowired
-	public OfferServiceImpl(OfferRepository offerRepository, EmailService emailService) {
+	public OfferServiceImpl(OfferRepository offerRepository, EmailService emailService, ErrandRepository errandRepository, MedicineQuantityService medQuantityService, SupplierMedicineRepository supplierMedicineRepository) {
 		this.offerRepository = offerRepository;
 		this.emailService = emailService;
+		this.errandRepository = errandRepository;
+		this.medQuantityService = medQuantityService;
+		this.supplierMedicineRepository =supplierMedicineRepository;
 	}   
 
 	@Override
@@ -51,12 +58,22 @@ public class OfferServiceImpl implements OfferService{
 
 	@Override
 	@Transactional(readOnly = false)
-	public Boolean approveOffer(Long id, Long errandId) {
+	public Boolean approveOffer(Long offerid, Long errandId) {
+		PharmacyAdmin admin = (PharmacyAdmin) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Errand errand = errandRepository.findById(errandId).orElse(null);
+		if(errand == null) {
+			return false;
+		}else if(!errand.getAdmin().getId().equals(admin.getId())) {
+			return false;
+		}
+		  
+		System.out.println(errandId);
 		offerRepository.finishErrand(errandId);
+		medQuantityService.changeQuantity(errandId);
 		List<Offer> offers =  offerRepository.findAllOffersForErrand(errandId);
 		for(Offer o : offers) {
-			if(o.getId().equals(id)) {
-				offerRepository.offerApproval(id);
+			if(o.getId().equals(offerid)) {
+				offerRepository.offerApproval(offerid);
 			}
 		}
 		return true;

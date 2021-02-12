@@ -115,19 +115,19 @@ main ::-webkit-scrollbar-thumb:hover {
 
 				<div id="logo" class="pull-left">
 					<h1>
-						<a href="pharmacyAdmin/pharmacyAdminHome.html" class="scrollto">Apote<span>ke</span></a>
+						<a v-if="role == 'ADMIN'" href="pharmacy.html" class="scrollto">Apote<span>ke</span></a>
 					</h1>
 					<!-- Uncomment below if you prefer to use an image logo -->
 					<!-- <a href="#body"><img src="img/logo.png" alt="" title="" /></a>-->
 				</div>
 
-				<nav id="nav-menu-container">
+				<nav id="nav-menu-container" v-if="role == 'ADMIN'">
 					<ul class="nav-menu">
-						<li class="menu-active"><a href="pharmacyAdmin/pharmacyAdminHome.html">Home</a></li>
+						<li class="menu-active"><a href="pharmacy.html">Home</a></li>
 						<li class="menu-has-children"><a href="#">Search</a>
 							<ul>
-								<li><a href="filterDermatologist.html">Dermatologists</a></li>
-								<li><a href="filterPharmacist.html">Pharmacists</a></li>
+								<li><a href="../filterDermatologist.html">Dermatologists</a></li>
+								<li><a href="../filterPharmacist.html">Pharmacists</a></li>
 							</ul></li>
 						<li class="menu-has-children"><a href="#">Tools</a>
 							<ul>
@@ -137,15 +137,16 @@ main ::-webkit-scrollbar-thumb:hover {
 								<li><a href="pharmacyAdmin/managingPharmacists.html">Manage Pharmacists</a></li>
 								<li><a href="pharmacyAdmin/managingMedication.html">Manage Medicine</a></li>
 								<li><a href="pharmacyAdmin/managingOrders.html">Manage supply offers</a></li>
+								<li><a href="pharmacyAdmin/notification.html">Requests for medication</a></li>
 							</ul></li>
 						<li class="menu-has-children"><a href="#">{{user.firstName}}
 								{{user.lastName}}</a>
 							<ul>
-								<li><a href="pharmacyAdminProfile.html"><i class="icon fa-user"></i>&nbsp&nbsp&nbspProfile</a></li>
+								<li><a href="pharmacyAdmin/pharmacyAdminProfile.html"><i class="icon fa-user"></i>&nbsp&nbsp&nbspProfile</a></li>
 								<li @click="logout"><a href="#"><i
 										class="icon fa-sign-out"></i>&nbsp&nbspLog out</a></li>
 							</ul></li>
-						<li><a href="#contact">Contact</a></li>
+							<li><a href="pharmacyAdmin/businessReport.html">Business report</a></li>
 					</ul>
 				</nav>
 				<!-- #nav-menu-container -->

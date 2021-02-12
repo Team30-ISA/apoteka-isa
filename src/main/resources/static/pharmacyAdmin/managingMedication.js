@@ -69,6 +69,9 @@ var app = new Vue({
 				  
 	        })
 	        .then(response => {
+	        	if(response.data = false){
+	        		 JSAlert.alert("Medication is reserved. It cannot be deleted!");
+	        	}
 	        	window.location.href = '/pharmacyAdmin/managingMedication.html';
 	        }).catch(error => {
 	            console.log(error)

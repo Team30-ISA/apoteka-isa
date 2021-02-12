@@ -8,9 +8,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import isa.apoteka.domain.MedicineInPharmacy;
 import isa.apoteka.domain.MedicinePrice;
+import isa.apoteka.domain.ReservedMedicine;
 import isa.apoteka.repository.MedicineInPharmacyRepository;
 import isa.apoteka.service.MedicineInPharmacyService;
 import isa.apoteka.service.MedicinePriceService;
+import isa.apoteka.service.MedicineReservationService;
 
 @Service
 @Transactional(readOnly = true)
@@ -18,11 +20,13 @@ public class MedicineInPharmacyServiceImpl implements MedicineInPharmacyService{
 
 	private MedicineInPharmacyRepository medInPharmacyRepository;
 	private MedicinePriceService medicinePriceService;
+	private MedicineReservationService medicineReservationService;
 	
 	@Autowired
-	public MedicineInPharmacyServiceImpl(MedicineInPharmacyRepository medInPharmacyRepository, MedicinePriceService medicinePriceService) {
+	public MedicineInPharmacyServiceImpl(MedicineInPharmacyRepository medInPharmacyRepository, MedicinePriceService medicinePriceService, MedicineReservationService medicineReservationService) {
 		this.medInPharmacyRepository = medInPharmacyRepository;
 		this.medicinePriceService = medicinePriceService;
+		this.medicineReservationService = medicineReservationService;
 	}
 	
 	@Override
@@ -35,8 +39,17 @@ public class MedicineInPharmacyServiceImpl implements MedicineInPharmacyService{
 
 	@Override
 	@Transactional(readOnly = false)
-	public void deleteMedication(Long medicineId, Long pharmacyId) {
+	public Boolean deleteMedication(Long medicineId, Long pharmacyId) {
+		List<ReservedMedicine> med = medicineReservationService.findReservationForMedicineAndPharmacyNotFinished(medicineId,pharmacyId);
+		if(med != null) {
+			for(ReservedMedicine r : med) {
+				if(r.getApproved() == false)
+					return false;
+			}
+		}
+		
 		medInPharmacyRepository.deleteMedication(medicineId, pharmacyId);
+		return true;
 	}
 
 	@Override
@@ -58,6 +71,13 @@ public class MedicineInPharmacyServiceImpl implements MedicineInPharmacyService{
 	public List<MedicineInPharmacy> getAvailableMedicineInPharmacy(Long id) {
 		System.out.println(id);
 		return medInPharmacyRepository.getAvailableMedicineInPharmacy(id);
+	}
+
+	@Override
+	@Transactional(readOnly = false)
+	public void changeQuantity(Long id, int quantity, Long pharmacyId) {
+		medInPharmacyRepository.changeQuantity(id, quantity, pharmacyId);
+		
 	}
 
 }

@@ -49,4 +49,23 @@ public class MedicineQuantityServiceImpl implements MedicineQuantityService{
 		return dto;
 	}
 
+	@Transactional(readOnly = false)
+	public Boolean changeQuantity(Long errandId) {
+		PharmacyAdmin admin = (PharmacyAdmin) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		List<MedicineQuantity> med = medQuantityReposiotry.getMedicineForErrand(errandId);
+		for(MedicineQuantity mq : med) {
+			medInPharmacyService.changeQuantity(mq.getMedicine().getId(), mq.getQuantity(), admin.getPharmacy().getId());
+		}
+		return true;
+	}
+	@Override
+	public void deleteMedQuantity(Long errandId, PharmacyAdmin admin) {
+		List<MedicineQuantity> med = medQuantityReposiotry.getMedicineForErrand(errandId);
+		for(MedicineQuantity mq : med) {
+			medInPharmacyService.deleteMedication(mq.getMedicine().getId(), admin.getPharmacy().getId());
+		}
+		
+		medQuantityReposiotry.deleteAll(med);
+		
+	}
 }

@@ -288,8 +288,12 @@ public class CounselingController {
 		if(dwcId == null) {
 			return new ResponseEntity<>(-1, HttpStatus.OK);
 		}
-		if(!counselingService.createCounseling(start, duration, price, dwcId, dermId, admin.getPharmacy().getId())) {
-			return new ResponseEntity<>(-2, HttpStatus.OK);
+		try {
+			if(!counselingService.createCounseling(start, duration, price, dwcId, dermId, admin.getPharmacy().getId())) {
+				return new ResponseEntity<>(-2, HttpStatus.OK);
+			}
+		} catch (Exception e) {
+			return new ResponseEntity<>(-3, HttpStatus.OK);
 		}
 		
 		return new ResponseEntity<>(1, HttpStatus.OK);
@@ -354,8 +358,10 @@ public class CounselingController {
 			List<Counseling> ret = new ArrayList<Counseling>();
 			for(Counseling s: counselings) {
 				if(s.getPatient() != null)
-					if(s.getPatient().getId().equals(patId))
+					if(s.getPatient().getId().equals(patId)) {
+						System.out.println(s.getPatient().getId() + " ==  " + patId);
 						ret.add(s);
+					}
 			}
 			return ret;
 	}
