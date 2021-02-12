@@ -9,27 +9,38 @@ import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import isa.apoteka.domain.Pharmacist;
 import isa.apoteka.domain.PharmacistWorkCalendar;
 import isa.apoteka.dto.PeriodDTO;
+import isa.apoteka.repository.PharmacistRepository;
 import isa.apoteka.repository.PharmacistWorkCalendarRepository;
+import isa.apoteka.service.PharmacistService;
 import isa.apoteka.service.PharmacistWorkCalendarService;
 
 @Service
+@Transactional(readOnly = true)
 public class PharmacistWorkCalendarServiceImpl implements PharmacistWorkCalendarService {
 
 	
 	private PharmacistWorkCalendarRepository pharmWCRepository;
+	private PharmacistRepository pharmacistRepository;
+	
 	
 	@Autowired
-	public PharmacistWorkCalendarServiceImpl(PharmacistWorkCalendarRepository pharmWCRepository){
+	public PharmacistWorkCalendarServiceImpl(PharmacistWorkCalendarRepository pharmWCRepository,  PharmacistRepository pharmacistRepository){
 		this.pharmWCRepository = pharmWCRepository;
+		this.pharmacistRepository = pharmacistRepository;
 	}
 	
 	@Override
-	public Boolean save(PharmacistWorkCalendar derm) throws Exception{
+	@Transactional(readOnly = false)
+	public Boolean save(PharmacistWorkCalendar pwc, Pharmacist pharmacist) throws Exception{
 		TimeUnit.SECONDS.sleep(15);
-		PharmacistWorkCalendar d = pharmWCRepository.save(derm);
+		PharmacistWorkCalendar d = pharmWCRepository.save(pwc);
+		pwc.setLastReqDate(new Date());
+		pharmacistRepository.save(pharmacist);
 		if(d != null)
 			return true;
 		return false;
@@ -55,6 +66,7 @@ public class PharmacistWorkCalendarServiceImpl implements PharmacistWorkCalendar
 	}
 
 	@Override
+	@Transactional(readOnly = false)
 	public void deletePharmWorkCalendarByDate(Date start, Long pharmId) {
 		Calendar calendar = new GregorianCalendar();
 		calendar.setTime(start);
@@ -68,6 +80,7 @@ public class PharmacistWorkCalendarServiceImpl implements PharmacistWorkCalendar
 	}
 
 	@Override
+	@Transactional(readOnly = false)
 	public void deletePharmWorkCalendarByPharm(Long id) {
 		pharmWCRepository.deletePharmWorkCalendarByPharm(id);
 		
