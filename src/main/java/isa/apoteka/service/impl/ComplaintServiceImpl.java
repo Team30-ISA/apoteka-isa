@@ -1,8 +1,10 @@
 package isa.apoteka.service.impl;
 
+import isa.apoteka.async.service.EmailService;
 import isa.apoteka.domain.Complaint;
 import isa.apoteka.domain.Patient;
 import isa.apoteka.dto.ComplaintDTO;
+import isa.apoteka.dto.ComplaintResponseDTO;
 import isa.apoteka.dto.ComplaintsListsDTO;
 import isa.apoteka.repository.ComplaintRepository;
 import isa.apoteka.service.ComplaintService;
@@ -11,6 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class ComplaintServiceImpl implements ComplaintService {
     @Autowired
@@ -18,6 +23,9 @@ public class ComplaintServiceImpl implements ComplaintService {
 
     @Autowired
     private PatientService patientService;
+
+    @Autowired
+    private EmailService emailService;
 
     @Override
     public ComplaintDTO create(ComplaintDTO complaintDTO) throws Exception {
@@ -43,5 +51,21 @@ public class ComplaintServiceImpl implements ComplaintService {
         complaint.setPatient(p);
         complaintRepository.save(complaint);
         return complaintDTO;
+    }
+
+    @Override
+    public List<ComplaintDTO> getAllComplaints() {
+        return complaintRepository.findByRespondFalse().stream().map(c -> new ComplaintDTO(c)).collect(Collectors.toList());
+    }
+
+    @Override
+    public ComplaintResponseDTO respond(ComplaintResponseDTO complaintResponseDTO) {
+        Complaint complaint = complaintRepository.getOne(complaintResponseDTO.getComplaintId());
+        complaint.setRespond(true);
+        complaintRepository.save(complaint);
+
+        emailService.sendComplaintAnswer(complaint.getRecipientName(), complaintResponseDTO.getResponse(), complaint.getPatient().getEmail());
+
+        return complaintResponseDTO;
     }
 }

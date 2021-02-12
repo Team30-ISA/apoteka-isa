@@ -132,11 +132,11 @@
 					<li class="nav-item" @click.prevent="tab = 'DERMATOLOGIST'">
 						<a class="nav-link" :class="{active: tab == 'DERMATOLOGIST'}" href="#">Dermatologists</a>
 					</li>
-					<li class="nav-item" @click.prevent="tab = 'PHARMACY'">
-						<a class="nav-link" :class="{active: tab == 'PHARMACY'}" href="#">Pharmacies</a>
-					</li>
                     <li class="nav-item" @click.prevent="tab = 'PHARMACIST'">
 						<a class="nav-link" :class="{active: tab == 'PHARMACIST'}" href="#">Pharmacists</a>
+					</li>
+                    <li class="nav-item" @click.prevent="tab = 'PHARMACY'">
+						<a class="nav-link" :class="{active: tab == 'PHARMACY'}" href="#">Pharmacies</a>
 					</li>
 				</ul>
 				<div v-if="tab == 'DERMATOLOGIST'">
@@ -145,16 +145,16 @@
                         <option v-for="derm in dermatologists" :value="derm">{{derm.firstname + " " + derm.lastname}}</option>
                     </select>
 				</div>
-                <div v-if="tab == 'PHARMACY'">
+                <div v-if="tab == 'PHARMACIST'">
                     <select v-model="selected" class="form-control my-4">
                         <option disabled value="">Select pharmacist</option>
-                        <option v-for="pharm in pharmacists" :value="derm">{{pharm.firstname + " " + pharm.lastname}}</option>
+                        <option v-for="pharm in pharmacists" :value="pharm">{{pharm.firstname + " " + pharm.lastname}}</option>
                     </select>
                 </div>
-				<div v-if="tab == 'PHARMACIST'"">
+				<div v-if="tab == 'PHARMACY'"">
 					<select v-model="selected" class="form-control my-4">
                         <option disabled value="">Select pharmacy</option>
-                        <option v-for="pharm in pharmacies" :value="derm">{{pharm.name}}</option>
+                        <option v-for="pharm in pharmacies" :value="pharm">{{pharm.name}}</option>
                     </select>
 				</div>
                 <textarea class="form-control" rows="15" v-model="complaint">

@@ -10,8 +10,10 @@ public class Complaint {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long recipient;
+    private String recipientName;
     private String message;
     private ComplaintUser complaintUser;
+    private Boolean respond = false;
 
     @ManyToOne
     private Patient patient;
@@ -23,6 +25,7 @@ public class Complaint {
         this.recipient = complaintDTO.getRecipient();
         this.message = complaintDTO.getMessage();
         this.complaintUser = complaintDTO.getComplaintUser();
+        this.recipientName = complaintDTO.getRecipientName();
     }
 
     public Long getId() {
@@ -63,5 +66,21 @@ public class Complaint {
 
     public void setComplaintUser(ComplaintUser complaintUser) {
         this.complaintUser = complaintUser;
+    }
+
+    public String getRecipientName() {
+        return recipientName;
+    }
+
+    public void setRecipientName(String recipientName) {
+        this.recipientName = recipientName;
+    }
+
+    public Boolean getRespond() {
+        return respond;
+    }
+
+    public void setRespond(Boolean respond) {
+        this.respond = respond;
     }
 }

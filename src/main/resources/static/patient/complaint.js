@@ -6,7 +6,11 @@ var app = new Vue({
     dermatologists: [],
     pharmacists: [],
     complaint: "",
-    selected: ""
+    selected: {
+      PHARMACIST: "",
+      DERMATOLOGIST: "",
+      PHARMACY: ""
+    }
   },
   methods: {
     async sendComplaint() {
@@ -16,7 +20,11 @@ var app = new Vue({
           {
             recipient: this.selected.id,
             complaintUser: this.tab,
-            message: this.complaint
+            message: this.complaint,
+            recipientName:
+              this.tab != "PHARMACY"
+                ? this.selected.firstname + " " + this.selected.lastname
+                : this.selected.name
           },
           {
             headers: {
@@ -50,6 +58,7 @@ var app = new Vue({
         Authorization: "Bearer " + localStorage.getItem("access_token")
       }
     });
+    console.log(data);
     this.pharmacies = data.pharmacies;
     this.dermatologists = data.dermatologists;
     this.pharmacists = data.pharmacists;
