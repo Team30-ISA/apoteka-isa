@@ -1,36 +1,37 @@
 package isa.apoteka.service.impl;
 
-import isa.apoteka.domain.*;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import isa.apoteka.domain.Address;
+import isa.apoteka.domain.Authority;
+import isa.apoteka.domain.City;
+import isa.apoteka.domain.Dermatologist;
+import isa.apoteka.domain.Supplier;
+import isa.apoteka.domain.SystemAdmin;
+import isa.apoteka.domain.User;
+import isa.apoteka.domain.UserRequest;
 import isa.apoteka.dto.PharmacistDTO;
 import isa.apoteka.repository.DermatologistRepository;
 import isa.apoteka.repository.SupplierRepository;
 import isa.apoteka.repository.SysAdminRepository;
-import isa.apoteka.repository.UserRepository;
 import isa.apoteka.service.AddressService;
 import isa.apoteka.service.AuthorityService;
 import isa.apoteka.service.CityService;
 import isa.apoteka.service.SysAdminService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class SysAdminServiceImpl implements SysAdminService {
-
-    @Autowired
-    private UserRepository userRepository;
 
     @Autowired
     private CityService cityService;
 
     @Autowired
     private AddressService addressService;
-
-   // @Autowired
-    //private PasswordEncoder passwordEncoder;
 
     @Autowired
     private AuthorityService authorityService;
@@ -105,8 +106,8 @@ public class SysAdminServiceImpl implements SysAdminService {
     private SystemAdmin createNewSysAdmin(PharmacistDTO sysAdminData) {
         SystemAdmin user = new SystemAdmin(sysAdminData);
         List<Authority> auth = authorityService.findByname("ROLE_SYS_ADMIN");
-        //user.setPasswordForReset(passwordEncoder.encode(sysAdminData.getPassword()));
-        user.setPasswordForReset(sysAdminData.getPassword());
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        user.setPasswordForReset(passwordEncoder.encode(sysAdminData.getPassword()));
         user.setAuthorities(auth);
         return user;
     }
@@ -114,8 +115,8 @@ public class SysAdminServiceImpl implements SysAdminService {
     private Dermatologist createNewDermatologist(PharmacistDTO dermatologistData) {
         Dermatologist dermatologist= new Dermatologist(dermatologistData);
         List<Authority> auth = authorityService.findByname("ROLE_DERM");
-        //dermatologist.setPasswordForReset(passwordEncoder.encode(dermatologistData.getPassword()));
-        dermatologist.setPasswordForReset(dermatologistData.getPassword());
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        dermatologist.setPasswordForReset(passwordEncoder.encode(dermatologistData.getPassword()));
         dermatologist.setAuthorities(auth);
         return dermatologist;
     }
@@ -123,8 +124,8 @@ public class SysAdminServiceImpl implements SysAdminService {
     private Supplier createNewSupplier(PharmacistDTO supplierData) {
         Supplier supplier = new Supplier(supplierData);
         List<Authority> auth = authorityService.findByname("ROLE_SUPL");
-        //supplier.setPasswordForReset(passwordEncoder.encode(supplierData.getPassword()));
-        supplier.setPasswordForReset(supplierData.getPassword());
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        supplier.setPasswordForReset(passwordEncoder.encode(supplierData.getPassword()));
         supplier.setAuthorities(auth);
         return supplier;
     }

@@ -1,15 +1,23 @@
 package isa.apoteka.service.impl;
 
-import isa.apoteka.domain.*;
-import isa.apoteka.dto.PharmacistDTO;
-import isa.apoteka.repository.PharmacyRepository;
-import isa.apoteka.service.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-import isa.apoteka.repository.PharmacyAdminRepository;
-
 import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import isa.apoteka.domain.Address;
+import isa.apoteka.domain.Authority;
+import isa.apoteka.domain.City;
+import isa.apoteka.domain.Pharmacy;
+import isa.apoteka.domain.PharmacyAdmin;
+import isa.apoteka.dto.PharmacistDTO;
+import isa.apoteka.repository.PharmacyAdminRepository;
+import isa.apoteka.service.AddressService;
+import isa.apoteka.service.AuthorityService;
+import isa.apoteka.service.CityService;
+import isa.apoteka.service.PharmacyAdminService;
+import isa.apoteka.service.PharmacyService;
 
 @Service
 public class PharmacyAdminServiceImpl implements PharmacyAdminService {
@@ -25,9 +33,6 @@ public class PharmacyAdminServiceImpl implements PharmacyAdminService {
 
     @Autowired
     private AddressService addressService;
-
-    //@Autowired
-    //private PasswordEncoder passwordEncoder;
 
     @Autowired
     private AuthorityService authorityService;
@@ -55,8 +60,8 @@ public class PharmacyAdminServiceImpl implements PharmacyAdminService {
     private PharmacyAdmin createNewPharmacyAdmin(PharmacistDTO pharmacyAdminData) {
         Pharmacy pharmacy = pharmacyService.findOne(pharmacyAdminData.getPharmacyId());
         PharmacyAdmin pharmacyAdmin = new PharmacyAdmin(pharmacyAdminData, pharmacy);
-        //pharmacyAdmin.setPasswordForReset(passwordEncoder.encode(pharmacyAdminData.getPassword()));
-        pharmacyAdmin.setPasswordForReset(pharmacyAdminData.getPassword());
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        pharmacyAdmin.setPasswordForReset(passwordEncoder.encode(pharmacyAdminData.getPassword()));
         List<Authority> auth = authorityService.findByname("ROLE_ADMIN");
         pharmacyAdmin.setAuthorities(auth);
         return pharmacyAdmin;

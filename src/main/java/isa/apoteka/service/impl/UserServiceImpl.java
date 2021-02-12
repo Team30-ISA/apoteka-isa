@@ -28,8 +28,8 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private PatientRepository patientRepository;
 
-	//@Autowired
-	//private PasswordEncoder passwordEncoder;
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 	@Autowired
 	private AuthorityService authService;
@@ -67,8 +67,7 @@ public class UserServiceImpl implements UserService {
 	public User save(UserRequest userRequest) {
 		Patient patient = new Patient(userRequest);
 
-		//patient.setPassword(passwordEncoder.encode(userRequest.getPassword()));
-		patient.setPassword(userRequest.getPassword());
+		patient.setPassword(passwordEncoder.encode(userRequest.getPassword()));
 		City city = this.cityService.findCityById(userRequest.getCityId().longValue());
 		Address address = new Address(userRequest.getAddress(), city);
 		patient.setAddress(address);
@@ -77,8 +76,7 @@ public class UserServiceImpl implements UserService {
 		patient.setAuthorities(auth);
 		this.patientRepository.save(patient);
 
-		//emailService.sendVerificationEmail(patient, passwordEncoder.encode(patient.getEmail()));
-		emailService.sendVerificationEmail(patient, patient.getEmail());
+		emailService.sendVerificationEmail(patient, passwordEncoder.encode(patient.getEmail()));
 
 		return patient;
 	}
@@ -96,8 +94,8 @@ public class UserServiceImpl implements UserService {
 	public void verifyUser(UserVerificationDTO verificationData) throws Exception {
 		Patient patient = patientRepository.getOne(verificationData.getUserId());
 
-		/*if(!passwordEncoder.matches(patient.getEmail(), verificationData.getHash()))
-			throw new Exception("Bad verification token");*/
+		if(!passwordEncoder.matches(patient.getEmail(), verificationData.getHash()))
+			throw new Exception("Bad verification token");
 
 		patient.setEnabled(true);
 		patientRepository.save(patient);

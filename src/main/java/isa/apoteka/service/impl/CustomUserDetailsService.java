@@ -5,13 +5,13 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
 import isa.apoteka.domain.User;
 import isa.apoteka.repository.UserRepository;
 
@@ -25,9 +25,6 @@ public class CustomUserDetailsService implements UserDetailsService {
 
 	@Autowired
 	private UserRepository userRepository;
-
-	//@Autowired
-	//private PasswordEncoder passwordEncoder;
 
 	@Autowired
 	private AuthenticationManager authenticationManager;
@@ -57,8 +54,8 @@ public class CustomUserDetailsService implements UserDetailsService {
 		}
 		LOGGER.debug("Changing password for user '" + email + "'");
 		User user = (User) loadUserByUsername(email);
-		//user.setPassword(passwordEncoder.encode(newPassword));
-		user.setPassword(newPassword);
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		user.setPassword(passwordEncoder.encode(newPassword));
 		userRepository.save(user);
 	}
 }
