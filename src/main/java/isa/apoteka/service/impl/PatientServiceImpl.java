@@ -10,7 +10,6 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import isa.apoteka.domain.Counseling;
@@ -28,8 +27,6 @@ public class PatientServiceImpl implements PatientService {
 	@Autowired
 	private PatientRepository patientRepository;
 
-	//@Autowired
-	//private PasswordEncoder passwordEncoder;
 
 	@Override
 	public Patient findByUsername(String username) throws UsernameNotFoundException {
@@ -64,7 +61,6 @@ public class PatientServiceImpl implements PatientService {
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		p.setPassword(passwordEncoder.encode(puf.getNewPass()));
 		this.patientRepository.updatePassword(passwordEncoder.encode(puf.getNewPass()), p.getId());
-		//this.patientRepository.updatePassword(puf.getNewPass(), p.getId());
 	}
 	
 	@Override

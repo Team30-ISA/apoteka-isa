@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import isa.apoteka.domain.Address;
@@ -33,9 +32,6 @@ public class SysAdminServiceImpl implements SysAdminService {
 
     @Autowired
     private AddressService addressService;
-
-    //@Autowired
-    //private PasswordEncoder passwordEncoder;
 
     @Autowired
     private AuthorityService authorityService;
@@ -112,7 +108,6 @@ public class SysAdminServiceImpl implements SysAdminService {
         List<Authority> auth = authorityService.findByname("ROLE_SYS_ADMIN");
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         user.setPasswordForReset(passwordEncoder.encode(sysAdminData.getPassword()));
-        //user.setPasswordForReset(sysAdminData.getPassword());
         user.setAuthorities(auth);
         return user;
     }
@@ -122,7 +117,6 @@ public class SysAdminServiceImpl implements SysAdminService {
         List<Authority> auth = authorityService.findByname("ROLE_DERM");
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         dermatologist.setPasswordForReset(passwordEncoder.encode(dermatologistData.getPassword()));
-        //dermatologist.setPasswordForReset(dermatologistData.getPassword());
         dermatologist.setAuthorities(auth);
         return dermatologist;
     }
@@ -132,7 +126,6 @@ public class SysAdminServiceImpl implements SysAdminService {
         List<Authority> auth = authorityService.findByname("ROLE_SUPL");
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         supplier.setPasswordForReset(passwordEncoder.encode(supplierData.getPassword()));
-        //supplier.setPasswordForReset(supplierData.getPassword());
         supplier.setAuthorities(auth);
         return supplier;
     }

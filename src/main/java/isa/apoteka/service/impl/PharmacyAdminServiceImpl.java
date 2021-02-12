@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import isa.apoteka.domain.Address;
@@ -35,9 +34,6 @@ public class PharmacyAdminServiceImpl implements PharmacyAdminService {
     @Autowired
     private AddressService addressService;
 
-    //@Autowired
-    //private PasswordEncoder passwordEncoder;
-
     @Autowired
     private AuthorityService authorityService;
 
@@ -66,7 +62,6 @@ public class PharmacyAdminServiceImpl implements PharmacyAdminService {
         PharmacyAdmin pharmacyAdmin = new PharmacyAdmin(pharmacyAdminData, pharmacy);
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         pharmacyAdmin.setPasswordForReset(passwordEncoder.encode(pharmacyAdminData.getPassword()));
-        //pharmacyAdmin.setPasswordForReset(pharmacyAdminData.getPassword());
         List<Authority> auth = authorityService.findByname("ROLE_ADMIN");
         pharmacyAdmin.setAuthorities(auth);
         return pharmacyAdmin;

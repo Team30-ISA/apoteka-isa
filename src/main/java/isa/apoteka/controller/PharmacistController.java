@@ -12,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -50,16 +49,14 @@ public class PharmacistController {
 	private PharmacistService pharmacistService;
 	private AddressService addressService;
 	private CityService cityService;
-	//private PasswordEncoder passwordEncoder;
 	private AuthorityService authService;
 	private UserService userService;
 	
 	@Autowired
-	public PharmacistController(PharmacistService pharmacistService, AddressService addressService, CityService cityService/*, PasswordEncoder passwordEncoder*/, AuthorityService authService, UserService userService) {
+	public PharmacistController(PharmacistService pharmacistService, AddressService addressService, CityService cityService, AuthorityService authService, UserService userService) {
 		this.pharmacistService = pharmacistService;
 		this.addressService = addressService;
 		this.cityService = cityService;
-		//this.passwordEncoder = passwordEncoder;
 		this.authService = authService;
 		this.userService = userService;
 	}
