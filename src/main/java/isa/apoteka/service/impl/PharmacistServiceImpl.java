@@ -130,12 +130,21 @@ public class PharmacistServiceImpl implements PharmacistService{
 				continue;
 			if(e.getPatient() != null) {
 				PatientDTO dto = new PatientDTO(e.getPatient());
-				if(!patients.contains(dto)) {
+				if(!patientExists(patients, dto)) {
 					patients.add(dto);
 				}
 			}
 		}
 		return patients;
+	}
+	
+	public Boolean patientExists(List<PatientDTO> patients, PatientDTO patient) {
+		for(PatientDTO p : patients) {
+			if(p.getId() == patient.getId()) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	@Override
