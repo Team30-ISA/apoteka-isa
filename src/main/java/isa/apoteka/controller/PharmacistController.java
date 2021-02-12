@@ -49,16 +49,16 @@ public class PharmacistController {
 	private PharmacistService pharmacistService;
 	private AddressService addressService;
 	private CityService cityService;
-	private PasswordEncoder passwordEncoder;
+	//private PasswordEncoder passwordEncoder;
 	private AuthorityService authService;
 	private UserService userService;
 	
 	@Autowired
-	public PharmacistController(PharmacistService pharmacistService, AddressService addressService, CityService cityService, PasswordEncoder passwordEncoder, AuthorityService authService, UserService userService) {
+	public PharmacistController(PharmacistService pharmacistService, AddressService addressService, CityService cityService/*, PasswordEncoder passwordEncoder*/, AuthorityService authService, UserService userService) {
 		this.pharmacistService = pharmacistService;
 		this.addressService = addressService;
 		this.cityService = cityService;
-		this.passwordEncoder = passwordEncoder;
+		//this.passwordEncoder = passwordEncoder;
 		this.authService = authService;
 		this.userService = userService;
 	}
@@ -105,7 +105,8 @@ public class PharmacistController {
 		pharmacist.setFirstName(newPharmacistDTO.getFirstName());
 		pharmacist.setLastName(newPharmacistDTO.getLastName());
 		pharmacist.setEmail(newPharmacistDTO.getEmail());
-		pharmacist.setPassword(passwordEncoder.encode(newPharmacistDTO.getUsername()));
+		//pharmacist.setPassword(passwordEncoder.encode(newPharmacistDTO.getUsername()));
+		pharmacist.setPassword(newPharmacistDTO.getUsername());
 		pharmacist.setAuthorities(auth);
 		pharmacist.setAddress(newAddress);
 		pharmacist.setEnabled(true);

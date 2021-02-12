@@ -26,8 +26,8 @@ public class CustomUserDetailsService implements UserDetailsService {
 	@Autowired
 	private UserRepository userRepository;
 
-	@Autowired
-	private PasswordEncoder passwordEncoder;
+	//@Autowired
+	//private PasswordEncoder passwordEncoder;
 
 	@Autowired
 	private AuthenticationManager authenticationManager;
@@ -57,7 +57,8 @@ public class CustomUserDetailsService implements UserDetailsService {
 		}
 		LOGGER.debug("Changing password for user '" + email + "'");
 		User user = (User) loadUserByUsername(email);
-		user.setPassword(passwordEncoder.encode(newPassword));
+		//user.setPassword(passwordEncoder.encode(newPassword));
+		user.setPassword(newPassword);
 		userRepository.save(user);
 	}
 }
