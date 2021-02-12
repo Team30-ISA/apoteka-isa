@@ -10,9 +10,13 @@ public class LoyaltyProgramDTO {
 	private Integer examinationPoints;
 	private Integer minPoints;
 	private Double discount;
-	
+	private Integer counselingPoints;
+
+	public LoyaltyProgramDTO() {
+	}
+
 	public LoyaltyProgramDTO(Long id, CategoryType type, Integer examinationPoints, Integer minPoints,
-			Double discount) {
+							 Double discount) {
 		super();
 		this.id = id;
 		this.type = type;
@@ -51,6 +55,12 @@ public class LoyaltyProgramDTO {
 	public void setDiscount(Double discount) {
 		this.discount = discount;
 	}
-	
-	
+
+	public Integer getCounselingPoints() {
+		return counselingPoints;
+	}
+
+	public void setCounselingPoints(Integer counselingPoints) {
+		this.counselingPoints = counselingPoints;
+	}
 }

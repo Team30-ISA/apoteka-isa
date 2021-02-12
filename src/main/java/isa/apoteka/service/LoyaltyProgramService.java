@@ -2,10 +2,11 @@ package isa.apoteka.service;
 import java.util.List;
 
 import isa.apoteka.domain.LoyaltyProgram;
+import isa.apoteka.dto.LoyaltyProgramDTO;
 
 public interface LoyaltyProgramService {
 	
 	LoyaltyProgram findById(Long id);
 	List<LoyaltyProgram> findAll ();
-	LoyaltyProgram save(LoyaltyProgram loyaltyProgram);
+	LoyaltyProgramDTO save(LoyaltyProgramDTO loyaltyProgram);
 }

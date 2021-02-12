@@ -1,5 +1,7 @@
 package isa.apoteka.domain;
 
+import isa.apoteka.dto.LoyaltyProgramDTO;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -33,6 +35,14 @@ public class LoyaltyProgram {
 	
 	public LoyaltyProgram() {
 		super();
+	}
+
+	public LoyaltyProgram(LoyaltyProgramDTO loyaltyProgram) {
+		this.type = loyaltyProgram.getType();
+		this.examinationPoints = loyaltyProgram.getExaminationPoints();
+		this.minPoints = loyaltyProgram.getMinPoints();
+		this.discount = loyaltyProgram.getDiscount();
+		this.counselingPoints =loyaltyProgram.getCounselingPoints();
 	}
 
 	public Long getId() {

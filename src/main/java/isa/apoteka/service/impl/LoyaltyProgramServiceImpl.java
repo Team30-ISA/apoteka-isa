@@ -2,6 +2,7 @@ package isa.apoteka.service.impl;
 
 import java.util.List;
 
+import isa.apoteka.dto.LoyaltyProgramDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +31,9 @@ public class LoyaltyProgramServiceImpl implements LoyaltyProgramService {
 	}
 
 	@Override
-	public LoyaltyProgram save(LoyaltyProgram loyaltyProgram) {
-		return this.loyaltyProgramRepository.save(loyaltyProgram);
+	public LoyaltyProgramDTO save(LoyaltyProgramDTO loyaltyProgram) {
+		LoyaltyProgram newLoyaltyProgram = new LoyaltyProgram(loyaltyProgram);
+		this.loyaltyProgramRepository.save(newLoyaltyProgram);
+		return loyaltyProgram;
 	}
 }

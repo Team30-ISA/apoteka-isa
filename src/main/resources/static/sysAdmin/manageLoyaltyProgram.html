@@ -79,7 +79,7 @@
 								<li><a href="pharmacies.html">Pharmacies</a></li>
 								<li><a href="manageUsers.html">Manage Users</a></li>
 								<li><a href="manageMedications.html">Medicines</a></li>
-								<li><a href="manageComplaints.html">Complaints</a></li>
+								<li><a href="complaint.html">Complaints</a></li>
                                 <li><a href="manageLoyaltyProgram.html">Loyalty program</a></li>
 							</ul></li>
 						<li class="menu-has-children"><a href="#"><i class="icon fa-cog"></i></a>
@@ -112,19 +112,19 @@
         </div>
 		<div class="d-inline-block w-50 mx-3 mt-5">
           <h6 style="color:#50d8af;"">Points for counseling</h6>
-          <input autofocus v-model="counselingPoints" type="text" name="counselingPoints" class="form-control" id="counselingPoints" />
+          <input autofocus v-model="counselingPoints" type="number" name="counselingPoints" class="form-control" id="counselingPoints" />
         </div>
         <div class="d-inline-block w-50 mx-3 mt-5">
           <h6 style="color:#50d8af;"">Points for examination</h6>
-          <input autofocus v-model="examinationPoints" type="text" name="examinationPoints" class="form-control" id="examinationPoints" />
+          <input autofocus v-model="examinationPoints" type="number" name="examinationPoints" class="form-control" id="examinationPoints" />
         </div>
         <div class="d-inline-block w-50 mx-3 mt-3">
           <h6 style="color:#50d8af;"">Discount</h6>
-          <input autofocus v-model="discount" type="text" name="discount" class="form-control" id="discount" />
+          <input autofocus v-model="discount" type="number" name="discount" class="form-control" id="discount" />
         </div>
         <div class="d-inline-block w-50 mx-3 mt-3">
           <h6 style="color:#50d8af;"">Minimum points for selected user</h6>
-          <input autofocus v-model="minPoints" type="text" name="minPoints" class="form-control" id="minPoints" />
+          <input autofocus v-model="minPoints" type="number" name="minPoints" class="form-control" id="minPoints" />
         </div>
         <button class="btn d-inline-block w-50 mx-3 my-5">Define</button>
       </form>
