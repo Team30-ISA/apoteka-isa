@@ -263,5 +263,5 @@ insert into notification(date, user_id, message) values ('20210210 12:00:00 AM',
 
 insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (1, 6, 27, 1);
 insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (2, 8, 27, 2);
-insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (3, 10, 27, 3);
+insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (3, 10, 27, 3); 
 
