@@ -17,11 +17,12 @@ Napomene:
   3. Email adresa je: apoteka.isa2021@gmail.com
      Šifra za email: apoteka2021
   4. Greška: savetovanje i pregled su pomešani - te klasa Counseling se odnosi na dermatologa, a klasa Examination na farmaceuta
-  
+  5. sonar.png je screenshot sonara i quality gate-a
   Testovi:
   
   Student 2 - MedicineServiceTest, MedicinePriceServiceTest i poslednjih pet testova u IntegrationTest
   
   Student 3 - ExamintaionServiceTest, CounselingServiceTest i prvih pet testova u IntegrationTest
+
 
 
