@@ -66,7 +66,10 @@ var app = new Vue({
 							  }
 							  
 					     }).then(response => {
-									console.log(response.data)
+									if(response.data == 1)
+										alert('Uspesno zakazan pregled')
+									else
+										alert('Neuspesno zakazan pregled, farmaceut nije slobodan u datom trenutku')
 						})
     	}
 	},

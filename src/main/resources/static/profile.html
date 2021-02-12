@@ -101,7 +101,7 @@
 
 				<nav id="nav-menu-container">
 					<ul class="nav-menu">
-						<li class="menu-active"><a href="pharmacyAdminHome.html">Home</a></li>
+						<li class="menu-active"><a href="patientHomepage.html">Home</a></li>
 						<li><a href="#about">About Us</a></li>
 						<li class="menu-has-children"><a href="#">Tools</a>
 							<ul>
@@ -202,10 +202,7 @@
 										<b>ADDRESS</b>
 									</td>
 									<td style="width: 100%;">
-										<select class="txtEnabled" v-if="changeData" v-model="selectedAddress" @change="setAddress" style="width: 170%;">
-											<option v-for="address in addresses" : value="address.value" :key="address.id" :selected="patient.address.id==address.id">{{address.street}}</option>
-										</select>
-										<input v-else type="text" v-model="patient.address.street" :class="[changeData ? 'txtEnabled' : 'txtDisabled']"  :disabled="!changeData">
+										<input type="text" v-model="patient.address.street" :class="[changeData ? 'txtEnabled' : 'txtDisabled']"  :disabled="!changeData">
 									</td>
 								</tr>
 								<tr>
@@ -259,20 +256,20 @@
 				</div>
 			</section>
 			<div>
+			<br><br><br><br><br><br>
 				<h4>Spisak rezervisanih lekova: </h4>
-				<style>
-				.pre-formatted {
-  					white-space: pre-wrap; /* 👈 this is the important part */
-  					border: 1px dotted;
-  					padding: 1rem;
-				}
-				</style>
-				<label v-for="med in reservedMedications" value="med.id">{{med.name}}&#13;&#10;</label>
-			</div>
-			
-			<div>
-				<h4>Spisak rezervisanih pregleda kod dermatologa: </h4>
-				<label v-for="med in reservedMedications" value="med.id">{{med.name}}&#13;&#10;</label>
+				<table class="table">
+					<thead>
+					    <tr>
+					        <th v-for="(index, column) in columns " :key="index"><a href="#" v-on:click="sortBy(column)" v-class="active: sortKey == column"> {{column}}</th>
+					    </tr>
+					</thead>
+					<tbody>
+					    <tr v-for="(index, counseling) in reservedMedications | orderBy sortKey reverse" :key="index">
+					        <td v-for="(indexColumn, column) in columns" :key="indexColumn">{{counseling[column]}}</td>
+					    </tr>
+					</tbody>
+				</table>
 			</div>
 		</main>
 
