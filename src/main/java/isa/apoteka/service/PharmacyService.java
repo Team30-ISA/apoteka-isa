@@ -49,4 +49,6 @@ public interface PharmacyService {
 
 	public void update(PharmacyDTO pharmacyDTO);
 	
+	public List<Pharmacy> searchPharmaciesByName(String name);
+	
 }

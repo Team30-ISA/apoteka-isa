@@ -74,6 +74,17 @@ public class PharmacyController {
 
 		return new ResponseEntity<>(pharmacyDTO, HttpStatus.OK);
 	}
+	@GetMapping(value = "/findPharmacyByName")
+	public ResponseEntity<List<PharmacyDTO>> searchPharmaciesByName(String name) {
+
+		List<Pharmacy> pharmacies = pharmacyService.searchPharmaciesByName(name);
+		List<PharmacyDTO> pharmacyDTO = new ArrayList<>();
+		for (Pharmacy p : pharmacies) {
+			pharmacyDTO.add(new PharmacyDTO(p));
+		}
+
+		return new ResponseEntity<>(pharmacyDTO, HttpStatus.OK);
+	}
 
 	@PostMapping
 	@PreAuthorize("hasRole('SYS_ADMIN')")

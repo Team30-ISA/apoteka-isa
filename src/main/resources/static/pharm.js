@@ -97,6 +97,7 @@ var app = new Vue({
 			  }
 	     }).then(response => {
 					this.counselings = response.data
+					console.log(this.counselings)
 			})
 			
 		
