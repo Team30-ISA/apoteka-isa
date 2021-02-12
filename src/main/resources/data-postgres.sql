@@ -226,8 +226,14 @@ INSERT INTO supplier (id, username, password, first_name, last_name, email, enab
 INSERT INTO supplier (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, gender, address_id, version) VALUES (26, 'admin9', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', 'Ana', 'Nikolic', 'apoteka.isa2021+stra@gmail.com', true, '2017-10-01 18:57:58.508-07', 1, 7, 0);
 
 insert into errand (id, creation_time, deadline, pharmacy_id, finished, admin_id) values (10, '2021-02-06 10:38:09.147', '2021-02-06 20:01:00', 1, false,12);
-insert into errand (id, creation_time, deadline, pharmacy_id, finished, admin_id) values (11, '2021-02-20 10:38:09.147', '2021-02-20 20:01:00', 1, false,10);
+insert into errand (id, creation_time, deadline, pharmacy_id, finished, admin_id) values (11, '2021-02-20 10:38:09.147', '2021-02-20 20:01:00', 2, false,10);
+insert into errand (id, creation_time, deadline, pharmacy_id, finished, admin_id) values (12, '2021-02-20 10:38:09.147', '2021-02-20 20:01:00', 3, false,10);
+insert into errand (id, creation_time, deadline, pharmacy_id, finished, admin_id) values (13, '2021-02-20 10:38:09.147', '2021-02-20 20:01:00', 1, false,10);
 
+insert into medicine_quantity (id, quantity, errand_id, medicine_id) values (17, 1, 12, 2);
+insert into medicine_quantity (id, quantity, errand_id, medicine_id) values (18, 2, 12, 3);
+insert into medicine_quantity (id, quantity, errand_id, medicine_id) values (19, 1, 13, 2);
+insert into medicine_quantity (id, quantity, errand_id, medicine_id) values (20, 2, 13, 4);
 
 INSERT INTO supplier (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, gender, address_id, version) VALUES (27, 'admin11', '$2a$10$2affw9vkXuEbQOoiKqN2XuVQ1sVZLQ6XBRAZ1IHeCT6W8.qJOXkhe', 'Ana', 'Nikolic', 'supplier@gmail.com', true, '2017-10-01 18:57:58.508-07', 1, 7, 0);
 INSERT INTO supplier (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, gender, address_id, version) VALUES (28, 'admin10', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', 'Ana', 'Nikolic', 'apoteka.isa2021+strka@gmail.com', true, '2017-10-01 18:57:58.508-07', 1, 7, 0);
