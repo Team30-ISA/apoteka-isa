@@ -39,7 +39,7 @@ public class PharmacistWorkCalendarServiceImpl implements PharmacistWorkCalendar
 	public Boolean save(PharmacistWorkCalendar pwc, Pharmacist pharmacist) throws Exception{
 		TimeUnit.SECONDS.sleep(15);
 		PharmacistWorkCalendar d = pharmWCRepository.save(pwc);
-		pwc.setLastReqDate(new Date());
+		pharmacist.setLastReqDate(new Date());
 		pharmacistRepository.save(pharmacist);
 		if(d != null)
 			return true;

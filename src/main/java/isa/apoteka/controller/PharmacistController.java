@@ -99,6 +99,7 @@ public class PharmacistController {
 		address.setCity(city);
 		Address newAddress = addressService.insertNewAddress(address);
 		Pharmacist pharmacist = new Pharmacist();
+		pharmacist.setLastPasswordResetDate(null);
 		pharmacist.setUsername(newPharmacistDTO.getUsername());
 		pharmacist.setFirstName(newPharmacistDTO.getFirstName());
 		pharmacist.setLastName(newPharmacistDTO.getLastName());
