@@ -72,6 +72,7 @@ var app = new Vue({
 		idCity: 0,
 		idAddress: 0,
 		reservedMedications: [],
+		examinations: [],
 	},
 	methods: {
 		logout(){
@@ -219,6 +220,7 @@ var app = new Vue({
 	     })
 	     .then(response => {
 	     	this.patient = response.data
+	     	console.log(response.data)
 	     	this.name = this.patient.firstName
 	     	this.surname = this.patient.lastName
 	     	this.email = this.patient.email
@@ -240,6 +242,17 @@ var app = new Vue({
 	     .then(response => {
 	     	this.reservedMedications = response.data
 	     	console.log(this.reservedMedications)
+	     })
+	     
+	     axios
+		.get('/api/examination/getExaminationsForPatient',{
+			  headers: {
+				    'Authorization': "Bearer " + localStorage.getItem('access_token')
+			  },
+	     })
+	     .then(response => {
+	     	this.examinations = response.data
+	     	console.log('AAAAAAA' + this.examinations)
 	     })
 	     	
 	     })
