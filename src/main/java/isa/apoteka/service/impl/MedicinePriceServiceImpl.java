@@ -28,11 +28,16 @@ public class MedicinePriceServiceImpl implements MedicinePriceService{
 	
 	@Override
 	public MedicinePrice findMedicinePrice(Long pharmacyId, Long medId) {
-		List<MedicinePrice> med = medPriceRepository.findMedicinePrice(pharmacyId, medId);	
+		List<MedicinePrice> med = medPriceRepository.findMedicinePrice(pharmacyId, medId);
+		if(med == null || med.isEmpty()) {
+			return null;
+		}
 		if(med.size()>1 && med.get(0).getStartOfPrice() == null) {
 			return med.get(1);
-		}else {
+		}else if(med.size()>0) {
 			return med.get(0);
+		}else {
+			return null;
 		}
 		
 	}

@@ -42,5 +42,6 @@ public class UserTokenState {
 	public void setUser(User user) {
 		this.user = user;
 	}
+
     
 }

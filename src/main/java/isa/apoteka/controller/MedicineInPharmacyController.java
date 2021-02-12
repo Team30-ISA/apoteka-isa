@@ -42,12 +42,11 @@ public class MedicineInPharmacyController {
 	
 	@DeleteMapping(value= "/delete/{id}")
 	@PreAuthorize("hasRole('ADMIN')")
-	public Map<String, Boolean> fire(@PathVariable(value = "id") Long medId) {
+	public Boolean fire(@PathVariable(value = "id") Long medId) {
 		PharmacyAdmin admin = (PharmacyAdmin) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		medInPharmacyService.deleteMedication(medId, admin.getPharmacy().getId());
-		Map<String, Boolean> response = new HashMap<>();
-	     response.put("deleted", Boolean.TRUE);
-	     return response;
+		Boolean ret = medInPharmacyService.deleteMedication(medId, admin.getPharmacy().getId());
+		System.out.println("*************");
+		return true;
 		
 	}
 }

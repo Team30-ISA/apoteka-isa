@@ -86,4 +86,9 @@ public class MedicineReservationServiceImpl implements MedicineReservationServic
 	public List<ReservedMedicine> allfinishedReservation(Long id) {
 		return mrRepository.findAllfinishedReservation(id);
 	}
+
+	@Override
+	public List<ReservedMedicine> findReservationForMedicineAndPharmacyNotFinished(Long medicineId, Long pharmacyId) {
+		return mrRepository.findReservationForMedicineAndPharmacyNotFinished(medicineId, pharmacyId);
+	}
 }

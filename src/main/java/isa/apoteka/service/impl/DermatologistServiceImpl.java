@@ -161,5 +161,10 @@ public class DermatologistServiceImpl implements DermatologistService {
 		}
 		return patients;
 	}
+	@Override
+	public void save(Dermatologist derm) {
+		dermatologistRepository.save(derm);
+		
+	}
 	
 }

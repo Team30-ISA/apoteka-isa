@@ -35,6 +35,9 @@ public class Errand {
 	@NotNull
 	private Pharmacy pharmacy;
 	
+	@ManyToOne
+	private PharmacyAdmin admin;
+	
 	@Column(unique = false, nullable = false)
 	private Boolean finished;
 	
@@ -45,16 +48,33 @@ public class Errand {
 		super();
 	}
 
-	public Errand(Long id, Date deadline, Date creationTime, Pharmacy pharmacy, Boolean finished,
-			List<MedicineQuantity> medicineForOrder) {
+
+
+	public PharmacyAdmin getAdmin() {
+		return admin;
+	}
+
+
+
+	public void setAdmin(PharmacyAdmin admin) {
+		this.admin = admin;
+	}
+
+
+
+	public Errand(Long id, Date deadline, Date creationTime, Pharmacy pharmacy, PharmacyAdmin admin,
+			Boolean finished, List<MedicineQuantity> medicineForOrder) {
 		super();
 		this.id = id;
 		this.deadline = deadline;
 		this.creationTime = creationTime;
 		this.pharmacy = pharmacy;
+		this.admin = admin;
 		this.finished = finished;
 		this.medicineForOrder = medicineForOrder;
 	}
+
+
 
 	public Long getId() {
 		return id;

@@ -40,12 +40,16 @@ public class DermatologistWorkCalendarController {
 	
 	@PostMapping("/save")
 	@PreAuthorize("hasRole('ADMIN')")
-	public Boolean save(@RequestBody Map<String, Object> params) throws ParseException {
+	public Boolean save(@RequestBody Map<String, Object> params) throws Exception {
 		PharmacyAdmin admin = (PharmacyAdmin) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		Long pharmacyId = admin.getPharmacy().getId();
 		Pharmacy pharmacy = pharmacyService.findOne(pharmacyId);
-		Dermatologist dermatologist = dermatologistService.findById(Long.parseLong(params.get("dermatologistId").toString()));		
-		return dermWCService.save(dermatologist, pharmacy, new Date(Long.parseLong(params.get("startDate").toString())), new Date(Long.parseLong(params.get("endDate").toString())));
+		Long dermatologistId = Long.parseLong(params.get("dermatologistId").toString());	
+		try{
+			return dermWCService.save(dermatologistId, pharmacy, new Date(Long.parseLong(params.get("startDate").toString())), new Date(Long.parseLong(params.get("endDate").toString())));
+		}catch(Exception e) {
+			return false;
+		}
 	}
 	
 	@GetMapping("/findAllDermWorkCalendarByDermIdAndPeriod")

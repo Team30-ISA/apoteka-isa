@@ -12,4 +12,5 @@ public interface MedicineReservationService {
 	void approveReservation(String uid, Long pharmacyId);
 	List<ReservedMedicine> findFinishedReservationByPharmacy(Long id, Date startDate, Date endDate);
 	List<ReservedMedicine> allfinishedReservation(Long id);
+	List<ReservedMedicine> findReservationForMedicineAndPharmacyNotFinished(Long medicineId, Long pharmacyId);
 }

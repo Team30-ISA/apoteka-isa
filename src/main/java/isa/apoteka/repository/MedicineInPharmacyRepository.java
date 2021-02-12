@@ -29,4 +29,8 @@ public interface MedicineInPharmacyRepository extends JpaRepository<MedicineInPh
 
 	@Query("from MedicineInPharmacy m join m.pharmacy mp where mp.id=:id and m.quantity > 0")
 	List<MedicineInPharmacy> getAvailableMedicineInPharmacy(Long id);
+
+	@Modifying
+	@Query(value = "UPDATE medicine_in_pharmacy SET quantity = quantity + :quantity WHERE pharmacy_id=:pharmacyId and medicine_id=:id", nativeQuery = true)
+	void changeQuantity(Long id, int quantity, Long pharmacyId);
 }

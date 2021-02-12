@@ -67,8 +67,6 @@ public class PharmacyController {
 	public ResponseEntity<List<PharmacyDTO>> getAllPharmacies() {
 
 		List<Pharmacy> pharmacies = pharmacyService.findAll();
-
-		// convert students to DTOs
 		List<PharmacyDTO> pharmacyDTO = new ArrayList<>();
 		for (Pharmacy p : pharmacies) {
 			pharmacyDTO.add(new PharmacyDTO(p));
@@ -242,81 +240,6 @@ public class PharmacyController {
 		
 	}
 	
-	/*
-	@GetMapping(value = "/getReport")
-	public  ResponseEntity<BusinessDTO> getReport() {
-		PharmacyAdmin admin = (PharmacyAdmin) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		// convert students to DTOs
-		BusinessDTO business = pharmacyGradeService.getPercentage(admin.getPharmacy().getId());
-		List<Pharmacist> pharms = pharmacyService.findAllPharmsWorkingInPharmacy(admin.getPharmacy().getId());
-		double grade;
-		List<EmployeeGradeDTO> pharmacistGrade = new ArrayList<EmployeeGradeDTO>();
-		for(Pharmacist p : pharms) {
-			grade = pharmacistGradeService.findGradeForPharm(p.getId());
-			pharmacistGrade.add(new EmployeeGradeDTO(p.getFirstName(), p.getLastName(), grade));
-		}
-		
-		business.setPharmacistGrades(pharmacistGrade);
-		
-		List<Dermatologist> derms = pharmacyService.findAllDermsWorkingInPharmacy(admin.getPharmacy().getId());
-		List<EmployeeGradeDTO> dermGrade = new ArrayList<EmployeeGradeDTO>();
-		for(Dermatologist d : derms) {
-			grade = dermatologistGradeService.findGradeForDerm(d.getId());
-			dermGrade.add(new EmployeeGradeDTO(d.getFirstName(), d.getLastName(), grade));
-		}
-		business.setDermatologistGrades(dermGrade);
-		Integer[] mesecno = new Integer[12]; 
-		Integer[] kvartalno = new Integer[4]; 
-		Calendar cal = Calendar.getInstance();
-		List<Counseling> counselings = counselingService.finishedCounseling(admin.getPharmacy().getId());
-		System.out.println("************");
-		System.out.println(counselings.size());
-		for(Counseling c : counselings) {
-			cal.setTime(c.getStartDate());
-			for(int i=0; i<=11; i++) {
-				if(cal.get(Calendar.MONTH) == i) {
-					if(mesecno[i] == null) {
-						mesecno[i] = 1;
-					}else {
-					mesecno[i] += 1;
-					}
-					
-					if(i>=0 && i<=2) {
-						if(kvartalno[0] == null) {
-							kvartalno[0] = 1;
-						}else {
-							kvartalno[0] += 1;
-						}
-					}else if(i>2 && i<=5) {
-						if(kvartalno[1] == null) {
-							kvartalno[1] = 1;
-						}else {
-							kvartalno[1] += 1;
-						}
-					}else if(i>5 && i<=8) {
-						if(kvartalno[2] == null) {
-							kvartalno[2] = 1;
-						}else {
-							kvartalno[2] += 1;
-						}
-					}else {
-						if(kvartalno[3] == null) {
-							kvartalno[3] = 1;
-						}else {
-							kvartalno[3] += 1;
-						}
-					}
-				}
-				
-			}
-			
-		}
-		business.setQuarterlyCounseling(kvartalno);
-		business.setMonthlyCounseling(mesecno);
-		return new ResponseEntity<>(business, HttpStatus.OK);
-		
-	}
-	*/
 	
 	@GetMapping(value = "/getReportByYear")
 	public  ResponseEntity<BusinessDTO> getReportByYear(Long year) {
