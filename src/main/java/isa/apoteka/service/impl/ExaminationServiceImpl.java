@@ -8,6 +8,8 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.concurrent.TimeUnit;
+
 
 import isa.apoteka.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,7 @@ import isa.apoteka.dto.ExaminationDTO;
 import isa.apoteka.repository.ExamintaionRepository;
 import isa.apoteka.repository.PharmacyRepository;
 import isa.apoteka.service.ExaminationService;
+import isa.apoteka.service.PharmacistService;
 import isa.apoteka.service.PharmacistWorkCalendarService;
 
 @Service
@@ -41,6 +44,9 @@ public class ExaminationServiceImpl implements ExaminationService {
 	
 	@Autowired
 	private EmailService emailService;
+	
+	@Autowired
+	private PharmacistService pharmacistService;
 
 	@Override
 	public List<ExaminationDTO> findAllTermsByDay(Long dermatologistId, Date start) {
@@ -229,10 +235,11 @@ public class ExaminationServiceImpl implements ExaminationService {
 			return false;
 		}
 		// SACUVAJ TERMIN
+		TimeUnit.SECONDS.sleep(15);
 		examinationRepository.createExamination(start, duration, patient.getId(), pwcId);
 		// SACUVAJ RADNO VREME (AZURIRAJ VERISON)
 		pwc.setLastReqDate(new Date());
-		pwcService.save(pwc);
+		pwcService.save(pwc, pharmacistService.findById(pharmacistId));
 		emailService.sendExaminationReservation(start, pwc, patient);
 		return true;
 	}
