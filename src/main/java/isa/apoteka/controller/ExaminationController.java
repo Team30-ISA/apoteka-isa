@@ -147,9 +147,7 @@ public class ExaminationController {
 			return new ResponseEntity<>(-2, HttpStatus.OK);
 		}
 		try {
-			if(!examintaionService.createExamination(start, duration, patient, pwcId, pharmacistId)) {
-				return new ResponseEntity<>(-3, HttpStatus.OK);
-			}
+			examintaionService.createExamination(start, duration, patient, pwcId, pharmacistId);
 		} catch (Exception e) {
 			return new ResponseEntity<>(-4, HttpStatus.OK);
 		}

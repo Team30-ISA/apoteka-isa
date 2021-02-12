@@ -191,7 +191,7 @@ public class Pharmacy {
 	public List<Promotion> getPromotions() {
 		return promotions;
 	}
-
+	
 	public int getGrade() {
 		return grade;
 	}

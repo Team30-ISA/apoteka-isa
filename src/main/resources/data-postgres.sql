@@ -4,7 +4,6 @@ insert into pharmacy (name, address, grade, counselingPrice) values ('Nikolina A
 insert into pharmacy (name, address, grade, counselingPrice) values ('Milanova Apoteka', 'Petra Konjovica 1', 8, 668.10);
 insert into pharmacy (name, address, grade, counselingPrice) values ('Aleksandrova Apoteka', 'Laze Lazarevica 234', 7, 900.99);
 
-
 INSERT INTO Country (id, country) VALUES (1, 'Srbija');
 INSERT INTO Country (id, country) VALUES (2, 'Bosna i Hercegovina');
 
