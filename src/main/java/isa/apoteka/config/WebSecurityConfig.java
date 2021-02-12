@@ -77,7 +77,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 							"/auth/login",
 							"/auth/verify",
 							"/api/country/getAllCountries",
-							"/api/city/getAllCitiesForCountry"
+							"/api/city/getAllCitiesForCountry",
+							"/api/loyalty/**"
 					).permitAll()
 				
 				// za svaki drugi zahtev korisnik mora biti autentifikovan

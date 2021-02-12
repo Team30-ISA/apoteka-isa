@@ -7,6 +7,18 @@ var app = new Vue({
     response: ""
   },
   methods: {
+    logout() {
+      axios
+        .post("/auth/logout", null, {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("access_token")
+          }
+        })
+        .then(function () {
+          localStorage.clear();
+          window.location.href = "/login.html";
+        });
+    },
     async submit() {
       axios
         .post(

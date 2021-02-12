@@ -15,8 +15,6 @@ import isa.apoteka.domain.Dermatologist;
 import isa.apoteka.domain.Medicine;
 import isa.apoteka.domain.Patient;
 import isa.apoteka.domain.Pharmacy;
-import isa.apoteka.dto.MedicineDTO;
-import isa.apoteka.dto.MedicineNameDTO;
 import isa.apoteka.service.CounselingService;
 import isa.apoteka.service.ExaminationService;
 import isa.apoteka.service.MedicineService;
@@ -131,6 +129,19 @@ public class MedicineContoller {
 		return new ResponseEntity<>(med, HttpStatus.OK);
 	}
 
+	@PostMapping(value = "/searchMedicine")
+	public ResponseEntity<List<FilteredMedicineDTO>> searchMedicineByName(@RequestBody SearchFilterMedicineDTO medicineDTO) {
+		try {
+			List<FilteredMedicineDTO> med = medicineService.searchMedicineByName(medicineDTO);
+			for (FilteredMedicineDTO d : med) {
+	            System.out.println(d.getMedicineName());
+	        }
+			return new ResponseEntity<>(med, HttpStatus.OK);
+		} catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+	}
+	
 	
 	@GetMapping(value = "/findAllMedicineNotInPharmacy")
 	@PreAuthorize("hasRole('ADMIN')")
