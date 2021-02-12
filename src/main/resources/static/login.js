@@ -5,7 +5,42 @@ var app = new Vue({
     password: "",
     info: "",
     validationErrors: {},
-    isFormValid: false
+    isFormValid: false,
+    user: null
+  },
+  created() {
+    try {
+      const user = JSON.parse(localStorage.getItem("user"));
+      if (user)
+        axios
+          .get("auth/getRole", {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("access_token")
+            }
+          })
+          .then((response) => {
+            if (!user.lastPasswordResetDate){
+              window.location.href = "changePassword.html";
+            }
+            else if (response.data == "DERM") {
+              window.location.href = "dermatologist/dermatologistHome.html";
+            } else if (response.data == "PHARM") {
+              window.location.href = "pharmacist/pharmacistHome.html";
+            } else if (response.data == "ADMIN") {
+              window.location.href = "pharmacyAdmin/pharmacyAdminHome.html";
+            } else if (response.data == "PATIENT") {
+              window.location.href = "profile.html";
+            } else if (response.data == "SYS_ADMIN") {
+              window.location.href = "sysAdmin/profile.html";
+            } else if (response.data == "SUPL") {
+              window.location.href = "supplier/offers.html";
+            } else {
+              window.location.href = "changePassword.html";
+            }
+          });
+    } catch (err) {
+      console.log(err);
+    }
   },
   methods: {
     submit() {
@@ -23,6 +58,7 @@ var app = new Vue({
             "user",
             JSON.stringify(response.data.user)
           );
+          this.user = response.data.user;
           axios
             .get("auth/getRole", {
               headers: {
@@ -30,7 +66,12 @@ var app = new Vue({
               }
             })
             .then((response) => {
-              if (response.data == "DERM" && this.email !== this.password) {
+              if (!this.user.lastPasswordResetDate)
+                window.location.href = "changePassword.html";
+              else if (
+                response.data == "DERM" &&
+                this.email !== this.password
+              ) {
                 window.location.href = "dermatologist/dermatologistHome.html";
               } else if (
                 response.data == "PHARM" &&
@@ -41,11 +82,13 @@ var app = new Vue({
                 response.data == "ADMIN" &&
                 this.email !== this.password
               ) {
-                window.location.href = "pharmacyAdmin/pharmacyAdminHome.html";
+                window.location.href = "pharmacy.html";
               } else if (response.data == "PATIENT") {
                 window.location.href = "profile.html";
-              }else if (response.data == "SYS_ADMIN"){
-            	  window.location.href = "/systemAdmin/dermatologistHoliday.html";
+              } else if (response.data == "SYS_ADMIN") {
+                window.location.href = "sysAdmin/profile.html";
+              } else if (response.data == "SUPL") {
+                window.location.href = "supplier/offers.html";
               } else {
                 window.location.href = "changePassword.html";
               }

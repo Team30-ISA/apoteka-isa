@@ -24,7 +24,12 @@ public class UserRequest {
 	private String phoneNumber;
 
 	public void registerValidation() throws Exception {
-		if(email.isEmpty() || password.isEmpty() || firstname.isEmpty() || lastname.isEmpty() || stateId == null || cityId == null || address.isEmpty() || password.length() < PASSWORD_LENGTH)
+		if(email.isEmpty() || password.isEmpty() || firstname.isEmpty() || lastname.isEmpty() || stateId == null || cityId == null || address.isEmpty() || password == null || password.length() < PASSWORD_LENGTH)
+			throw new Exception("Validation failed");
+	}
+
+	public void updateValidation() throws Exception {
+		if(email.isEmpty() || firstname.isEmpty() || lastname.isEmpty() || cityId == null || address.isEmpty())
 			throw new Exception("Validation failed");
 	}
 

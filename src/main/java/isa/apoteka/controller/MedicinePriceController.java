@@ -6,16 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import isa.apoteka.domain.PharmacyAdmin;
-import isa.apoteka.dto.AddNewMedicineDTO;
 import isa.apoteka.dto.ChangePriceDTO;
-import isa.apoteka.service.MedicineInPharmacyService;
 import isa.apoteka.service.MedicinePriceService;
 
 @RestController

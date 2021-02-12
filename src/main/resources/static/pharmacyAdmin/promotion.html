@@ -44,7 +44,7 @@
   <section id="topbar" class="d-none d-lg-block">
     <div class="container clearfix">
       <div class="contact-info float-left">
-        <i class="fa fa-envelope-o"></i> <a href="mailto:contact@example.com">contact@example.com</a>
+        <i class="fa fa-envelope-o"></i> <a href="mailto:contact@example.com">apoteka.isa2021@gmail.com</a>
         <i class="fa fa-phone"></i> +1 5589 55488 55
       </div>
       <div class="social-links float-right">
@@ -65,7 +65,7 @@
 
 				<div id="logo" class="pull-left">
 					<h1>
-						<a href="pharmacyAdminHome.html" class="scrollto">Apote<span>ke</span></a>
+						<a href="../pharmacy.html" class="scrollto">Apote<span>ke</span></a>
 					</h1>
 					<!-- Uncomment below if you prefer to use an image logo -->
 					<!-- <a href="#body"><img src="img/logo.png" alt="" title="" /></a>-->
@@ -73,7 +73,7 @@
 
 				<nav id="nav-menu-container">
 					<ul class="nav-menu">
-						<li class="menu-active"><a href="pharmacyAdminHome.html">Home</a></li>
+						<li class="menu-active"><a href="../pharmacy.html">Home</a></li>
 						<li class="menu-has-children"><a href="#">Search</a>
 							<ul>
 								<li><a href="../filterDermatologist.html">Dermatologists</a></li>
@@ -87,6 +87,7 @@
 								<li><a href="managingPharmacists.html">Manage Pharmacists</a></li>
 								<li><a href="managingMedication.html">Manage Medicine</a></li>
 								<li><a href="managingOrders.html">Manage supply offers</a></li>
+								<li><a href="notification.html">Requests for medicine</a></li>
 							</ul></li>
 						<li class="menu-has-children"><a href="#">{{admin.firstName}}
 								{{admin.lastName}}</a>
@@ -95,7 +96,7 @@
 								<li @click="logout"><a href="#"><i
 										class="icon fa-sign-out"></i>&nbsp&nbspLog out</a></li>
 							</ul></li>
-						<li><a href="#contact">Contact</a></li>
+							<li><a href="businessReport.html">Business report</a></li>
 					</ul>
 				</nav>
 				<!-- #nav-menu-container -->
@@ -115,17 +116,14 @@
     <!--==========================
       Services Section
     ============================-->
-    <section id="contact" class="wow fadeInUp">
+    <section id="contact">
       <div class="container" >
-        <div class="section-header">
-          <h2>New Promotion</h2>
-        </div>
+        
+        
       </div>
 
       <div class="container">
         <div class="form">
-          <div id="sendmessage">Your message has been sent. Thank you!</div>
-          <div id="errormessage"></div>
           <form method="POST" novalidate="novalidate" v-on:submit.prevent="submit()">
           <div style="border:3px solid #0c2e8a; margin-left: 16rem; margin-right: 16rem; " class="contactForm">
           <h3 class="text-center"  style="color:#50d8af; margin-top:3rem">Publish New Promotion</h3>
@@ -207,7 +205,6 @@
   <script src="https://npmcdn.com/js-alert/dist/jsalert.min.js"></script>
 
   <!-- Contact Form JavaScript File -->
-  <script src="../contactform/contactform.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.18/vue.min.js"></script>
   <!-- Template Main Javascript File -->
   <script src="../js/main.js"></script>

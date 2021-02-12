@@ -1,5 +1,7 @@
 package isa.apoteka.dto;
 
+import isa.apoteka.domain.Errand;
+
 import java.util.Date;
 
 import javax.validation.constraints.FutureOrPresent;
@@ -15,6 +17,9 @@ public class ErrandDTO {
 
 	public ErrandDTO() {
 		super();
+	}
+
+	public ErrandDTO(Errand e) {
 	}
 
 	public Date getDeadline() {

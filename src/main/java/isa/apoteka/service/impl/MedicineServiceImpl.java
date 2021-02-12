@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import isa.apoteka.domain.*;
+import isa.apoteka.dto.MedicineCreateDTO;
+import isa.apoteka.repository.DrugFormRepository;
+import isa.apoteka.repository.DrugTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import isa.apoteka.domain.Medicine;
-import isa.apoteka.domain.MedicineInPharmacy;
-import isa.apoteka.domain.MedicinePrice;
-import isa.apoteka.domain.PharmacyAdmin;
 import isa.apoteka.dto.MedicineDTO;
 import isa.apoteka.dto.MedicineNameDTO;
 import isa.apoteka.repository.MedicineRepository;
@@ -33,7 +33,13 @@ public class MedicineServiceImpl implements MedicineService {
 		this.medPriceService = medPriceService;
 		this.medInPharmacyService = medInPharmacyService;
 	}
-	
+
+	@Autowired
+	private DrugFormRepository drugFormRepository;
+
+	@Autowired
+	private DrugTypeRepository drugTypeRepository;
+
 	@Override
 	public List<Medicine> findAll() {
 		return medicineRepository.findAll();
@@ -145,4 +151,53 @@ public class MedicineServiceImpl implements MedicineService {
 		return dto;
 	}
 
+	@Override
+	public Medicine create(MedicineCreateDTO medicineDTO) {
+		DrugForm drugForm = drugFormRepository.getOne(medicineDTO.getForm());
+		DrugType drugType = drugTypeRepository.getOne(medicineDTO.getType());
+		List<Medicine> substitutes = medicineRepository.findAllById(medicineDTO.getSubstitutes());
+		Medicine medicine = new Medicine(medicineDTO, substitutes, drugType, drugForm);
+		medicineRepository.save(medicine);
+		return medicine;
+	}
+
+	@Override
+	public List<DrugType> getAllTypes() {
+		return drugTypeRepository.findAll();
+	}
+
+	@Override
+	public List<DrugForm> getAllForms() {
+		return drugFormRepository.findAll();
+	}
+	
+	public List<MedicineDTO> findAllMedicineAvailableInPharmacy(Long pharmacyId) {
+		List<MedicineDTO> dto = new ArrayList<MedicineDTO>();
+		List<MedicineInPharmacy> medicineInPharmacy = medInPharmacyService.getAvailableMedicineInPharmacy(pharmacyId);
+		System.out.println("*****************");
+		System.out.println(medicineInPharmacy.size());
+		for(MedicineInPharmacy m : medicineInPharmacy) { 			
+			Long medId = m.getMedicine().getId();
+			String name = m.getMedicine().getName();
+			int quantity = m.getQuantity();
+			MedicinePrice medPrice = medPriceService.findMedicinePrice(pharmacyId, medId);
+			int price;
+			Date start;
+			Date end;
+			if(medPrice == null) {
+				price = 0;
+				start = null;
+				end = null;
+			}else {
+				price = medPrice.getPrice();
+				start = medPrice.getStartOfPrice();
+				end = medPrice.getEndOfPrice();
+			}
+			
+			dto.add(new MedicineDTO(medId, name, quantity, price, start,end ));
+		}
+		
+		return dto;
+	}
+ 
 }

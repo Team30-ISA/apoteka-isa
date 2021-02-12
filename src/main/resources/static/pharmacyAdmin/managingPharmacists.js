@@ -68,6 +68,12 @@ var app = new Vue({
 		
 		changeState(){
 			if(this.changePass == true){
+				if(this.newPharm.password != null){
+					if(this.newPharm.password.length < 6){
+						JSAlert.alert("Password min length is 6 characters.");
+						return;
+					}
+				}
 				axios
 		        .post('/api/pharmacist/save',
 		        	
@@ -77,7 +83,7 @@ var app = new Vue({
 		        		email: this.newPharm.email,
 		        		address: this.newPharm.street,
 		        		cityId: this.selectedCity.id,
-		        		username: this.newPharm.username,
+		        		username: this.newPharm.password,
 		        		gender: this.newPharm.gender
 		            },{
 		        	

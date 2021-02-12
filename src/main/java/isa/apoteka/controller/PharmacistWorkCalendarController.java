@@ -33,9 +33,9 @@ public class PharmacistWorkCalendarController {
 	
 	@PostMapping("/save")
 	@PreAuthorize("hasRole('ADMIN')")
-	public Boolean save(@RequestBody Map<String, Object> params) throws ParseException {
+	public Boolean save(@RequestBody Map<String, Object> params) throws Exception {
 		Pharmacist pharmacist = pharmacistService.findById(Long.parseLong(params.get("pharmacistId").toString()));		
-		PharmacistWorkCalendar pwc = new PharmacistWorkCalendar(pharmacist, pharmacist.getPharmacy(), new Date(Long.parseLong(params.get("startDate").toString())), new Date(Long.parseLong(params.get("endDate").toString())));
+		PharmacistWorkCalendar pwc = new PharmacistWorkCalendar(pharmacist, pharmacist.getPharmacy(), new Date(Long.parseLong(params.get("startDate").toString())), new Date(Long.parseLong(params.get("endDate").toString())), new Date());
 		return pharmWCService.save(pwc);
 	}
 	

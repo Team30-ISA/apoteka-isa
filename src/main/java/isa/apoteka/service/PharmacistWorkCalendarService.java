@@ -7,10 +7,11 @@ import isa.apoteka.domain.PharmacistWorkCalendar;
 import isa.apoteka.dto.PeriodDTO;
 
 public interface PharmacistWorkCalendarService {
-	Boolean save(PharmacistWorkCalendar pharm);
+	Boolean save(PharmacistWorkCalendar pharm) throws Exception;
 	List<PharmacistWorkCalendar> findAllPharmWorkCalendarByPharmId(Long id);
 	List<PeriodDTO> findAllPharmWorkCalendarByPharmIdAndPeriod(Long pharmacistId, Date start, Date end);
 	PeriodDTO findPharmWorkCalendarByPharmIdAndDate(Long pharmacistId, Date start);
 	void deletePharmWorkCalendarByDate(Date start, Long pharmId);
 	void deletePharmWorkCalendarByPharm(Long id);
+	PharmacistWorkCalendar findById(Long id);
 }

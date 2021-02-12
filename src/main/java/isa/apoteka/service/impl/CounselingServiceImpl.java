@@ -7,23 +7,27 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import isa.apoteka.async.service.EmailService;
 import isa.apoteka.domain.Counseling;
 import isa.apoteka.domain.Dermatologist;
+import isa.apoteka.domain.DermatologistWorkCalendar;
 import isa.apoteka.domain.Patient;
 import isa.apoteka.domain.Pharmacy;
-import isa.apoteka.domain.ReservedMedicine;
 import isa.apoteka.dto.ExaminationDTO;
 import isa.apoteka.repository.CounselingRepository;
 import isa.apoteka.repository.DermatologistRepository;
 import isa.apoteka.service.CounselingService;
+import isa.apoteka.service.DermatologistWorkCalendarService;
 
 @Service
+@Transactional(readOnly = true)
 public class CounselingServiceImpl implements CounselingService {
 
 	@Autowired
@@ -31,9 +35,12 @@ public class CounselingServiceImpl implements CounselingService {
 
 	@Autowired
 	private DermatologistRepository dermatologistRepository;
-	
+
 	@Autowired
 	private EmailService emailService;
+	
+	@Autowired
+	private DermatologistWorkCalendarService dwcService;
 
 	@Override
 	public List<ExaminationDTO> findAllTermsByDay(Long pharmacyId, Long dermatologistId, Date start) {
@@ -47,12 +54,14 @@ public class CounselingServiceImpl implements CounselingService {
 		Date endDate = calendar.getTime();
 		List<Counseling> counseling = counselingRepository.findAllTerms(pharmacyId, dermatologistId, startDate,
 				endDate);
-		List<ExaminationDTO> dtos = mapListCounselingToListCounselingDTO(counseling);
+		List<ExaminationDTO> dtos = mapListCounselingToListExaminationDTO(counseling);
 		Collections.sort(dtos, new Sortbyroll());
 		return dtos;
 	}
 
-	public ExaminationDTO mapCounselingToCounselingDTO(Counseling counseling) {
+	public ExaminationDTO mapCounselingToExaminationDTO(Counseling counseling) {
+		if (counseling == null)
+			return null;
 		String patientName = "";
 		if (counseling.getDermatologistWorkCalendar() == null)
 			return null;
@@ -65,10 +74,10 @@ public class CounselingServiceImpl implements CounselingService {
 				counseling.getReport());
 	}
 
-	public List<ExaminationDTO> mapListCounselingToListCounselingDTO(List<Counseling> counselings) {
+	public List<ExaminationDTO> mapListCounselingToListExaminationDTO(List<Counseling> counselings) {
 		List<ExaminationDTO> counselingDTOs = new ArrayList<>();
 		for (Counseling c : counselings) {
-			ExaminationDTO dto = mapCounselingToCounselingDTO(c);
+			ExaminationDTO dto = mapCounselingToExaminationDTO(c);
 			if (dto == null)
 				continue;
 			counselingDTOs.add(dto);
@@ -149,7 +158,7 @@ public class CounselingServiceImpl implements CounselingService {
 
 	@Override
 	public ExaminationDTO findOneDTO(Long id) {
-		return mapCounselingToCounselingDTO(counselingRepository.findById(id).orElse(null));
+		return mapCounselingToExaminationDTO(counselingRepository.findById(id).orElse(null));
 	}
 
 	@Override
@@ -229,24 +238,42 @@ public class CounselingServiceImpl implements CounselingService {
 		Counseling counseling = getNearestCounseling(pharmacistId, start, finished);
 		if (counseling == null)
 			return null;
-		return mapCounselingToCounselingDTO(counseling);
+		return mapCounselingToExaminationDTO(counseling);
 	}
 
 	@Override
-	public void update(Long patientId, Long counselingId) {
-		counselingRepository.update(patientId, counselingId);
-
+	@Transactional(readOnly = false)
+	public Boolean update(Patient patient, Long counselingId) throws Exception {
+		Counseling c = counselingRepository.findById(counselingId).orElse(null);
+		if(c == null)
+			return false;
+		if (c.getPatient() != null) {
+			return false;
+		}
+		c.setPatient(patient);
+		counselingRepository.save(c);
+		return true;
 	}
-	
+
 	@Override
+	@Transactional(readOnly = false)
 	public void makeAppointment(Long patId, Long counsId) {
 		counselingRepository.makeAppointment(patId, counsId);
 
 	}
 
 	@Override
-	public void updateReport(String report, Long counselingId) {
-		counselingRepository.updateReport(report, counselingId);
+	@Transactional(readOnly = false)
+	public Boolean updateReport(String report, Long counselingId)  throws Exception {
+		Counseling counseling = counselingRepository.findById(counselingId).orElse(null);
+		if(counseling == null)
+			return false;
+		if(counseling.getReport() != null && !counseling.getReport().equals("")) {
+			return false;
+		}
+		counseling.setReport(report);
+		counselingRepository.save(counseling);
+		return true;
 	}
 
 	@Override
@@ -263,25 +290,30 @@ public class CounselingServiceImpl implements CounselingService {
 		calendar.set(Calendar.SECOND, 0);
 		calendar.add(Calendar.DATE, 1);
 		end = calendar.getTime();
-		if(counselingRepository.countAllTerms(dermatologistId, start, end) > 0)
+		if (counselingRepository.countAllTerms(dermatologistId, start, end) > 0)
 			return false;
 		return true;
 	}
-	
+
 	@Override
-	public Boolean createCounseling(Date start, int duration, Float price, Long dwcId, Long dermId, Long pharmacyId) {
+	@Transactional(readOnly = false)
+	public Boolean createCounseling(Date start, int duration, Float price, Long dwcId, Long dermId, Long pharmacyId) throws Exception {
 		Calendar calendar = new GregorianCalendar();
 		calendar.setTime(start);
 		calendar.add(Calendar.MINUTE, duration);
 		Date end = calendar.getTime();
-		if(isDermatologistFree(start, end, dermId, pharmacyId) == false) {
+		if (isDermatologistFree(start, end, dermId, pharmacyId) == false) {
 			return false;
 		}
+		TimeUnit.SECONDS.sleep(10);
+		DermatologistWorkCalendar dwc = dwcService.findById(dwcId);
 		counselingRepository.createCounseling(start, duration, price, dwcId);
+		dwc.setLastReqDate(new Date());
+		dwcService.save(dwc);
 		return true;
 	}
-	
-	public Boolean isDermatologistFree(Date start, Date end, Long dermId, Long pharmacyId){
+
+	public Boolean isDermatologistFree(Date start, Date end, Long dermId, Long pharmacyId) {
 		Calendar calendar = new GregorianCalendar();
 		calendar.setTime(start);
 		calendar.add(Calendar.DATE, -1);
@@ -292,45 +324,60 @@ public class CounselingServiceImpl implements CounselingService {
 		calendar.add(Calendar.DATE, 2);
 		Date endDate = calendar.getTime();
 		List<Counseling> counselings = counselingRepository.findAllTerms(pharmacyId, dermId, startDate, endDate);
-		for(Counseling c : counselings) {
+		for (Counseling c : counselings) {
 			calendar.setTime(c.getStartDate());
 			calendar.add(Calendar.MINUTE, c.getDuration());
 			endDate = calendar.getTime();
-			if((c.getStartDate().getTime() <= start.getTime() && endDate.getTime() > start.getTime())
-					|| (c.getStartDate().getTime() < end.getTime() && endDate.getTime() >= end.getTime()) 
+			if ((c.getStartDate().getTime() <= start.getTime() && endDate.getTime() > start.getTime())
+					|| (c.getStartDate().getTime() < end.getTime() && endDate.getTime() >= end.getTime())
 					|| (c.getStartDate().getTime() >= start.getTime() && endDate.getTime() <= end.getTime())) {
 				return false;
 			}
 		}
 		return true;
 	}
-	
-	public List<Counseling> findAllByPharmId(Long pharmId){
+
+	public List<Counseling> findAllByPharmId(Long pharmId) {
 		return counselingRepository.findAllByPharmId(pharmId);
 	}
-	
+
 	public Dermatologist findDermatologistForCounseling(Long counsId) {
 		return counselingRepository.findDermatologistForCounseling(counsId);
 	}
-	
+
 	@Override
-	public void sendCounselingReservation(Counseling c){
+	public void sendCounselingReservation(Counseling c) {
 		Patient patient = (Patient) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		try {
-				emailService.sendCounselingReservation(c, patient);
-		}catch(Exception e) {
+			emailService.sendCounselingReservation(c, patient);
+		} catch (Exception e) {
 			System.out.println("Greska pri slanju emaila");
 		}
 	}
-	
+
 	@Override
-	public List<Counseling> findAllByPatientId(Long patId){
+	public List<Counseling> findAllByPatientId(Long patId) {
 		return counselingRepository.findAllByPatientId(patId);
 	}
-	
+
 	@Override
+	@Transactional(readOnly = false)
 	public void cancelAppointment(Long counsId) {
 		counselingRepository.cancelAppointment(counsId);
+	}
+
+	@Override
+	public List<Counseling> finishedCounseling(Long id, Date pocetak, Date kraj) {
+		return counselingRepository.finishedCounseling(id, pocetak, kraj);
+	}
+
+	@Override
+	public List<Counseling> AllfinishedCounseling(Long id) {
+		return counselingRepository.allFinishedCounseling(id);
+	}
+
+	public Counseling save(Counseling counseling) {
+		return counselingRepository.save(counseling);
 	}
 
 }

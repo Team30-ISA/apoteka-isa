@@ -2,7 +2,10 @@ package isa.apoteka.service.impl;
 
 import java.util.List;
 
+import isa.apoteka.domain.*;
+import isa.apoteka.dto.PharmacyDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import isa.apoteka.domain.Dermatologist;
@@ -10,6 +13,7 @@ import isa.apoteka.domain.Medicine;
 import isa.apoteka.domain.MedicineDisplay;
 import isa.apoteka.domain.Pharmacist;
 import isa.apoteka.domain.Pharmacy;
+import isa.apoteka.dto.PharmacyDTO;
 import isa.apoteka.repository.PharmacyRepository;
 import isa.apoteka.service.PharmacyService;
 
@@ -68,5 +72,26 @@ public class PharmacyServiceImpl implements PharmacyService{
 	
 	public void updateMedicineInPharmacy(Long pharmId, Long medId, int quantity) {
 		pharmacyRepository.updateMedicineInPharmacy(pharmId, medId, quantity);
+	}
+
+	@Override
+	public Pharmacy create(PharmacyDTO pharmacyDTO) {
+		Pharmacy pharmacy = new Pharmacy(pharmacyDTO);
+		pharmacyRepository.save(pharmacy);
+		return pharmacy;
+	}
+
+	@Override
+	public List<PharmacyAdmin> getPharmacyAdminsForPharmacy(Long id) {
+		return pharmacyRepository.getOne(id).getPharmacyAdmins();
+	}
+	public Pharmacy findById(Long id) {
+		return pharmacyRepository.findById(id).orElse(null);
+	}
+
+	@Override
+	public void update(PharmacyDTO pharmacyDTO) {
+		pharmacyRepository.update(pharmacyDTO.getId(),pharmacyDTO.getName(),pharmacyDTO.getAddress(),pharmacyDTO.getCity(),pharmacyDTO.getDescription());
+		
 	}
 }

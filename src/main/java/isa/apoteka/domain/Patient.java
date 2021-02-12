@@ -15,6 +15,7 @@ public class Patient extends User{
 
 	private static final long serialVersionUID = 1L;
 
+	@JsonIgnore
 	@ManyToMany(mappedBy = "patients")
 	private List<Pharmacy> pharmacies;
 	
@@ -27,9 +28,23 @@ public class Patient extends User{
 	@ManyToMany
 	private List<Medicine> allergies;
 
-	
+	public List<Pharmacy> getPharmacies() {
+		return pharmacies;
+	}
+
+	public void setPharmacies(List<Pharmacy> pharmacies) {
+		this.pharmacies = pharmacies;
+	}
+
 	public Patient() {
 		super();
+	}
+	
+	public Patient(Long id,String firstName, String lastName) {
+		super();
+		this.setId(id);
+		this.setFirstName(firstName);
+		this.setLastName(lastName);
 	}
 
     public Patient(UserRequest userRequest) {
