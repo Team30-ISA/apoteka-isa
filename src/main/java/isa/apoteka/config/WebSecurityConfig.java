@@ -80,6 +80,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 							"/api/city/getAllCitiesForCountry",
 							"/api/medicine/allMedicine/*",
 							"/api/medicine/*"
+							"/api/loyalty/**"
 					).permitAll()
 				
 				// za svaki drugi zahtev korisnik mora biti autentifikovan

@@ -6,6 +6,11 @@ import isa.apoteka.domain.DrugForm;
 import isa.apoteka.domain.DrugType;
 import isa.apoteka.domain.Medicine;
 import isa.apoteka.dto.*;
+import isa.apoteka.dto.FilteredMedicineDTO;
+import isa.apoteka.dto.MedicineCreateDTO;
+import isa.apoteka.dto.MedicineDTO;
+import isa.apoteka.dto.MedicineNameDTO;
+import isa.apoteka.dto.SearchFilterMedicineDTO;
 
 public interface MedicineService {
 	Medicine findOne(Long id);
@@ -19,7 +24,7 @@ public interface MedicineService {
 	List<MedicineDTO> searchMedicineInPharmacy(String name);
 	List<MedicineNameDTO> findAllMedicine();
     Medicine create(MedicineCreateDTO medicineDTO);
-
+    
 	List<DrugType> getAllTypes();
 
 	List<DrugForm> getAllForms();
@@ -28,4 +33,6 @@ public interface MedicineService {
 	List<MedicinePreviewDTO> getAllMedicines(String medicineName);
 
 	MedicineSpecificationDTO getMedicine(Long id);
+	
+	List<FilteredMedicineDTO> searchMedicineByName(SearchFilterMedicineDTO medicineDTO);
 }
