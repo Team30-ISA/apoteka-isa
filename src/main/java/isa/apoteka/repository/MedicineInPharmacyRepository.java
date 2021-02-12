@@ -6,8 +6,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import isa.apoteka.domain.MedicineInPharmacy;
+import org.springframework.stereotype.Repository;
 
-
+@Repository
 public interface MedicineInPharmacyRepository extends JpaRepository<MedicineInPharmacy, Long>{
 
 	@Modifying
@@ -33,4 +34,7 @@ public interface MedicineInPharmacyRepository extends JpaRepository<MedicineInPh
 	@Modifying
 	@Query(value = "UPDATE medicine_in_pharmacy SET quantity = quantity + :quantity WHERE pharmacy_id=:pharmacyId and medicine_id=:id", nativeQuery = true)
 	void changeQuantity(Long id, int quantity, Long pharmacyId);
+
+
+	List<MedicineInPharmacy> findByMedicineIdIn(List<Long> collect);
 }

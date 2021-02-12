@@ -5,6 +5,7 @@ import java.util.List;
 import isa.apoteka.domain.DrugForm;
 import isa.apoteka.domain.DrugType;
 import isa.apoteka.domain.Medicine;
+import isa.apoteka.dto.*;
 import isa.apoteka.dto.FilteredMedicineDTO;
 import isa.apoteka.dto.MedicineCreateDTO;
 import isa.apoteka.dto.MedicineDTO;
@@ -28,6 +29,10 @@ public interface MedicineService {
 
 	List<DrugForm> getAllForms();
 	List<MedicineDTO> findAllMedicineAvailableInPharmacy(Long pharmacyId);
+
+	List<MedicinePreviewDTO> getAllMedicines(String medicineName);
+
+	MedicineSpecificationDTO getMedicine(Long id);
 	
 	List<FilteredMedicineDTO> searchMedicineByName(SearchFilterMedicineDTO medicineDTO);
 }
