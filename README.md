@@ -16,5 +16,6 @@ Napomene:
   2. Projekat je rađen u Java 11
   3. Email adresa je: apoteka.isa2021@gmail.com
      Šifra za email: apoteka2021
+  4. Greška: savetovanje i pregled su pomešani - te klasa Counseling se odnosi na dermatologa, a klasa Examination na farmaceuta
 
 
