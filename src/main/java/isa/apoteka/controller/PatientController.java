@@ -11,6 +11,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.UUID;
 
+import isa.apoteka.dto.ComplaintsListsDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -170,5 +171,12 @@ public class PatientController {
 	public List<PatientDTO> findAllByName(String firstName, String lastName) {
 		return patientService.findAllByName(firstName, lastName);
 	}
+
+	@GetMapping("/patient/complaint-data")
+	@PreAuthorize("hasRole('PATIENT')")
+	public ComplaintsListsDTO user() {
+		return this.patientService.findAllEntitiesToComplain();
+	}
+
 
 }

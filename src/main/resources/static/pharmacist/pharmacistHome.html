@@ -87,7 +87,7 @@
 								<li><a href="/pharmacist/workCalendar.html">Work calendar</a></li>
 								<li><a href="/pharmacist/leaveRequest.html">Create a leave request</a></li>
 								<li><a href="/pharmacist/pharmacistReport.html?schedule=true">Scheduling a new counseling</a></li>
-								<li><a href="#">Issue a drug</a></li>
+								<li><a href="/pharmacist/pharmacistReport.html">Issue a drug</a></li>
 							</ul></li>
 						<li class="menu-has-children"><a href="#">{{pharm.firstName}}
 								{{pharm.lastName}}</a>
@@ -157,9 +157,9 @@
 							<div class="content" @click="redirect('/pharmacist/leaveRequest.html')">
 								<header>
 									<a href="#" class="icon fa-suitcase"><span class="label">Icon</span></a>
-									<h3>Create a leave request</h3>
+									<h3>Schedule Counseling</h3>
 								</header>
-								<p>Creating a request for vacation or leave.</p>
+								<p>Schedule counseling with pharmacist.</p>
 							</div>
 						</section>
 						<section>
@@ -172,7 +172,7 @@
 							</div>
 						</section>
 						<section>
-							<div class="content">
+							<div class="content" @click="redirect('/pharmacist/pharmacistReport.html')">
 								<header>
 									<a href="#" class="icon fa-hospital-o"><span class="label">Icon</span></a>
 									<h3>Issue a drug</h3>

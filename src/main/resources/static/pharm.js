@@ -35,8 +35,10 @@ var app = new Vue({
 			  			counsId: btnId,
 			  		}
 	     }).then(response => {
-					alert('Uspesno zakazan pregled')
-					console.log(response.data)
+					if(response.data == false)
+						alert("Neuspesno zakazivanje termina")
+					else
+						alert('Uspesno zakazan pregled')
 			})
     		
     	},
@@ -97,6 +99,7 @@ var app = new Vue({
 			  }
 	     }).then(response => {
 					this.counselings = response.data
+					console.log(this.counselings)
 			})
 			
 		

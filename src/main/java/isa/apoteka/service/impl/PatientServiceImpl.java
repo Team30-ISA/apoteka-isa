@@ -4,19 +4,20 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import isa.apoteka.domain.*;
+import isa.apoteka.dto.ComplaintsListsDTO;
+import isa.apoteka.service.DermatologistService;
+import isa.apoteka.service.ExaminationService;
+import isa.apoteka.service.PharmacyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import isa.apoteka.domain.Counseling;
-import isa.apoteka.domain.Examination;
-import isa.apoteka.domain.Medicine;
-import isa.apoteka.domain.Patient;
-import isa.apoteka.domain.PatientUpdateForm;
 import isa.apoteka.dto.PatientDTO;
 import isa.apoteka.repository.PatientRepository;
 import isa.apoteka.service.PatientService;
@@ -27,8 +28,15 @@ public class PatientServiceImpl implements PatientService {
 	@Autowired
 	private PatientRepository patientRepository;
 
+
 	@Autowired
-	private PasswordEncoder passwordEncoder;
+	private ExaminationService examinationService;
+
+	@Autowired
+	private PharmacyService pharmacyService;
+
+	@Autowired
+	private DermatologistService dermatologistService;
 
 	@Override
 	public Patient findByUsername(String username) throws UsernameNotFoundException {
@@ -60,8 +68,8 @@ public class PatientServiceImpl implements PatientService {
 	@Override
 	public void updatePassword(PatientUpdateForm puf) {
 		Patient p = findById(puf.getId());
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		p.setPassword(passwordEncoder.encode(puf.getNewPass()));
-		
 		this.patientRepository.updatePassword(passwordEncoder.encode(puf.getNewPass()), p.getId());
 	}
 	
@@ -162,6 +170,22 @@ public class PatientServiceImpl implements PatientService {
 	@Override
 	public List<PatientDTO> findAllByName(String firstName, String lastName) {
 		return mapPatientListToPatientDTOList(patientRepository.findAllByName(firstName, lastName));
+	}
+
+	@Override
+	public ComplaintsListsDTO findAllEntitiesToComplain() {
+		Patient p = (Patient) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		List<Pharmacist> pharmacistst =  examinationService.getAllExaminationPharmacistsByPatientId(p.getId());
+		List<Dermatologist> dermatologists =  dermatologistService.getAllExaminationDermatologistsByPatientId(p.getId());
+		List<Pharmacy> pharmacies = pharmacyService.getPharmaciesAsociatedWithUser(p.getId());
+
+		pharmacistst = pharmacistst.stream().distinct().collect(Collectors.toList());
+		dermatologists = dermatologists.stream().distinct().collect(Collectors.toList());
+		pharmacies = pharmacies.stream().distinct().collect(Collectors.toList());
+
+		ComplaintsListsDTO complaintsListsDTO = new ComplaintsListsDTO(pharmacistst, pharmacies, dermatologists);
+
+		return complaintsListsDTO;
 	}
 
 }

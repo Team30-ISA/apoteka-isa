@@ -73,6 +73,7 @@ var app = new Vue({
 		idAddress: 0,
 		reservedMedications: [],
 		examinations: [],
+		columns: ['name', 'manufacturer'],
 	},
 	methods: {
 		logout(){
@@ -183,18 +184,7 @@ var app = new Vue({
 	     })
 		},
 		findAddresses(){
-			axios
-			.get('/api/address/getAllAddressesForCity',{
-				headers: {
-				 'Authorization': "Bearer " + localStorage.getItem('access_token')
-				},
-				params:{
-					id: this.selectedCity.id,
-				}
-	     })
-	     .then(response => {
-	     	this.addresses = response.data
-	     })
+			
 		}
 	},
 	created() {
@@ -224,7 +214,7 @@ var app = new Vue({
 	     	this.name = this.patient.firstName
 	     	this.surname = this.patient.lastName
 	     	this.email = this.patient.email
-	     	this.idCountry = this.patient.address.city.country.country
+	     	this.idCountry = this.patient.address.city.country
 	     	this.selectedCountry = this.patient.address.city.country.id
 	     	this.selectedCity = this.patient.address.city.id
 	     	this.selectedAddress = this.patient.address.id

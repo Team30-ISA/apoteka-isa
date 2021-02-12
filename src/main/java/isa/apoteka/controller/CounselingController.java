@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.Nullable;
 
 import isa.apoteka.async.service.EmailService;
@@ -338,7 +339,7 @@ public class CounselingController {
 		}
 		return true;
 	}
-	
+
 	@GetMapping("/findAllCounselingsForPharmacy")
 	@PreAuthorize("hasRole('PATIENT')")
 	public List<Counseling> findAllCounselingsForPharmacy(Long pharmId){
@@ -348,6 +349,7 @@ public class CounselingController {
 				if(s.getPatient() == null)
 					ret.add(s);
 			}
+			System.out.println("SSSSSSSSSSSSSSSSS" + ret.size());
 			return ret;
 	}
 	
