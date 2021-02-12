@@ -266,6 +266,11 @@ var app = new Vue({
 			    	else if(response.data == -2){
 			    		JSAlert.alert("Ima vec termin!");
 			    	}
+			    	else if(response.data == -3){
+			    		this.getTerms(this.current);
+			    		JSAlert.alert("Greska, molimo pokusajte kasnije!");
+			    		this.addNewTerm = false;
+			    	}
 			    	else if(response.data == 1){
 			    		this.getTerms(this.current);
 			    		JSAlert.alert("Uspesno!");

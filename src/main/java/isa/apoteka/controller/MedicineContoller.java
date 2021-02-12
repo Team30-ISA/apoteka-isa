@@ -35,13 +35,13 @@ public class MedicineContoller {
 	private ExaminationService examinationService;
 	
 	@GetMapping("/getAll")
-	@PreAuthorize("hasRole('DERM') || hasRole('PHARM')")
+	//@PreAuthorize("hasRole('DERM') || hasRole('PHARM')")
 	public List<Medicine> getAll() {
 		return medicineService.findAll();
 	}
 	
 	@GetMapping("/searchMedicinesByName")
-	@PreAuthorize("hasRole('DERM')  || hasRole('PHARM')")	
+	//@PreAuthorize("hasRole('DERM')  || hasRole('PHARM')")	
 	public List<Medicine> searchMedicinesByName(String name){
 		return medicineService.searchMedicinesByName(name);
 	}

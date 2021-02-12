@@ -19,8 +19,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.Nullable;
 
+import isa.apoteka.async.service.EmailService;
 import isa.apoteka.domain.Counseling;
 import isa.apoteka.domain.Dermatologist;
 import isa.apoteka.domain.Patient;
@@ -42,6 +44,8 @@ public class CounselingController {
 	private PatientService patientService;
 	@Autowired
 	private DermatologistWorkCalendarService dWCService;
+	@Autowired
+	private EmailService emailService;
 	
 	@Nullable
 	@GetMapping("/findAllTermsByDay")
@@ -140,8 +144,10 @@ public class CounselingController {
 			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}
 		try {
-			if(counselingService.update(patient, Long.parseLong(params.get("newCounselingId").toString()))) 
+			if(counselingService.update(patient, Long.parseLong(params.get("newCounselingId").toString()))) {
+				emailService.sendCounselingReservation(counseling, patient);
 				return new ResponseEntity<>(1, HttpStatus.OK);
+			}
 			else
 				return new ResponseEntity<>(-1, HttpStatus.OK);
 		} catch (Exception e) {
@@ -283,8 +289,12 @@ public class CounselingController {
 		if(dwcId == null) {
 			return new ResponseEntity<>(-1, HttpStatus.OK);
 		}
-		if(!counselingService.createCounseling(start, duration, price, dwcId, dermId, admin.getPharmacy().getId())) {
-			return new ResponseEntity<>(-2, HttpStatus.OK);
+		try {
+			if(!counselingService.createCounseling(start, duration, price, dwcId, dermId, admin.getPharmacy().getId())) {
+				return new ResponseEntity<>(-2, HttpStatus.OK);
+			}
+		} catch (Exception e) {
+			return new ResponseEntity<>(-3, HttpStatus.OK);
 		}
 		
 		return new ResponseEntity<>(1, HttpStatus.OK);
@@ -330,6 +340,7 @@ public class CounselingController {
 		return true;
 	}
 	
+	@JsonIgnore
 	@GetMapping("/findAllCounselingsForPharmacy")
 	@PreAuthorize("hasRole('PATIENT')")
 	public List<Counseling> findAllCounselingsForPharmacy(Long pharmId){
@@ -339,6 +350,7 @@ public class CounselingController {
 				if(s.getPatient() == null)
 					ret.add(s);
 			}
+			System.out.println("SSSSSSSSSSSSSSSSS" + ret.size());
 			return ret;
 	}
 	
@@ -349,8 +361,10 @@ public class CounselingController {
 			List<Counseling> ret = new ArrayList<Counseling>();
 			for(Counseling s: counselings) {
 				if(s.getPatient() != null)
-					if(s.getPatient().getId().equals(patId))
+					if(s.getPatient().getId().equals(patId)) {
+						System.out.println(s.getPatient().getId() + " ==  " + patId);
 						ret.add(s);
+					}
 			}
 			return ret;
 	}

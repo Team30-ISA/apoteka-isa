@@ -132,4 +132,9 @@ public class PharmacyServiceImpl implements PharmacyService{
 
 		return pharmacies;
 	}
+	
+	@Override
+	public List<Pharmacy> searchPharmaciesByName(String name){
+		return pharmacyRepository.searchPharmaciesByName(name);
+	}
 }

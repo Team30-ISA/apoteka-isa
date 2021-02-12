@@ -1,6 +1,7 @@
 package isa.apoteka;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class JSON {
@@ -17,6 +18,7 @@ public class JSON {
 
     public static <T> T parse(String string, Class<T> c) {
         ObjectMapper mapper = new ObjectMapper();
+		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         try {
 			return mapper.readValue(string, c);
 		} catch (JsonProcessingException e) {

@@ -59,10 +59,22 @@ public class Pharmacy {
 	
 	@OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
 	private List<Promotion> promotions;
+	
+	@Column(unique = true, nullable = false)
+	int grade;
+	
+	@Column(unique = true, nullable = false)
+	double counselingprice;
 
 	public Pharmacy() {
 		super();
 		// TODO Auto-generated constructor stub
+	}
+	
+	public Pharmacy(int grade) {
+		super();
+		// TODO Auto-generated constructor stub
+		this.setGrade(grade);
 	}
 	
 
@@ -179,7 +191,22 @@ public class Pharmacy {
 	public List<Promotion> getPromotions() {
 		return promotions;
 	}
+	
+	public int getGrade() {
+		return grade;
+	}
 
+	public void setGrade(int grade) {
+		this.grade = grade;
+	}
+	
+	public double getCounselingprice() {
+		return counselingprice;
+	}
+
+	public void setCounselingprice(double counselingprice) {
+		this.counselingprice = counselingprice;
+	}
 
 	@Override
 	public int hashCode() {

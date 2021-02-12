@@ -16,6 +16,9 @@ import isa.apoteka.domain.Pharmacy;
 public interface PharmacyRepository extends JpaRepository<Pharmacy, Long>{
 	Pharmacy findOneByName(String name);
 	
+	@Query("from Pharmacy p where LOWER(p.name) like %:name%")
+	List<Pharmacy> searchPharmaciesByName(String name);
+	
     @Query("from Dermatologist d join d.pharmacies p where p.id=:id")
 	List<Dermatologist> findAllDermsWorkingInPharmacy(Long id);
     
@@ -33,6 +36,9 @@ public interface PharmacyRepository extends JpaRepository<Pharmacy, Long>{
     
     @Query("from Medicine m join m.medicineInpharmacy mp where mp.pharmacy.id = ?1 and m.name = ?2")
    	Medicine searchMedicineInPharmacy(Long id, String name);
+    
+    @Query(value="select * from pharmacy", nativeQuery = true)
+    List<Pharmacy> getAllPharmacies();
     
     @Modifying
     @Transactional

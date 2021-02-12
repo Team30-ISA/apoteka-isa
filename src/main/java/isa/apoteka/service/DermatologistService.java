@@ -17,4 +17,5 @@ public interface DermatologistService {
 	List<PatientDTO> findAllExaminedPatients(Long pharmacistId);
 
     List<Dermatologist> getAllExaminationDermatologistsByPatientId(Long id);
+	void save(Dermatologist derm);
 }

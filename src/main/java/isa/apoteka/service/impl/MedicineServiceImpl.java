@@ -182,17 +182,22 @@ public class MedicineServiceImpl implements MedicineService {
 			int quantity = m.getQuantity();
 			MedicinePrice medPrice = medPriceService.findMedicinePrice(pharmacyId, medId);
 			int price;
-			if(medPrice.getPrice() == null) {
+			Date start;
+			Date end;
+			if(medPrice == null) {
 				price = 0;
+				start = null;
+				end = null;
 			}else {
 				price = medPrice.getPrice();
+				start = medPrice.getStartOfPrice();
+				end = medPrice.getEndOfPrice();
 			}
-			Date start = medPrice.getStartOfPrice();
-			Date end = medPrice.getEndOfPrice();
+			
 			dto.add(new MedicineDTO(medId, name, quantity, price, start,end ));
 		}
 		
 		return dto;
 	}
-
+ 
 }

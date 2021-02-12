@@ -166,4 +166,10 @@ public class DermatologistServiceImpl implements DermatologistService {
 		return counselings.stream().map(c -> c.getDermatologistWorkCalendar().getDermatologist()).collect(Collectors.toList());
 	}
 
+	@Override
+	public void save(Dermatologist derm) {
+		dermatologistRepository.save(derm);
+		
+	}
+	
 }

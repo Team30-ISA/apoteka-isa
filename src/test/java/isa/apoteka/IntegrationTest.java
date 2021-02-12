@@ -7,6 +7,8 @@ import static isa.constants.CounselingConstants.NOW;
 import static isa.constants.CounselingConstants.REPORT;
 import static isa.constants.GeneralConstants.DERM_EMAIL;
 import static isa.constants.GeneralConstants.DERM_PASSWORD;
+import static isa.constants.GeneralConstants.ADMIN_EMAIL;
+import static isa.constants.GeneralConstants.ADMIN_PASSWORD;
 import static isa.constants.GeneralConstants.LOGIN;
 import static isa.constants.GeneralConstants.PHARM_EMAIL;
 import static isa.constants.GeneralConstants.PHARM_PASSWORD;
@@ -19,6 +21,7 @@ import java.util.Map;
 
 import javax.transaction.Transactional;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -104,7 +107,7 @@ public class IntegrationTest {
 	@Test
 	@Transactional
 	@Rollback(true)
-	public void testSetReportBadRequest() throws Exception {
+	public void testSetReportBad() throws Exception {
 		MvcResult result = login(DERM_EMAIL, DERM_PASSWORD);
 
 		UserTokenState userTokenState = JSON.parse(result.getResponse().getContentAsString(), UserTokenState.class);
@@ -116,7 +119,8 @@ public class IntegrationTest {
 
 		mockMvc.perform(MockMvcRequestBuilders.post(URL_PREFIX + "/setReport")
 				.header("Authorization", "Bearer " + userTokenState.getAccessToken()).contentType(contentType)
-				.content(p)).andExpect(status().is(400));
+				.content(p)).andExpect(status().is(200))
+				.andExpect(jsonPath("$").value(false));;
 	}
 
 	@Test
@@ -143,4 +147,59 @@ public class IntegrationTest {
 				.accept(MediaType.APPLICATION_JSON).content(input)).andReturn();
 		return ret;
 	}
-}
+	
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testApproveOffer() throws Exception {
+		MvcResult result = login(ADMIN_EMAIL, ADMIN_PASSWORD);
+		UserTokenState userTokenState = JSON.parse(result.getResponse().getContentAsString(), UserTokenState.class);
+		String offerId = JSON.stringify(1L);
+		String errandId = JSON.stringify(6L);
+		mockMvc.perform(MockMvcRequestBuilders.get("/api/offer/approveOffer")
+				.header("Authorization", "Bearer " + userTokenState.getAccessToken()).contentType(contentType)
+				.param("offerId", offerId).param("errandId", errandId)).andExpect(status().is(200));
+	}
+	
+	@Test(expected = NestedServletException.class)
+	@Transactional
+	@Rollback(true)
+	public void testApproveOfferFail() throws Exception {
+		MvcResult result = login(PHARM_EMAIL, PHARM_PASSWORD);
+		UserTokenState userTokenState = JSON.parse(result.getResponse().getContentAsString(), UserTokenState.class);
+		String offerId = JSON.stringify(1L);
+		String errandId = JSON.stringify(6L);
+		mockMvc.perform(MockMvcRequestBuilders.get("/api/offer/approveOffer")
+				.header("Authorization", "Bearer " + userTokenState.getAccessToken()).contentType(contentType)
+				.param("offerId", offerId).param("errandId", errandId)).andExpect(status().is(401));
+	}
+	
+	@Test
+	public void testFindAllDermsNotInPharmacy() throws Exception {
+		MvcResult result = login(ADMIN_EMAIL, ADMIN_PASSWORD);
+		UserTokenState userTokenState = JSON.parse(result.getResponse().getContentAsString(), UserTokenState.class);
+		String pharmacyId = JSON.stringify(1L);
+		mockMvc.perform(MockMvcRequestBuilders.get("/api/pharmacy/findAllDermsNotInPharmacy")
+				.header("Authorization", "Bearer " + userTokenState.getAccessToken()).contentType(contentType)
+				.param("id", pharmacyId)).andExpect(status().is(200));
+	}
+	
+	@Test
+	public void testFindAllApprovedErrands() throws Exception{
+		MvcResult result = login(ADMIN_EMAIL, ADMIN_PASSWORD);
+		UserTokenState userTokenState = JSON.parse(result.getResponse().getContentAsString(), UserTokenState.class);
+		mockMvc.perform(MockMvcRequestBuilders.get("/api/errand/findAllErrands")
+				.header("Authorization", "Bearer " + userTokenState.getAccessToken()).contentType(contentType)
+				.param("approved", "true")).andExpect(status().is(200));
+	}
+	
+	@Test
+	public void testFindAllNotApprovedErrands() throws Exception{
+		MvcResult result = login(ADMIN_EMAIL, ADMIN_PASSWORD);
+		UserTokenState userTokenState = JSON.parse(result.getResponse().getContentAsString(), UserTokenState.class);
+		mockMvc.perform(MockMvcRequestBuilders.get("/api/errand/findAllErrands")
+				.header("Authorization", "Bearer " + userTokenState.getAccessToken()).contentType(contentType)
+				.param("approved", "false")).andExpect(status().is(200));
+	}
+} 

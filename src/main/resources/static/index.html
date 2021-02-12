@@ -108,6 +108,23 @@
 								<header>
 									<a href="#" class="icon fa-list-alt"><span class="label">Icon</span></a>
 									<h3>List of pharmacies</h3>
+									<input type="text" v-model="pharmacyName"></input>
+          							<button @click="searchPharmacies">Search</button>
+          							<br><br>
+									<table class="table">
+										<thead>
+										    <tr>
+										        <th v-for="(index, column) in columns " :key="index"><a href="#" v-on:click="sortBy(column)" v-class="active: sortKey == column"> {{tableh[index]}}</th>
+										        <th>Website:</th>
+										    </tr>
+										</thead>
+										<tbody>
+										    <tr v-for="(index, pharmacy) in pharmacies | orderBy sortKey reverse" :key="index">
+										        <td v-for="(indexColumn, column) in columns" :key="indexColumn">{{pharmacy[column]}}</td>
+										        <td :key="4"><button value="" v-on:click="btnClick(pharmacy.id)">Visit</button></td>
+										    </tr>
+										</tbody>
+									</table>
 								</header>
 							</div>
 						</section>
@@ -116,6 +133,21 @@
 								<header>
 									<a href="#" class="icon fa-medkit"><span class="label">Icon</span></a>
 									<h3>List of medicines</h3>
+									<input type="text" v-model="medicationName"></input>
+          							<button @click="searchMedication">Search</button>
+          							<br><br>
+									<table class="table">
+										<thead>
+										    <tr>
+										        <th v-for="(index, column) in columns2 " :key="index"><a href="#" v-on:click="sortBy(column)" v-class="active: sortKey == column"> {{tableh2[index]}}</th>
+										    </tr>
+										</thead>
+										<tbody>
+										    <tr v-for="(index, medication) in medications | orderBy sortKey reverse" :key="index">
+										        <td v-for="(indexColumn, column) in columns2" :key="indexColumn">{{medication[column]}}</td>
+										    </tr>
+										</tbody>
+									</table>
 								</header>
 							</div>
 						</section>

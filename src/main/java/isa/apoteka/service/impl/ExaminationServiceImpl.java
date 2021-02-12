@@ -14,8 +14,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import isa.apoteka.async.service.EmailService;
+import isa.apoteka.domain.Examination;
+import isa.apoteka.domain.Patient;
+import isa.apoteka.domain.PharmacistWorkCalendar;
+import isa.apoteka.domain.Pharmacy;
+import isa.apoteka.domain.Pharmacist;
 import isa.apoteka.dto.ExaminationDTO;
 import isa.apoteka.repository.ExamintaionRepository;
+import isa.apoteka.repository.PharmacyRepository;
 import isa.apoteka.service.ExaminationService;
 import isa.apoteka.service.PharmacistWorkCalendarService;
 
@@ -25,9 +32,15 @@ public class ExaminationServiceImpl implements ExaminationService {
 
 	@Autowired
 	private ExamintaionRepository examinationRepository;
+	
+	@Autowired
+	private PharmacyRepository pharmacyRepository;
 
 	@Autowired
 	private PharmacistWorkCalendarService pwcService;
+	
+	@Autowired
+	private EmailService emailService;
 
 	@Override
 	public List<ExaminationDTO> findAllTermsByDay(Long dermatologistId, Date start) {
@@ -204,7 +217,9 @@ public class ExaminationServiceImpl implements ExaminationService {
 
 	@Override
 	@Transactional(readOnly = false)
-	public Boolean createExamination(Date start, int duration, Long patientId, Long pwcId, Long pharmacistId) throws Exception {
+	public Boolean createExamination(Date start, int duration, Patient patient, Long pwcId, Long pharmacistId) throws Exception {
+		// DOBAVI RADNO VREME
+		PharmacistWorkCalendar pwc = pwcService.findById(pwcId);
 		// PROVERI DA LI JE FARMACEUT SLOBODAN
 		Calendar calendar = new GregorianCalendar();
 		calendar.setTime(start);
@@ -213,13 +228,12 @@ public class ExaminationServiceImpl implements ExaminationService {
 		if (isPharmacistFree(start, end, pharmacistId) == false) {
 			return false;
 		}
-		// DOBAVI RADNO VREME
-		PharmacistWorkCalendar pwc = pwcService.findById(pwcId);
 		// SACUVAJ TERMIN
-		examinationRepository.createExamination(start, duration, patientId, pwcId);
+		examinationRepository.createExamination(start, duration, patient.getId(), pwcId);
 		// SACUVAJ RADNO VREME (AZURIRAJ VERISON)
 		pwc.setLastReqDate(new Date());
 		pwcService.save(pwc);
+		emailService.sendExaminationReservation(start, pwc, patient);
 		return true;
 	}
 
@@ -246,6 +260,43 @@ public class ExaminationServiceImpl implements ExaminationService {
 		}
 		return true;
 	}
+	
+	@Override
+	public List<Pharmacist> getAvailablePharmacistsByPharmIdAndDate(Long pharmId, Date start){
+		Date end = new Date(start.getTime());
+		end.setHours(start.getHours() + 1);
+		Pharmacy pharmacy = pharmacyRepository.getOne(pharmId);
+		List<Pharmacist> pharmacists = pharmacy.getPharmacists();
+		List<Pharmacist> ret = new ArrayList<Pharmacist>();
+		for(Pharmacist p : pharmacists) {
+			if(isPharmacistFree(start, end, p.getId())) {
+				ret.add(p);
+			}
+		}
+		return ret;
+	}
+	
+	@Override
+	public List<Pharmacy> getAvailablePharmacies(Date start){
+		List<Pharmacy> pharms = pharmacyRepository.getAllPharmacies();
+		Date end = new Date(start.getTime());
+		end.setHours(start.getHours() + 1);
+		List<Pharmacy> ret = new ArrayList<Pharmacy>();
+		System.out.println("START: " + start);
+		System.out.println("END: " + end);
+		for(Pharmacy p : pharms) {
+			List<Pharmacist> pharmacists = p.getPharmacists();
+			for(Pharmacist ph : pharmacists) {
+				if(isPharmacistFree(start, end, ph.getId())) {
+					System.out.println("T ");
+					ret.add(p);
+					break;
+				}
+					
+			}
+		}
+		return ret;
+	}
 
 	@Override
 	public Boolean isPharmFree(Long pharmacistId, Date start, Date end) {
@@ -264,6 +315,16 @@ public class ExaminationServiceImpl implements ExaminationService {
 		if (examinationRepository.countTerms(pharmacistId, start, end) > 0)
 			return false;
 		return true;
+	}
+	
+	@Override
+	public List<Examination> getExaminationsForPatient(Long patId){
+		return examinationRepository.getExaminationsForPatient(patId);
+	}
+	
+	@Override
+	public void cancelAppointment(Long examId) {
+		examinationRepository.cancelAppointment(examId);
 	}
 
 	@Override

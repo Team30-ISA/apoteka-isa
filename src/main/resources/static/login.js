@@ -11,29 +11,33 @@ var app = new Vue({
   created() {
     try {
       const user = JSON.parse(localStorage.getItem("user"));
-      axios
-        .get("auth/getRole", {
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("access_token")
-          }
-        })
-        .then((response) => {
-          if (!user.lastPasswordResetDate)
-            window.location.href = "changePassword.html";
-          else if (response.data == "DERM" && this.email !== this.password) {
-            window.location.href = "dermatologist/dermatologistHome.html";
-          } else if (response.data == "PHARM" && this.email !== this.password) {
-            window.location.href = "pharmacist/pharmacistHome.html";
-          } else if (response.data == "ADMIN" && this.email !== this.password) {
-            window.location.href = "pharmacyAdmin/pharmacyAdminHome.html";
-          } else if (response.data == "PATIENT") {
-            window.location.href = "profile.html";
-          } else if (response.data == "SYS_ADMIN") {
-            window.location.href = "sysAdmin/profile.html";
-          } else {
-            window.location.href = "changePassword.html";
-          }
-        });
+      if (user)
+        axios
+          .get("auth/getRole", {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("access_token")
+            }
+          })
+          .then((response) => {
+            if (!user.lastPasswordResetDate){
+              window.location.href = "changePassword.html";
+            }
+            else if (response.data == "DERM") {
+              window.location.href = "dermatologist/dermatologistHome.html";
+            } else if (response.data == "PHARM") {
+              window.location.href = "pharmacist/pharmacistHome.html";
+            } else if (response.data == "ADMIN") {
+              window.location.href = "pharmacyAdmin/pharmacyAdminHome.html";
+            } else if (response.data == "PATIENT") {
+              window.location.href = "profile.html";
+            } else if (response.data == "SYS_ADMIN") {
+              window.location.href = "sysAdmin/profile.html";
+            } else if (response.data == "SUPL") {
+              window.location.href = "supplier/offers.html";
+            } else {
+              window.location.href = "changePassword.html";
+            }
+          });
     } catch (err) {
       console.log(err);
     }
@@ -83,6 +87,8 @@ var app = new Vue({
                 window.location.href = "profile.html";
               } else if (response.data == "SYS_ADMIN") {
                 window.location.href = "sysAdmin/profile.html";
+              } else if (response.data == "SUPL") {
+                window.location.href = "supplier/offers.html";
               } else {
                 window.location.href = "changePassword.html";
               }
