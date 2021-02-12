@@ -33,8 +33,8 @@ public class SysAdminServiceImpl implements SysAdminService {
     @Autowired
     private AddressService addressService;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    //@Autowired
+    //private PasswordEncoder passwordEncoder;
 
     @Autowired
     private AuthorityService authorityService;
@@ -109,7 +109,8 @@ public class SysAdminServiceImpl implements SysAdminService {
     private SystemAdmin createNewSysAdmin(PharmacistDTO sysAdminData) {
         SystemAdmin user = new SystemAdmin(sysAdminData);
         List<Authority> auth = authorityService.findByname("ROLE_SYS_ADMIN");
-        user.setPasswordForReset(passwordEncoder.encode(sysAdminData.getPassword()));
+        //user.setPasswordForReset(passwordEncoder.encode(sysAdminData.getPassword()));
+        user.setPasswordForReset(sysAdminData.getPassword());
         user.setAuthorities(auth);
         return user;
     }
@@ -117,7 +118,8 @@ public class SysAdminServiceImpl implements SysAdminService {
     private Dermatologist createNewDermatologist(PharmacistDTO dermatologistData) {
         Dermatologist dermatologist= new Dermatologist(dermatologistData);
         List<Authority> auth = authorityService.findByname("ROLE_DERM");
-        dermatologist.setPasswordForReset(passwordEncoder.encode(dermatologistData.getPassword()));
+        //dermatologist.setPasswordForReset(passwordEncoder.encode(dermatologistData.getPassword()));
+        dermatologist.setPasswordForReset(dermatologistData.getPassword());
         dermatologist.setAuthorities(auth);
         return dermatologist;
     }
@@ -125,7 +127,8 @@ public class SysAdminServiceImpl implements SysAdminService {
     private Supplier createNewSupplier(PharmacistDTO supplierData) {
         Supplier supplier = new Supplier(supplierData);
         List<Authority> auth = authorityService.findByname("ROLE_SUPL");
-        supplier.setPasswordForReset(passwordEncoder.encode(supplierData.getPassword()));
+        //supplier.setPasswordForReset(passwordEncoder.encode(supplierData.getPassword()));
+        supplier.setPasswordForReset(supplierData.getPassword());
         supplier.setAuthorities(auth);
         return supplier;
     }

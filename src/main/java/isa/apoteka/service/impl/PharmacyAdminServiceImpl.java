@@ -34,8 +34,8 @@ public class PharmacyAdminServiceImpl implements PharmacyAdminService {
     @Autowired
     private AddressService addressService;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    //@Autowired
+    //private PasswordEncoder passwordEncoder;
 
     @Autowired
     private AuthorityService authorityService;
@@ -63,7 +63,8 @@ public class PharmacyAdminServiceImpl implements PharmacyAdminService {
     private PharmacyAdmin createNewPharmacyAdmin(PharmacistDTO pharmacyAdminData) {
         Pharmacy pharmacy = pharmacyService.findOne(pharmacyAdminData.getPharmacyId());
         PharmacyAdmin pharmacyAdmin = new PharmacyAdmin(pharmacyAdminData, pharmacy);
-        pharmacyAdmin.setPasswordForReset(passwordEncoder.encode(pharmacyAdminData.getPassword()));
+        //pharmacyAdmin.setPasswordForReset(passwordEncoder.encode(pharmacyAdminData.getPassword()));
+        pharmacyAdmin.setPasswordForReset(pharmacyAdminData.getPassword());
         List<Authority> auth = authorityService.findByname("ROLE_ADMIN");
         pharmacyAdmin.setAuthorities(auth);
         return pharmacyAdmin;
