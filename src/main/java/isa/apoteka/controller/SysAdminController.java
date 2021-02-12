@@ -3,8 +3,10 @@ package isa.apoteka.controller;
 import isa.apoteka.domain.Authority;
 import isa.apoteka.domain.User;
 import isa.apoteka.domain.UserRequest;
+import isa.apoteka.dto.ComplaintResponseDTO;
 import isa.apoteka.dto.PharmacistDTO;
 import isa.apoteka.service.AuthorityService;
+import isa.apoteka.service.ComplaintService;
 import isa.apoteka.service.SysAdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,6 +22,9 @@ public class SysAdminController {
 
     @Autowired
     private SysAdminService sysAdminService;
+
+    @Autowired
+    private ComplaintService complaintService;
 
     @PutMapping
     @PreAuthorize("hasRole('SYS_ADMIN')")
@@ -61,4 +66,25 @@ public class SysAdminController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
+
+    @GetMapping(value= "complaint-data")
+    @PreAuthorize("hasRole('SYS_ADMIN')")
+    public ResponseEntity<?> getAllComplaints() {
+        try {
+            return new ResponseEntity<>(complaintService.getAllComplaints(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping(value="answer")
+    @PreAuthorize("hasRole('SYS_ADMIN')")
+    public ResponseEntity<?> respondToComplaint(@RequestBody ComplaintResponseDTO complaintResponseDTO) {
+        try {
+            return new ResponseEntity<>(complaintService.respond(complaintResponseDTO), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
 }

@@ -7,8 +7,11 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.concurrent.TimeUnit;
 
+
+import isa.apoteka.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -336,4 +339,8 @@ public class ExaminationServiceImpl implements ExaminationService {
 		return examinationRepository.finishedExaminations(pharmacyId, startDate, endDate);
 	}
 
+	public List<Pharmacist> getAllExaminationPharmacistsByPatientId(Long id) {
+		List<Examination> examinations = examinationRepository.findByPatientId(id);
+		return examinations.stream().map(e -> e.getPharmacistWorkCalendar().getPharmacist()).collect(Collectors.toList());
+	}
 }

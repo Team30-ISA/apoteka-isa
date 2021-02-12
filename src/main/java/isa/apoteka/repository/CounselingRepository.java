@@ -9,7 +9,9 @@ import org.springframework.data.jpa.repository.Query;
 
 import isa.apoteka.domain.Counseling;
 import isa.apoteka.domain.Dermatologist;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface CounselingRepository extends JpaRepository<Counseling, Long>{
 	
 	@Query("from Counseling c join c.dermatologistWorkCalendar d where d.dermatologist.id=:dermatologistId and d.pharmacy.id=:pharmacyId and c.startDate >= :start and c.startDate <= :end")
@@ -61,5 +63,6 @@ public interface CounselingRepository extends JpaRepository<Counseling, Long>{
 
 	@Query("from Counseling c join c.dermatologistWorkCalendar.pharmacy p where c.report != null and c.report != '' and p.id=:id")
 	List<Counseling> allFinishedCounseling(Long id);
-	
+
+    List<Counseling> findByPatientId(Long id);
 }
