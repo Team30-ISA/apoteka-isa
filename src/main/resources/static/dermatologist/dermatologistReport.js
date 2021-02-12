@@ -8,7 +8,7 @@ var app = new Vue({
         today: new Date(),
         counselings: [],
         counts: [],
-        currentStep: "START",
+        currentStep: "SCHEDULE",
 		derm: null,
         examination: null,
         monthNames: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
@@ -108,6 +108,7 @@ var app = new Vue({
             })
         },
         getStartTime(date){
+        	date = new Date(date);
         	let h = date.getHours();
         	if(h < 10)
         		h = "0" + h;
@@ -165,6 +166,9 @@ var app = new Vue({
                 			  }
                         })
                         .then(response =>{
+                        	if(response.data == -1){
+                        		JSAlert.alert("Greska, pokusajte kasnije!");
+                        	}
                         	t.getTerms(t.current);
                         })
                		}
@@ -288,6 +292,17 @@ var app = new Vue({
     	     .then(response => {
     	    	 let th = this;
     	    	 if(response.data == false){
+    	    		 axios
+		 	     	  .post('/api/notification/noMedicineInStock',
+		 	     			 {
+		 	     		  		date: (new Date()).getTime(),
+		 	     		  		pharmacyId: th.pharmId,
+		 	     		  		message: "Lek " + th.selectedDrug.name + " (id: " + th.selectedDrug.id + ") vise nije dostupan!"
+			     			  },{
+			     				 headers: {
+			     					 'Authorization': "Bearer " + localStorage.getItem('access_token')
+			 	     			 }
+				    	   })
     	    		 JSAlert.confirm("Lek nije dostupan u apoteci, prikazi zamene?").then(function(av) {
      	     		    if (!av)
      	     		        return;
@@ -353,7 +368,7 @@ var app = new Vue({
         	if(diffDays == 0 && diffHrs == 0){}
         	else if(diffHrs <= 1)
         		ret += diffHrs + " hour ";
-        	else if(diffDays > 1)
+        	else if(diffHrs > 1)
             	ret += diffHrs + " hours ";
         	if(diffDays == 0 && diffHrs == 0 && diffMins < 1)
         		ret = "less than one minute";
@@ -388,7 +403,19 @@ var app = new Vue({
                    	}
                 })
                 .then(response =>{
-                	window.location.href = "/dermatologist/dermatologistHome.html";
+                	if(response.data == true){
+                		JSAlert.alert("Uspesno!");
+	                	setTimeout(function () {
+	                        window.location.href = "/dermatologist/dermatologistHome.html";
+	                      }, 3000);
+                		
+                	}
+                	else{
+                		JSAlert.alert("Neuspesno!");
+                		setTimeout(function () {
+	                        window.location.href = "/dermatologist/dermatologistHome.html";
+	                      }, 3000);
+                	}
                 })
                 .catch(error => {
                 	if(error.response.status == 400)

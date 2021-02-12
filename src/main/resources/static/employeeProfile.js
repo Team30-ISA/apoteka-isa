@@ -28,6 +28,10 @@ var app = new Vue({
 		},
 		changeState(){
 			if(this.changePass == true){
+				if(this.newPass.length < 6){
+					JSAlert.alert("Password min length is 6 characters.");
+					return;
+				}
 				if(this.newPass == this.repeatPass){
 					if(this.user.username == this.newPass){
 						JSAlert.alert("Password must not be the same as the username!");

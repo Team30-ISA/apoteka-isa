@@ -55,9 +55,6 @@ public class ExaminationController {
 	@Autowired
 	private PatientService patientService;
 	
-	@Autowired
-	private PharmacistHolidayService pharmacistHolidayService;
-	
 	@Nullable
 	@GetMapping("/findAllTermsByDay")
 	@PreAuthorize("hasRole('PHARM')")
@@ -125,7 +122,7 @@ public class ExaminationController {
 	
 	@PostMapping("/scheduleExamination")
 	@PreAuthorize("hasRole('PHARM')")
-	public ResponseEntity<Integer> scheduleExamination(@RequestBody Map<String, Object> params) {
+	public ResponseEntity<Integer> scheduleExamination(@RequestBody Map<String, Object> params) throws Exception {
 		Pharmacist pharm = (Pharmacist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		Date start = new Date(Long.parseLong(params.get("start").toString()));
 		Integer duration = Integer.parseInt(params.get("duration").toString());
@@ -133,27 +130,28 @@ public class ExaminationController {
 		if(start == null || duration == null || currExaminationId == null) {
 			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}
-		Long patientId;
+		Patient patient;
 		Long pharmacistId;
 		try{
-			patientId = examintaionService.findOne(currExaminationId).getPatient().getId();
+			patient = examintaionService.findOne(currExaminationId).getPatient();
 			pharmacistId = pharm.getId();
 		}
 		catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 		}
-		if(!isPatientFree(patientId, start, duration)) {
+		if(!isPatientFree(patient.getId(), start, duration)) {
 			return new ResponseEntity<>(-1, HttpStatus.OK);
 		}
 		Long pwcId = getCurrPharmWP(start, pharmacistId);
 		if(pwcId == null) {
 			return new ResponseEntity<>(-2, HttpStatus.OK);
 		}
-		/*if(pharmacistHolidayService.isPharmOnHolidays(pharmacistId, start)) {
-			return new ResponseEntity<>(-3, HttpStatus.OK);
-		}*/
-		if(!examintaionService.createExamination(start, duration, patientId, pwcId, pharmacistId)) {
-			return new ResponseEntity<>(-3, HttpStatus.OK);
+		try {
+			if(!examintaionService.createExamination(start, duration, patient, pwcId, pharmacistId)) {
+				return new ResponseEntity<>(-3, HttpStatus.OK);
+			}
+		} catch (Exception e) {
+			return new ResponseEntity<>(-4, HttpStatus.OK);
 		}
 		
 		return new ResponseEntity<>(1, HttpStatus.OK);

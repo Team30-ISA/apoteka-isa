@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 @Entity
 @Table(name="pharmacistWorkCalendar")
@@ -24,16 +25,22 @@ public class PharmacistWorkCalendar {
 	private Pharmacy pharmacy;
 	private Date startDate;
 	private Date endDate;
+	@Version
+    private Long version;
+	private Date lastReqDate;
 	
 	public PharmacistWorkCalendar() {
 		super();
+		this.version = 0L;
 	}
 
-	public PharmacistWorkCalendar(Pharmacist pharmacist, Pharmacy pharmacy, Date startDate, Date endDate) {
+	public PharmacistWorkCalendar(Pharmacist pharmacist, Pharmacy pharmacy, Date startDate, Date endDate, Date lastReqDate) {
 		this.pharmacist = pharmacist;
 		this.pharmacy = pharmacy;
 		this.startDate = startDate;
 		this.endDate = endDate;
+		this.lastReqDate = lastReqDate;
+		this.version = 0L;
 	}
 
 	public Long getId() {
@@ -74,6 +81,14 @@ public class PharmacistWorkCalendar {
 
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
+	}
+
+	public Date getLastReqDate() {
+		return lastReqDate;
+	}
+
+	public void setLastReqDate(Date lastReqDate) {
+		this.lastReqDate = lastReqDate;
 	}
 		
 }

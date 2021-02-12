@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 @Entity
 @Table(name="counseling")
@@ -25,6 +26,8 @@ public class Counseling {
 	private Patient patient;
 	private Float price;
 	private String report;
+	@Version
+	private int version;
 	
 	public Counseling() {
 		super();

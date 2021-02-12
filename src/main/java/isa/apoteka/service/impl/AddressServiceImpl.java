@@ -25,6 +25,7 @@ public class AddressServiceImpl implements AddressService {
 		return result;
 	}
 
+	@Transactional(readOnly = false)
 	@Override
 	public void update(String street, Long cityId, Long addressId) {
 		addressRepository.update(street, cityId, addressId);

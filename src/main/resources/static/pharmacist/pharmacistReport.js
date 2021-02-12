@@ -8,7 +8,7 @@ var app = new Vue({
         today: new Date(),
         counselings: [],
         counts: [],
-        currentStep: "START",
+        currentStep: "SCHEDULE",
 		derm: null,
         examination: null,
         monthNames: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
@@ -104,7 +104,6 @@ var app = new Vue({
     			    'Authorization': "Bearer " + localStorage.getItem('access_token')
     			  },
     			  params: {
-    				  pharmacyId: this.pharmId,
     				  start: date.getTime()
     			  }
             })
@@ -277,6 +276,17 @@ var app = new Vue({
     	     .then(response => {
     	    	 let th = this;
     	    	 if(response.data == false){
+    	    		 axios
+		 	     	  .post('/api/notification/noMedicineInStock',
+		 	     			 {
+		 	     		  		date: (new Date()).getTime(),
+		 	     		  		pharmacyId: th.pharmId,
+		 	     		  		message: "Lek " + th.selectedDrug.name + " (id: " + th.selectedDrug.id + ") vise nije dostupan!"
+			     			  },{
+			     				 headers: {
+			     					 'Authorization': "Bearer " + localStorage.getItem('access_token')
+			 	     			 }
+				    	   })
     	    		 JSAlert.confirm("Lek nije dostupan u apoteci, prikazi zamene?").then(function(av) {
      	     		    if (!av)
      	     		        return;
@@ -342,7 +352,7 @@ var app = new Vue({
         	if(diffDays == 0 && diffHrs == 0){}
         	else if(diffHrs <= 1)
         		ret += diffHrs + " hour ";
-        	else if(diffDays > 1)
+        	else if(diffHrs > 1)
             	ret += diffHrs + " hours ";
         	if(diffDays == 0 && diffHrs == 0 && diffMins < 1)
         		ret = "less than one minute";
@@ -409,6 +419,8 @@ var app = new Vue({
         		return;
         	}
         	else if(d < this.wpStart || d > this.wpEnd){
+        		console.log(this.wpStart)
+        		console.log(this.wpEnd)
         		JSAlert.alert("Lekar ne radi u ovom terminu u ovoj apoteci!");
         		return;
         	}

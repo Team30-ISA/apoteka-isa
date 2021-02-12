@@ -24,9 +24,13 @@ public class Pharmacist extends User{
 	public Pharmacist() {
 		super();
 	}
-	public Pharmacist(int grade) {
+	
+	public Pharmacist(Long id,String firstName, String lastName, int grade) {
 		super();
-		this.grade = grade;
+		this.setId(id);
+		this.setFirstName(firstName);
+		this.setLastName(lastName);
+    this.setGrade(grade);
 	}
 
 	public Pharmacy getPharmacy() {

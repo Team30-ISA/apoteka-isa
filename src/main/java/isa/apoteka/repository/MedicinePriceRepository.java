@@ -22,4 +22,7 @@ public interface MedicinePriceRepository extends JpaRepository<MedicinePrice, Lo
 	@Modifying
 	@Query(value = "insert into medicine_price(end_of_price, price, start_of_price, medicine_id, pharmacy_id) values (:end ,:newPrice, :start ,:medicineId,:pharmacyId)", nativeQuery = true)
 	void changePrice(Long medicineId, Long pharmacyId, int newPrice, Date start, Date end);
+
+	@Query("from MedicinePrice m join m.medicine mm join m.pharmacy mp where mp.id=:pharmId and mm.id=:medId and m.startOfPrice >= :date and m.endOfPrice <= :date")
+	MedicinePrice getPrice(Long medId, Long pharmId, Date date);
 }
