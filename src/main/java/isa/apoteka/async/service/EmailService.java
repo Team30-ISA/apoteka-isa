@@ -51,7 +51,7 @@ public class EmailService {
 		try {
 			MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 			mimeMessage.setContent(
-					"<p>Verify your account bt clicking on the following link: <a href=\"/verifiedAccount.html?userId=" + user.getId()
+					"<p>Verify your account bt clicking on the following link: <a href=\"http://localhost:8081/verifiedAccount.html?userId=" + user.getId()
 							+ "&hash=" + hashedEmail +"\">Verify my account</a></p>", "text/html");
 			MimeMessageHelper mail = new MimeMessageHelper(mimeMessage, "utf-8");
 			mail.setTo(user.getEmail());
