@@ -47,6 +47,9 @@ var app = new Vue({
           });
       } else {
         JSAlert.alert("New password and confirmed password are not the same OR new password doesn't have minimal 6 characters!");
+		setTimeout(function () {
+            window.location.href = "/changePassword.html";
+        }, 3000);
       }
     }
   },
