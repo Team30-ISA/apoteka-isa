@@ -1,58 +1,3 @@
-/*var app = new Vue({
-	el: '#profile',
-	data: {
-		patients: null,
-		oldpass: "",
-		newpass: "",
-		name: "",
-		surname: "",
-		reservedMedications: [],
-	},
-	methods: {
-		changepass() {
-		axios.get('/api/patient/updatePassword',{
-		headers: {
-				    'Authorization': "Bearer " + localStorage.getItem('access_token')
-			  },
-		params:{
-			oldpass: this.oldpass,
-			newpass: this.newpass,
-			id: this.patients.id,
-			}
-		}).then(response => {
-					alert('Lozinka je uspesno promenjena.')
-			})
-		},
-		changedata(){
-		axios.get('/api/patient/updatePatient',{
-		headers: {
-				    'Authorization': "Bearer " + localStorage.getItem('access_token')
-			  },
-		params:{
-			name: this.name,
-			surname: this.surname,
-			id: this.patients.id,
-			}
-		}).then(response => {
-					alert('Novo ime: ' + this.name + '\nNovo prezime: ' + this.surname)
-			})
-		}
-	},
-	created() {
-		axios
-		.get('/api/patient/getLoggedUser',{
-			  headers: {
-				    'Authorization': "Bearer " + localStorage.getItem('access_token')
-			  }
-	     }).then(response => {
-					this.patients = response.data
-					this.name = this.patients.firstName
-					this.surname = this.patients.lastName
-			})
-		
-	}
-})*/
-
 var app = new Vue({
 	el: '#patientProfile',
 	data: {
@@ -91,7 +36,6 @@ var app = new Vue({
 		changeState(){
 			if(this.changePass == true){
 				this.changePass = false;
-				//axios za izmenu passworda
 				axios.get('/api/patient/updatePassword',{
 					headers: {
 				    	'Authorization': "Bearer " + localStorage.getItem('access_token')
@@ -119,7 +63,6 @@ var app = new Vue({
 			console.log('CHDATA SC: ' + this.selectedAddress)
 			if(this.changeData == true){
 				this.changeData = false;
-				//axios za izmenu podataka
 				axios.get('/api/patient/updatePatient',{
 		headers: {
 				    'Authorization': "Bearer " + localStorage.getItem('access_token')
@@ -218,9 +161,9 @@ var app = new Vue({
 	     	this.selectedCountry = this.patient.address.city.country.id
 	     	this.selectedCity = this.patient.address.city.id
 	     	this.selectedAddress = this.patient.address.id
-	     	//console.log('Selected Address pri kreiranju str: ' + this.selectedAddress)
 	     	
-	     		     axios
+	     	
+	     axios
 		.get('/api/patient/findAllReservedMedicine',{
 			  headers: {
 				    'Authorization': "Bearer " + localStorage.getItem('access_token')
