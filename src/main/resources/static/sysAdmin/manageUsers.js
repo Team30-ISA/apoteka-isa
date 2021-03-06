@@ -4,7 +4,6 @@ new Vue({
     firstName: "",
     lastName: "",
     email: "",
-    email: "",
     password: "",
     phonenumber: "",
     city: "",
@@ -66,7 +65,6 @@ new Vue({
         alert("User successfully created.");
         this.firstName = "";
         this.lastName = "";
-        this.email = "";
         this.email = "";
         this.password = "";
         this.phonenumber = "";
