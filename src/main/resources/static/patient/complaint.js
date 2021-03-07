@@ -44,7 +44,10 @@ var app = new Vue({
             }
           }
         );
-        alert("Complaint created successfully");
+        JSAlert.alert("Complaint created successfully!");
+		setTimeout(function () {
+                window.location.href = "http://localhost:8081/patient/complaint.html";
+              }, 3000);
       } catch (err) {
         console.log(err);
       }

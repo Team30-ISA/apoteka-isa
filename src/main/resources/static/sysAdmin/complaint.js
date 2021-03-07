@@ -37,10 +37,16 @@ var app = new Vue({
           this.selected = "";
           this.response = "";
           this.compliants = this.compliants.filter((c) => c.id != selected.id);
+		  
+		  
         })
         .catch(function (err) {
           console.log(err);
         });
+		JSAlert.alert("The response to the complaint was sent successfully!");
+		setTimeout(function () {
+                window.location.href = "http://localhost:8081/sysAdmin/complaint.html";
+              }, 3000);
     }
   },
   async created() {
