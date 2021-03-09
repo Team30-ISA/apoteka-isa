@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Patient profile page</title>
+<title>subscribedPharmacies</title>
 <meta content="width=device-width, initial-scale=1.0" name="viewport">
 <meta content="" name="keywords">
 <meta content="" name="description">
@@ -130,14 +130,28 @@
   ============================-->
 
 		<main id="main" class="text-center mt-5">
-            <div v-if="pharmacies.length == 0">
-                No subscriptions yet.
-            </div>
-            <div class="d-inline-block w-50">
+            <div v-if="pharmacies.length == 0 ">
+                <h1>You can subscribe to the pharmacy here.</h1>
+				<div v-if="pharmaciesSub.length != 0  ">
+				<div class="d-inline-block w-50">
                 <ul class="list-group">
-                    <li class="list-group-item" v-for="pharmacy in pharmacies">{{pharmacy.name}}<button class="btn" style="float: right;" @click="unsubscribe(pharmacy.id)">Unsubcribe</button></li>
-                  </ul>
+                    <li class="list-group-item" v-for="pharmacy in pharmaciesSub">{{pharmacy.name}}
+					<button class="btn" style="float: right;" @click="subscribe(pharmacy.id)">Subcribe</button>
+					</li>
+                </ul>
+				</div>
+				</div>
             </div>
+			<div v-else>
+				<h1>Subscriptions</h1>
+				<div class="d-inline-block w-50">
+                <ul class="list-group">
+                    <li class="list-group-item" v-for="pharmacy in pharmacies">{{pharmacy.name}}
+					<button class="btn" style="float: right;" @click="unsubscribe(pharmacy.id)">Unsubcribe</button>
+					</li>
+                </ul>
+				</div>
+			</div>
 		</main>
 
 		<a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
@@ -153,6 +167,7 @@
 	<script src="../lib/owlcarousel/owl.carousel.min.js"></script>
 	<script src="../lib/magnific-popup/magnific-popup.min.js"></script>
 	<script src="../lib/sticky/sticky.js"></script>
+	<script src="https://npmcdn.com/js-alert/dist/jsalert.min.js"></script>
 
 	<!-- Contact Form JavaScript File -->
 	<script
