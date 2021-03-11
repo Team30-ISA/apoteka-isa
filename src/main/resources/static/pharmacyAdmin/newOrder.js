@@ -68,6 +68,7 @@ var app = new Vue({
 				this.medQuantity = "";
 				return;
 			}
+			console.log(this.orderedMedication)
 			for(let i = 0; i < this.orderedMedication.length; i++){
 				if(this.orderedMedication[i].id == this.orderMed.id){
 					console.log(this.medQuantity)
@@ -79,7 +80,8 @@ var app = new Vue({
 					console.log(this.orderedMedication[i])
 					return;
 				}
-			}	
+			}
+			console.log(this.orderedMedication)
 			for(let i = 0; i < this.newMedication.length; i++){
 				if(this.newMedication[i].id == this.orderMed.id){
 					this.newMedication.splice(i, 1);
@@ -89,6 +91,7 @@ var app = new Vue({
 			this.orderedMedication.push(this.orderMed);		
 			this.medQuantity = null;
 			this.changeOrder = false;
+			console.log(this.orderedMedication)
 		},
 		formatDate(d){
 			let date = new Date(d)
@@ -134,10 +137,12 @@ var app = new Vue({
 						  }
 						})
 				.then(response => {
+					
 					JSAlert.alert("You have successfully created an order!");
-	                setTimeout(function () {
+					console.log(this.orderedMedication)
+	               /* setTimeout(function () {
 						window.location.href = '/pharmacyAdmin/newOrder.html';
-					}, 3000);
+					}, 3000);*/
 				}).catch(error => {
 		            if (error.response.status == 401 || error.response.status == 400 || error.response.status == 500) {
 		                JSAlert.alert("New order couldn't be made.");
@@ -148,7 +153,7 @@ var app = new Vue({
 	                JSAlert.alert(error.response.data.errors[0].defaultMessage);
 	            }		            
 	        })
-			
+			console.log(this.orderedMedication)
 		},
 		deleteFromOrder(m){
 			for(let i = 0; i < this.orderedMedication.length; i++){

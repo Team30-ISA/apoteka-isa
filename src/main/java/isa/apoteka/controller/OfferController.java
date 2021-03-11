@@ -12,17 +12,22 @@ import isa.apoteka.service.OfferService;
 @RestController
 @RequestMapping(value = "api/offer")
 public class OfferController {
-
 	private OfferService offerService;
-
-	@Autowired
 	private ErrandService errandService;
 
+	@Autowired
+	public OfferController(OfferService offerService, ErrandService errandService) {
+		super();
+		this.offerService = offerService;
+		this.errandService = errandService;
+	}
+
+/*
 	@Autowired
 	public OfferController(OfferService offerService) {
 		this.offerService = offerService;
 	}
-	
+	*/
 	
 	@GetMapping("/approveOffer")
 	@PreAuthorize("hasRole('ADMIN')")	

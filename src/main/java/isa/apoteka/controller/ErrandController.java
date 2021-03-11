@@ -91,6 +91,28 @@ public class ErrandController {
 		return new ResponseEntity<>(errands, HttpStatus.OK);
 	}
 	
+	@GetMapping("/findAllErrand")
+	public ResponseEntity<List<ShowErrandDTO>> findAllErrands(Boolean approved) {
+		List<ShowErrandDTO> errands = new ArrayList<ShowErrandDTO>();
+		List<Errand> list = errandService.findAllErrands();
+		for(Errand e : list) {
+			if(e.getFinished().equals(approved)) {
+				ShowErrandDTO dto = new ShowErrandDTO();
+				List<MedicineForSupplyDTO> medicines = medicineQuantityService.getMedicineForErrand(e.getId());
+				List<SupplierDTO> suppliers = offerService.findAllOffersForErrand(e.getId());
+				dto.setMedicines(medicines);
+				dto.setSuppliers(suppliers);
+				dto.setId(e.getId());
+				dto.setDeadline(e.getDeadline());
+				dto.setStart(e.getCreationTime());
+				dto.setFinished(e.getFinished());
+				
+				errands.add(dto);
+			}
+		}
+		return new ResponseEntity<>(errands, HttpStatus.OK);
+	}
+	
     @DeleteMapping(value = "/delete/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public Map<String, Boolean> delete(@PathVariable(value = "id") Long errandId) {

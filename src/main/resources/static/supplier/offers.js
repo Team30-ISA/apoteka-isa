@@ -104,6 +104,7 @@ var app = new Vue({
       }
     });
     this.offers = offers.data;
+	console.log(this.offers)
     this.allOffers = offers.data;
     const stock = await axios.get("/api/offer/stock", {
       headers: {
@@ -111,10 +112,12 @@ var app = new Vue({
       }
     });
     this.stock = stock.data;
+	console.log(this.stock)
   },
   watch: {
     errandPreview() {
       try {
+		  console.log(this.errandPreview)
         if (this.errandPreview !== null) {
           this.invalidOffer = this.errands[
             this.errandPreview
@@ -123,12 +126,16 @@ var app = new Vue({
             if (!med) return true;
             return e.quantity > med.quantity;
           });
+		  console.log(this.invalidOffer)
           const offer = this.offers.find(
             (o) => o.errandId === this.errands[this.errandPreview].id
           );
+		  console.log(offer)
           if (offer) {
             this.supplyDeadline = offer.supplyDeadline;
+			console.log(this.supplyDeadline)
             this.price = offer.price;
+			console.log(this.price)
           }
         }
       } catch (err) {
