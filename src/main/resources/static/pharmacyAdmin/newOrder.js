@@ -143,7 +143,7 @@ var app = new Vue({
 					console.log(this.orderedMedication)
 					setTimeout(function () {
 						window.location.href = '/pharmacyAdmin/newOrder.html';
-					}, 3000);
+					}, 2000);
 				}).catch(error => {
 		            if (error.response.status == 401 || error.response.status == 400 || error.response.status == 500) {
 		                JSAlert.alert("New order couldn't be made.");

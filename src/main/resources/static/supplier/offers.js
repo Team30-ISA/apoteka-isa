@@ -89,7 +89,8 @@ var app = new Vue({
 		  JSAlert.alert("Sorry, change offers are possible until the deadline defined by the pharmacy administrator when writing errands!")
 	  }
       } catch (err) {
-        JSAlert.alert("Only date in future is accepted!");
+        console.log(err)
+		JSAlert.alert("Only date in future is accepted!")
       }
     },
     offerExists() {
