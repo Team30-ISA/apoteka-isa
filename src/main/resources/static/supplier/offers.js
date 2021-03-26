@@ -35,6 +35,10 @@ var app = new Vue({
 
       return ind;
     },
+	formatDate(d){
+			let date = new Date(d)
+			return date.getDate() + "." + (date.getMonth() + 1) + "." + date.getFullYear() + ".";
+		},
     async checkRole() {
       axios
         .get("/auth/getRole", {
@@ -57,6 +61,7 @@ var app = new Vue({
     },
     async submit() {
       try {
+		if(this.supplyDeadline<this.errands[this.errandPreview].deadline){
         await axios.post(
           "/api/offer",
           {
@@ -70,7 +75,7 @@ var app = new Vue({
             }
           }
         );
-        alert("Successfully created new offer");
+        JSAlert.alert("Successfully created new offer");
         this.errandPreview = null;
         this.price = 1;
         this.supplyDeadline = "";
@@ -80,8 +85,11 @@ var app = new Vue({
           }
         });
         this.offers = offers.data;
+	  }else{
+		  JSAlert.alert("Sorry, change offers are possible until the deadline defined by the pharmacy administrator when writing errands!")
+	  }
       } catch (err) {
-        alert(err);
+        JSAlert.alert("Only date in future is accepted!");
       }
     },
     offerExists() {
@@ -133,6 +141,7 @@ var app = new Vue({
 		  console.log(offer)
           if (offer) {
             this.supplyDeadline = offer.supplyDeadline;
+			console.log(new Date())
 			console.log(this.supplyDeadline)
             this.price = offer.price;
 			console.log(this.price)

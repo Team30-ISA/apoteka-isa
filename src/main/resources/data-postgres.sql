@@ -231,7 +231,7 @@ INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (27, 7);
 INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (28, 7);
 INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (29, 7);
 
-insert into errand (id, creation_time, deadline, pharmacy_id, finished, admin_id) values (1, '2021-03-10 10:38:09.147', '2021-04-06 20:01:00', 1, false,12);
+--insert into errand (id, creation_time, deadline, pharmacy_id, finished, admin_id) values (1, '2021-03-10 10:38:09.147', '2021-04-06 20:01:00', 1, false,12);
 insert into errand (id, creation_time, deadline, pharmacy_id, finished, admin_id) values (10, '2021-03-10 10:38:09.147', '2021-04-06 20:01:00', 1, false,12);
 insert into errand (id, creation_time, deadline, pharmacy_id, finished, admin_id) values (11, '2021-03-10 10:38:09.147', '2021-03-29 20:01:00', 2, false,10);
 insert into errand (id, creation_time, deadline, pharmacy_id, finished, admin_id) values (12, '2021-03-10 10:38:09.147', '2021-03-29 20:01:00', 3, false,10);
@@ -252,7 +252,7 @@ insert into offer (id, price, supply_deadline, errand_id, supplier_id, is_approv
 insert into offer (id, price, supply_deadline, errand_id, supplier_id, is_approved) values (11, 10000, '2021-03-25 01:00:00', 11, 27, null);
 insert into offer (id, price, supply_deadline, errand_id, supplier_id, is_approved) values (12, 10000, '2021-04-05 01:00:00', 11, 26, false);
 insert into offer (id, price, supply_deadline, errand_id, supplier_id, is_approved) values (14, 14000, '2021-03-25 01:00:00', 10, 27, true);
-insert into offer (id, price, supply_deadline, errand_id, supplier_id, is_approved) values (15, 15000, '2021-03-26 01:00:00', 1, 26, true);
+--insert into offer (id, price, supply_deadline, errand_id, supplier_id, is_approved) values (15, 15000, '2021-03-26 01:00:00', 1, 26, true);
 
 insert into pharmacy_grade (id, grade, pharmacy_id, patient_id) values (1, 1, 1, 13);
 insert into pharmacy_grade (id, grade, pharmacy_id, patient_id) values (2, 3, 1, 13);
@@ -272,5 +272,14 @@ insert into notification(date, user_id, message) values ('20210210 12:00:00 AM',
 
 insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (1, 6, 27, 1);
 insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (2, 8, 27, 2);
-insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (3, 10, 27, 3); 
+insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (3, 15, 27, 3);
+insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (4, 10, 27, 4);
+insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (5, 5, 27, 5);
+insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (6, 11, 27, 6);
+insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (7, 12, 27, 7);
+
+
+--insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (4, 6, 26, 1);
+--insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (5, 8, 26, 2);
+--insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (6, 10, 26, 3);
 

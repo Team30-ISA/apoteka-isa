@@ -17,6 +17,7 @@ import isa.apoteka.domain.PharmacyAdmin;
 import isa.apoteka.repository.ErrandRepository;
 import isa.apoteka.service.ErrandService;
 import isa.apoteka.service.MedicineQuantityService;
+
 @Service
 @Transactional(readOnly = true)
 public class ErrandServiceImpl implements ErrandService{
@@ -32,20 +33,28 @@ public class ErrandServiceImpl implements ErrandService{
 	
 	@Override
 	@Transactional(readOnly = false)
-	public Boolean save(Date deadline) {
-		PharmacyAdmin admin = (PharmacyAdmin) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		Calendar calendar = new GregorianCalendar();
-		calendar.setTime(deadline);
-		calendar.set(Calendar.HOUR_OF_DAY, 0);
-		calendar.set(Calendar.MINUTE, 0);
-		calendar.set(Calendar.SECOND, 0);
-		calendar.add(Calendar.DATE, 1);
-		Date startDate = calendar.getTime();
+	public Long save(Date deadline) {
+		
 		try {
-			errandRepository.saveNewErrand(false,new Date(),startDate,admin.getPharmacy().getId(),admin.getId());
-			return true;
+			PharmacyAdmin admin = (PharmacyAdmin) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			Errand errand = new Errand();
+			Calendar calendar = new GregorianCalendar();
+			calendar.setTime(deadline);
+			calendar.set(Calendar.HOUR_OF_DAY, 0);
+			calendar.set(Calendar.MINUTE, 0);
+			calendar.set(Calendar.SECOND, 0);
+			calendar.add(Calendar.DATE, 1);
+			Date startDate = calendar.getTime();
+			
+			errand.setAdmin(admin);
+			errand.setCreationTime(new Date());
+			errand.setDeadline(startDate);
+			errand.setFinished(false);
+			errand.setPharmacy(admin.getPharmacy());
+			errand = errandRepository.save(errand);
+			return (long)errand.getId();
 		}catch(Exception e) {
-			return false;
+			return (long)1;
 		}
 	}
 
@@ -56,7 +65,6 @@ public class ErrandServiceImpl implements ErrandService{
 	}
 
 	@Override
-
 	@Transactional(readOnly = false)
 	public void delete(Long errandId, PharmacyAdmin admin) {
 		medicineQuantityService.deleteMedQuantity(errandId, admin);
@@ -65,7 +73,7 @@ public class ErrandServiceImpl implements ErrandService{
 
 	public List<ErrandPreviewDTO> findAllValidErrands() {
 		return errandRepository.findAll().stream().filter(e -> e.getDeadline().after(new Date())).collect(Collectors.toList()).stream().map(e -> new ErrandPreviewDTO(e)).collect(Collectors.toList());
-
 	}
+
 
 }

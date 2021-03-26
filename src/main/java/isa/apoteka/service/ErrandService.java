@@ -9,9 +9,8 @@ import isa.apoteka.dto.ErrandPreviewDTO;
 
 public interface ErrandService {
 
-	Boolean save(Date deadline);
+	Long save(Date deadline);
 	List<Errand> findAllErrands();
 	void delete(Long errandId, PharmacyAdmin admin);
 	List<ErrandPreviewDTO> findAllValidErrands();
-
 }

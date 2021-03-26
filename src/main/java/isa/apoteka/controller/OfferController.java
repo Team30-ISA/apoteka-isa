@@ -2,6 +2,9 @@ package isa.apoteka.controller;
 
 import isa.apoteka.dto.OfferDTO;
 import isa.apoteka.service.ErrandService;
+
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,13 +24,6 @@ public class OfferController {
 		this.offerService = offerService;
 		this.errandService = errandService;
 	}
-
-/*
-	@Autowired
-	public OfferController(OfferService offerService) {
-		this.offerService = offerService;
-	}
-	*/
 	
 	@GetMapping("/approveOffer")
 	@PreAuthorize("hasRole('ADMIN')")	
@@ -43,7 +39,7 @@ public class OfferController {
 
 	@PostMapping
 	@PreAuthorize("hasRole('SUPL')")
-	public ResponseEntity<?> createOffer(@RequestBody OfferDTO offerDTO){
+	public ResponseEntity<?> createOffer(@RequestBody @Valid OfferDTO offerDTO){
 		try {
 			offerService.createOffer(offerDTO);
 			return new ResponseEntity<>(HttpStatus.CREATED);

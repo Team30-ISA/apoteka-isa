@@ -126,6 +126,7 @@ var app = new Vue({
 				for(let i = 0; i<this.orderedMedication.length; i++){
 					this.orderedMedication[i].errandId = this.errandId
 				}
+				
 				axios
 				.post('/api/errand/errandMedication',
 						{
@@ -140,9 +141,9 @@ var app = new Vue({
 					
 					JSAlert.alert("You have successfully created an order!");
 					console.log(this.orderedMedication)
-	               /* setTimeout(function () {
+					setTimeout(function () {
 						window.location.href = '/pharmacyAdmin/newOrder.html';
-					}, 3000);*/
+					}, 3000);
 				}).catch(error => {
 		            if (error.response.status == 401 || error.response.status == 400 || error.response.status == 500) {
 		                JSAlert.alert("New order couldn't be made.");

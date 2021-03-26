@@ -56,7 +56,7 @@ public class ErrandController {
 		} catch (JsonProcessingException e) {
 			System.out.println("greska");
 		}
-		System.out.println(dto.size());
+		System.out.println(dto);
 
 		return medicineQuantityService.insert(dto);
 	}
@@ -64,8 +64,12 @@ public class ErrandController {
 	
 	@PostMapping("/newErrand")
 	@PreAuthorize("hasRole('ADMIN')")
-	public Boolean newErrand(@RequestBody @Valid ErrandDTO dto) throws ParseException {
-		return errandService.save(dto.getDeadline());
+	public Long newErrand(@RequestBody @Valid ErrandDTO dto) throws ParseException {
+		try {
+			return errandService.save(dto.getDeadline());
+        } catch (Exception e) {
+            return (long)1;
+        }
 	}
 	
 	@GetMapping("/findAllErrands")
