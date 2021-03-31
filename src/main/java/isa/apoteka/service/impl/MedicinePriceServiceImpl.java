@@ -1,5 +1,6 @@
 package isa.apoteka.service.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -11,6 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 import isa.apoteka.domain.MedicinePrice;
 import isa.apoteka.domain.PharmacyAdmin;
 import isa.apoteka.dto.ChangePriceDTO;
+import isa.apoteka.dto.ChoosenPharmacyDTO;
+import isa.apoteka.dto.QRcodeInformationDTO;
 import isa.apoteka.repository.MedicinePriceRepository;
 import isa.apoteka.service.MedicinePriceService;
 
@@ -66,4 +69,40 @@ public class MedicinePriceServiceImpl implements MedicinePriceService{
 			return 0;
 		return mp.getPrice();
 	}
+	
+	@Transactional(readOnly = false)
+    public Boolean updateMedicineQuantityEreceipt(ChoosenPharmacyDTO choosenPharmacy) {
+        int points = 0;
+        try {
+            List<MedicinePrice> pharmacyMedications = findByPharmacy(choosenPharmacy.getPharmacyId());
+            for (QRcodeInformationDTO medication : choosenPharmacy.getMedications()) {
+                for (MedicinePrice medicinePrice : pharmacyMedications) {
+                    if(medicinePrice.getMedicine().getCode().equals(medication.getMedicationCode())  &&
+                            medicinePrice.getMedicine().getName().equals(medication.getMedicationName())) {
+                        medicinePrice.setQuantity(medicinePrice.getQuantity()-medication.getQuantity());
+                        
+                        this.medPriceRepository.save(medicinePrice);
+                    }
+                }
+            }
+
+           // loyaltyProgramService.updatePatientsLoyaltyPoints(points);
+            return true;
+        }
+        catch(Exception e) {return false;}
+    }
+	
+	public List<MedicinePrice> findByPharmacy(Long id){
+        List<MedicinePrice> medicinePrices =  new ArrayList<MedicinePrice>();
+           try {
+               for (MedicinePrice m : medPriceRepository.findAll()) {
+                   if (m.getPharmacy().getId().equals(id)) {
+                       medicinePrices.add(m);
+                   }
+               }
+               return medicinePrices;
+           }catch (Exception e){
+               return null;
+           }
+    }
 }

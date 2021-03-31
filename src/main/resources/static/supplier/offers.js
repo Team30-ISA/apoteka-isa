@@ -74,17 +74,22 @@ var app = new Vue({
               Authorization: "Bearer " + localStorage.getItem("access_token")
             }
           }
-        );
-        JSAlert.alert("Successfully created new offer");
-        this.errandPreview = null;
-        this.price = 1;
-        this.supplyDeadline = "";
-        const offers = await axios.get("/api/offer", {
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("access_token")
-          }
-        });
-        this.offers = offers.data;
+        ).then(response => {
+        	JSAlert.alert("Successfully created new offer!");
+			this.errandPreview = null;
+			this.price = 1;
+			this.supplyDeadline = "";
+        }).catch(error => {
+		            if (error.response.status == 401 || error.response.status == 400 || error.response.status == 500) {
+		                JSAlert.alert("Only date in future is accepted!");
+		            }		            
+		});
+		const offers = await axios.get("/api/offer", {
+				headers: {
+					Authorization: "Bearer " + localStorage.getItem("access_token")
+				}
+			});
+			this.offers = offers.data;
 	  }else{
 		  JSAlert.alert("Sorry, change offers are possible until the deadline defined by the pharmacy administrator when writing errands!")
 	  }

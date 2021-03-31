@@ -14,7 +14,7 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
-@Table(name="MedicineEprescriptions")
+@Table(name="MedicineEprescription")
 public class MedicineEPrescription {
 
 		@Id
@@ -37,7 +37,15 @@ public class MedicineEPrescription {
 	    private EPrescription ePrescription;
 
 		public MedicineEPrescription() {
+		}
 		
+		public MedicineEPrescription(Long id, String name, Long code, Integer quantity, EPrescription ePrescription) {
+			super();
+			this.id = id;
+			this.name = name;
+			this.code = code;
+			this.quantity = quantity;
+			this.ePrescription = ePrescription;
 		}
 
 		public Long getId() {

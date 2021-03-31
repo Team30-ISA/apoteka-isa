@@ -36,6 +36,8 @@ public class Medicine {
 	private String composition;
 	@Column
 	private String recommendedIntakePerDay;
+	@Column(name = "code", unique=true, nullable = true)
+    private Long code;
 
 	@JsonIgnore
 	@ManyToMany
@@ -92,6 +94,11 @@ public class Medicine {
 		this.manufacturer = medicineDTO.getManufacturer();
 	}
 
+	public Medicine(Long id, String name, Long code) {
+        this.id = id;
+        this.name = name;
+        this.code = code;
+    }
 
 	public Long getId() {
 		return id;
@@ -150,6 +157,16 @@ public class Medicine {
 
 	public List<MedicineInPharmacy> getMedicineInpharmacy() {
 		return medicineInpharmacy;
+	}
+
+
+	public Long getCode() {
+		return code;
+	}
+
+
+	public void setCode(Long code) {
+		this.code = code;
 	}
 
 

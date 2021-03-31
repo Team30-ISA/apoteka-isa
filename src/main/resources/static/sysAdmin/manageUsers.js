@@ -11,7 +11,8 @@ new Vue({
     addressString: "",
     countryOptions: [],
     cityOptions: [],
-    selectedUserType: "ROLE_SYS_ADMIN"
+    selectedUserType: "ROLE_SYS_ADMIN",
+	user: []
   },
   methods: {
     logout() {
@@ -27,7 +28,8 @@ new Vue({
         });
     },
     async createUser() {
-      const user = {
+      try {
+		user = {
         firstName: this.firstName,
         lastName: this.lastName,
         email: this.email,
@@ -38,8 +40,22 @@ new Vue({
         stateId: this.city.country.id,
         addressString: this.addressString
       };
+	  }catch (err) {
+        console.log(err);
+        JSAlert.alert("You haven't filled in all the fields!");
+      }
       try {
-        switch (this.selectedUserType) {
+		if(this.firstName != "" && this.lastName != "" && this.email != "" && this.username != "" && this.password != "" && this.phonenumber != "" && this.addressString != ""){
+        if(isNaN(this.phonenumber) || !this.phonenumber){
+			JSAlert.alert("The phone number must consist only of digits!");
+			return;
+		}else if (this.password.length < 5) {
+			JSAlert.alert("Password must have minimal 6 characters!");
+			this.password = "";
+			return;
+		}
+			else{
+		switch (this.selectedUserType) {
           case "ROLE_SYS_ADMIN":
             await axios.post("/api/sys-admin", user, {
               headers: {
@@ -61,8 +77,9 @@ new Vue({
               }
             });
             break;
-        }
-        alert("User successfully created.");
+			}
+        
+        JSAlert.alert("User successfully created.");
         this.firstName = "";
         this.lastName = "";
         this.email = "";
@@ -71,9 +88,13 @@ new Vue({
         this.city = "";
         this.country = "";
         this.addressString = "";
+		}
+		}else{
+			JSAlert.alert("You haven't filled in all the fields!");
+		}
       } catch (err) {
         console.log(err);
-        alert("User with given email already exists.");
+        JSAlert.alert("User with given email already exists.");
       }
     }
   },

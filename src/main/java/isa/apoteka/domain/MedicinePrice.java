@@ -2,6 +2,7 @@ package isa.apoteka.domain;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -20,12 +21,18 @@ public class MedicinePrice {
 	@ManyToOne
 	private Pharmacy pharmacy;
 	
+	@Column
 	private Integer price;
 	
+	@Column
 	private Date startOfPrice;
 	
+	@Column
 	private Date endOfPrice;
 
+	@Column(name = "quantity", nullable = true)
+    private Integer quantity;
+	
 	public MedicinePrice() {
 		super();
 	}
@@ -39,6 +46,17 @@ public class MedicinePrice {
 		this.price = price;
 		this.startOfPrice = startOfPrice;
 		this.endOfPrice = endOfPrice;
+	}
+
+	public MedicinePrice(Long id, Medicine medicine, Pharmacy pharmacy, Integer price, Date startOfPrice,
+			Date endOfPrice, Integer quantity) {
+		this.id = id;
+		this.medicine = medicine;
+		this.pharmacy = pharmacy;
+		this.price = price;
+		this.startOfPrice = startOfPrice;
+		this.endOfPrice = endOfPrice;
+		this.quantity = quantity;
 	}
 
 	public Long getId() {
@@ -87,6 +105,14 @@ public class MedicinePrice {
 
 	public void setEndOfPrice(Date endOfPrice) {
 		this.endOfPrice = endOfPrice;
+	}
+
+	public Integer getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(Integer quantity) {
+		this.quantity = quantity;
 	}
 
 

@@ -213,7 +213,7 @@ insert into medicine_price(id, end_of_price, price, start_of_price, medicine_id,
 insert into medicine_price(id, end_of_price, price, start_of_price, medicine_id, pharmacy_id) values (105, '20210216 08:00:00 PM',0, '20210215 10:00:00 AM', 5, 1);
 insert into medicine_price(id, end_of_price, price, start_of_price, medicine_id, pharmacy_id) values (106, '20210216 08:00:00 PM',0, '20210215 10:00:00 AM', 7, 1);
 
-INSERT INTO supplier (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, gender, address_id, version) VALUES (26, 'strale', '$2a$10$2affw9vkXuEbQOoiKqN2XuVQ1sVZLQ6XBRAZ1IHeCT6W8.qJOXkhe', 'Strahinja', 'Nikolic', 'apotekaa.isa2021+stra@gmail.com', true, '2017-10-01 18:57:58.508-07', 1, 7, 0);
+INSERT INTO supplier (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, gender, address_id, version) VALUES (26, 'strale', '$2a$10$2affw9vkXuEbQOoiKqN2XuVQ1sVZLQ6XBRAZ1IHeCT6W8.qJOXkhe', 'Strahinja', 'Nikolic', 'apotekaa.isa2021+strale@gmail.com', true, '2017-10-01 18:57:58.508-07', 1, 7, 0);
 INSERT INTO supplier (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, gender, address_id, version) VALUES (27, 'jana', '$2a$10$2affw9vkXuEbQOoiKqN2XuVQ1sVZLQ6XBRAZ1IHeCT6W8.qJOXkhe', 'Jana', 'Nikolic', 'apotekaa.isa2021+jana@gmail.com', true, '2017-10-01 18:57:58.508-07', 1, 7, 0);
 INSERT INTO supplier (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, gender, address_id, version) VALUES (28, 'tara', '$2a$10$2affw9vkXuEbQOoiKqN2XuVQ1sVZLQ6XBRAZ1IHeCT6W8.qJOXkhe', 'Tara', 'Taric', 'supplier@gmail.com', true, '2017-10-01 18:57:58.508-07', 1, 7, 0);
 INSERT INTO supplier (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, gender, address_id, version) VALUES (29, 'mile', '$2a$10$2affw9vkXuEbQOoiKqN2XuVQ1sVZLQ6XBRAZ1IHeCT6W8.qJOXkhe', 'Mile', 'Milic', 'apotekaa.isa2021+milence@gmail.com', true, '2017-10-01 18:57:58.508-07', 1, 7, 0);
@@ -240,9 +240,9 @@ insert into medicine_quantity (id, quantity, errand_id, medicine_id) values (15,
 insert into medicine_quantity (id, quantity, errand_id, medicine_id) values (16, 7, 11, 7);
 
 insert into offer (id, price, supply_deadline, errand_id, supplier_id, is_approved) values (10, 10000, '2021-04-05 01:00:00', 10, 26, null);
-insert into offer (id, price, supply_deadline, errand_id, supplier_id, is_approved) values (11, 10000, '2021-03-25 01:00:00', 11, 27, null);
+insert into offer (id, price, supply_deadline, errand_id, supplier_id, is_approved) values (11, 10000, '2021-05-25 01:00:00', 11, 27, null);
 insert into offer (id, price, supply_deadline, errand_id, supplier_id, is_approved) values (12, 10000, '2021-04-05 01:00:00', 11, 26, false);
-insert into offer (id, price, supply_deadline, errand_id, supplier_id, is_approved) values (14, 14000, '2021-03-25 01:00:00', 10, 27, true);
+insert into offer (id, price, supply_deadline, errand_id, supplier_id, is_approved) values (14, 14000, '2021-05-25 01:00:00', 10, 27, true);
 
 insert into pharmacy_grade (id, grade, pharmacy_id, patient_id) values (1, 1, 1, 13);
 insert into pharmacy_grade (id, grade, pharmacy_id, patient_id) values (2, 3, 1, 13);
@@ -260,9 +260,30 @@ insert into notification(date, user_id, message) values ('20210210 12:00:00 AM',
 insert into notification(date, user_id, message) values ('20210210 12:00:00 AM', 10, 'Fali brufen 400mg');
 
 insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (1, 6, 26, 1);
-insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (2, 8, 26, 2);
+insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (2, 7, 26, 2);
 insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (3, 15, 26, 3);
-insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (4, 10, 26, 4);
+insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (4, 8, 26, 4);
 insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (5, 5, 26, 5);
 insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (6, 11, 26, 6);
 insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (7, 12, 26, 7);
+insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (8, 6, 27, 1);
+insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (9, 8, 27, 2);
+insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (10, 15, 27, 3);
+insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (11, 10, 27, 4);
+insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (12, 5, 27, 5);
+insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (13, 11, 27, 6);
+insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (14, 12, 27, 7);
+insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (15, 6, 28, 1);
+insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (16, 9, 28, 2);
+insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (17, 0, 28, 3);
+insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (18, 7, 28, 4);
+insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (19, 5, 28, 5);
+insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (20, 11, 28, 6);
+insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (21, 12, 28, 7);
+insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (22, 6, 29, 1);
+insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (23, 2, 29, 2);
+insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (24, 1, 29, 3);
+insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (25, 3, 29, 4);
+insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (26, 5, 29, 5);
+insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (27, 11, 29, 6);
+insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (28, 12, 29, 7);
