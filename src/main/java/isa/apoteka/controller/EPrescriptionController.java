@@ -93,7 +93,7 @@ public class EPrescriptionController {
     }
     
     private Boolean checkEprescription(ChoosenPharmacyDTO choosenPharmacy) {
-        if(choosenPharmacy.getPharmacyId() <= 0 || choosenPharmacy.getPharmacyId() != choosenPharmacy.getPharmacyId()) {
+        if(choosenPharmacy.getPharmacyId() <= 0 || !choosenPharmacy.getPharmacyId().equals(choosenPharmacy.getPharmacyId())) {
             return false;
         }
         if(choosenPharmacy.getMedications() == null) {
@@ -134,7 +134,7 @@ public class EPrescriptionController {
                     List<QRcodeInformationDTO> medicinesInQRcode = this.getMedicinesInQRcode(decodedText);
                     
                     try {
-                    if(medicinesInQRcode == null) {
+                    if(medicinesInQRcode.size() == 0) {
                         throw new IllegalArgumentException("Please try later!");
                     }
                     }catch (NullPointerException e) {	
@@ -148,9 +148,12 @@ public class EPrescriptionController {
             		}
                     EPrescriptionAllInfoDTO ePrescriptionFullInfoDTO = new EPrescriptionAllInfoDTO(pharmacyAvailability,medicinesInQRcode,code);
                     
-                    return pharmacyAvailability == null ?
-                            new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                            ResponseEntity.ok(ePrescriptionFullInfoDTO);
+                    try {
+                    	return ResponseEntity.ok(ePrescriptionFullInfoDTO);
+					} catch (Exception e) {
+						return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+					}
+                   
 
                 }
             } catch (IOException | NotFoundException e) {
