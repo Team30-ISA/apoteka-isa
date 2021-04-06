@@ -16,16 +16,7 @@ var app = new Vue({
        isAuthorized : false,
        eReceiptCode : "",
 	   patient: null,
-	   selectedFiles: [],
-	   
-	   name: "QR",
-       qrQuery: null,
-       medicineList: null,
-       imageSrc: "",
-       pharmacies: [],
-       pharmaciesOriginal: [],
-       loading: false,
-	   
+	   selectedFiles: [],  
 	   selectedFile : null
   	
 	},
@@ -100,21 +91,10 @@ var app = new Vue({
                             console.log(res);
                         });     
       },
-		
-		handleFileUpload(){
-			this.file = event.target.files[0];
-			console.log(this.file)
-		},
-		
-		Images_onFileChanged (event){
-			this.selectedFile = event.target.files[0];
-			console.log(this.selectedFile)
-		},
-
-		Images_onUpload() {
-			
-		},
-		
+	handleFileUpload(){
+		this.file = event.target.files[0];
+		console.log(this.file)
+	},		
 	gradeDecreasing: function() {
         return this.pharmacyListFilter.sort((p1,p2) => {
                     let modifier = -1;
@@ -172,62 +152,7 @@ var app = new Vue({
         this.pharmacyListFilter =  this.pharmacyListFilter.slice().sort(function(a, b){
                 return (a.city < b.city) ? 1 : -1;
             });
-     },
-	 
-		
-		searchMedication(){
-		
-			axios
-			.get('/api/pharmacy/searchMedicineInPharmacy',{
-				headers: {
-				    'Authorization': "Bearer " + localStorage.getItem('access_token')
-			  	},
-			  	params: {
-			  		id: this.selectedButtonValue,
-			  		name: this.medicationName,
-			  	}
-			})
-			.then(response => {
-				this.medication = response.data
-			})
-			
-		},
-		
-		reserveMedication(){
-			console.log(this.date)
-			
-			axios
-			.get('/api/pharmacy/updateMedicineInPharmacy',{
-				headers: {
-				    'Authorization': "Bearer " + localStorage.getItem('access_token')
-			  	},
-			  	params: {
-			  		pharmId: this.selectedButtonValue,
-			  		medId: this.medication.id,
-			  		quantity: 1,
-			  	}
-			})
-			.then(response => {
-				
-				axios
-			.get('/api/patient/updateReservedMedicine',{
-				headers: {
-				    'Authorization': "Bearer " + localStorage.getItem('access_token')
-			  	},
-			  	params: {
-			  		patId: this.patient.id,
-			  		medId: this.medication.id,
-			  		quantity: 1,
-			  		date : this.date,
-			  	}
-			})
-			.then(response => {
-				alert('Rezervisan je lek: ' + this.medication.name)
-			})
-				
-			})
-			
-		}
+     }		
 	},
 	created() {
 		

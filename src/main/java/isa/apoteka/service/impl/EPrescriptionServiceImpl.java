@@ -82,7 +82,7 @@ public class EPrescriptionServiceImpl implements EPrescriptionService {
     public Boolean proccedEReceipt(ChoosenPharmacyDTO choosenPharmacy) {
           return medicationPriceService.updateMedicineQuantityEreceipt(choosenPharmacy).equals(false) ||
                 emailService.informPatientAboutEreceipt(choosenPharmacy.getMedications()).equals(false) ||
-                save(choosenPharmacy).equals(null) ?
+                save(choosenPharmacy) == null ?
                  true : false;
     }
 

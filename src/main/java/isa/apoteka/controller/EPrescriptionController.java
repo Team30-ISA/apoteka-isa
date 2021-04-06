@@ -57,46 +57,46 @@ public class EPrescriptionController {
     @GetMapping("/all/{id}")
     @PreAuthorize("hasRole('PATIENT')")
     ResponseEntity<List<EPrescriptionDTO>> getAllEPrescriptions(@PathVariable Long id) {
-    	List<MedicineEPrescription> medicineEPrescriptions = medicineEPrescriptionRepository.findAll();
-        List<EPrescriptionDTO> ePrescriptionDTOS = new ArrayList<EPrescriptionDTO>();
-        for(MedicineEPrescription medicineEPrescription: medicineEPrescriptions) {
-            if (medicineEPrescription.getePrescription().getPatient().getId().equals(id)) {
-            	EPrescriptionDTO ePrescriptionDTO = new EPrescriptionDTO();
-                ePrescriptionDTO.setDate(medicineEPrescription.getePrescription().getDate());
-                Pharmacy pharmacy = pharmacyService.findById(medicineEPrescription.getePrescription().getPharmacyId());
-                ePrescriptionDTO.setPharmacyName(pharmacy.getName());
-                ePrescriptionDTO.setMedicineName(medicineEPrescription.getName());
-                ePrescriptionDTO.setQuantity(medicineEPrescription.getQuantity());
-                ePrescriptionDTOS.add(ePrescriptionDTO);
-            }else {
-            	System.out.println("/./");
+    	try {
+    		List<MedicineEPrescription> medicineEPrescriptions = medicineEPrescriptionRepository.findAll();
+            List<EPrescriptionDTO> ePrescriptionDTOS = new ArrayList<EPrescriptionDTO>();
+            for(MedicineEPrescription medicineEPrescription: medicineEPrescriptions) {
+                if (medicineEPrescription.getePrescription().getPatient().getId().equals(id)) {
+                	EPrescriptionDTO ePrescriptionDTO = new EPrescriptionDTO();
+                    ePrescriptionDTO.setDate(medicineEPrescription.getePrescription().getDate());
+                    Pharmacy pharmacy = pharmacyService.findById(medicineEPrescription.getePrescription().getPharmacyId());
+                    ePrescriptionDTO.setPharmacyName(pharmacy.getName());
+                    ePrescriptionDTO.setMedicineName(medicineEPrescription.getName());
+                    ePrescriptionDTO.setQuantity(medicineEPrescription.getQuantity());
+                    ePrescriptionDTOS.add(ePrescriptionDTO);
+                }
             }
-        }
-        System.out.println(ePrescriptionDTOS.size());
-        
-        return ePrescriptionDTOS == null ?
-                new ResponseEntity<>(HttpStatus.NOT_FOUND) :
-                ResponseEntity.ok(ePrescriptionDTOS);
-        
+            return ResponseEntity.ok(ePrescriptionDTOS);
+			
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
     }
     
     @PostMapping("/choosePharmacy")
     @PreAuthorize("hasRole('PATIENT')")
     ResponseEntity<String> choosePharmacyForEReceipt(@RequestBody ChoosenPharmacyDTO choosenPharmacy) {
-        if(!this.checkEprescription(choosenPharmacy)) {
+       
+    	
+    	if(!this.checkEprescription(choosenPharmacy)) {
             throw new IllegalArgumentException("Please fill in all the fields correctly!");
         }
         
-        return ePrescriptionService.proccedEReceipt(choosenPharmacy).equals(null) ?
+        return ePrescriptionService.proccedEReceipt(choosenPharmacy) == null ?
                 new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                 ResponseEntity.ok("Successfully updated!");
     }
     
     private Boolean checkEprescription(ChoosenPharmacyDTO choosenPharmacy) {
-        if(choosenPharmacy.getPharmacyId()<=0 || !choosenPharmacy.getPharmacyId().equals(choosenPharmacy.getPharmacyId())) {
+        if(choosenPharmacy.getPharmacyId() <= 0 || choosenPharmacy.getPharmacyId() != choosenPharmacy.getPharmacyId()) {
             return false;
         }
-        if(choosenPharmacy.getMedications().equals(null)) {
+        if(choosenPharmacy.getMedications() == null) {
             return false;
         }
         return true;
@@ -113,7 +113,7 @@ public class EPrescriptionController {
                 ImageIO.write(src, "png", destination);
                 String decodedText = decodeQRCode(new File("src/main/resources/qrcode/" + file.getOriginalFilename()));
                 
-                if (decodedText.equals(null)) {
+                if (decodedText == null) {
                     throw new IllegalArgumentException("Please upload correct QR code!");
                 } else {
                     String code = getEPrescriptionCode(decodedText);
@@ -121,11 +121,11 @@ public class EPrescriptionController {
                     EPrescription ePrescription = new EPrescription();
                     ePrescription = ePrescriptionService.findByCode(code);
                    
-                    if(code.equals(null)) {
+                    if(code == null) {
                     	System.out.println("Ima ga!");
                     }
                     try {
-                    if(!ePrescription.equals(null)) {
+                    if(ePrescription != null) {
                         throw new IllegalArgumentException("This eReceipt is already used!");
                     }
                     }catch(NullPointerException e) {
@@ -134,7 +134,7 @@ public class EPrescriptionController {
                     List<QRcodeInformationDTO> medicinesInQRcode = this.getMedicinesInQRcode(decodedText);
                     
                     try {
-                    if(medicinesInQRcode.equals(null)) {
+                    if(medicinesInQRcode == null) {
                         throw new IllegalArgumentException("Please try later!");
                     }
                     }catch (NullPointerException e) {	
@@ -148,7 +148,7 @@ public class EPrescriptionController {
             		}
                     EPrescriptionAllInfoDTO ePrescriptionFullInfoDTO = new EPrescriptionAllInfoDTO(pharmacyAvailability,medicinesInQRcode,code);
                     
-                    return pharmacyAvailability.equals(null) ?
+                    return pharmacyAvailability == null ?
                             new ResponseEntity<>(HttpStatus.NOT_FOUND) :
                             ResponseEntity.ok(ePrescriptionFullInfoDTO);
 
@@ -229,7 +229,7 @@ public class EPrescriptionController {
             if(medicinePrice.getMedicine().getCode().equals(medicine.getMedicationCode()) &&
                     medicinePrice.getMedicine().getName().equals(medicine.getMedicationName())  &&
                     medicinePrice.getQuantity() > medicine.getQuantity()) {
-                return medicinePrice.getPrice()*medicine.getQuantity();
+                return (double)medicinePrice.getPrice()*medicine.getQuantity();
             }
         }
         return -1;
