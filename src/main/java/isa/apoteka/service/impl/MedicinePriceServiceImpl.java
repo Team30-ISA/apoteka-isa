@@ -105,4 +105,10 @@ public class MedicinePriceServiceImpl implements MedicinePriceService{
                return null;
            }
     }
+
+
+	@Override
+	public List<MedicinePrice> findAll() {
+		return medPriceRepository.findAll();
+	}
 }

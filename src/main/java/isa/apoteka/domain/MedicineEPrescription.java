@@ -14,33 +14,29 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
-@Table(name="MedicineEprescription")
+@Table(name="medicineEprescription")
 public class MedicineEPrescription {
 
 		@Id
+		@Column(name="id")
 		@GeneratedValue(strategy = GenerationType.IDENTITY)
-		@Column(name = "id", unique = true, nullable = false)
-		private Long id;
-
-	    @Column(name = "nameMedicine")
-	    private String name;
-
-	    @Column(name = "Code")
+		Long id;
+	    
+		private String name;
+	    
 	    private Long code;
-
-	    @Column(name = "Quantity")
+	    
 	    private Integer quantity;
 
-	    @JsonBackReference(value="EPrescriptionPatients")
+	    @JsonBackReference(value="ePrescriptionMedicine")
 	    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
-	    @JoinColumn(name = "ePrescriptionMedication", referencedColumnName = "id", unique = false)
+	    @JoinColumn(name = "ePrescriptionMedicine", referencedColumnName = "id", unique = false)
 	    private EPrescription ePrescription;
 
 		public MedicineEPrescription() {
 		}
 		
 		public MedicineEPrescription(Long id, String name, Long code, Integer quantity, EPrescription ePrescription) {
-			super();
 			this.id = id;
 			this.name = name;
 			this.code = code;

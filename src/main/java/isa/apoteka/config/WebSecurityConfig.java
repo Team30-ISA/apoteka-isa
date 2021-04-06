@@ -82,6 +82,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 							"/api/medicine/*",
 							"/api/loyalty/**",
 							"/api/errand/findAllErrands"
+							,"/api/eprescription/uploadFile/*"
 					).permitAll()
 				
 				// za svaki drugi zahtev korisnik mora biti autentifikovan
@@ -105,11 +106,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	public void configure(WebSecurity web) throws Exception {
 		// TokenAuthenticationFilter ce ignorisati sve ispod navedene putanje
-		web.ignoring().antMatchers(HttpMethod.POST, "/auth/login", "/auth/logout", "/auth/signup", "/auth/verify", "api/errand/findAllErrands");
-		web.ignoring().antMatchers(HttpMethod.GET, "/", "/webjars/**", "/favicon.ico", "/**/*.png", "/api/pharmacy/findById", "/api/medicine/allMedicine/*", "/api/pharmacy/findPharmacyByName", "/api/medicine/getAll", "/api/medicine/searchMedicinesByName", "/api/pharmacy/findAllPharmsInPharmacy", "/api/pharmacy/findAllDermsInPharmacy","/api/medicine/findAllMedicineAvailableInPharmacy",
+		web.ignoring().antMatchers(HttpMethod.POST, "/api/eprescription/uploadFile/*", "/auth/login", "/auth/logout", "/auth/signup", "/auth/verify", "api/errand/findAllErrands");
+		web.ignoring().antMatchers(HttpMethod.GET, "/", "/webjars/**", "/favicon.ico", "/**/*.png","/api/pharmacy/findById", "/api/medicine/allMedicine/*", "/api/pharmacy/findPharmacyByName", "/api/medicine/getAll", "/api/medicine/searchMedicinesByName", "/api/pharmacy/findAllPharmsInPharmacy", "/api/pharmacy/findAllDermsInPharmacy","/api/medicine/findAllMedicineAvailableInPharmacy",
 				"/**/*.css", "/**/*.js", "/**/*.woff2",  "/**/*.woff", "/**/*.html", "/*.html", "/img/zena.jpg", "/img/musko.jpg", "/img/medication-safety-and-kids.jpg");
-	}
-	
+	} 
 
 
 }

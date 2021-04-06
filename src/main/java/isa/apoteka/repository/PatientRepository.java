@@ -49,4 +49,6 @@ public interface PatientRepository extends JpaRepository<Patient, Long> {
     @Query("from Patient p where LOWER(p.firstName) like %:firstName% and LOWER(p.lastName) like %:lastName%")
 	List<Patient> findAllByName(String firstName, String lastName);
     
+    
+    
 }

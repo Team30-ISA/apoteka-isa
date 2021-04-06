@@ -36,7 +36,7 @@ public class EPrescription {
     @JoinColumn(name = "patientId", referencedColumnName = "id", unique = false)
     private Patient patient;
     
-    @JsonManagedReference(value="EPrescriptionPatients")
+    @JsonManagedReference(value="EPrescriptionMedicine")
     @OneToMany(mappedBy = "ePrescription", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<MedicineEPrescription> medications = new HashSet<MedicineEPrescription>();
     

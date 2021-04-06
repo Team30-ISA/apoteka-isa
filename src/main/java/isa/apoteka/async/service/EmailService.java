@@ -176,13 +176,13 @@ public class EmailService {
             if(env.getProperty("spring.mail.username") == null) {
     			return false;
     		}
-            mail.setSubject("EReceipt!");
+            mail.setSubject("EPrescription");
             mail.setFrom(env.getProperty("spring.mail.username"));
             StringBuilder text = new StringBuilder();
             for (QRcodeInformationDTO medication:medications) {
                 text.append(medication.getMedicationName() + ", quantity: " + medication.getQuantity() + "\n");
             }
-            mail.setText("Thank you for buying medications with eReceipt!\n\nList of medications:\n" +text.toString());
+            mail.setText("Thank you for buying medicines with ePrescription!\n\nList of medicines:\n" +text.toString());
 
             javaMailSender.send(mail);
             return true;

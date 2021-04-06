@@ -2,12 +2,12 @@ package isa.apoteka.dto;
 
 public class QRcodeInformationDTO {
     private String medicationName;
-    private Long medicationCode;
-    private int quantity;
+    private long medicationCode;
+    private Integer quantity;
 
     public QRcodeInformationDTO() {}
 
-    public QRcodeInformationDTO(String medicationName, long medicationCode, int quantity) {
+    public QRcodeInformationDTO(String medicationName, long medicationCode, Integer quantity) {
         this.medicationName = medicationName;
         this.medicationCode = medicationCode;
         this.quantity = quantity;
@@ -29,11 +29,11 @@ public class QRcodeInformationDTO {
         this.medicationCode = medicationCode;
     }
 
-    public int getQuantity() {
+    public Integer getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
 }
