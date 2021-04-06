@@ -15,30 +15,24 @@ import isa.apoteka.dto.ChoosenPharmacyDTO;
 import isa.apoteka.dto.QRcodeInformationDTO;
 import isa.apoteka.repository.EPrescriptionRepository;
 import isa.apoteka.repository.MedicineEPrescriptionRepository;
-import isa.apoteka.repository.PatientRepository;
 import isa.apoteka.service.EPrescriptionService;
 import isa.apoteka.service.MedicinePriceService;
-import isa.apoteka.service.PatientService;
 
 @Service
 public class EPrescriptionServiceImpl implements EPrescriptionService {
 	
     private EPrescriptionRepository ePrescriptionRepository;
-    private PatientRepository patientRepository;
     private MedicineEPrescriptionRepository medicationEPrescriptionRepository;
     private MedicinePriceService medicationPriceService;
-    private PatientService patientService;
     private EmailService emailService;
    
     @Autowired
 	public EPrescriptionServiceImpl(EPrescriptionRepository ePrescriptionRepository,
-			PatientRepository patientRepository, MedicineEPrescriptionRepository medicationEPrescriptionRepository,
-			MedicinePriceService medicationPriceService, PatientService patientService, EmailService emailService) {
+			MedicineEPrescriptionRepository medicationEPrescriptionRepository,
+			MedicinePriceService medicationPriceService, EmailService emailService) {
 		this.ePrescriptionRepository = ePrescriptionRepository;
-		this.patientRepository = patientRepository;
 		this.medicationEPrescriptionRepository = medicationEPrescriptionRepository;
 		this.medicationPriceService = medicationPriceService;
-		this.patientService = patientService;
 		this.emailService = emailService;
 	}
 

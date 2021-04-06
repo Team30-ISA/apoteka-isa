@@ -93,7 +93,7 @@ public class EPrescriptionController {
     }
     
     private Boolean checkEprescription(ChoosenPharmacyDTO choosenPharmacy) {
-        if(choosenPharmacy.getPharmacyId() <= 0 || !choosenPharmacy.getPharmacyId().equals(choosenPharmacy.getPharmacyId())) {
+        if(choosenPharmacy.getPharmacyId() <= 0) {
             return false;
         }
         if(choosenPharmacy.getMedications() == null) {
