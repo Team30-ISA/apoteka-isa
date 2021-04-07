@@ -94,19 +94,22 @@ public class OfferServiceImpl implements OfferService{
 			if(existingOffer.getIsApproved() != null && existingOffer.getIsApproved())
 				throw new Exception("Can not modify approved offer");
 			existingOffer.setPrice(offerDTO.getPrice());
+			existingOffer.setSupplyDeadline(offerDTO.getSupplyDeadline());
 			offerRepository.save(existingOffer);
 			return;
 		}
 
 		List<SupplierMedicine> supplierMedicines = supplierMedicineRepository.findAllBySupplierId(supplier.getId());
 		Map<Long, Integer> medicineQuantity = new HashMap<Long, Integer>();
-		for(SupplierMedicine medicine : supplierMedicines)
+		for(SupplierMedicine medicine : supplierMedicines) 
 			medicineQuantity.put(medicine.getId(), medicine.getQuantity());
-
-		for(MedicineQuantity medicine : errand.getMedicineForOrder())
+			
+		
+		/*for(MedicineQuantity medicine : errand.getMedicineForOrder()) {
 			if (medicineQuantity.get(medicine.getMedicine().getId()) < medicine.getQuantity())
 				throw new Exception("Not enought quantity");
-
+				
+		}*/
 
 		Offer offer = new Offer(errand, supplier, offerDTO.getPrice(), offerDTO.getSupplyDeadline());
 		offerRepository.save(offer);

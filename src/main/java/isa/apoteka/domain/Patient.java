@@ -2,6 +2,7 @@ package isa.apoteka.domain;
 
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
@@ -28,6 +29,9 @@ public class Patient extends User{
 	@ManyToMany
 	private List<Medicine> allergies;
 
+	@Column(name = "loyaltyCategory", nullable = true)
+	private CategoryType category;
+	 
 	public List<Pharmacy> getPharmacies() {
 		return pharmacies;
 	}
@@ -50,4 +54,12 @@ public class Patient extends User{
     public Patient(UserRequest userRequest) {
         super(userRequest);
     }
+
+	public CategoryType getCategory() {
+		return category;
+	}
+
+	public void setCategory(CategoryType category) {
+		this.category = category;
+	}
 }

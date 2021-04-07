@@ -38,7 +38,6 @@ var app = new Vue({
     chData() {
       if (this.changeData == true) {
         this.changeData = false;
-        //axios za izmenu podataka
         const user = {
           ...this.user,
           address: {
@@ -69,14 +68,7 @@ var app = new Vue({
           .then((response) => {
             localStorage.setItem("user", JSON.stringify(user));
             this.user = user;
-            alert(
-              "Novo ime: " +
-                this.user.firstName +
-                "\nNovo prezime: " +
-                this.user.lastName +
-                "\nNov email: " +
-                this.user.email
-            );
+            JSAlert.alert("You have successfully changed your details.");
           });
       } else {
         this.changeData = true;

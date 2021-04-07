@@ -14,6 +14,12 @@ var app = new Vue({
         const { data } = await axios.get(
           `/api/medicine/allMedicine/${this.medicineName}`
         );
+		if(data.length === 0)
+		{
+			JSAlert.alert("Medicine doesn't exist!")
+			this.medicineName = ""
+			return
+		}
         this.allMedicines = data;
         this.medicines = data.filter((m) => m.pharmacy.grade >= this.minGrade);
       }

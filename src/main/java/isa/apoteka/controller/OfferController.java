@@ -2,6 +2,9 @@ package isa.apoteka.controller;
 
 import isa.apoteka.dto.OfferDTO;
 import isa.apoteka.service.ErrandService;
+
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,17 +15,15 @@ import isa.apoteka.service.OfferService;
 @RestController
 @RequestMapping(value = "api/offer")
 public class OfferController {
-
 	private OfferService offerService;
-
-	@Autowired
 	private ErrandService errandService;
 
 	@Autowired
-	public OfferController(OfferService offerService) {
+	public OfferController(OfferService offerService, ErrandService errandService) {
+		super();
 		this.offerService = offerService;
+		this.errandService = errandService;
 	}
-	
 	
 	@GetMapping("/approveOffer")
 	@PreAuthorize("hasRole('ADMIN')")	
@@ -38,7 +39,7 @@ public class OfferController {
 
 	@PostMapping
 	@PreAuthorize("hasRole('SUPL')")
-	public ResponseEntity<?> createOffer(@RequestBody OfferDTO offerDTO){
+	public ResponseEntity<?> createOffer(@RequestBody @Valid OfferDTO offerDTO){
 		try {
 			offerService.createOffer(offerDTO);
 			return new ResponseEntity<>(HttpStatus.CREATED);

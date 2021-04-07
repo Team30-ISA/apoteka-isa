@@ -64,19 +64,23 @@ public class PromotionController {
 
     @PostMapping("/subscribe")
     @PreAuthorize("hasRole('PATIENT')")
-    public ResponseEntity<?> subscribe(@RequestBody Long pharmacyId) {
-        try {
-            promotionService.subscribe(pharmacyId);
+    public ResponseEntity<Boolean> subscribe(@RequestBody Long pharmacyId) throws Exception {
+    	try {
+    		promotionService.subscribe(pharmacyId);
             return new ResponseEntity<>(true, HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
         }
     }
 
     @PostMapping("/unsubscribe")
     @PreAuthorize("hasRole('PATIENT')")
-    public Boolean usubscribe(@RequestBody Long pharmacyId) {
-        promotionService.unsubscribe(pharmacyId);
-        return true;
+    public ResponseEntity<Boolean> usubscribe(@RequestBody Long pharmacyId) throws Exception {
+    	try {
+    		promotionService.unsubscribe(pharmacyId);
+            return new ResponseEntity<>(true, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
+        }
     }
 }

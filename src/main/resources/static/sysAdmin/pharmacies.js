@@ -18,7 +18,8 @@ new Vue({
     country: "",
     city: "",
     countryOptions: [],
-    cityOptions: []
+    cityOptions: [],
+	user: []
   },
   methods: {
     logout() {
@@ -35,16 +36,22 @@ new Vue({
     },
     async submit() {
       try {
+		if(this.name != "" && this.address != "" && this.city != ""){
         await axios.post(
           "/api/pharmacy",
-          { name: this.name, address: this.address, city: this.city },
+          {
+		  name: this.name, 
+		  address: this.address, 
+		  city: this.city 
+		  },
           {
             headers: {
               Authorization: "Bearer " + localStorage.getItem("access_token")
             }
           }
         );
-        alert("Successfully added new pharmacy");
+        JSAlert.alert("Successfully added new pharmacy");
+		
         this.showAddPharmacyForm = false;
         const { data } = await axios.get("/api/pharmacy/findAll", {
           headers: {
@@ -52,15 +59,44 @@ new Vue({
           }
         });
         this.pharmacies = data;
+		} else{
+			JSAlert.alert("You haven't filled in all the fields!");
+		}
       } catch (err) {
-        alert("Pharmacy with given name or address already exist");
+        JSAlert.alert("Pharmacy with given name or address already exist!");
       }
     },
     async createPharmacyAdmin() {
+	  try {
+		user = {
+        firstName: this.firstName,
+            lastName: this.lastName,
+            email: this.email,
+            username: this.email,
+            password: this.password,
+            phonenumber: this.phonenumber,
+            cityId: this.city.id,
+            stateId: this.city.country.id,
+            addressString: this.addressString,
+            pharmacyId: this.pharmacySelected
+      };
+	  }catch (err) {
+        console.log(err);
+        JSAlert.alert("You haven't filled in all the fields!");
+      }
       try {
+		if(this.firstName != "" && this.lastName != "" && this.email != "" && this.username != "" && this.password != "" && this.phonenumber != "" && this.addressString != ""){
+        if(isNaN(this.phonenumber) || !this.phonenumber){
+			JSAlert.alert("The phone number must consist only of digits!");
+			return;
+		}else if (this.password.length < 5) {
+			JSAlert.alert("Password must have minimal 6 characters!");
+			this.password = "";
+			return;
+		} else{
         await axios.post(
-          "/api/pharmacyAdmin",
-          {
+          "/api/pharmacyAdmin", 
+		  {
             firstName: this.firstName,
             lastName: this.lastName,
             email: this.email,
@@ -78,7 +114,7 @@ new Vue({
             }
           }
         );
-
+ 
         const { data } = await axios.get(
           `/api/pharmacy/${this.pharmacySelected}/admins`,
           {
@@ -88,7 +124,7 @@ new Vue({
           }
         );
         this.pharmacyAdmins = data;
-        alert("Successfully added new pharmacy admin");
+        JSAlert.alert("Successfully added new pharmacy admin");
         this.showAddPharmacyAdminForm = false;
         this.firstName = "";
         this.lastName = "";
@@ -98,8 +134,12 @@ new Vue({
         this.city = "";
         this.country = "";
         this.addressString = "";
+		}
+		}else{
+			JSAlert.alert("You haven't filled in all the fields!");
+		}
       } catch (err) {
-        alert("Pharmacy admin with given email already exists");
+        JSAlert.alert("Pharmacy admin with given email already exists!");
       }
     }
   },

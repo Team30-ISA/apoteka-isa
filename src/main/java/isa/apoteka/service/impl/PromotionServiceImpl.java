@@ -1,12 +1,10 @@
 package isa.apoteka.service.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import isa.apoteka.domain.Pharmacy;
 import isa.apoteka.dto.PharmacyDTO;
-import isa.apoteka.repository.PatientRepository;
 import isa.apoteka.repository.PharmacyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -27,9 +25,6 @@ public class PromotionServiceImpl implements PromotionService{
 	private PatientService patientService;
 	private EmailService emailService;
 	private PromotionRepository promotionRepository;
-
-	@Autowired
-	private PatientRepository patientRepository;
 
 	@Autowired 
 	public PromotionServiceImpl(PatientService patientService, EmailService emailService, PromotionRepository promotionRepository) {
@@ -79,9 +74,11 @@ public class PromotionServiceImpl implements PromotionService{
 
 	@Override
 	@Transactional(readOnly = false)
-	public void unsubscribe(Long pharmacyId) {
+	public void unsubscribe(Long pharmacyId) throws Exception {
 		Patient patient = (Patient) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		Pharmacy pharmacy = pharmacyRepository.getOne(pharmacyId);
+		if(pharmacy.getPatients().stream().filter(p -> p.getId().equals(patient.getId())).collect(Collectors.toList()).size() == 0)
+			throw new Exception("Already unsubscribed");
 		Patient dbPatient = patientService.findById(patient.getId());
 		pharmacy.getPatients().remove(dbPatient);
 		pharmacyRepository.save(pharmacy);
@@ -93,4 +90,5 @@ public class PromotionServiceImpl implements PromotionService{
 		Patient dbPatient = patientService.findById(patient.getId());
 		return dbPatient.getPharmacies().stream().map(p -> new PharmacyDTO(p)).collect(Collectors.toList());
 	}
+
 }

@@ -168,6 +168,7 @@ public class MedicineServiceImpl implements MedicineService {
 		DrugType drugType = drugTypeRepository.getOne(medicineDTO.getType());
 		List<Medicine> substitutes = medicineRepository.findAllById(medicineDTO.getSubstitutes());
 		Medicine medicine = new Medicine(medicineDTO, substitutes, drugType, drugForm);
+		
 		medicineRepository.save(medicine);
 		return medicine;
 	}

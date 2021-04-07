@@ -13,8 +13,12 @@ public interface ErrandRepository extends JpaRepository<Errand, Long>{
 
 	@Query("from Errand e join e.pharmacy ep where ep.id=:id")
 	List<Errand> findAllByPharmacy(Long id);
-
+	
+	
 	@Modifying
 	@Query(value="insert into errand (creation_time, deadline, pharmacy_id, finished, admin_id) values (:date,:startDate,:id, :b, :id2)", nativeQuery = true)
 	void saveNewErrand(boolean b, Date date, Date startDate, Long id, Long id2);
+
+	
+
 }

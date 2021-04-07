@@ -36,12 +36,27 @@ public class EPrescription {
     @JoinColumn(name = "patientId", referencedColumnName = "id", unique = false)
     private Patient patient;
     
-    @JsonManagedReference(value="EPrescriptionPatients")
+    @JsonManagedReference(value="EPrescriptionMedicine")
     @OneToMany(mappedBy = "ePrescription", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<MedicineEPrescription> medications = new HashSet<MedicineEPrescription>();
+    
+    @Column(name = "pharmacyId", nullable = false)
+    private Long pharmacyId;
 
     @Column(name = "Date")
     private Date date;
+
+    public EPrescription() {}
+    
+	public EPrescription(Long id, String code, Patient patient, Set<MedicineEPrescription> medications, Long pharmacyId,
+			Date date) {
+		this.id = id;
+		this.code = code;
+		this.patient = patient;
+		this.medications = medications;
+		this.pharmacyId = pharmacyId;
+		this.date = date;
+	}
 
 	public Long getId() {
 		return id;
@@ -81,6 +96,14 @@ public class EPrescription {
 
 	public void setDate(Date date) {
 		this.date = date;
+	}
+
+	public Long getPharmacyId() {
+		return pharmacyId;
+	}
+
+	public void setPharmacyId(Long pharmacyId) {
+		this.pharmacyId = pharmacyId;
 	}
     
 	

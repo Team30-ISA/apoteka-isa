@@ -24,6 +24,5 @@ public interface PatientService {
 	Boolean hasCounselings(Long patientId, Date start, Date end);
 	Boolean hasExaminations(Long patientId, Date start, Date end);
 	List<PatientDTO> findAllByName(String firstName, String lastName);
-
     ComplaintsListsDTO findAllEntitiesToComplain();
 }
