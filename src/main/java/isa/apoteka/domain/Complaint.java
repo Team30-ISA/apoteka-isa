@@ -14,6 +14,10 @@ public class Complaint {
     private String message;
     private ComplaintUser complaintUser;
     private Boolean respond = false;
+    
+    @Version
+    @Column(name = "version", nullable = true)
+    private Long version;
 
     @ManyToOne
     private Patient patient;
@@ -82,5 +86,13 @@ public class Complaint {
 
     public void setRespond(Boolean respond) {
         this.respond = respond;
+    }
+    
+    public void setVersion(Long version) {
+        this.version = version;
+    }
+
+    public Long getVersion() {
+        return version;
     }
 }

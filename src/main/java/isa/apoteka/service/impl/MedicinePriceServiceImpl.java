@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.annotation.Propagation;
 
 import isa.apoteka.domain.MedicinePrice;
 import isa.apoteka.domain.PharmacyAdmin;
@@ -70,9 +71,9 @@ public class MedicinePriceServiceImpl implements MedicinePriceService{
 		return mp.getPrice();
 	}
 	
-	@Transactional(readOnly = false)
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public Boolean updateMedicineQuantityEreceipt(ChoosenPharmacyDTO choosenPharmacy) {
-        int points = 0;
+        
         try {
             List<MedicinePrice> pharmacyMedications = findByPharmacy(choosenPharmacy.getPharmacyId());
             for (QRcodeInformationDTO medication : choosenPharmacy.getMedications()) {
@@ -85,8 +86,6 @@ public class MedicinePriceServiceImpl implements MedicinePriceService{
                     }
                 }
             }
-
-           // loyaltyProgramService.updatePatientsLoyaltyPoints(points);
             return true;
         }
         catch(Exception e) {return false;}

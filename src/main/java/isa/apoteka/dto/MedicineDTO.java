@@ -23,15 +23,6 @@ public class MedicineDTO {
 	private Date startOfPrice;
 	private Date endOfPrice;
 
-	/*public PharmacyDTO(Long id, String name, String address) {
-		this.name = name;
-		this.id = id;
-		this.address = address;
-	}
-	
-	public PharmacyDTO(Pharmacy pharmacy) {
-		this(pharmacy.getId(), pharmacy.getName(), pharmacy.getAddress());
-	}*/
 	
 	public MedicineDTO() {
 		super();
@@ -51,6 +42,15 @@ public class MedicineDTO {
 		this.name = medicine.getName();
 		this.quantity = quantity;
 		this.price = price;
+	}
+	
+	public MedicineDTO(Medicine medicine, int quantity, int price, DrugType type, DrugForm form) {
+		this.id = medicine.getId();
+		this.name = medicine.getName();
+		this.quantity = quantity;
+		this.price = price;
+		this.type = type;
+		this.form = form;
 	}
 
 	public Long getId() {

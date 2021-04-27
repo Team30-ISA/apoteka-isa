@@ -243,12 +243,12 @@ insert into errand (id, creation_time, deadline, pharmacy_id, finished, admin_id
 insert into errand (id, creation_time, deadline, pharmacy_id, finished, admin_id) values (12, '2021-03-10 10:38:09.147', '2021-06-29 20:01:00', 3, false,10);
 insert into errand (id, creation_time, deadline, pharmacy_id, finished, admin_id) values (13, '2021-03-10 10:38:09.147', '2021-06-29 20:01:00', 1, false,10);
 
-insert into medicine_quantity (id, quantity, errand_id, medicine_id) values (17, 1, 12, 2);
-insert into medicine_quantity (id, quantity, errand_id, medicine_id) values (18, 2, 12, 3);
-insert into medicine_quantity (id, quantity, errand_id, medicine_id) values (19, 1, 13, 2);
-insert into medicine_quantity (id, quantity, errand_id, medicine_id) values (20, 2, 13, 4);
+insert into medicine_quantity (id, quantity, errand_id, medicine_id) values (17, 5, 12, 2);
+insert into medicine_quantity (id, quantity, errand_id, medicine_id) values (18, 6, 12, 3);
+insert into medicine_quantity (id, quantity, errand_id, medicine_id) values (19, 7, 13, 2);
+insert into medicine_quantity (id, quantity, errand_id, medicine_id) values (20, 8, 13, 4);
 insert into medicine_quantity (id, quantity, errand_id, medicine_id) values (10, 5, 10, 2);
-insert into medicine_quantity (id, quantity, errand_id, medicine_id) values (12, 7, 10, 5);
+insert into medicine_quantity (id, quantity, errand_id, medicine_id) values (12, 7, 10, 1);
 insert into medicine_quantity (id, quantity, errand_id, medicine_id) values (13, 3, 10, 7);
 insert into medicine_quantity (id, quantity, errand_id, medicine_id) values (14, 5, 11, 2);   
 insert into medicine_quantity (id, quantity, errand_id, medicine_id) values (15, 7, 11, 5);
@@ -274,31 +274,34 @@ insert into pharmacist_holiday(start_date, end_date, pharmacist_id, status) valu
 insert into notification(date, user_id, message) values ('20210210 12:00:00 AM', 10, 'Nema vise bensedina');
 insert into notification(date, user_id, message) values ('20210210 12:00:00 AM', 10, 'Fali brufen 400mg');
 
-insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (1, 6, 26, 1);
+insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (1, 9, 26, 1);
 insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (2, 7, 26, 2);
-insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (3, 15, 26, 3);
-insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (4, 8, 26, 4);
-insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (5, 5, 26, 5);
+insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (3, 5, 26, 3);
+insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (4, 4, 26, 4);
+insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (5, 11, 26, 5);
 insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (6, 11, 26, 6);
-insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (7, 12, 26, 7);
+insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (7, 3, 26, 7);
+
 insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (8, 6, 27, 1);
 insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (9, 8, 27, 2);
-insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (10, 15, 27, 3);
-insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (11, 10, 27, 4);
-insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (12, 5, 27, 5);
+insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (10, 5, 27, 3);
+insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (11, 7, 27, 4);
+insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (12, 10, 27, 5);
 insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (13, 11, 27, 6);
 insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (14, 12, 27, 7);
+
 insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (15, 6, 28, 1);
 insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (16, 9, 28, 2);
-insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (17, 0, 28, 3);
+insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (17, 10, 28, 3);
 insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (18, 7, 28, 4);
 insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (19, 5, 28, 5);
 insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (20, 11, 28, 6);
 insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (21, 12, 28, 7);
+
 insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (22, 6, 29, 1);
-insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (23, 2, 29, 2);
+insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (23, 8, 29, 2);
 insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (24, 1, 29, 3);
-insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (25, 3, 29, 4);
+insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (25, 10, 29, 4);
 insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (26, 5, 29, 5);
 insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (27, 11, 29, 6);
 insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (28, 12, 29, 7);

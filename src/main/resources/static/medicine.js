@@ -6,7 +6,8 @@ var app = new Vue({
     spec: null,
     showSpec: false,
     minGrade: 0,
-    allMedicines: []
+    allMedicines: [],
+	type: ''
   },
   methods: {
     async search() {
@@ -21,7 +22,15 @@ var app = new Vue({
 			return
 		}
         this.allMedicines = data;
+		for (var key in this.allMedicines) {
+			  console.log(key, this.allMedicines[key].medicine.name);
+			  console.log(key, this.allMedicines[key].medicine.form.name);
+			  console.log(key, this.allMedicines[key].medicine.type.name);
+			  
+		}
+		
         this.medicines = data.filter((m) => m.pharmacy.grade >= this.minGrade);
+		this.medicines = data.filter((m) => m.medicine.type.name >= this.type);
       }
     },
     async getSpec(id) {
@@ -39,6 +48,13 @@ var app = new Vue({
       if (this.allMedicines)
         this.medicines = this.allMedicines.filter(
           (m) => m.pharmacy.grade >= this.minGrade
+        );
+    },
+	
+	type() {
+	  if (this.allMedicines)
+        this.medicines = this.allMedicines.filter(
+          (m) => m.medicine.type.name >= this.type
         );
     }
   }

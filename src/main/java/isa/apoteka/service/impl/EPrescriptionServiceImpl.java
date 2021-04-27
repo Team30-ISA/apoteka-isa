@@ -5,6 +5,7 @@ import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import isa.apoteka.async.service.EmailService;
@@ -47,6 +48,7 @@ public class EPrescriptionServiceImpl implements EPrescriptionService {
 	}
 
 	@Override
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
 	public EPrescription save(ChoosenPharmacyDTO choosenPharmacy) {
 		try {
 			Patient patient = (Patient) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -55,7 +57,7 @@ public class EPrescriptionServiceImpl implements EPrescriptionService {
             ePrescription.setDate(new Date());
             ePrescription.setCode(choosenPharmacy.getCode());
             ePrescription.setPharmacyId(choosenPharmacy.getPharmacyId());
-            EPrescription ePrescription1= ePrescriptionRepository.save(ePrescription);
+            EPrescription ePrescription1 = ePrescriptionRepository.save(ePrescription);
             List<QRcodeInformationDTO> qRcodeInformationDTOS = choosenPharmacy.getMedications();
             for (QRcodeInformationDTO medication : qRcodeInformationDTOS) {
                 MedicineEPrescription medicationEPrescription = new MedicineEPrescription();

@@ -223,7 +223,7 @@ public class MedicineServiceImpl implements MedicineService {
 		for(MedicineInPharmacy medicine : medicineInPharmacies) {
 			for(MedicinePrice medicinePrice : medicinePrices) {
 				if(medicine.getMedicine().getId().equals(medicinePrice.getMedicine().getId()) && medicine.getPharmacy().getId().equals(medicinePrice.getPharmacy().getId())) {
-					medicinePreviewDTOList.add(new MedicinePreviewDTO(medicine.getMedicine(), medicine.getPharmacy(), medicine.getQuantity(), medicinePrice.getPrice()));
+					medicinePreviewDTOList.add(new MedicinePreviewDTO(medicine.getMedicine(), medicine.getPharmacy(), medicine.getQuantity(), medicinePrice.getPrice(), medicine.getMedicine().getType(), medicine.getMedicine().getForm()));
 					continue;
 				}
 			}

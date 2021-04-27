@@ -10,7 +10,6 @@ import isa.apoteka.dto.OfferPreviewDTO;
 import isa.apoteka.repository.ErrandRepository;
 import isa.apoteka.repository.SupplierMedicineRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,9 +19,7 @@ import isa.apoteka.domain.Errand;
 import isa.apoteka.domain.Offer;
 import isa.apoteka.domain.PharmacyAdmin;
 import isa.apoteka.dto.SupplierDTO;
-import isa.apoteka.repository.ErrandRepository;
 import isa.apoteka.repository.OfferRepository;
-import isa.apoteka.service.ErrandService;
 import isa.apoteka.service.MedicineQuantityService;
 import isa.apoteka.service.OfferService;
 
@@ -83,7 +80,7 @@ public class OfferServiceImpl implements OfferService{
 	@Transactional(readOnly = false)
 	public void createOffer(OfferDTO offerDTO) throws Exception {
 		Supplier supplier = (Supplier) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		Errand errand = errandRepository.getOne(offerDTO.getErrandId());
+		Errand errand = errandRepository.findErrandById(offerDTO.getErrandId());
 
 		if(errand.getDeadline().before(new Date()))
 			throw new Exception("Deadline passed");
@@ -103,13 +100,6 @@ public class OfferServiceImpl implements OfferService{
 		Map<Long, Integer> medicineQuantity = new HashMap<Long, Integer>();
 		for(SupplierMedicine medicine : supplierMedicines) 
 			medicineQuantity.put(medicine.getId(), medicine.getQuantity());
-			
-		
-		/*for(MedicineQuantity medicine : errand.getMedicineForOrder()) {
-			if (medicineQuantity.get(medicine.getMedicine().getId()) < medicine.getQuantity())
-				throw new Exception("Not enought quantity");
-				
-		}*/
 
 		Offer offer = new Offer(errand, supplier, offerDTO.getPrice(), offerDTO.getSupplyDeadline());
 		offerRepository.save(offer);
