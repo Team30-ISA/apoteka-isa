@@ -165,6 +165,8 @@
                             <span style="width: 14.28%;">Grade</span>
                             <span style="width: 14.28%;">Price</span>
                             <span style="width: 14.28%;">Quantity</span>
+							<span style="width: 14.28%;">Medicine type</span>
+							<span style="width: 14.28%;">Medicine form</span>
                             <span style="width: 14.28%;">Medicine name</span>
                             <span style="width: 14.28%;"></span>
                         </li>
@@ -175,6 +177,8 @@
                             <span style="width: 14.28%;">{{medicine.pharmacy.grade}}</span>
                             <span style="width: 14.28%;">{{medicine.medicine.price}}</span>
                             <span style="width: 14.28%;">{{medicine.medicine.quantity}}</span>
+							<span style="width: 14.28%;">{{medicine.medicine.type.name}}</span>
+							<span style="width: 14.28%;">{{medicine.medicine.form.name}}</span>
                             <span style="width: 14.28%;">{{medicine.medicine.name}}</span>
                             <span style="width: 14.28%;"><button class="btn" @click="getSpec(medicine.medicine.id)">Spec</button></span>
                         </li>

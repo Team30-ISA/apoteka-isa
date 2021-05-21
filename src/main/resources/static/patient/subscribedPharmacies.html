@@ -101,7 +101,7 @@
 
 				<nav id="nav-menu-container">
 					<ul class="nav-menu">
-						<li><a href="patientHomepage.html">Home</a></li>
+						<li class="menu-active"><a href="patientHomepage.html">Home</a></li>
 						<li><a href="#about">About Us</a></li>
 						<li class="menu-has-children"><a href="#">Tools</a>
 							<ul>
@@ -110,15 +110,15 @@
 								<li><a href="complaint.html">Complaints</a></li>
 								<li><a href="subscribedPharmacies.html">Promotion subscriptions</a></li>
 								<li><a href="eprescription.html">EPrescription</a></li>
-							</ul>
-						</li>
-						<li class="menu-has-children"><a href="#"><i class="icon fa-cog"></i></a>
+							</ul></li>
+						<li class="menu-has-children"><a href="#">{{patient.firstName}}
+								{{patient.lastName}}</a>
 							<ul>
 								<li><a href="profile.html"><i class="icon fa-user"></i>&nbsp&nbsp&nbspProfile</a></li>
 								<li @click="logout"><a href="#"><i
 										class="icon fa-sign-out"></i>&nbsp&nbspLog out</a></li>
-							</ul>
-						</li>
+							</ul></li>
+						<li><a href="#contact">Contact</a></li>
 					</ul>
 				</nav>
 				<!-- #nav-menu-container -->

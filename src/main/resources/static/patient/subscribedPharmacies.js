@@ -1,6 +1,7 @@
 var app = new Vue({
   el: "#promotions",
   data: {
+	patient: null,
     pharmacies: [],
 	pharmaciesSub: []
   },
@@ -118,9 +119,20 @@ var app = new Vue({
 				this.pharmaciesSub = response.data
 				console.log(this.pharmaciesSub)
 			})
+			
+		axios
+		.get('/api/patient/getLoggedUser',{
+			  headers: {
+				    'Authorization': "Bearer " + localStorage.getItem('access_token')
+			  }
+	     })
+	    .then(response => {
+	     	this.patient = response.data;
+		})	
 	  
     } catch (err) {
       console.log(err);
     }
+	
   }
 });

@@ -1,6 +1,7 @@
 new Vue({
   el: "#defineLoyalty",
   data: {
+	admin: null,
     type: "",
 	counselingPoints: "",
     pointsExamination: "",
@@ -46,5 +47,28 @@ new Vue({
     }
   },
   async created() {
+	  axios
+      .get("/auth/getRole", {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("access_token")
+        }
+      })
+      .then((response) => {
+        if (response.data != "SYS_ADMIN") {
+          window.location.href = "/login.html";
+        }
+		axios
+		.get('/api/sys-admin/getLoggedUser',{
+			  headers: {
+				    'Authorization': "Bearer " + localStorage.getItem('access_token')
+			  }
+	     })
+	     .then(response => {
+	     	this.admin = response.data
+	     })
+      })
+      .catch(function () {
+        window.location.href = "/login.html";
+      });
   }
 });

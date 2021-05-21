@@ -56,5 +56,17 @@ var app = new Vue({
           (m) => m.pharmacy.grade >= this.minGrade
         );
     }
-  }
-});
+  },
+  	created() {
+		
+		axios
+		.get('/api/patient/getLoggedUser',{
+			  headers: {
+				    'Authorization': "Bearer " + localStorage.getItem('access_token')
+			  }
+	     })
+	    .then(response => {
+	     	this.patient = response.data;
+		})
+	}
+})

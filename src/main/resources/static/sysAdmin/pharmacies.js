@@ -1,6 +1,7 @@
 new Vue({
   el: "#pharmacies",
   data: {
+	admin:null,
     pharmacies: [],
     showAddPharmacyForm: false,
     showAddPharmacyAdminForm: false,
@@ -145,6 +146,17 @@ new Vue({
   },
   async created() {
     try {
+		axios
+		.get('/api/sys-admin/getLoggedUser',{
+			  headers: {
+				    'Authorization': "Bearer " + localStorage.getItem('access_token')
+			  }
+	     })
+	     .then(response => {
+	     	this.admin = response.data
+	     })
+		
+		
       const { data } = await axios.get("/api/pharmacy/findAll", {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("access_token")

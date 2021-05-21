@@ -1,13 +1,11 @@
 package isa.apoteka;
 
 import static isa.constants.PharmacyConstants.MEDICINE_ID;
-import static isa.constants.PharmacyConstants.MEDICINE_QUANTITY;
 import static isa.constants.PharmacyConstants.PHARMACY_ID;
 import static isa.constants.PharmacyConstants.MEDICINE_PRICE1;
 import static isa.constants.PharmacyConstants.MEDICINE_PRICE2;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
@@ -21,9 +19,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import isa.apoteka.domain.MedicinePrice;
 import isa.apoteka.repository.MedicinePriceRepository;
-import isa.apoteka.repository.MedicineRepository;
 import isa.apoteka.service.impl.MedicinePriceServiceImpl;
-import isa.apoteka.service.impl.MedicineServiceImpl;
+
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

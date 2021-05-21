@@ -1,6 +1,7 @@
 var app = new Vue({
   el: "#complaints",
   data: {
+	patient: null,
     tab: "DERMATOLOGIST",
     pharmacies: [],
     dermatologists: [],
@@ -83,5 +84,16 @@ var app = new Vue({
       this.complaint = "";
       this.selected = "";
     }
-  }
+  },
+	created(){
+		axios
+		.get('/api/patient/getLoggedUser',{
+			  headers: {
+				    'Authorization': "Bearer " + localStorage.getItem('access_token')
+			  }
+	     })
+	    .then(response => {
+	     	this.patient = response.data;
+		})
+	}
 });

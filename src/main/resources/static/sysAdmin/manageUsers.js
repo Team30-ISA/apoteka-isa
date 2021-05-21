@@ -1,6 +1,7 @@
 new Vue({
   el: "#manageUsers",
   data: {
+	admin: null,
     firstName: "",
     lastName: "",
     email: "",
@@ -109,6 +110,15 @@ new Vue({
         if (response.data != "SYS_ADMIN") {
           window.location.href = "/login.html";
         }
+		axios
+		.get('/api/sys-admin/getLoggedUser',{
+			  headers: {
+				    'Authorization': "Bearer " + localStorage.getItem('access_token')
+			  }
+	     })
+	     .then(response => {
+	     	this.admin = response.data
+	     })
       })
       .catch(function () {
         window.location.href = "/login.html";

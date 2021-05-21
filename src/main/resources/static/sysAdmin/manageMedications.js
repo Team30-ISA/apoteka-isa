@@ -1,6 +1,7 @@
 new Vue({
   el: "#manageMedications",
   data: {
+	admin: null,
     name: "",
     type: "",
     form: "",
@@ -87,8 +88,6 @@ new Vue({
 					this.medications = response.data
 					console.log(response.data)
 				})
-			
-			
 		var k;
 		for (var key in this.medications) {
 			  console.log(key, this.medications[key].name);
@@ -164,7 +163,16 @@ new Vue({
 			}).then(response => {
 				this.allMedicines = response.data
 				console.log(this.allMedicines)
-			})
+			});
+	   axios
+		.get('/api/sys-admin/getLoggedUser',{
+			  headers: {
+				    'Authorization': "Bearer " + localStorage.getItem('access_token')
+			  }
+	     })
+	     .then(response => {
+	     	this.admin = response.data
+	     })
 	  
     } catch (err) {
       console.log(err);

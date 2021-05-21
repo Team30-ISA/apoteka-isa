@@ -1,6 +1,7 @@
 var app = new Vue({
   el: "#complaints",
   data: {
+	admin: null,
     tab: "DERMATOLOGIST",
     compliants: [],
     selected: "",
@@ -49,7 +50,7 @@ var app = new Vue({
               }, 3000);
     }
   },
-  async created() {
+  async created() {	 
     axios
       .get("/auth/getRole", {
         headers: {
@@ -60,6 +61,15 @@ var app = new Vue({
         if (response.data != "SYS_ADMIN") {
           window.location.href = "/login.html";
         }
+		axios
+		.get('/api/sys-admin/getLoggedUser',{
+			  headers: {
+				    'Authorization': "Bearer " + localStorage.getItem('access_token')
+			  }
+	     })
+	     .then(response => {
+	     	this.admin = response.data
+	     })
       })
       .catch(function () {
         window.location.href = "/login.html";
@@ -70,5 +80,7 @@ var app = new Vue({
       }
     });
     this.compliants = data;
+	
+	
   }
 });

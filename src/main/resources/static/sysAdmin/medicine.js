@@ -1,7 +1,7 @@
 var app = new Vue({
   el: "#medicine",
   data: {
-	patient: null,
+	admin: null,
     medicineName: "",
     medicines: [],
     spec: null,
@@ -55,5 +55,16 @@ var app = new Vue({
           (m) => m.pharmacy.grade >= this.minGrade
         );
     }
+  },
+  created(){
+	axios
+		.get('/api/sys-admin/getLoggedUser',{
+			  headers: {
+				    'Authorization': "Bearer " + localStorage.getItem('access_token')
+			  }
+	     })
+	     .then(response => {
+	     	this.admin = response.data
+	     })
   }
 });
