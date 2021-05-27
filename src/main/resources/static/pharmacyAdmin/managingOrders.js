@@ -97,7 +97,11 @@ var app = new Vue({
 		},
 		formatDate(d){
 			let date = new Date(d)
-			return (date.getDate()-1) + "." + (date.getMonth() + 1) + "." + date.getFullYear() + ".";
+			return (date.getDate()) + "." + (date.getMonth() + 1) + "." + date.getFullYear() + ".";
+		},
+		formatDateNew(d){
+			let date = new Date(d)
+			return (date.getDate()) + "." + (date.getMonth() + 1) + "." + date.getFullYear() + ".";
 		},
 		calc(d){
 			let date = new Date(d);

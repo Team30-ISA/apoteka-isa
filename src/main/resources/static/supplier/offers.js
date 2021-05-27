@@ -1,6 +1,7 @@
 var app = new Vue({
   el: "#offers",
   data: {
+	supplier: null,
     filterTypes: ["ALL", "APPROVED", "PENDING", "REFUSED"],
     offers: [],
     errands: [],
@@ -36,9 +37,13 @@ var app = new Vue({
       return ind;
     },
 	formatDate(d){
-			let date = new Date(d)
-			return date.getDate() + "." + (date.getMonth() + 1) + "." + date.getFullYear() + ".";
-		},
+		let date = new Date(d)
+		return (date.getDate() - 1) + "." + (date.getMonth() + 1) + "." + date.getFullYear() + ".";
+	},
+	formatDateNew(d){
+		let date = new Date(d)
+		return (date.getDate()) + "." + (date.getMonth() + 1) + "." + date.getFullYear() + ".";
+	},
     async checkRole() {
       axios
         .get("/auth/getRole", {
@@ -61,7 +66,7 @@ var app = new Vue({
     },
     async submit() {
       try {
-		if(this.supplyDeadline<this.errands[this.errandPreview].deadline){
+		if(this.supplyDeadline < this.errands[this.errandPreview].deadline){
         await axios.post(
           "/api/offer",
           {
@@ -105,6 +110,16 @@ var app = new Vue({
     }
   },
   async created() {
+	axios
+		.get('/api/supplier/getLoggedUser',{
+			  headers: {
+				    'Authorization': "Bearer " + localStorage.getItem('access_token')
+			  }
+	     })
+	     .then(response => {
+	     	this.supplier = response.data
+	     })
+	
     await this.checkRole();
     const errands = await axios.get("/api/offer/erands", {
       headers: {

@@ -46,11 +46,41 @@ new Vue({
         JSAlert.alert("You haven't filled in all the fields!");
       }
       try {
-		if(this.firstName != "" && this.lastName != "" && this.email != "" && this.username != "" && this.password != "" && this.phonenumber != "" && this.addressString != ""){
+		  let con = true;
+			let str = String(this.firstName);
+			for( let i = 0; i < str.length; i++){
+				if(!isNaN(str.charAt(i))){           
+					str = false;
+					continue;
+				}
+			}
+			
+			if(!str){
+			JSAlert.alert("Enter only letters.");
+			con = false;
+			this.firstName = "";	
+			}
+			
+			let con1 = true;
+			let str1 = String(this.lastName);
+			for( let i = 0; i < str1.length; i++){
+				if(!isNaN(str1.charAt(i))){           
+					str1 = false;
+					continue;
+				}
+			}
+			
+			if(!str1){
+				JSAlert.alert("Enter only letters.");
+				con1 = false;
+				this.lastName = "";			
+			}
+			
+		if(this.firstName != "" && this.lastName != "" && con && con1 && this.email != "" && this.username != "" && this.password != "" && this.phonenumber != "" && this.addressString != ""){
         if(isNaN(this.phonenumber) || !this.phonenumber){
 			JSAlert.alert("The phone number must consist only of digits!");
 			return;
-		}else if (this.password.length < 5) {
+		}else if (this.password.length < 6) {
 			JSAlert.alert("Password must have minimal 6 characters!");
 			this.password = "";
 			return;

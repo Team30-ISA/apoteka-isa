@@ -18,7 +18,8 @@ new Vue({
     firstname: "",
     lastname: "",
     successReg: false,
-    loading: false
+    loading: false,
+	phoneNumber: ""
   },
   async created() {
     const { data } = await axios.get("/api/country/getAllCountries");
@@ -31,6 +32,7 @@ new Vue({
       this.validateUsername();
       this.validateEmail();
       this.validatePassword();
+	  this.validatePhoneNumber();
       this.validateAddress();
       this.validateFirstAndLast();
       this.checkRequiredFileds();
@@ -80,6 +82,15 @@ new Vue({
         this.isFormValid = false;
       }
     },
+	validatePhoneNumber(){
+	if (this.phoneNumber.match(REGEX.STARTS_WITH_SPACE) || isNaN(this.phoneNumber)) {
+        this.validationErrors = {
+          ...this.validationErrors,
+          phoneNumber: "Phone number can't start with space or must have only number."
+        };
+        this.isFormValid = false;
+      }
+	},
     checkRequiredFileds() {
       if (
         !this.username ||
@@ -90,7 +101,8 @@ new Vue({
         !this.city ||
         !this.address ||
         !this.firstname ||
-        !this.lastname
+        !this.lastname ||
+		!this.phoneNumber
       ) {
         this.isFormValid = false;
       }
@@ -131,7 +143,8 @@ new Vue({
           address: this.address.trim(),
           firstname: this.firstname.trim(),
           lastname: this.lastname.trim(),
-          username: this.username.trim()
+          username: this.username.trim(),
+		  phoneNumber: this.phoneNumber.trim()
         });
         this.successReg = true;
         this.loading = false;

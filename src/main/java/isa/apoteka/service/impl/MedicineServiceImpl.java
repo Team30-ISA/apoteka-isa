@@ -237,11 +237,9 @@ public class MedicineServiceImpl implements MedicineService {
 		Medicine medicine = medicineRepository.getOne(id);
 		return new MedicineSpecificationDTO(medicine);
 	}
+	
 	public List<FilteredMedicineDTO> searchMedicineByName(SearchFilterMedicineDTO medicineDTO) {
 		List<FilteredMedicineDTO> dto = new ArrayList<FilteredMedicineDTO>();
 		return dto;
 	}
-
- 
-
 }

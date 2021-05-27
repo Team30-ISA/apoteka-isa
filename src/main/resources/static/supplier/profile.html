@@ -107,7 +107,8 @@
 							<ul>
 								<li><a href="offers.html">Offers & Errands</a></li>
 							</ul></li>
-						<li class="menu-has-children"><a href="#"><i class="icon fa-cog"></i></a>
+						<li class="menu-has-children"><a href="#">{{supplier.firstName}}
+								{{supplier.lastName}}</a>
 							<ul>
 								<li><a href="profile.html"><i class="icon fa-user"></i>&nbsp&nbsp&nbspProfile</a></li>
 								<li @click="logout"><a href="#"><i
@@ -180,6 +181,16 @@
                                     </td>
                                     <td style="width: 100%;">
                                         <p style="width:170%"> {{user.email}}</p>
+                                    </td>
+                                </tr>
+								<tr>
+                                    <td style="width: 100%;">
+                                        <b>PHONE NUMBER &nbsp</b>
+                                    </td>
+                                    <td style="width: 100%;">
+										<input type="text" v-model="user.phonenumber"
+                                            :class="[changeData ? 'txtEnabled' : 'txtDisabled']"
+                                            :disabled="!changeData">
                                     </td>
                                 </tr>
                                 <tr>

@@ -183,6 +183,23 @@
                         </div>
                       </td>
                     </tr>
+					<tr>
+                      <td>
+                        <h6 style="color:#50d8af;">Phone number</h6>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colspan="2">
+                        <div class="form-row">
+                          <div class="form-group col-md-12">
+                            <input v-model="phoneNumber" type="text" name="phoneNumber" class="form-control" id="phoneNumber"
+                              @keyup="validateForm" data-rule="minlen:4" data-msg="Please enter only number" />
+                            <div class="validation d-block" v-if="validationErrors.phoneNumber">{{
+                              validationErrors.phoneNumber }}</div>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
                     <tr>
                       <td>
                         <h6 style="color:#50d8af;">Select country</h6>

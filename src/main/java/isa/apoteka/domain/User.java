@@ -99,6 +99,7 @@ public class User implements UserDetails {
         this.firstName = userRequest.getFirstname();
         this.lastName = userRequest.getLastname();
         this.username = userRequest.getUsername();
+        this.phonenumber = userRequest.getPhoneNumber();
     }
 
     public User(PharmacistDTO pharmacyAdminData) {

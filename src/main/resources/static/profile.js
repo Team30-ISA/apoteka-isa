@@ -1,58 +1,3 @@
-/*var app = new Vue({
-	el: '#profile',
-	data: {
-		patients: null,
-		oldpass: "",
-		newpass: "",
-		name: "",
-		surname: "",
-		reservedMedications: [],
-	},
-	methods: {
-		changepass() {
-		axios.get('/api/patient/updatePassword',{
-		headers: {
-				    'Authorization': "Bearer " + localStorage.getItem('access_token')
-			  },
-		params:{
-			oldpass: this.oldpass,
-			newpass: this.newpass,
-			id: this.patients.id,
-			}
-		}).then(response => {
-					alert('Lozinka je uspesno promenjena.')
-			})
-		},
-		changedata(){
-		axios.get('/api/patient/updatePatient',{
-		headers: {
-				    'Authorization': "Bearer " + localStorage.getItem('access_token')
-			  },
-		params:{
-			name: this.name,
-			surname: this.surname,
-			id: this.patients.id,
-			}
-		}).then(response => {
-					alert('Novo ime: ' + this.name + '\nNovo prezime: ' + this.surname)
-			})
-		}
-	},
-	created() {
-		axios
-		.get('/api/patient/getLoggedUser',{
-			  headers: {
-				    'Authorization': "Bearer " + localStorage.getItem('access_token')
-			  }
-	     }).then(response => {
-					this.patients = response.data
-					this.name = this.patients.firstName
-					this.surname = this.patients.lastName
-			})
-		
-	}
-})*/
-
 var app = new Vue({
 	el: '#patientProfile',
 	data: {
@@ -74,6 +19,7 @@ var app = new Vue({
 		reservedMedications: [],
 		examinations: [],
 		columns: ['name', 'manufacturer'],
+		phonenumber: ""
 	},
 	methods: {
 		logout(){
@@ -128,10 +74,11 @@ var app = new Vue({
 			name: this.name,
 			surname: this.surname,
 			email: this.email,
-			id: this.patient.id,
+			phonenumber: this.phonenumber,
+			id: this.patient.id
 			}
 		}).then(response => {
-					alert('Novo ime: ' + this.name + '\nNovo prezime: ' + this.surname + '\nNov email: ' + this.email)
+					JSAlert.alert('Novo ime: ' + this.name + '\nNovo prezime: ' + this.surname + '\nNov email: ' + this.email + '\nNov broj: ' + this.phonenumber)
 			})
 				}
 			else{
@@ -214,6 +161,7 @@ var app = new Vue({
 	     	this.name = this.patient.firstName
 	     	this.surname = this.patient.lastName
 	     	this.email = this.patient.email
+			this.phonenumber = this.patient.phonenumber
 	     	this.idCountry = this.patient.address.city.country
 	     	this.selectedCountry = this.patient.address.city.country.id
 	     	this.selectedCity = this.patient.address.city.id

@@ -7,6 +7,7 @@ var app = new Vue({
     showSpec: false,
     minGrade: 0,
     allMedicines: [],
+	listAllMedicines: [],
 	type: ''
   },
   methods: {
@@ -57,5 +58,21 @@ var app = new Vue({
           (m) => m.medicine.type.name >= this.type
         );
     }
+  },
+  created(){
+	try {
+	  axios
+			.get('/api/medicine/getAll',{
+			headers: {
+				    'Authorization': "Bearer " + localStorage.getItem('access_token')
+			  			},
+			}).then(response => {
+				this.listAllMedicines = response.data
+				console.log(this.listAllMedicines)
+			});
+  
+	} catch (err) {
+      console.log(err);
+      }
   }
 });

@@ -179,6 +179,16 @@
 									</td>
 								</tr>
 								<tr>
+                                    <td style="width: 100%;">
+                                        <b>PHONE NUMBER &nbsp</b>
+                                    </td>
+                                    <td style="width: 100%;">
+										<input type="text" v-model="phonenumber"
+                                            :class="[changeData ? 'txtEnabled' : 'txtDisabled']"
+                                            :disabled="!changeData">
+                                    </td>
+                                </tr>
+								<tr>
 									<td style="width: 100%;">
 										<b>COUNTRY</b>
 									</td>
@@ -289,6 +299,7 @@
 	<script src="../lib/owlcarousel/owl.carousel.min.js"></script>
 	<script src="../lib/magnific-popup/magnific-popup.min.js"></script>
 	<script src="../lib/sticky/sticky.js"></script>
+	<script src="https://npmcdn.com/js-alert/dist/jsalert.min.js"></script>
 
 	<!-- Contact Form JavaScript File -->
 	<script
