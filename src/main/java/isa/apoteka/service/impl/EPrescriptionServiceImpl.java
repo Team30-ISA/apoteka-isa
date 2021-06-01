@@ -48,7 +48,7 @@ public class EPrescriptionServiceImpl implements EPrescriptionService {
 	}
 
 	@Override
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+	//@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
 	public EPrescription saveEPrescription(ChoosenPharmacyDTO choosenPharmacy) {
 		try {
 			Patient patient = (Patient) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -75,7 +75,7 @@ public class EPrescriptionServiceImpl implements EPrescriptionService {
 	}
 	
 	@Override
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+	//@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public Boolean proccedEReceipt(ChoosenPharmacyDTO choosenPharmacy) {
           return medicationPriceService.updateMedicineQuantityEreceipt(choosenPharmacy).equals(false) ||
                 emailService.informPatientAboutEreceipt(choosenPharmacy.getMedications()).equals(false) ||
