@@ -85,7 +85,7 @@ public class UnitTests {
 		
 		list = offerService.findAllOffersForErrand(ERRAND_ID);
 		
-		assertNotNull(list.size());
+		assertNotNull(list);
 	}
 	
 	@Test
@@ -105,7 +105,7 @@ public class UnitTests {
 		
 		list = complaintService.getAllComplaints();
 		
-		assertNotNull(list.size());	
+		assertNotNull(list);	
 	}
 	
 }

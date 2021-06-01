@@ -73,7 +73,8 @@ public class EPrescriptionServiceImpl implements EPrescriptionService {
             return null;
         }
 	}
-
+	
+	@Override
 	@Transactional(readOnly = false)
     public Boolean proccedEReceipt(ChoosenPharmacyDTO choosenPharmacy) {
           return medicationPriceService.updateMedicineQuantityEreceipt(choosenPharmacy).equals(false) ||

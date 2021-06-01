@@ -83,9 +83,9 @@ var app = new Vue({
                           }
                         }). then(function() {
                             JSAlert.alert("Medicines are successfully taken from choosen pharmacy!");
-							/*setTimeout(function () {
+							setTimeout(function () {
 								window.location.href = "/patient/eprescription.html";
-								}, 2000);*/
+								}, 2000);
                         }).catch(res => {
                             JSAlert.alert("This eReceipt is already used!");
                             console.log(res);
