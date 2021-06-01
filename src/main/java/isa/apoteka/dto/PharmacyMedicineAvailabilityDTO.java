@@ -6,16 +6,18 @@ public class PharmacyMedicineAvailabilityDTO {
     private String city;
     private String street;
     private double price;
+    private double priceWithLoyalty;
     private double grade;
 
     public PharmacyMedicineAvailabilityDTO() { }
 
-    public PharmacyMedicineAvailabilityDTO(Long pharmacyId,  String pharmacyName, String city, String street, double price, double grade) {
+    public PharmacyMedicineAvailabilityDTO(Long pharmacyId,  String pharmacyName, String city, String street, double price, double priceWithLoyalty,double grade) {
         this.pharmacyId = pharmacyId;
         this.pharmacyName = pharmacyName;
         this.city = city;
         this.street = street;
         this.price = price;
+        this.priceWithLoyalty = priceWithLoyalty;
         this.grade = grade;
     }
 
@@ -65,5 +67,13 @@ public class PharmacyMedicineAvailabilityDTO {
 
 	public void setGrade(double grade) {
 		this.grade = grade;
+	}
+
+	public double getPriceWithLoyalty() {
+		return priceWithLoyalty;
+	}
+
+	public void setPriceWithLoyalty(double priceWithLoyalty) {
+		this.priceWithLoyalty = priceWithLoyalty;
 	}
 }

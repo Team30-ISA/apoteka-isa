@@ -20,8 +20,6 @@ public class Patient extends User{
 	@ManyToMany(mappedBy = "patients")
 	private List<Pharmacy> pharmacies;
 	
-	//@OneToMany(mappedBy = "patients")
-	//private List<Medicine> reservedMedications;
 	@OneToMany(mappedBy = "medicine")
 	private List<ReservedMedicine> reservedMedicine;
 
@@ -29,8 +27,14 @@ public class Patient extends User{
 	@ManyToMany
 	private List<Medicine> allergies;
 
-	@Column(name = "loyaltyCategory", nullable = true)
-	private CategoryType category;
+    @Column(name = "loyaltyCategory", nullable = true)
+    private String loyaltyCategory;
+    
+    @Column(name = "points", nullable = true)
+    private Integer points;
+    
+    @Column(name = "discount", nullable = true)
+    private Double discount;
 	 
 	public List<Pharmacy> getPharmacies() {
 		return pharmacies;
@@ -55,11 +59,27 @@ public class Patient extends User{
         super(userRequest);
     }
 
-	public CategoryType getCategory() {
-		return category;
+	public String getLoyaltyCategory() {
+		return loyaltyCategory;
 	}
 
-	public void setCategory(CategoryType category) {
-		this.category = category;
+	public void setLoyaltyCategory(String loyaltyCategory) {
+		this.loyaltyCategory = loyaltyCategory;
+	}
+
+	public Integer getPoints() {
+		return points;
+	}
+
+	public void setPoints(Integer points) {
+		this.points = points;
+	}
+
+	public Double getDiscount() {
+		return discount;
+	}
+
+	public void setDiscount(Double discount) {
+		this.discount = discount;
 	}
 }

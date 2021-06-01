@@ -155,9 +155,32 @@
                         <option value="8">8+</option>
                         <option value="9">9+</option>
                         <option value="10">10+</option>
-
                     </select>
                 </div>
+				<br>
+				<div>
+                    Filter by type: 
+					<select  v-model="filtType" class="w-25 form-control d-inline-block">
+						<option value="powder">powder</option>
+						<option value="capsule">capsule</option>
+						<option value="tablet">tablet</option>
+						<option value="ointment">ointment</option>
+						<option value="paste">paste</option>
+						<option value="gel">gel</option>
+						<option value="solution">solution</option>
+						<option value="syrup">syrup</option>
+					</select>
+				</div>
+				<br>
+				<div>
+                    Filter by form: 
+					<select v-model="filtForm" class="w-25 form-control d-inline-block">
+						<option value="antibiotic">antibiotic</option>
+						<option value="anesthetic">anesthetic</option>
+						<option value="antihistamine">antihistamine</option>
+						<option value="analgesic">analgesic</option>
+					</select>
+				</div>
                 <div>
                     <ul class="list-group mt-5">
                         <li class="list-group-item text-center"

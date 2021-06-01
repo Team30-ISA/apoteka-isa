@@ -39,7 +39,6 @@ public interface ExamintaionRepository extends JpaRepository<Examination, Long> 
 	List<Examination> getExaminationsForPatient(Long patId);
 	
 	@Modifying
-    @Transactional
     @Query(value = "update examination e set patient_id = null where e.id = ?1", nativeQuery = true)
     void cancelAppointment(Long examId);
 

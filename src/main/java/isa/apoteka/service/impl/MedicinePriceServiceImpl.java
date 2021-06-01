@@ -16,6 +16,7 @@ import isa.apoteka.dto.ChangePriceDTO;
 import isa.apoteka.dto.ChoosenPharmacyDTO;
 import isa.apoteka.dto.QRcodeInformationDTO;
 import isa.apoteka.repository.MedicinePriceRepository;
+import isa.apoteka.service.LoyaltyProgramService;
 import isa.apoteka.service.MedicinePriceService;
 
 @Service
@@ -23,10 +24,12 @@ import isa.apoteka.service.MedicinePriceService;
 public class MedicinePriceServiceImpl implements MedicinePriceService{
 
 	private MedicinePriceRepository medPriceRepository;
+	private LoyaltyProgramService loyaltyProgramService;
 	
 	@Autowired
-	public MedicinePriceServiceImpl(MedicinePriceRepository medPriceRepository) {
+	public MedicinePriceServiceImpl(MedicinePriceRepository medPriceRepository, LoyaltyProgramService loyaltyProgramService) {
 		this.medPriceRepository = medPriceRepository;
+		this.loyaltyProgramService = loyaltyProgramService;
 	}
 	
 	
@@ -73,7 +76,7 @@ public class MedicinePriceServiceImpl implements MedicinePriceService{
 	
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public Boolean updateMedicineQuantityEreceipt(ChoosenPharmacyDTO choosenPharmacy) {
-        
+		Integer points = 0;
         try {
             List<MedicinePrice> pharmacyMedications = findByPharmacy(choosenPharmacy.getPharmacyId());
             for (QRcodeInformationDTO medication : choosenPharmacy.getMedications()) {
@@ -81,11 +84,12 @@ public class MedicinePriceServiceImpl implements MedicinePriceService{
                     if(medicinePrice.getMedicine().getCode().equals(medication.getMedicationCode())  &&
                             medicinePrice.getMedicine().getName().equals(medication.getMedicationName())) {
                         medicinePrice.setQuantity(medicinePrice.getQuantity()-medication.getQuantity());
-                        
+                        points += medicinePrice.getMedicine().getLoyaltyPoints();
                         this.medPriceRepository.save(medicinePrice);
                     }
                 }
             }
+            loyaltyProgramService.updatePatientsLoyaltyPoints(points);
             return true;
         }
         catch(Exception e) {return false;}

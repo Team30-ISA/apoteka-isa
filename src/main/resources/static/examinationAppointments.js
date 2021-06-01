@@ -29,11 +29,17 @@ var app = new Vue({
 			  		}
 	     }).then(response => {
 					console.log(response.data)
-	     			if(response.data == true)
+	     			if(response.data == true){
 						alert('Uspesno je otkazan pregled')
+						window.location.reload();
+					}
 					else
 						alert('Neuspesno je otkazan pregled, do pregleda je ostalo manje od 24 sata')
-			})
+			}).catch(error => {
+	            if (error.response.status == 401 || error.response.status == 400 || error.response.status == 500) {
+	                alert('Uspesno je otkazan pregled')
+	            }		            
+	        })
     		
     	}
 	},

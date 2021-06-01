@@ -21,7 +21,9 @@ new Vue({
 	tableh: ['Name', 'City'],
 	tableh2: ['Name', 'Manufacturer'],
 	sortKey: 'price',
-	reverse: 1
+	reverse: 1,
+	loyaltyPoints: 1,
+	code: 1
   },
   methods: {
 	logout() {
@@ -74,14 +76,14 @@ new Vue({
 	},
     async createMedicine() {
       try {
-			if(this.name != "" && this.type != "" && this.form != "" && this.contraindications != "" && this.composition != "" && this.recommendedIntakePerDay != "" && this.manufacturer != ""){
+			if(this.name != "" && this.type != ""  && this.code != "" && this.form != "" && this.contraindications != "" && this.composition != "" && this.recommendedIntakePerDay != "" && this.manufacturer != ""){
 				await axios
 				.get('/api/medicine/searchMedicinesByName',{
 					headers: {
 					    'Authorization': "Bearer " + localStorage.getItem('access_token')
 				  	},
 				  	params: {
-				  		name: this.name,
+				  		name: this.name
 				  	}
 				})
 				.then(response => {
@@ -93,6 +95,8 @@ new Vue({
 			  console.log(key, this.medications[key].name);
 			  k = key;
 		}
+		console.log(this.loyaltyPoints)
+		console.log(this.code)
 		
 	    if (k === undefined){
         await axios.post(
@@ -105,7 +109,9 @@ new Vue({
             composition: this.composition,
             recommendedIntakePerDay: this.recommendedIntakePerDay,
             substitutes: this.substitutes,
-            manufacturer: this.manufacturer
+            manufacturer: this.manufacturer,
+			loyaltyPoints: this.loyaltyPoints,
+			code : this.code
           },
           {
             headers: {
@@ -116,13 +122,13 @@ new Vue({
         JSAlert.alert("Successfully added new drug");
 		
 		setTimeout(function () {
-                window.location.href = "http://localhost:8081/sysAdmin/manageMedications.html";
+                window.location.href = "/sysAdmin/manageMedications.html";
               }, 3000);
 		}
 		else{
 			JSAlert.alert("This medicine have in pharmacy!");
 			setTimeout(function () {
-                window.location.href = "http://localhost:8081/sysAdmin/manageMedications.html";
+                window.location.href = "/sysAdmin/manageMedications.html";
               }, 3000);
 		}
 		}

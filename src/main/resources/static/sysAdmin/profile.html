@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>User profile page</title>
+    <title>System admin profile page</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -112,7 +112,8 @@
 								<li><a href="complaint.html">Complaints</a></li>
                                 <li><a href="manageLoyaltyProgram.html">Loyalty program</a></li>
 							</ul></li>
-						<li class="menu-has-children"><a href="#"><i class="icon fa-cog"></i></a>
+						<li class="menu-has-children"><a href="#">{{admin.firstName}}
+								{{admin.lastName}}</a>
 							<ul>
 								<li><a href="profile.html"><i class="icon fa-user"></i>&nbsp&nbsp&nbspProfile</a></li>
 								<li @click="logout"><a href="#"><i

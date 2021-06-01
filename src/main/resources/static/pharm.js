@@ -5,7 +5,7 @@ var app = new Vue({
 		dwc: [],
 		derm: [],
 		patient: null,
-		columns: [ 'id', 'price', 'startDate', 'duration'],
+		columns: [ 'id', 'price','priceWithDiscount', 'startDate', 'duration'],
 		sortKey: 'price',
 		reverse: 1,
 		rev: false,
@@ -36,9 +36,11 @@ var app = new Vue({
 			  		}
 	     }).then(response => {
 					if(response.data == false)
-						alert("Neuspesno zakazivanje termina")
-					else
-						alert('Uspesno zakazan pregled')
+						alert("Neuspesno zakazivanje termina posto je datum u proslosti! :(")
+					else{
+						alert('Uspesno zakazan pregled! (:')
+						window.location.reload();
+					}	
 			})
     		
     	},

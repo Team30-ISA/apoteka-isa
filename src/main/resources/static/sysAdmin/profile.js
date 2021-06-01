@@ -1,6 +1,7 @@
 var app = new Vue({
   el: "#sysAdminProfile",
   data: {
+	admin:null,
     user: null,
     changeData: false,
     oldPass: "",
@@ -149,6 +150,15 @@ var app = new Vue({
       .catch(function () {
         window.location.href = "/login.html";
       });
+	  axios
+		.get('/api/sys-admin/getLoggedUser',{
+			  headers: {
+				    'Authorization': "Bearer " + localStorage.getItem('access_token')
+			  }
+	     })
+	     .then(response => {
+	     	this.admin = response.data
+	     })
     const user = JSON.parse(localStorage.getItem("user"));
     this.user = user;
     this.selectedCity = user.address.city.id;

@@ -31,11 +31,12 @@ var app = new Vue({
 		{
 			JSAlert.alert("Medicine doesn't exist!")
 			setTimeout(function () {
-                window.location.href = "/patient/medicine.html";
+                window.location.href = "/pharmacyAdmin/medicine.html";
               }, 2000);
 		}
         this.allMedicines = data;
-        this.medicines = data.filter((m) => m.pharmacy.grade >= this.minGrade);
+		this.medicines = data.filter((m) => m.pharmacy.grade >= this.minGrade || (m.medicine.form.name === this.filtForm && m.medicine.type.name === this.filtType));
+
       }
     },
     async getSpec(id) {

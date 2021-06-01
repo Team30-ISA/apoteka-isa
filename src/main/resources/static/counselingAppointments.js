@@ -29,8 +29,10 @@ var app = new Vue({
 			  		}
 	     }).then(response => {
 					console.log(response.data)
-	     			if(response.data == true)
+	     			if(response.data == true){
 						alert('Uspesno je otkazan pregled')
+						window.location.reload();
+					}
 					else
 						alert('Neuspesno je otkazan pregled, do pregleda je ostalo manje od 24 sata')
 			})

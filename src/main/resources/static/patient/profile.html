@@ -171,14 +171,30 @@
 									</td>
 								</tr>
 								<tr>
-									<td style="width: 100%;">
+									<td style="width: 100%;  background-color: #ffffff";>
 										<b>EMAIL &nbsp</b>
 									</td>
 									<td style="width: 100%;">
-										<input type="text" v-model="email" :class="[changeData ? 'txtEnabled' : 'txtDisabled']"  :disabled="!changeData" style="width:170%">
+										<input type="text" v-model="patient.email" style="border: 0;  background-color: #ffffff;" disabled>
 									</td>
 								</tr>
 								<tr>
+									<td style="width: 100%;  background-color: #ffffff";>
+										<b>POINTS &nbsp</b>
+									</td>
+									<td style="width: 100%;">
+										<input type="text" v-model="patient.points" style="border: 0;  background-color: #ffffff;" disabled>
+									</td>
+								</tr>
+								<tr>
+								<tr>
+									<td style="width: 100%;  background-color: #ffffff";>
+										<b>CATEGORY&nbsp</b>
+									</td>
+									<td style="width: 100%;">
+										<input type="text" v-model="patient.loyaltyCategory" style="border: 0;  background-color: #ffffff;" disabled>
+									</td>
+								</tr>
 									<td style="width: 100%;">
 										<b>COUNTRY</b>
 									</td>
@@ -260,6 +276,7 @@
 			</section>
 			<div>
 			<br><br><br><br><br><br>
+			
 				<h4>Spisak rezervisanih lekova: </h4>
 				<table class="table">
 					<thead>

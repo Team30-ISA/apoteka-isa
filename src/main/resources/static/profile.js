@@ -18,7 +18,7 @@ var app = new Vue({
 		idAddress: 0,
 		reservedMedications: [],
 		examinations: [],
-		columns: ['name', 'manufacturer'],
+		columns: ['name', 'manufacturer', 'price', 'priceWithLoyalty'],
 		phonenumber: ""
 	},
 	methods: {
@@ -179,7 +179,12 @@ var app = new Vue({
 	     })
 	     .then(response => {
 	     	this.reservedMedications = response.data
-	     	console.log(this.reservedMedications)
+	     	console.log(this.reservedMedications);
+			for (var key in this.reservedMedications) {
+			  console.log(this.reservedMedications[key].id);
+			  console.log(this.reservedMedications[key].type);
+			  console.log(this.reservedMedications[key].priceWithLoyaltyProgram);  
+			}
 	     })
 	     
 	     axios
@@ -191,6 +196,11 @@ var app = new Vue({
 	     .then(response => {
 	     	this.examinations = response.data
 	     	console.log('AAAAAAA' + this.examinations)
+			/*for (var key in this.examinations) {
+			  console.log(this.examinations[key].id);
+			  console.log(this.examinations[key].duration);
+			  console.log(this.examinations[key].price);  
+			}*/
 	     })
 	     	
 	     })

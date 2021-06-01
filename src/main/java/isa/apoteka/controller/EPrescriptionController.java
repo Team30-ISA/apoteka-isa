@@ -5,8 +5,10 @@ import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
 import com.google.zxing.common.HybridBinarizer;
 
 import isa.apoteka.domain.EPrescription;
+import isa.apoteka.domain.LoyaltyProgram;
 import isa.apoteka.domain.MedicineEPrescription;
 import isa.apoteka.domain.MedicinePrice;
+import isa.apoteka.domain.Patient;
 import isa.apoteka.domain.Pharmacy;
 import isa.apoteka.dto.ChoosenPharmacyDTO;
 import isa.apoteka.dto.EPrescriptionAllInfoDTO;
@@ -17,11 +19,13 @@ import isa.apoteka.repository.MedicineEPrescriptionRepository;
 import isa.apoteka.service.EPrescriptionService;
 import isa.apoteka.service.PharmacyGradeService;
 import isa.apoteka.service.PharmacyService;
+import isa.apoteka.repository.LoyaltyProgramRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import java.awt.image.BufferedImage;
@@ -39,16 +43,18 @@ public class EPrescriptionController {
     private EPrescriptionService ePrescriptionService;
     private MedicineEPrescriptionRepository medicineEPrescriptionRepository;
     private PharmacyGradeService  pharmacyGradeService;
+    private LoyaltyProgramRepository loyaltyProgramRepository;
     
     @Autowired
     public EPrescriptionController(PharmacyService pharmacyService,
 			EPrescriptionService ePrescriptionService,
-			MedicineEPrescriptionRepository medicineEPrescriptionRepository, PharmacyGradeService pharmacyGradeService) {
+			MedicineEPrescriptionRepository medicineEPrescriptionRepository, PharmacyGradeService pharmacyGradeService, LoyaltyProgramRepository loyaltyProgramRepository) {
 		
 		this.pharmacyService = pharmacyService;
 		this.ePrescriptionService = ePrescriptionService;
 		this.medicineEPrescriptionRepository = medicineEPrescriptionRepository;
 		this.pharmacyGradeService = pharmacyGradeService;
+		this.loyaltyProgramRepository = loyaltyProgramRepository;
 	}
 
 	
@@ -204,10 +210,13 @@ public class EPrescriptionController {
          List<Pharmacy> pharmacies = pharmacyService.findAll();
          for(Pharmacy pharmacy : pharmacies) {
              double hasMedicationsPrice = pharmacyHasAllMedications(pharmacy.getMedicinePrices(),medicinesInQRcode);
+             double priceWithLoyaltyProgram = setPriceWithLoyaltyProgram(hasMedicationsPrice);
+             System.out.println("CENA SA POPUSTOM " + priceWithLoyaltyProgram);
+             System.out.println("CENA SA BEZ POPUSTA " + hasMedicationsPrice);
              double grade = pharmacyGradeService.findGradeForPharmacy(pharmacy.getId());
 			
              if(hasMedicationsPrice>0) {
-                 pharmacyList.add(new PharmacyMedicineAvailabilityDTO(pharmacy.getId(), pharmacy.getName(), pharmacy.getCity(), pharmacy.getStreet(), hasMedicationsPrice, grade));
+                 pharmacyList.add(new PharmacyMedicineAvailabilityDTO(pharmacy.getId(), pharmacy.getName(), pharmacy.getCity(), pharmacy.getStreet(), hasMedicationsPrice, priceWithLoyaltyProgram, grade));
              }
          }
          return pharmacyList;
@@ -225,6 +234,30 @@ public class EPrescriptionController {
             }
         }
         return totalPrice;
+    }
+    
+    private double setPriceWithLoyaltyProgram(double hasMedicationsPrice) {
+    	Patient patient = (Patient) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String status = patient.getLoyaltyCategory();
+        double newPrice = 0;
+
+        try {
+            LoyaltyProgram loyaltyProgram = loyaltyProgramRepository.findAll().get(0);
+            if(status.equals("REGULAR")) {
+                newPrice = hasMedicationsPrice - hasMedicationsPrice * (loyaltyProgram.getRegularDiscount()/1);
+            }
+            else if(status.equals("SILVER")) {
+                newPrice = hasMedicationsPrice - hasMedicationsPrice * (loyaltyProgram.getSilverDiscount()/1);
+            }
+            else if(status.equals("GOLD")) {
+                newPrice = hasMedicationsPrice -hasMedicationsPrice * (loyaltyProgram.getGoldenDiscount()/1);
+            }
+        }
+        catch(Exception e) {
+            return hasMedicationsPrice;
+        }
+
+        return newPrice;
     }
     
     private double existsInPharmacy(List<MedicinePrice> medicinePrices, QRcodeInformationDTO medicine) {

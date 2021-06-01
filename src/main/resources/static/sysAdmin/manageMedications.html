@@ -152,6 +152,14 @@
           <h6 style="color:#50d8af;"">Manufacturer</h6>
           <input autofocus v-model="manufacturer" type="text" name="manufacturer" class="form-control" id="manufacturer" />
         </div>
+		<div class="d-inline-block w-50 mx-3 mt-3">
+          <h6 style="color:#50d8af;"">Code(unique)</h6>
+          <input autofocus v-model="code" type="number" name="code" class="form-control" id="code" />
+        </div>
+		<div class="d-inline-block w-50 mx-3 mt-3">
+          <h6 style="color:#50d8af;"">Points(the default is 1)</h6>
+          <input autofocus v-model="points" type="number" name="points" class="form-control" id="points" />
+        </div>
         <div class="form-row d-inline-block w-50 mx-3 mt-3">
 		<h6 style="color:#50d8af;"">Substitute medicines</h6>
           <div class="form-group col-md-12">
@@ -186,6 +194,7 @@
 										    </tr>
 										</tbody>
 									</table>
+									<h3><a href="medicineRegister.html">Link for more details for each drug</a></h3>
 								</header>
 							</div>
 		</section>

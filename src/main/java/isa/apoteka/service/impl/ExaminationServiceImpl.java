@@ -13,17 +13,14 @@ import java.util.concurrent.TimeUnit;
 
 import isa.apoteka.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import isa.apoteka.async.service.EmailService;
-import isa.apoteka.domain.Examination;
-import isa.apoteka.domain.Patient;
-import isa.apoteka.domain.PharmacistWorkCalendar;
-import isa.apoteka.domain.Pharmacy;
-import isa.apoteka.domain.Pharmacist;
 import isa.apoteka.dto.ExaminationDTO;
 import isa.apoteka.repository.ExamintaionRepository;
+import isa.apoteka.repository.LoyaltyProgramRepository;
 import isa.apoteka.repository.PharmacyRepository;
 import isa.apoteka.service.ExaminationService;
 import isa.apoteka.service.PharmacistService;
@@ -47,6 +44,9 @@ public class ExaminationServiceImpl implements ExaminationService {
 	
 	@Autowired
 	private PharmacistService pharmacistService;
+	
+	@Autowired
+	private LoyaltyProgramRepository loyaltyProgramRepository;
 
 	@Override
 	public List<ExaminationDTO> findAllTermsByDay(Long dermatologistId, Date start) {
@@ -292,6 +292,7 @@ public class ExaminationServiceImpl implements ExaminationService {
 		System.out.println("START: " + start);
 		System.out.println("END: " + end);
 		for(Pharmacy p : pharms) {
+			p.setCounselingPriceWithDiscount(setPriceWithLoyaltyProgram(p.getCounselingprice()));
 			List<Pharmacist> pharmacists = p.getPharmacists();
 			for(Pharmacist ph : pharmacists) {
 				if(isPharmacistFree(start, end, ph.getId())) {
@@ -304,7 +305,29 @@ public class ExaminationServiceImpl implements ExaminationService {
 		}
 		return ret;
 	}
+	private double setPriceWithLoyaltyProgram(double price) {
+    	Patient patient = (Patient) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String loyaltyCategoty = patient.getLoyaltyCategory();
+        double newPrice = 0;
 
+        try {
+            LoyaltyProgram loyaltyProgram = loyaltyProgramRepository.findAll().get(0);
+            if(loyaltyCategoty.equals("REGULAR")) {
+                newPrice = price - price  * (loyaltyProgram.getRegularDiscount()/1);
+            }
+            else if(loyaltyCategoty.equals("SILVER")) {
+                newPrice = price  - price * (loyaltyProgram.getSilverDiscount()/1);
+            }
+            else if(loyaltyCategoty.equals("GOLD")) {
+                newPrice = price  - price * (loyaltyProgram.getGoldenDiscount()/1);
+            }
+        }
+        catch(Exception e) {
+            return price;
+        }
+
+        return newPrice;
+    }
 	@Override
 	public Boolean isPharmFree(Long pharmacistId, Date start, Date end) {
 		Calendar calendar = new GregorianCalendar();

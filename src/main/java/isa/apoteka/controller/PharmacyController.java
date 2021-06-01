@@ -205,14 +205,11 @@ public class PharmacyController {
 	@GetMapping(value = "/searchMedicineInPharmacy")
 	@PreAuthorize("hasRole('PATIENT')")
 	public ResponseEntity<Medicine> searchMedicineInPharmacy(Long id, String name) {
-
-		Medicine meds = pharmacyService.searchMedicineInPharmacy(id, name);
-		/*List<MedicineDTO> medsDTO = new ArrayList<>();
-		for (Medicine m : meds) {
-			medsDTO.add(new MedicineDTO(m));
-		}*/
-
-		return new ResponseEntity<>(meds, HttpStatus.OK);
+		try {
+			return new ResponseEntity<>(pharmacyService.searchMedicineInPharmacy(id, name), HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 	}
 	
 	@GetMapping(value = "/updateMedicineInPharmacy")

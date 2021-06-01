@@ -35,7 +35,7 @@ var app = new Vue({
               }, 2000);
 		}
         this.allMedicines = data;
-        this.medicines = data.filter((m) => m.pharmacy.grade >= this.minGrade);
+        this.medicines = data.filter((m) => m.pharmacy.grade >= this.minGrade || (m.medicine.form.name === this.filtForm && m.medicine.type.name === this.filtType));
       }
     },
     async getSpec(id) {
