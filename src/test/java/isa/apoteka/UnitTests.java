@@ -65,7 +65,7 @@ public class UnitTests {
 		
 		list = offerRepositoryMock.findAllBySupplierId(SUPPLIER_ID);
 		
-		assertNotNull(list.size());
+		assertNotNull(list);
 		verify(offerRepositoryMock, times(1)).findAllBySupplierId(SUPPLIER_ID);
 	    verifyNoMoreInteractions(offerRepositoryMock);
 	}
