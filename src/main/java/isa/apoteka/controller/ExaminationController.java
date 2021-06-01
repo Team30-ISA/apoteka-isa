@@ -235,7 +235,7 @@ public class ExaminationController {
 	}
 	
 	@GetMapping("/cancelAppointment")
-	@PostMapping("/cancelAppointment")
+	//@PostMapping("/cancelAppointment")
 	@PreAuthorize("hasRole('PATIENT')")
 	public boolean cancelAppointment(Long examId) {
 		Patient p = (Patient) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

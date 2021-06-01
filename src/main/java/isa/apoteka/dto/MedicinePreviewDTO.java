@@ -1,5 +1,7 @@
 package isa.apoteka.dto;
 
+import isa.apoteka.domain.DrugForm;
+import isa.apoteka.domain.DrugType;
 import isa.apoteka.domain.Medicine;
 import isa.apoteka.domain.Pharmacy;
 
@@ -10,8 +12,8 @@ public class MedicinePreviewDTO {
     public MedicinePreviewDTO() {
     }
 
-    public MedicinePreviewDTO(Medicine medicine, Pharmacy pharmacy, int price, int quantity) {
-        this.medicine = new MedicineDTO(medicine, quantity, price);
+    public MedicinePreviewDTO(Medicine medicine, Pharmacy pharmacy, int price, int quantity, DrugType type, DrugForm form) {
+        this.medicine = new MedicineDTO(medicine, quantity, price, type, form);
         this.pharmacy = new PharmacyDTO(pharmacy);
     }
 

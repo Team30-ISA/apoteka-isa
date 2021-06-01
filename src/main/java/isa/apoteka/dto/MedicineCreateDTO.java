@@ -11,6 +11,8 @@ public class MedicineCreateDTO {
     private String recommendedIntakePerDay;
     private List<Long> substitutes;
     private String manufacturer;
+    private Integer loyaltyPoints;
+    private Long code;
 
     public Long getId() {
         return id;
@@ -83,4 +85,20 @@ public class MedicineCreateDTO {
     public void setManufacturer(String manufacturer) {
         this.manufacturer = manufacturer;
     }
+
+	public Integer getLoyaltyPoints() {
+		return loyaltyPoints;
+	}
+
+	public void setLoyaltyPoints(Integer points) {
+		this.loyaltyPoints = points;
+	}
+
+	public Long getCode() {
+		return code;
+	}
+
+	public void setCode(Long code) {
+		this.code = code;
+	}
 }

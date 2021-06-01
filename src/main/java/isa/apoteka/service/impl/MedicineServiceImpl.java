@@ -8,17 +8,12 @@ import java.util.stream.Collectors;
 import isa.apoteka.domain.*;
 import isa.apoteka.dto.*;
 import isa.apoteka.repository.*;
-import isa.apoteka.dto.FilteredMedicineDTO;
-import isa.apoteka.dto.MedicineCreateDTO;
 import isa.apoteka.repository.DrugFormRepository;
 import isa.apoteka.repository.DrugTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import isa.apoteka.dto.MedicineDTO;
-import isa.apoteka.dto.MedicineNameDTO;
-import isa.apoteka.dto.SearchFilterMedicineDTO;
 import isa.apoteka.repository.MedicineRepository;
 import isa.apoteka.service.MedicineInPharmacyService;
 import isa.apoteka.service.MedicinePriceService;
@@ -223,7 +218,7 @@ public class MedicineServiceImpl implements MedicineService {
 		for(MedicineInPharmacy medicine : medicineInPharmacies) {
 			for(MedicinePrice medicinePrice : medicinePrices) {
 				if(medicine.getMedicine().getId().equals(medicinePrice.getMedicine().getId()) && medicine.getPharmacy().getId().equals(medicinePrice.getPharmacy().getId())) {
-					medicinePreviewDTOList.add(new MedicinePreviewDTO(medicine.getMedicine(), medicine.getPharmacy(), medicine.getQuantity(), medicinePrice.getPrice()));
+					medicinePreviewDTOList.add(new MedicinePreviewDTO(medicine.getMedicine(), medicine.getPharmacy(), medicine.getQuantity(), medicinePrice.getPrice(), medicine.getMedicine().getType(), medicine.getMedicine().getForm()));
 					continue;
 				}
 			}
@@ -231,17 +226,15 @@ public class MedicineServiceImpl implements MedicineService {
 
 		return medicinePreviewDTOList;
 	}
-
+	
 	@Override
 	public MedicineSpecificationDTO getMedicine(Long id) {
 		Medicine medicine = medicineRepository.getOne(id);
 		return new MedicineSpecificationDTO(medicine);
 	}
+	
 	public List<FilteredMedicineDTO> searchMedicineByName(SearchFilterMedicineDTO medicineDTO) {
 		List<FilteredMedicineDTO> dto = new ArrayList<FilteredMedicineDTO>();
 		return dto;
 	}
-
- 
-
 }

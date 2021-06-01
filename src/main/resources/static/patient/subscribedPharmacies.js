@@ -1,6 +1,7 @@
 var app = new Vue({
   el: "#promotions",
   data: {
+	patient: null,
     pharmacies: [],
 	pharmaciesSub: []
   },
@@ -86,15 +87,13 @@ var app = new Vue({
             JSAlert.alert("Sorry, you already subscribed for pharmacy promotions!");
           }
         });
-	    axios
-			.get('/api/pharmacy/findAll',{
+	    const { data } = await axios.get('/api/pharmacy/findAll',{
 			headers: {
 				    			'Authorization': "Bearer " + localStorage.getItem('access_token')
 			  			},
-			}).then(response => {
-				this.pharmaciesSub = response.data
-				console.log(this.pharmaciesSub)
-			})	
+			});
+		 this.pharmaciesSub = data;
+		 console.log(this.pharmacies)
     }
   },
   async created() {
@@ -118,9 +117,20 @@ var app = new Vue({
 				this.pharmaciesSub = response.data
 				console.log(this.pharmaciesSub)
 			})
+			
+		axios
+		.get('/api/patient/getLoggedUser',{
+			  headers: {
+				    'Authorization': "Bearer " + localStorage.getItem('access_token')
+			  }
+	     })
+	    .then(response => {
+	     	this.patient = response.data;
+		})	
 	  
     } catch (err) {
       console.log(err);
     }
+	
   }
 });

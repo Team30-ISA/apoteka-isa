@@ -25,6 +25,7 @@ public class Counseling {
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Patient patient;
 	private Float price;
+	private Float priceWithDiscount;
 	private String report;
 	@Version
 	private int version;
@@ -41,6 +42,18 @@ public class Counseling {
 		this.dermatologistWorkCalendar = dermatologistWorkCalendar;
 		this.patient = patient;
 		this.price = price;
+		this.report = report;
+	}
+	
+	public Counseling(Long id, Date startDate, int duration, DermatologistWorkCalendar dermatologistWorkCalendar,
+			Patient patient, Float price, Float priceWithDiscount, String report) {
+		this.id = id;
+		this.startDate = startDate;
+		this.duration = duration;
+		this.dermatologistWorkCalendar = dermatologistWorkCalendar;
+		this.patient = patient;
+		this.price = price;
+		this.priceWithDiscount = priceWithDiscount;
 		this.report = report;
 	}
 
@@ -98,6 +111,14 @@ public class Counseling {
 
 	public void setReport(String report) {
 		this.report = report;
+	}
+
+	public Float getPriceWithDiscount() {
+		return priceWithDiscount;
+	}
+
+	public void setPriceWithDiscount(Float priceWithDiscount) {
+		this.priceWithDiscount = priceWithDiscount;
 	}
 	
 }

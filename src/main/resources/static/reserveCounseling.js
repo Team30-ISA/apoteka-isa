@@ -3,7 +3,7 @@ var app = new Vue({
 	data: {
 		counselings: [],
 		patient: null,
-		columns: ['name', 'address', 'grade', 'counselingprice'],
+		columns: ['name', 'city','street', 'grade', 'counselingprice', 'counselingPriceWithDiscount'],
 		columns2: ['firstName', 'lastName', 'grade'],
 		sortKey: 'id',
 		reverse: 1,

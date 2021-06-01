@@ -71,6 +71,9 @@ public class Pharmacy {
 	
 	@Column(unique = false, nullable = true)
 	double counselingprice;
+	
+	@Column(unique = false, nullable = true)
+	double counselingPriceWithDiscount;
 
 	public Pharmacy() {
 		super();
@@ -260,6 +263,14 @@ public class Pharmacy {
 
 	public void setMedicinePrices(List<MedicinePrice> medicinePrices) {
 		this.medicinePrices = medicinePrices;
+	}
+
+	public double getCounselingPriceWithDiscount() {
+		return counselingPriceWithDiscount;
+	}
+
+	public void setCounselingPriceWithDiscount(double counselingPriceWithDiscount) {
+		this.counselingPriceWithDiscount = counselingPriceWithDiscount;
 	}
 
 	

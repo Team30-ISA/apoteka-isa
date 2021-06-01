@@ -45,4 +45,9 @@ public class SupplierServiceIml implements SupplierService {
         supplierRepository.save(user);
         return userRequest;
     }
+    
+    @Override
+    public Supplier findById(Long id) {
+        return supplierRepository.findById(id).orElse(null);
+    }
 }

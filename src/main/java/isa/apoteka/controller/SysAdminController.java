@@ -1,5 +1,6 @@
 package isa.apoteka.controller;
 
+import isa.apoteka.domain.SystemAdmin;
 import isa.apoteka.domain.UserRequest;
 import isa.apoteka.dto.ComplaintResponseDTO;
 import isa.apoteka.dto.PharmacistDTO;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -24,7 +26,13 @@ public class SysAdminController {
 		this.sysAdminService = sysAdminService;
 		this.complaintService = complaintService;
 	}
-
+    
+    @GetMapping("/getLoggedUser")
+	@PreAuthorize("hasRole('SYS_ADMIN')")
+	public SystemAdmin getLoggedUser() {
+		return (SystemAdmin) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	}
+    
 	@PutMapping
     @PreAuthorize("hasRole('SYS_ADMIN')")
     public ResponseEntity<?> update(@RequestBody UserRequest userRequest) {

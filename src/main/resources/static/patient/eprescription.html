@@ -252,7 +252,8 @@
 						<th class="table-light">Pharmacy name</a></th>
 						<th class="table-light">Address</a></th>
 						<th class="table-light">Pharmacy average grade</a></th>
-						<th class="table-light">Price</a></th>
+						<th class="table-light">Total price</a></th>
+						<th class="table-light">Price with discount</a></th>
 						<th class="table-light">Buy</a></th>
 					</tr>
 					<tr class="table-light"style = "text-align:center" v-for="(value, key) in pharmacyListFilter"  v-bind:key="pharmacy.pharmacyId">
@@ -260,6 +261,7 @@
 						<td class="table-light">{{this.pharmacyListFilter[value].city}}, {{this.pharmacyListFilter[value].street}}</td>
 						<td class="table-light">{{this.pharmacyListFilter[value].grade}}</td>
 						<td class="table-light" >{{this.pharmacyListFilter[value].price}}</td>
+						<td class="table-light" >{{this.pharmacyListFilter[value].priceWithLoyalty}}</td>
 						<td><button  class="btn btn-primary" v-on:click="choosePharmacy($event,this.pharmacyListFilter[value].pharmacyId)">Choose this pharmacy</button></td>
 					</tr>
 				</table>

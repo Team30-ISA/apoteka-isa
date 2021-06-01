@@ -9,19 +9,33 @@ var app = new Vue({
     allMedicines: []
   },
   methods: {
+	logout(){
+			axios
+	        .post('/auth/logout', null, {
+				  headers: {
+					    'Authorization': "Bearer " + localStorage.getItem('access_token')
+					  }
+		        })
+	        .then(function() {
+	        	localStorage.clear();
+	        	window.location.href = '/login.html';
+	        })
+	},
     async search() {
       if (this.medicineName) {
         const { data } = await axios.get(
           `/api/medicine/allMedicine/${this.medicineName}`
         );
-		if(data.length === 0)
+		
+		if(data.length == 0)
 		{
 			JSAlert.alert("Medicine doesn't exist!")
-			this.medicineName = ""
-			return
+			setTimeout(function () {
+                window.location.href = "/medicine.html";
+              }, 2000);
 		}
         this.allMedicines = data;
-        this.medicines = data.filter((m) => m.pharmacy.grade >= this.minGrade);
+		this.medicines = data.filter((m) => m.pharmacy.grade >= this.minGrade || (m.medicine.form.name === this.filtForm && m.medicine.type.name === this.filtType));
       }
     },
     async getSpec(id) {

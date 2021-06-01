@@ -1,6 +1,10 @@
 new Vue({
   el: "#defineLoyalty",
   data: {
+	admin: null,
+	user: null,
+	loyalty: null,
+    changeData: false,
     type: "",
 	counselingPoints: "",
     pointsExamination: "",
@@ -20,6 +24,39 @@ new Vue({
           localStorage.clear();
           window.location.href = "/login.html";
         });
+    },
+	chData() {
+      if (this.changeData == true) {
+        this.changeData = false;
+        //axios za izmenu podataka
+        const loyalty = {
+          ...this.loyalty
+        };
+		
+			
+        axios
+          .put(
+            "/api/loyalty",
+            {
+              ...this.loyalty
+            },
+            {
+              headers: {
+                Authorization: "Bearer " + localStorage.getItem("access_token")
+              }
+            }
+          )
+          .then((response) => {
+            this.loyalty = loyalty;
+            alert("You have successfully changed your details.");
+          });
+		}
+       else {
+        this.changeData = true;
+      }
+    },
+    discardDataCh() {
+      this.changeData = false;
     },
     async createLoyalty() {
       try {
@@ -45,6 +82,41 @@ new Vue({
       }
     }
   },
-  async created() {
+	created() {
+	  axios
+      .get("/auth/getRole", {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("access_token")
+        }
+      })
+      .then((response) => {
+        if (response.data != "SYS_ADMIN") {
+          window.location.href = "/login.html";
+        }
+      })
+      .catch(function () {
+        window.location.href = "/login.html";
+      });
+	  
+	 axios
+		.get('/api/sys-admin/getLoggedUser',{
+			  headers: {
+				    'Authorization': "Bearer " + localStorage.getItem('access_token')
+			  }
+	     })
+	     .then(response => {
+	     	this.admin = response.data
+	     })
+	
+	  axios
+      .get("/api/loyalty", {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("access_token")
+        }
+      })
+      .then((response) => {
+        this.loyalty = response.data;
+		console.log(this.loyalty)
+	  })
   }
 });

@@ -9,7 +9,7 @@ public interface EPrescriptionService {
 	
 	EPrescription findById(Long id);
     List<EPrescription> findAll ();
-    EPrescription save(ChoosenPharmacyDTO choosenPharmacy);
+    EPrescription saveEPrescription(ChoosenPharmacyDTO choosenPharmacy);
     Boolean proccedEReceipt(ChoosenPharmacyDTO choosenPharmacy);
     EPrescription findByCode(String code);
 }

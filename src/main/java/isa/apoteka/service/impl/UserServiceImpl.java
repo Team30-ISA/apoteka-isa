@@ -66,7 +66,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User save(UserRequest userRequest) {
 		Patient patient = new Patient(userRequest);
-
+		patient.setPhonenumber(userRequest.getPhoneNumber());
 		patient.setPassword(passwordEncoder.encode(userRequest.getPassword()));
 		City city = this.cityService.findCityById(userRequest.getCityId().longValue());
 		Address address = new Address(userRequest.getAddress(), city);

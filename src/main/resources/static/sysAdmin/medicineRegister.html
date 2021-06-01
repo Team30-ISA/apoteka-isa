@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Medicine</title>
+    <title>List of medicines</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -43,34 +43,9 @@
 </head>
 
 <body id="body">
-    <div id="medicine">
+    <div id="manageMedications">
 
-        <div v-if="showSpec" class="text-center" style="position: absolute; width: 100vw; height: 100vh; background-color: rgba(0,0,0,0.2); z-index: 1000;" @click="closeSpec">
-            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); background-color: white; width: 600px; height: 500px;" @click.stop>
-              <div style="position: absolute; top: 10px; right: 15px; cursor: pointer;" @click="closeSpec"><i class="icon fa-times"></i></div>
-              <div>
-                  <h6 style="color:#50d8af;">Contraindications</h6>
-                  <p>{{spec.contraindications}}</p>
-              </div>
-              <div>
-                <h6 style="color:#50d8af;">Composition</h6>
-                <p>{{spec.composition}}</p>
-            </div>
-            <div>
-                <h6 style="color:#50d8af;">Recomended Intake</h6>
-                <p>{{spec.recomendedIntake}}</p>
-            </div>
-            <div>
-                <h6 style="color:#50d8af;">Substitude medicaments</h6>
-                <ul class="list-group">
-                    <li class="list-group-item text-center" v-for="sub in spec.substitutes" :key="index"
-                        style="display: flex; justify-content: space-between;">
-                        {{sub}}
-                    </li>
-                </ul>
-            </div>
-            </div>
-          </div>
+        
 
         <!--==========================
     Top Bar
@@ -133,88 +108,29 @@
   ============================-->
 
         <main id="main" class="text-center">
+			<h1>List of medicines</h1>
             <div class="w-75 d-inline-block">
-				<div class="content">
-								<header>
-									<table class="table table-light" >
-										<tr class="table-light" style = "text-align:center">
-											<th class="table-light">Medicine name</a></th>
-										</tr>
-										<tr class="table-light"style = "text-align:center" v-for="(value, key) in listAllMedicines">
-											<td class="table-light">{{this.listAllMedicines[value].name}}</td>
-										</tr>
-									</table>
-								</header>
-				</div>
-                <div class="form-group">
-                    <input class="form-control mt-5 mb-3" v-model="medicineName" type="text" placeholder="Medicine name">
-                    <button class="btn" @click="search">Submit</button>
-                </div>
-                <div>
-                    Filter by grade: 
-                    <select v-model="minGrade" class="w-25 form-control d-inline-block">
-                        <option value="0">0+</option>
-                        <option value="1">1+</option>
-                        <option value="2">2+</option>
-                        <option value="3">3+</option>
-                        <option value="4">4+</option>
-                        <option value="5">5+</option>
-                        <option value="6">6+</option>
-                        <option value="7">7+</option>
-                        <option value="8">8+</option>
-                        <option value="9">9+</option>
-                        <option value="10">10+</option>
-                    </select>
-                </div>
-				<br>
-				<div>
-                    Filter by type: 
-					<select  v-model="filtType" class="w-25 form-control d-inline-block">
-						<option value="powder">powder</option>
-						<option value="capsule">capsule</option>
-						<option value="tablet">tablet</option>
-						<option value="ointment">ointment</option>
-						<option value="paste">paste</option>
-						<option value="gel">gel</option>
-						<option value="solution">solution</option>
-						<option value="syrup">syrup</option>
-					</select>
-				</div>
-				<br>
-				<div>
-                    Filter by form: 
-					<select v-model="filtForm" class="w-25 form-control d-inline-block">
-						<option value="antibiotic">antibiotic</option>
-						<option value="anesthetic">anesthetic</option>
-						<option value="antihistamine">antihistamine</option>
-						<option value="analgesic">analgesic</option>
-					</select>
-				</div>
                 <div>
                     <ul class="list-group mt-5">
                         <li class="list-group-item text-center"
                         style="display: flex; justify-content: space-between;">
-                            <span style="width: 14.28%;">Pharmacy name</span>
-                            <span style="width: 14.28%;">Address</span>
-                            <span style="width: 14.28%;">Grade</span>
-                            <span style="width: 14.28%;">Price</span>
-                            <span style="width: 14.28%;">Quantity</span>
-							<span style="width: 14.28%;">Medicine type</span>
-							<span style="width: 14.28%;">Medicine form</span>
                             <span style="width: 14.28%;">Medicine name</span>
-                            <span style="width: 14.28%;">Specification</span>
+                            <span style="width: 14.28%;">Type</span>
+                            <span style="width: 14.28%;">Form</span>
+                            <span style="width: 14.28%;">Contraindication</span>
+                            <span style="width: 14.28%;">Composition</span>
+							<span style="width: 14.28%;">Recommended Intake Per Day</span>
+							<span style="width: 14.28%;">Manufacturer</span>
                         </li>
-                        <li class="list-group-item text-center" v-for="medicine in medicines" :key="index"
+                        <li class="list-group-item text-center" v-for="medicine in allMedicines" :key="index"
                             style="display: flex; justify-content: space-between;">
-                            <span style="width: 14.28%;">{{medicine.pharmacy.name}}</span>
-                            <span style="width: 14.28%;">{{medicine.pharmacy.address}}</span>
-                            <span style="width: 14.28%;">{{medicine.pharmacy.grade}}</span>
-                            <span style="width: 14.28%;">{{medicine.medicine.price}}</span>
-                            <span style="width: 14.28%;">{{medicine.medicine.quantity}}</span>
-							<span style="width: 14.28%;">{{medicine.medicine.type.name}}</span>
-							<span style="width: 14.28%;">{{medicine.medicine.form.name}}</span>
-                            <span style="width: 14.28%;">{{medicine.medicine.name}}</span>
-                            <span style="width: 14.28%;"><button class="btn" @click="getSpec(medicine.medicine.id)">Spec</button></span>
+                            <span style="width: 14.28%;">{{medicine.name}}</span>
+                            <span style="width: 14.28%;">{{medicine.type.name}}</span>
+                            <span style="width: 14.28%;">{{medicine.form.name}}</span>
+                            <span style="width: 14.28%;">{{medicine.contraindications}}</span>
+                            <span style="width: 14.28%;">{{medicine.composition}}</span>
+							<span style="width: 14.28%;">{{medicine.recommendedIntakePerDay}}</span>
+							<span style="width: 14.28%;">{{medicine.manufacturer}}</span>
                         </li>
                     </ul>
                 </div>
@@ -242,7 +158,7 @@
 	<!-- Template Main Javascript File -->
 	<script src="../js/main.js"></script>
 	<script src="../axios.js"></script>
-    <script src="medicine.js"></script>
+    <script src="manageMedications.js"></script>
 
 </body>
 

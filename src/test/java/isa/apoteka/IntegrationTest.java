@@ -12,6 +12,14 @@ import static isa.constants.GeneralConstants.ADMIN_PASSWORD;
 import static isa.constants.GeneralConstants.LOGIN;
 import static isa.constants.GeneralConstants.PHARM_EMAIL;
 import static isa.constants.GeneralConstants.PHARM_PASSWORD;
+import static isa.constants.GeneralConstants.PATIENT_EMAIL;
+import static isa.constants.GeneralConstants.PATIENT_PASSWORD;
+import static isa.constants.GeneralConstants.SUPPLIER_EMAIL;
+import static isa.constants.GeneralConstants.SUPPLIER_PASSWORD;
+import static isa.constants.GeneralConstants.SYS_ADMIN_EMAIL;
+import static isa.constants.GeneralConstants.SYS_ADMIN_PASSWORD;
+import static isa.constants.PharmacyConstants.PATIENT_ID;
+
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -21,7 +29,6 @@ import java.util.Map;
 
 import javax.transaction.Transactional;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -201,5 +208,51 @@ public class IntegrationTest {
 		mockMvc.perform(MockMvcRequestBuilders.get("/api/errand/findAllErrands")
 				.header("Authorization", "Bearer " + userTokenState.getAccessToken()).contentType(contentType)
 				.param("approved", "false")).andExpect(status().is(200));
+	}
+	 
+	@Test
+	public void test_Find_All_Valid_Errands() throws Exception{
+		MvcResult result = login(SUPPLIER_EMAIL,SUPPLIER_PASSWORD);
+		UserTokenState userTokenState = JSON.parse(result.getResponse().getContentAsString(), UserTokenState.class);
+		mockMvc.perform(MockMvcRequestBuilders.get("/api/offer/erands")
+				.header("Authorization", "Bearer " + userTokenState.getAccessToken()).contentType(contentType))
+				.andExpect(status().is(200));
+	}
+	
+	@Test
+	public void test_Find_Supplier_Stock() throws Exception{
+		MvcResult result = login(SUPPLIER_EMAIL,SUPPLIER_PASSWORD);
+		UserTokenState userTokenState = JSON.parse(result.getResponse().getContentAsString(), UserTokenState.class);
+		mockMvc.perform(MockMvcRequestBuilders.get("/api/offer/stock")
+				.header("Authorization", "Bearer " + userTokenState.getAccessToken()).contentType(contentType))
+				.andExpect(status().is(200));
+	}
+	
+	@Test
+	public void test_Get_All_EPrescription_By_Patient_Failed() throws Exception{
+		MvcResult result = login(PATIENT_EMAIL,PATIENT_PASSWORD);
+		String patientId = JSON.stringify(PATIENT_ID);
+		UserTokenState userTokenState = JSON.parse(result.getResponse().getContentAsString(), UserTokenState.class);
+		mockMvc.perform(MockMvcRequestBuilders.get("/api/eprescription/all")
+				.header("Authorization", "Bearer " + userTokenState.getAccessToken()).contentType(contentType)
+				.pathInfo("/"+patientId)).andExpect(status().is(404));
+	}
+	
+	@Test
+	public void test_Find_All_Supplier_Offer() throws Exception{
+		MvcResult result = login(SUPPLIER_EMAIL,SUPPLIER_PASSWORD);
+		UserTokenState userTokenState = JSON.parse(result.getResponse().getContentAsString(), UserTokenState.class);
+		mockMvc.perform(MockMvcRequestBuilders.get("/api/offer/")
+				.header("Authorization", "Bearer " + userTokenState.getAccessToken()).contentType(contentType))
+				.andExpect(status().is(200));
+	}
+	
+	@Test
+	public void test_Find_All_Complaints_For_SystemAdmin() throws Exception{
+		MvcResult result = login(SYS_ADMIN_EMAIL,SYS_ADMIN_PASSWORD);
+		UserTokenState userTokenState = JSON.parse(result.getResponse().getContentAsString(), UserTokenState.class);
+		mockMvc.perform(MockMvcRequestBuilders.get("/api/sys-admin/complaint-data")
+				.header("Authorization", "Bearer " + userTokenState.getAccessToken()).contentType(contentType))
+				.andExpect(status().is(200));
 	}
 } 

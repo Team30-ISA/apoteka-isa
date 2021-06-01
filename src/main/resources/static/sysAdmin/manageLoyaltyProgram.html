@@ -4,29 +4,32 @@
   <meta charset="utf-8">
   <title>Reveal Bootstrap Template</title>
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <meta content="" name="keywords">
-  <meta content="" name="description">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
 
-  <!-- Favicons -->
-  <link href="../img/favicon.png" rel="icon">
-  <link href="../img/apple-touch-icon.png" rel="apple-touch-icon">
+    <!-- Favicons -->
+    <link href="../img/favicon.png" rel="icon">
+    <link href="../img/apple-touch-icon.png" rel="apple-touch-icon">
+    <link href="../img/zena.jpg">
 
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,700,700i|Raleway:300,400,500,700,800|Montserrat:300,400,700" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,700,700i|Raleway:300,400,500,700,800|Montserrat:300,400,700"
+        rel="stylesheet">
 
-  <!-- Bootstrap CSS File -->
-  <link href="../lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap CSS File -->
+    <link href="../lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
-  <!-- Libraries CSS Files -->
-  <link href="../lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-  <link href="../lib/animate/animate.min.css" rel="stylesheet">
-  <link href="../lib/ionicons/css/ionicons.min.css" rel="stylesheet">
-  <link href="../lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
-  <link href="../lib/magnific-popup/magnific-popup.css" rel="stylesheet">
-  <link href="../lib/ionicons/css/ionicons.min.css" rel="stylesheet">
+    <!-- Libraries CSS Files -->
+    <link href="../lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="../lib/animate/animate.min.css" rel="stylesheet">
+    <link href="../lib/ionicons/css/ionicons.min.css" rel="stylesheet">
+    <link href="../lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="../lib/magnific-popup/magnific-popup.css" rel="stylesheet">
+    <link href="../lib/ionicons/css/ionicons.min.css" rel="stylesheet">
 
-  <!-- Main Stylesheet File -->
-  <link href="../css/style.css" rel="stylesheet">
+    <!-- Main Stylesheet File -->
+    <link href="../css/style.css" rel="stylesheet">
 
   <!-- =======================================================
     Theme Name: Reveal
@@ -34,6 +37,30 @@
     Author: BootstrapMade.com
     License: https://bootstrapmade.com/license/
   ======================================================= -->
+  <style>
+    .txtDisabled {
+        border-color: transparent;
+        background-color: white;
+    }
+
+    .txtEnabled {
+        padding: 5px 5px;
+        border-radius: 0;
+        box-shadow: none;
+        font-size: 15px;
+        display: block;
+        width: 170%;
+        padding: .275rem .75rem;
+        font-size: 1rem;
+        line-height: 2;
+        color: #495057;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #ced4da;
+        border-radius: .25rem;
+        transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    }
+</style>
 </head>
 
 <body id="body">
@@ -83,7 +110,8 @@
 								<li><a href="complaint.html">Complaints</a></li>
                                 <li><a href="manageLoyaltyProgram.html">Loyalty program</a></li>
 							</ul></li>
-						<li class="menu-has-children"><a href="#"><i class="icon fa-cog"></i></a>
+						<li class="menu-has-children"><a href="#">{{admin.firstName}}
+								{{admin.lastName}}</a>
 							<ul>
 								<li><a href="profile.html"><i class="icon fa-user"></i>&nbsp&nbsp&nbspProfile</a></li>
 								<li @click="logout"><a href="#"><i
@@ -98,57 +126,125 @@
   <!--==========================
     Intro Section
   ============================-->
-  
   <main id="main">
-    <form @submit.prevent="createLoyalty" class="text-center mt-5">
-        
-        <div class="form-row d-inline-block w-50 mx-3 mt-3">
-            <div class="form-group col-md-12">
-                <select v-model="type" class="form-control">
-                <option disabled value="">Select category type</option>
-                <option v-for="type in types" :value="type" :key="type">
-                    {{ type }}
-                </select>
-            </div>
-        </div>
-		<div class="d-inline-block w-50 mx-3 mt-5">
-          <h6 style="color:#50d8af;"">Points for counseling</h6>
-          <input autofocus v-model="counselingPoints" type="number" name="counselingPoints" class="form-control" id="counselingPoints" />
-        </div>
-        <div class="d-inline-block w-50 mx-3 mt-5">
-          <h6 style="color:#50d8af;"">Points for examination</h6>
-          <input autofocus v-model="examinationPoints" type="number" name="examinationPoints" class="form-control" id="examinationPoints" />
-        </div>
-        <div class="d-inline-block w-50 mx-3 mt-3">
-          <h6 style="color:#50d8af;"">Discount</h6>
-          <input autofocus v-model="discount" type="number" name="discount" class="form-control" id="discount" />
-        </div>
-        <div class="d-inline-block w-50 mx-3 mt-3">
-          <h6 style="color:#50d8af;"">Minimum points for selected user</h6>
-          <input autofocus v-model="minPoints" type="number" name="minPoints" class="form-control" id="minPoints" />
-        </div>
-        <button class="btn d-inline-block w-50 mx-3 my-5">Define</button>
-      </form>
-  </main>
+            <section id="wrapper">
+                <div class="inner">
+                    <header class="special">
+                        <h2 v-if="!changeData">L O Y A L T Y P R O G R A M <span @click="chData"
+                                style="font-size: 14px; cursor: pointer;">[edit ]</span></h2>
+                        <h2 v-else>L O Y A L T Y P R O G R A M <span @click="discardDataCh"
+                                style="font-size: 14px; cursor: pointer;">[discard]</span></h2>
+                    </header>
+                    <div class="highlights">
+					
+                        <section style="margin-left:25rem">
+                            <table class="table table-light" style="width: 00%; height: 150%;">
+                                <tr>
+                                    <td style="width: 200%">
+                                        <b>Discount for regular users</b>
+                                    </td>
+                                    <td style="width: 200%;  background-color: #ffffff" ;>
+                                        <input type="number" v-model="loyalty.regularDiscount"
+                                            :class="[changeData ? 'txtEnabled' : 'txtDisabled']"
+                                            :disabled="!changeData">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 100%;">
+                                        <b>Discount for silver users</b>
+                                    </td>
+                                    <td style="width: 100%;">
+                                        <input type="number" v-model="loyalty.silverDiscount"
+                                            :class="[changeData ? 'txtEnabled' : 'txtDisabled']"
+                                            :disabled="!changeData">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 100%;">
+                                        <b>User is silver with minimum points</b>
+                                    </td>
+                                    <td style="width: 100%;">
+                                        <input type="number" v-model="loyalty.silverMinPoints"
+                                            :class="[changeData ? 'txtEnabled' : 'txtDisabled']"
+                                            :disabled="!changeData">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 100%;">
+                                        <b>Discount for gold users</b>
+                                    </td>
+                                    <td style="width: 100%;">
+                                        <input type="number" v-model="loyalty.goldenDiscount"
+                                            :class="[changeData ? 'txtEnabled' : 'txtDisabled']"
+                                            :disabled="!changeData">
+                                    </td>
+                                </tr>
+								<tr>
+                                    <td style="width: 100%;">
+                                        <b>User is gold with minimum points</b>
+                                    </td>
+                                    <td style="width: 100%;">
+                                        <input type="number" v-model="loyalty.goldenMinPoints"
+                                            :class="[changeData ? 'txtEnabled' : 'txtDisabled']"
+                                            :disabled="!changeData">
+                                    </td>
+                                </tr>
+								<tr>
+                                    <td style="width: 100%;">
+                                        <b>Points for counseling</b>
+                                    </td>
+                                    <td style="width: 100%;">
+                                        <input type="number" v-model="loyalty.counselingPoints"
+                                            :class="[changeData ? 'txtEnabled' : 'txtDisabled']"
+                                            :disabled="!changeData">
+                                    </td>
+                                </tr>
+								<tr>
+                                    <td style="width: 100%;">
+                                        <b>Points for examination</b>
+                                    </td>
+                                    <td style="width: 100%;">
+                                        <input type="number" v-model="loyalty.examinationPoints"
+                                            :class="[changeData ? 'txtEnabled' : 'txtDisabled']"
+                                            :disabled="!changeData">
+                                    </td>
+                                </tr>
+                                
+                                <tr>
+                                    <td colspan="2">
+                                        <input v-if="changeData" type="button" @click="chData" value="Save changes"
+                                            style="width: 200px; background: #50d8af; border: 0; border-radius: 3px; padding: 10px 30px; color: #fff; transition: 0.4s; cursor: pointer; margin-top:2rem">
+                                    </td>
+                                    <td>
+                                    </td>
+                                </tr>
+                            </table>
+                        </section>
+                    </div>
+                </div>
+            </section>
+        </main>
 </div>
 
   <!-- JavaScript Libraries -->
   <script src="../lib/jquery/jquery.min.js"></script>
-  <script src="../lib/jquery/jquery-migrate.min.js"></script>
-  <script src="../lib/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="../lib/easing/easing.min.js"></script>
-  <script src="../lib/superfish/hoverIntent.js"></script>
-  <script src="../lib/superfish/superfish.min.js"></script>
-  <script src="../lib/wow/wow.min.js"></script>
-  <script src="../lib/owlcarousel/owl.carousel.min.js"></script>
-  <script src="../lib/magnific-popup/magnific-popup.min.js"></script>
-  <script src="../lib/sticky/sticky.js"></script>
-  <script src="https://npmcdn.com/js-alert/dist/jsalert.min.js"></script>
+    <script src="../lib/jquery/jquery-migrate.min.js"></script>
+    <script src="../lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../lib/easing/easing.min.js"></script>
+    <script src="../lib/superfish/hoverIntent.js"></script>
+    <script src="../lib/superfish/superfish.min.js"></script>
+    <script src="../lib/wow/wow.min.js"></script>
+    <script src="../lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="../lib/magnific-popup/magnific-popup.min.js"></script>
+    <script src="../lib/sticky/sticky.js"></script>
+	<script src="https://npmcdn.com/js-alert/dist/jsalert.min.js"></script>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.18/vue.min.js"></script>
-  <!-- Template Main Javascript File -->
-  <script src="../js/main.js"></script>
-  <script src="../axios.js"></script>
+
+    <!-- Contact Form JavaScript File -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.18/vue.min.js"></script>
+    <!-- Template Main Javascript File -->
+    <script src="../js/main.js"></script>
+    <script src="../axios.js"></script>
   <script src="manageLoyaltyProgram.js"></script>
 
 </body>

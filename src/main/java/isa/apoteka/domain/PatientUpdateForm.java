@@ -17,6 +17,16 @@ public class PatientUpdateForm {
 	private String email;
 	
 	private Address address;
+	
+	private String phonenumber;
+
+	public String getPhoneNumber() {
+		return phonenumber;
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phonenumber = phoneNumber;
+	}
 
 	public String getUsername() {
 		return username;

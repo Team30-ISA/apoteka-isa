@@ -25,13 +25,16 @@ import com.sun.istack.Nullable;
 import isa.apoteka.async.service.EmailService;
 import isa.apoteka.domain.Counseling;
 import isa.apoteka.domain.Dermatologist;
+import isa.apoteka.domain.LoyaltyProgram;
 import isa.apoteka.domain.Patient;
 import isa.apoteka.domain.Pharmacy;
 import isa.apoteka.domain.PharmacyAdmin;
 import isa.apoteka.dto.ExaminationDTO;
 import isa.apoteka.dto.PeriodDTO;
+import isa.apoteka.repository.LoyaltyProgramRepository;
 import isa.apoteka.service.CounselingService;
 import isa.apoteka.service.DermatologistWorkCalendarService;
+import isa.apoteka.service.LoyaltyProgramService;
 import isa.apoteka.service.PatientService;
 
 @RestController
@@ -46,6 +49,8 @@ public class CounselingController {
 	private DermatologistWorkCalendarService dWCService;
 	@Autowired
 	private EmailService emailService;
+	@Autowired
+	private LoyaltyProgramRepository loyaltyProgramRepository;
 	
 	@Nullable
 	@GetMapping("/findAllTermsByDay")
@@ -345,13 +350,40 @@ public class CounselingController {
 	public List<Counseling> findAllCounselingsForPharmacy(Long pharmId){
 			List<Counseling> counselings = counselingService.findAllByPharmId(pharmId);
 			List<Counseling> ret = new ArrayList<Counseling>();
+			
 			for(Counseling s: counselings) {
-				if(s.getPatient() == null)
+				if(s.getPatient() == null) {
+					s.setPriceWithDiscount(this.setPriceWithLoyaltyProgram(s.getPrice()));
 					ret.add(s);
+				}
 			}
 			System.out.println("SSSSSSSSSSSSSSSSS" + ret.size());
 			return ret;
 	}
+	
+	private Float setPriceWithLoyaltyProgram(Float price) {
+    	Patient patient = (Patient) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String status = patient.getLoyaltyCategory();
+        Float newPrice = (float) 1.0;
+
+        try {
+            LoyaltyProgram loyaltyProgram = loyaltyProgramRepository.findAll().get(0);
+            if(status.equals("REGULAR")) {
+                newPrice = (float) (price - price  * (loyaltyProgram.getRegularDiscount()/1));
+            }
+            else if(status.equals("SILVER")) {
+                newPrice = (float) (price  - price * (loyaltyProgram.getSilverDiscount()/1));
+            }
+            else if(status.equals("GOLD")) {
+                newPrice = (float) (price  - price * (loyaltyProgram.getGoldenDiscount()/1));
+            }
+        }
+        catch(Exception e) {
+            return price;
+        }
+
+        return newPrice;
+    }
 	
 	@GetMapping("/findAllByPatientId")
 	@PreAuthorize("hasRole('PATIENT')")

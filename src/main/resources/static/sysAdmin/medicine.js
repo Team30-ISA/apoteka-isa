@@ -1,13 +1,14 @@
 var app = new Vue({
   el: "#medicine",
   data: {
-	patient: null,
+	admin: null,
     medicineName: "",
     medicines: [],
     spec: null,
     showSpec: false,
     minGrade: 0,
-    allMedicines: []
+    allMedicines: [],
+	listAllMedicines: []
   },
   methods: {
 	logout(){
@@ -31,11 +32,12 @@ var app = new Vue({
 		{
 			JSAlert.alert("Medicine doesn't exist!")
 			setTimeout(function () {
-                window.location.href = "/patient/medicine.html";
+                window.location.href = "/sysAdmin/medicine.html";
               }, 2000);
 		}
         this.allMedicines = data;
-        this.medicines = data.filter((m) => m.pharmacy.grade >= this.minGrade);
+		this.medicines = data.filter((m) => m.pharmacy.grade >= this.minGrade || (m.medicine.form.name === this.filtForm && m.medicine.type.name === this.filtType));
+
       }
     },
     async getSpec(id) {
@@ -55,5 +57,25 @@ var app = new Vue({
           (m) => m.pharmacy.grade >= this.minGrade
         );
     }
+  },
+  created(){
+	axios
+		.get('/api/sys-admin/getLoggedUser',{
+			  headers: {
+				    'Authorization': "Bearer " + localStorage.getItem('access_token')
+			  }
+	     })
+	     .then(response => {
+	     	this.admin = response.data
+	     })
+	axios
+			.get('/api/medicine/getAll',{
+			headers: {
+				    'Authorization': "Bearer " + localStorage.getItem('access_token')
+			  			},
+			}).then(response => {
+				this.listAllMedicines = response.data
+				console.log(this.listAllMedicines)
+			});
   }
 });

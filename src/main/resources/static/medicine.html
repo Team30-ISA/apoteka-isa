@@ -3,33 +3,36 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Reveal Bootstrap Template</title>
+    <title>Medicine</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
 
     <!-- Favicons -->
-    <link href="img/favicon.png" rel="icon">
-    <link href="img/apple-touch-icon.png" rel="apple-touch-icon">
+<link href="../img/favicon.png" rel="icon">
+<link href="../img/apple-touch-icon.png" rel="apple-touch-icon">
+<link href="../img/zena.jpg">
 
-    <!-- Google Fonts -->
-    <link
-        href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,700,700i|Raleway:300,400,500,700,800|Montserrat:300,400,700"
-        rel="stylesheet">
+<!-- Google Fonts -->
+<link
+	href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,700,700i|Raleway:300,400,500,700,800|Montserrat:300,400,700"
+	rel="stylesheet">
 
-    <!-- Bootstrap CSS File -->
-    <link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<!-- Bootstrap CSS File -->
+<link href="../lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Libraries CSS Files -->
-    <link href="lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-    <link href="lib/animate/animate.min.css" rel="stylesheet">
-    <link href="lib/ionicons/css/ionicons.min.css" rel="stylesheet">
-    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
-    <link href="lib/magnific-popup/magnific-popup.css" rel="stylesheet">
-    <link href="lib/ionicons/css/ionicons.min.css" rel="stylesheet">
+<!-- Libraries CSS Files -->
+<link href="../lib/font-awesome/css/font-awesome.min.css"
+	rel="stylesheet">
+<link href="../lib/animate/animate.min.css" rel="stylesheet">
+<link href="../lib/ionicons/css/ionicons.min.css" rel="stylesheet">
+<link href="../lib/owlcarousel/assets/owl.carousel.min.css"
+	rel="stylesheet">
+<link href="../lib/magnific-popup/magnific-popup.css" rel="stylesheet">
+<link href="../lib/ionicons/css/ionicons.min.css" rel="stylesheet">
 
-    <!-- Main Stylesheet File -->
-    <link href="css/style.css" rel="stylesheet">
+<!-- Main Stylesheet File -->
+<link href="../css/style.css" rel="stylesheet">
 
     <!-- =======================================================
     Theme Name: Reveal
@@ -101,16 +104,16 @@
                 </div>
 
                 <nav id="nav-menu-container">
-                    <ul class="nav-menu">
-                        <li class="menu-active"><a href="index.html">Home</a></li>
-                        <li><a href="#about">Pharmacies</a></li>
-                        <li><a href="medicine.html">Medicine</a></li>
-                        <li><a href="register.html">Register</a></li>
-                        <li><a href="login.html">Login</a></li>
-                    </ul>
-                </nav><!-- #nav-menu-container -->
-            </div>
-        </header><!-- #header -->
+        <ul class="nav-menu">
+          <li class="menu-active"><a href="index.html">Home</a></li>
+          <li><a href="#about">Pharmacies</a></li>
+          <li><a href="medicine.html">Medicine</a></li>
+          <li><a href="register.html">Register</a></li>
+          <li><a href="login.html">Login</a></li>
+        </ul>
+      </nav><!-- #nav-mentainer -->
+    </div>
+  </header><!-- #header -->
 
         <!--==========================
     Intro Section
@@ -118,10 +121,12 @@
 
         <main id="main" class="text-center">
             <div class="w-75 d-inline-block">
+				
                 <div class="form-group">
                     <input class="form-control mt-5 mb-3" v-model="medicineName" type="text" placeholder="Medicine name">
                     <button class="btn" @click="search">Submit</button>
                 </div>
+				<br>
                 <div>
                     Filter by grade: 
                     <select v-model="minGrade" class="w-25 form-control d-inline-block">
@@ -139,6 +144,30 @@
 
                     </select>
                 </div>
+				<br>
+				<div>
+                    Filter by type: 
+					<select  v-model="filtType" class="w-25 form-control d-inline-block">
+						<option value="powder">powder</option>
+						<option value="capsule">capsule</option>
+						<option value="tablet">tablet</option>
+						<option value="ointment">ointment</option>
+						<option value="paste">paste</option>
+						<option value="gel">gel</option>
+						<option value="solution">solution</option>
+						<option value="syrup">syrup</option>
+					</select>
+				</div>
+				<br>
+				<div>
+                    Filter by form: 
+					<select v-model="filtForm" class="w-25 form-control d-inline-block">
+						<option value="antibiotic">antibiotic</option>
+						<option value="anesthetic">anesthetic</option>
+						<option value="antihistamine">antihistamine</option>
+						<option value="analgesic">analgesic</option>
+					</select>
+				</div>
                 <div>
                     <ul class="list-group mt-5">
                         <li class="list-group-item text-center"
@@ -148,8 +177,10 @@
                             <span style="width: 14.28%;">Grade</span>
                             <span style="width: 14.28%;">Price</span>
                             <span style="width: 14.28%;">Quantity</span>
+							<span style="width: 14.28%;">Medicine type</span>
+							<span style="width: 14.28%;">Medicine form</span>
                             <span style="width: 14.28%;">Medicine name</span>
-                            <span style="width: 14.28%;"></span>
+                            <span style="width: 14.28%;">Specification</span>
                         </li>
                         <li class="list-group-item text-center" v-for="medicine in medicines" :key="index"
                             style="display: flex; justify-content: space-between;">
@@ -158,6 +189,8 @@
                             <span style="width: 14.28%;">{{medicine.pharmacy.grade}}</span>
                             <span style="width: 14.28%;">{{medicine.medicine.price}}</span>
                             <span style="width: 14.28%;">{{medicine.medicine.quantity}}</span>
+							<span style="width: 14.28%;">{{medicine.medicine.type.name}}</span>
+							<span style="width: 14.28%;">{{medicine.medicine.form.name}}</span>
                             <span style="width: 14.28%;">{{medicine.medicine.name}}</span>
                             <span style="width: 14.28%;"><button class="btn" @click="getSpec(medicine.medicine.id)">Spec</button></span>
                         </li>
@@ -169,24 +202,24 @@
         <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
     </div>
     <!-- JavaScript Libraries -->
-    <script src="lib/jquery/jquery.min.js"></script>
-    <script src="lib/jquery/jquery-migrate.min.js"></script>
-    <script src="lib/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="lib/easing/easing.min.js"></script>
-    <script src="lib/superfish/hoverIntent.js"></script>
-    <script src="lib/superfish/superfish.min.js"></script>
-    <script src="lib/wow/wow.min.js"></script>
-    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
-    <script src="lib/magnific-popup/magnific-popup.min.js"></script>
-    <script src="lib/sticky/sticky.js"></script>
+	<script src="../lib/jquery/jquery.min.js"></script>
+	<script src="../lib/jquery/jquery-migrate.min.js"></script>
+	<script src="../lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+	<script src="../lib/easing/easing.min.js"></script>
+	<script src="../lib/superfish/hoverIntent.js"></script>
+	<script src="../lib/superfish/superfish.min.js"></script>
+	<script src="../lib/wow/wow.min.js"></script>
+	<script src="../lib/owlcarousel/owl.carousel.min.js"></script>
+	<script src="../lib/magnific-popup/magnific-popup.min.js"></script>
+	<script src="../lib/sticky/sticky.js"></script>
 	<script src="https://npmcdn.com/js-alert/dist/jsalert.min.js"></script>
 
-    <!-- Contact Form JavaScript File -->
-    <script src="contactform/contactform.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.18/vue.min.js"></script>
-    <!-- Template Main Javascript File -->
-    <script src="js/main.js"></script>
-    <script src="axios.js"></script>
+	<!-- Contact Form JavaScript File -->
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.18/vue.min.js"></script>
+	<!-- Template Main Javascript File -->
+	<script src="../js/main.js"></script>
+	<script src="../axios.js"></script>
     <script src="medicine.js"></script>
 
 </body>

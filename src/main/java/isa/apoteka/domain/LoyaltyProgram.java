@@ -18,32 +18,59 @@ public class LoyaltyProgram {
 	@Column(name = "id", unique = true, nullable = false)
 	private Long id;
 
-	@Column(name = "Type")
-	private CategoryType type;
+	@Column(name = "counselingPoints")
+	private Double counselingPoints;
+
+	@Column(name = "examinationPoints")
+	private Double examinationPoints;
+
+	@Column(name = "regularMinPoints")
+	private Integer regularMinPoints;
+
+	@Column(name = "regularDiscount")
+	private Double regularDiscount;
+
+	@Column(name = "silverMinPoints")
+	private Integer silverMinPoints;
 	
-	@Column(name = "CounselingPoints")
-	private Integer counselingPoints;
+	@Column(name = "silverDiscount")
+    private Double silverDiscount;
 
-	@Column(name = "ExaminationPoints")
-	private Integer examinationPoints;
-
-	@Column(name = "MinPoints")
-	private Integer minPoints;
-
-	@Column(name = "Discount")
-	private Double discount;
+	@Column(name = "goldenMinPoints")
+	private Integer goldenMinPoints;
+	
+    @Column(name = "goldenDiscount")
+    private Double goldenDiscount;
 	
 	public LoyaltyProgram() {
 		super();
 	}
-
-	public LoyaltyProgram(LoyaltyProgramDTO loyaltyProgram) {
-		this.type = loyaltyProgram.getType();
-		this.examinationPoints = loyaltyProgram.getExaminationPoints();
-		this.minPoints = loyaltyProgram.getMinPoints();
-		this.discount = loyaltyProgram.getDiscount();
-		this.counselingPoints =loyaltyProgram.getCounselingPoints();
+	
+	public LoyaltyProgram(LoyaltyProgramDTO loyaltyProgramDTO) {
+		this.counselingPoints = loyaltyProgramDTO.getCounselingPoints();
+		this.examinationPoints = loyaltyProgramDTO.getExaminationPoints();
+		this.regularMinPoints = loyaltyProgramDTO.getRegularMinPoints();
+		this.regularDiscount = loyaltyProgramDTO.getRegularDiscount();
+		this.silverMinPoints = loyaltyProgramDTO.getSilverMinPoints();
+		this.silverDiscount = loyaltyProgramDTO.getSilverDiscount();
+		this.goldenMinPoints = loyaltyProgramDTO.getGoldenMinPoints();
+		this.goldenDiscount = loyaltyProgramDTO.getGoldenDiscount();
 	}
+
+	/*public LoyaltyProgram(Long id, Double counselingPoints, Double examinationPoints, Integer regularMinPoints,
+			Double regularDiscount, Integer silverMinPoints, Double silverDiscount, Integer goldenMinPoints,
+			Double goldenDiscount) {
+		super();
+		this.id = id;
+		this.counselingPoints = counselingPoints;
+		this.examinationPoints = examinationPoints;
+		this.regularMinPoints = regularMinPoints;
+		this.regularDiscount = regularDiscount;
+		this.silverMinPoints = silverMinPoints;
+		this.silverDiscount = silverDiscount;
+		this.goldenMinPoints = goldenMinPoints;
+		this.goldenDiscount = goldenDiscount;
+	}*/
 
 	public Long getId() {
 		return id;
@@ -53,44 +80,68 @@ public class LoyaltyProgram {
 		this.id = id;
 	}
 
-	public CategoryType getType() {
-		return type;
+	public Integer getRegularMinPoints() {
+		return regularMinPoints;
 	}
 
-	public void setType(CategoryType type) {
-		this.type = type;
+	public void setRegularMinPoints(Integer regularMinPoints) {
+		this.regularMinPoints = regularMinPoints;
 	}
 
-	public Integer getMinPoints() {
-		return minPoints;
+	public Double getRegularDiscount() {
+		return regularDiscount;
 	}
 
-	public void setMinPoints(Integer minPoints) {
-		this.minPoints = minPoints;
+	public void setRegularDiscount(Double regularDiscount) {
+		this.regularDiscount = regularDiscount;
 	}
 
-	public Double getDiscount() {
-		return discount;
+	public Integer getSilverMinPoints() {
+		return silverMinPoints;
 	}
 
-	public void setDiscount(Double discount) {
-		this.discount = discount;
+	public void setSilverMinPoints(Integer silverMinPoints) {
+		this.silverMinPoints = silverMinPoints;
 	}
 
-	public Integer getCounselingPoints() {
-		return counselingPoints;
+	public Double getSilverDiscount() {
+		return silverDiscount;
 	}
 
-	public void setCounselingPoints(Integer counselingPoints) {
+	public void setSilverDiscount(Double silverDiscount) {
+		this.silverDiscount = silverDiscount;
+	}
+
+	public Integer getGoldenMinPoints() {
+		return goldenMinPoints;
+	}
+
+	public void setGoldenMinPoints(Integer goldenMinPoints) {
+		this.goldenMinPoints = goldenMinPoints;
+	}
+
+	public Double getGoldenDiscount() {
+		return goldenDiscount;
+	}
+
+	public void setGoldenDiscount(Double goldenDiscount) {
+		this.goldenDiscount = goldenDiscount;
+	}
+
+	public void setCounselingPoints(Double counselingPoints) {
 		this.counselingPoints = counselingPoints;
 	}
 
-	public Integer getExaminationPoints() {
-		return examinationPoints;
+	public void setExaminationPoints(Double examinationPoints) {
+		this.examinationPoints = examinationPoints;
 	}
 
-	public void setExaminationPoints(Integer examinationPoints) {
-		this.examinationPoints = examinationPoints;
+	public Double getCounselingPoints() {
+		return counselingPoints;
+	}
+
+	public Double getExaminationPoints() {
+		return examinationPoints;
 	}
 
 }

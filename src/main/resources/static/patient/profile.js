@@ -18,7 +18,7 @@ var app = new Vue({
 		idAddress: 0,
 		reservedMedications: [],
 		examinations: [],
-		columns: ['name', 'manufacturer'],
+		columns: ['name', 'manufacturer', 'price','	priceWithLoyalty'],
 	},
 	methods: {
 		logout(){
