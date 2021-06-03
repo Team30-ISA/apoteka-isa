@@ -90,7 +90,7 @@ new Vue({
         if(isNaN(this.phonenumber) || !this.phonenumber){
 			JSAlert.alert("The phone number must consist only of digits!");
 			return;
-		}else if (this.password.length < 5) {
+		}else if (this.password.length < 6) {
 			JSAlert.alert("Password must have minimal 6 characters!");
 			this.password = "";
 			return;
