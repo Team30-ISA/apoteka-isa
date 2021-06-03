@@ -140,7 +140,7 @@ new Vue({
 			JSAlert.alert("You haven't filled in all the fields!");
 		}
       } catch (error) {
-        JSAlert.alert("Dear" + admin.firstName + " code must have unique!");
+        JSAlert.alert("Code must have unique!");
 		
       }
     }
