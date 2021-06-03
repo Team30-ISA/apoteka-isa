@@ -28,7 +28,7 @@ new Vue({
 	chData() {
       if (this.changeData == true) {
         this.changeData = false;
-        //axios za izmenu podataka
+        
         const loyalty = {
           ...this.loyalty
         };
@@ -48,8 +48,14 @@ new Vue({
           )
           .then((response) => {
             this.loyalty = loyalty;
-            alert("You have successfully changed your details.");
-          });
+          }).catch(error => {
+            	
+				JSAlert.alert("You have successfully updated loyalty program.");
+			setTimeout(function () {
+					window.location.href = "/sysAdmin/manageLoyaltyProgram.html";
+				  }, 3000);
+
+        });;
 		}
        else {
         this.changeData = true;

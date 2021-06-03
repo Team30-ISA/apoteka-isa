@@ -38,7 +38,7 @@ INSERT INTO pharmacyAdmin (id, username, password, first_name, last_name, email,
 INSERT INTO patient (id, username, password, first_name, last_name, email, address_id, enabled, last_password_reset_date, gender, phonenumber, discount, loyalty_category, points, version) VALUES (13,'milena', '$2a$10$2affw9vkXuEbQOoiKqN2XuVQ1sVZLQ6XBRAZ1IHeCT6W8.qJOXkhe', 'Milena', 'Vracar', 'apotekaa.isa2021+milena@gmail.com', 7, true, '2017-10-01 18:57:58.508-07', 0, '0651324543', 0, 'REGULAR', 50, 0);
 INSERT INTO patient (id, username, password, first_name, last_name, email, address_id, enabled, last_password_reset_date, gender, phonenumber, discount, loyalty_category, points, version) VALUES (14,'matija', '$2a$10$2affw9vkXuEbQOoiKqN2XuVQ1sVZLQ6XBRAZ1IHeCT6W8.qJOXkhe', 'Matija', 'Matic', 'apotekaa.isa2021+matija@gmail.com', 8,  true, '2017-10-01 18:57:58.508-07', 1,'0651324543', 0, 'REGULAR', 19, 0);
 INSERT INTO patient (id, username, password, first_name, last_name, email, address_id, enabled, last_password_reset_date, gender, phonenumber, discount, loyalty_category, points, version) VALUES (15,'marjan', '$2a$10$2affw9vkXuEbQOoiKqN2XuVQ1sVZLQ6XBRAZ1IHeCT6W8.qJOXkhe', 'Marjan', 'Maric', 'apotekaa.isa2021+marjan@gmail.com', 9, true, '2017-10-01 18:57:58.508-07', 1,'0651324543', 0, 'REGULAR', 8, 0);
---id, username, password, first_name, last_name, email, enabled, last_password_reset_date, gender, address_id, version
+
 INSERT INTO dermatologist (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, gender, address_id, grade, version) VALUES (17, 'admin1', '$2a$10$2affw9vkXuEbQOoiKqN2XuVQ1sVZLQ6XBRAZ1IHeCT6W8.qJOXkhe', 'Natasa', 'Gojkovic', 'apotekaa.isa2021+natasa@gmail.com', true, '2017-10-01 18:57:58.508-07', 0, 6, 0, 0);
 INSERT INTO dermatologist (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, gender, address_id, grade, version) VALUES (18, 'admin2', '$2a$10$2affw9vkXuEbQOoiKqN2XuVQ1sVZLQ6XBRAZ1IHeCT6W8.qJOXkhe', 'Ivan', 'Gojkovic', 'apotekaa.isa2021+ivan@gmail.com', true, '2017-10-01 18:57:58.508-07', 1, 7, 0, 0);
 INSERT INTO dermatologist (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, gender, address_id, grade, version) VALUES (19, 'admin3', '$2a$10$2affw9vkXuEbQOoiKqN2XuVQ1sVZLQ6XBRAZ1IHeCT6W8.qJOXkhe', 'Strahinja', 'Gojkovic', 'apotekaa.isa2021+strale1@gmail.com', true, '2017-10-01 18:57:58.508-07', 1, 8, 0, 0);
@@ -47,7 +47,7 @@ INSERT INTO dermatologist (id, username, password, first_name, last_name, email,
 INSERT INTO dermatologist (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, gender, address_id, grade, version) VALUES (22, 'admin6', '$2a$10$2affw9vkXuEbQOoiKqN2XuVQ1sVZLQ6XBRAZ1IHeCT6W8.qJOXkhe', 'Strahinja', 'Gojkovic', 'apotekaa.isa2021+strale4@gmail.com', true, '2017-10-01 18:57:58.508-07', 1, 8, 0, 0);
 INSERT INTO dermatologist (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, gender, address_id, grade, version) VALUES (23, 'admin7', '$2a$10$2affw9vkXuEbQOoiKqN2XuVQ1sVZLQ6XBRAZ1IHeCT6W8.qJOXkhe', 'Strahinja', 'Gojkovic', 'apotekaa.isa2021+strale5@gmail.com', true, '2017-10-01 18:57:58.508-07', 1, 6, 0, 0);
 INSERT INTO dermatologist (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, gender, address_id, grade, version) VALUES (24, 'admin8', '$2a$10$2affw9vkXuEbQOoiKqN2XuVQ1sVZLQ6XBRAZ1IHeCT6W8.qJOXkhe', 'Strahinja', 'Gojkovic', 'apotekaa.isa2021+strale6@gmail.com', true, '2017-10-01 18:57:58.508-07', 1, 7, 0, 0);
-INSERT INTO system_admin (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, gender, address_id, phonenumber, version) VALUES (25, 'System Admin', '$2a$10$2affw9vkXuEbQOoiKqN2XuVQ1sVZLQ6XBRAZ1IHeCT6W8.qJOXkhe', 'Strahinja', 'Gojkovic', 'sysadmin@gmail.com', true, null, 1, 7, '0643214328', 0);
+INSERT INTO system_admin (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, gender, address_id, phonenumber, version) VALUES (25, 'SystemAdmin', '$2a$10$2affw9vkXuEbQOoiKqN2XuVQ1sVZLQ6XBRAZ1IHeCT6W8.qJOXkhe', 'Strahinja', 'Gojkovic', 'sysadmin@gmail.com', true, null, 1, 7, '0643214328', 0);
 
 INSERT INTO AUTHORITY (name) VALUES ('ROLE_USER');
 INSERT INTO AUTHORITY (name) VALUES ('ROLE_ADMIN');
@@ -237,10 +237,10 @@ insert into medicine_price(id, end_of_price, price, start_of_price, quantity, me
 insert into medicine_price(id, end_of_price, price, start_of_price, quantity, medicine_id, pharmacy_id) values (117, '20210216 08:00:00 PM',570, '20210215 10:00:00 AM', 400, 6, 4);
 
 
-INSERT INTO supplier (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, gender, address_id, phonenumber, version) VALUES (26, 'strale', '$2a$10$2affw9vkXuEbQOoiKqN2XuVQ1sVZLQ6XBRAZ1IHeCT6W8.qJOXkhe', 'Strahinja', 'Nikolic', 'apotekaa.isa2021+strale@gmail.com', true, '2017-10-01 18:57:58.508-07', 1, 7, '0611234567', 0);
-INSERT INTO supplier (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, gender, address_id, phonenumber, version) VALUES (27, 'jana', '$2a$10$2affw9vkXuEbQOoiKqN2XuVQ1sVZLQ6XBRAZ1IHeCT6W8.qJOXkhe', 'Jana', 'Nikolic', 'apotekaa.isa2021+jana@gmail.com', true, '2017-10-01 18:57:58.508-07', 1, 7, '0611234567', 0);
-INSERT INTO supplier (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, gender, address_id, phonenumber, version) VALUES (28, 'tara', '$2a$10$2affw9vkXuEbQOoiKqN2XuVQ1sVZLQ6XBRAZ1IHeCT6W8.qJOXkhe', 'Tara', 'Taric', 'supplier@gmail.com', true, '2017-10-01 18:57:58.508-07', 1, 7, '0611234567',0);
-INSERT INTO supplier (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, gender, address_id, phonenumber, version) VALUES (29, 'mile', '$2a$10$2affw9vkXuEbQOoiKqN2XuVQ1sVZLQ6XBRAZ1IHeCT6W8.qJOXkhe', 'Mile', 'Milic', 'apotekaa.isa2021+milence@gmail.com', true, '2017-10-01 18:57:58.508-07', 1, 7,'0611234567', 0);
+INSERT INTO supplier (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, gender, address_id, phonenumber, version) VALUES (26, 'strale', '$2a$10$2affw9vkXuEbQOoiKqN2XuVQ1sVZLQ6XBRAZ1IHeCT6W8.qJOXkhe', 'Strahinja', 'Nikolic', 'apotekaa.isa2021+strale@gmail.com', true, null, 1, 7, '0611234567', 0);
+INSERT INTO supplier (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, gender, address_id, phonenumber, version) VALUES (27, 'jana', '$2a$10$2affw9vkXuEbQOoiKqN2XuVQ1sVZLQ6XBRAZ1IHeCT6W8.qJOXkhe', 'Jana', 'Nikolic', 'apotekaa.isa2021+jana@gmail.com', true, null, 1, 7, '0611234567', 0);
+INSERT INTO supplier (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, gender, address_id, phonenumber, version) VALUES (28, 'tara', '$2a$10$2affw9vkXuEbQOoiKqN2XuVQ1sVZLQ6XBRAZ1IHeCT6W8.qJOXkhe', 'Tara', 'Taric', 'supplier@gmail.com', true, null, 1, 7, '0611234567',0);
+INSERT INTO supplier (id, username, password, first_name, last_name, email, enabled, last_password_reset_date, gender, address_id, phonenumber, version) VALUES (29, 'mile', '$2a$10$2affw9vkXuEbQOoiKqN2XuVQ1sVZLQ6XBRAZ1IHeCT6W8.qJOXkhe', 'Mile', 'Milic', 'apotekaa.isa2021+milence@gmail.com', true, null, 1, 7,'0611234567', 0);
 
 INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (26, 7);
 INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (27, 7);
@@ -290,7 +290,6 @@ insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (4
 insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (5, 11, 26, 5);
 insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (6, 11, 26, 6);
 insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (7, 3, 26, 7);
-
 insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (8, 6, 27, 1);
 insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (9, 8, 27, 2);
 insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (10, 5, 27, 3);
@@ -298,7 +297,6 @@ insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (1
 insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (12, 10, 27, 5);
 insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (13, 11, 27, 6);
 insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (14, 12, 27, 7);
-
 insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (15, 6, 28, 1);
 insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (16, 9, 28, 2);
 insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (17, 10, 28, 3);
@@ -306,7 +304,6 @@ insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (1
 insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (19, 5, 28, 5);
 insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (20, 11, 28, 6);
 insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (21, 12, 28, 7);
-
 insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (22, 6, 29, 1);
 insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (23, 8, 29, 2);
 insert into supplier_medicine (id, quantity, supplier_id, medicine_id) VALUES (24, 1, 29, 3);

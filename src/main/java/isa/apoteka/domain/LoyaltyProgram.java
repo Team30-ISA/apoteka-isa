@@ -57,21 +57,6 @@ public class LoyaltyProgram {
 		this.goldenDiscount = loyaltyProgramDTO.getGoldenDiscount();
 	}
 
-	/*public LoyaltyProgram(Long id, Double counselingPoints, Double examinationPoints, Integer regularMinPoints,
-			Double regularDiscount, Integer silverMinPoints, Double silverDiscount, Integer goldenMinPoints,
-			Double goldenDiscount) {
-		super();
-		this.id = id;
-		this.counselingPoints = counselingPoints;
-		this.examinationPoints = examinationPoints;
-		this.regularMinPoints = regularMinPoints;
-		this.regularDiscount = regularDiscount;
-		this.silverMinPoints = silverMinPoints;
-		this.silverDiscount = silverDiscount;
-		this.goldenMinPoints = goldenMinPoints;
-		this.goldenDiscount = goldenDiscount;
-	}*/
-
 	public Long getId() {
 		return id;
 	}

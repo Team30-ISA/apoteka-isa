@@ -21,6 +21,7 @@ var app = new Vue({
         });
     },
     async submit() {
+	if((this.response != "" && this.response != null && this.response != undefined) && (this.selected.id != "" && this.selected.id != null && this.selected.id != undefined)){
       axios
         .post(
           "/api/sys-admin/answer",
@@ -38,17 +39,15 @@ var app = new Vue({
           this.selected = "";
           this.response = "";
           this.compliants = this.compliants.filter((c) => c.id != selected.id);
-		  
-		  
         })
-        .catch(function (err) {
-          console.log(err);
-        });
 		JSAlert.alert("The response to the complaint was sent successfully!");
-		setTimeout(function () {
-                window.location.href = "http://localhost:8081/sysAdmin/complaint.html";
-              }, 3000);
-    }
+			setTimeout(function () {
+					window.location.href = "/sysAdmin/complaint.html";
+				  }, 3000);
+    }else{
+		JSAlert.alert("You must first select a complaint and only then respond to it, of course if it exists at all.");
+	}
+	}
   },
   async created() {	 
     axios

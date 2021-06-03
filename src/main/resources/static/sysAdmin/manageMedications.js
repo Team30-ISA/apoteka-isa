@@ -118,12 +118,16 @@ new Vue({
               Authorization: "Bearer " + localStorage.getItem("access_token")
             }
           }
-        );
-        JSAlert.alert("Successfully added new drug");
-		
-		setTimeout(function () {
+        ).then(response => {
+            	 JSAlert.alert("Successfully added new drug");
+				 setTimeout(function () {
                 window.location.href = "/sysAdmin/manageMedications.html";
               }, 3000);
+            })
+            .catch(error => {
+            	if(error.response.status == 400)
+            		JSAlert.alert("Code must have unique, for example 1010");
+             });
 		}
 		else{
 			JSAlert.alert("This medicine have in pharmacy!");
@@ -136,7 +140,7 @@ new Vue({
 			JSAlert.alert("You haven't filled in all the fields!");
 		}
       } catch (error) {
-        console.log(error);
+        JSAlert.alert("Dear" + admin.firstName + " code must have unique!");
 		
       }
     }
