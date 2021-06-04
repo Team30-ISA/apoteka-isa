@@ -6,7 +6,8 @@ var app = new Vue({
     spec: null,
     showSpec: false,
     minGrade: 0,
-    allMedicines: []
+    allMedicines: [],
+	listAllMedicines: []
   },
   methods: {
 	logout(){
@@ -27,9 +28,25 @@ var app = new Vue({
           `/api/medicine/allMedicine/${this.medicineName}`
         );
 		
-		if(data.length == 0)
+		let uslov = false;
+		for(var key in this.listAllMedicines){
+			
+			console.log(this.listAllMedicines[key].name)
+			
+			if(data.length == 0 && this.medicineName == this.listAllMedicines[key].name && this.listAllMedicines[key].price == undefined && this.listAllMedicines[key].price == null){
+					uslov = true;
+					continue
+				}	
+		}
+		
+		if(uslov === true){ 
+			JSAlert.alert("Medicine exist in system, but pharmacy administrator must define price, before users can buy.")
+			this.medicineName = ""
+		}
+		
+		if(!uslov && data.length == 0)
 		{
-			JSAlert.alert("Medicine doesn't exist!")
+			JSAlert.alert("Medicine doesn't exist in pharmacy system!")
 			setTimeout(function () {
                 window.location.href = "/medicine.html";
               }, 2000);
@@ -55,5 +72,16 @@ var app = new Vue({
           (m) => m.pharmacy.grade >= this.minGrade
         );
     }
+  },
+  created(){
+		axios
+			.get('/api/medicine/getAll',{
+			headers: {
+				    'Authorization': "Bearer " + localStorage.getItem('access_token')
+			  			},
+			}).then(response => {
+				this.listAllMedicines = response.data
+				console.log(this.listAllMedicines)
+			});
   }
 });

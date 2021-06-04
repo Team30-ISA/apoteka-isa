@@ -80,8 +80,8 @@ var app = new Vue({
 			}
 			
 			let con2 = true;
-			if(isNaN(this.user.phonenumber)){
-				JSAlert.alert("Enter only numbers!")
+			if(isNaN(this.user.phonenumber) || this.user.phonenumber < 0 ){
+				JSAlert.alert("Enter only numbers and phone number must be positive!")
 				con2 = false;
 				this.user.phonenumber = "";
 			}

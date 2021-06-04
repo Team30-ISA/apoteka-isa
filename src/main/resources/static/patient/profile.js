@@ -185,7 +185,6 @@ var app = new Vue({
 	     })
 	     .then(response => {
 	     	this.examinations = response.data
-	     	console.log('AAAAAAA' + this.examinations)
 	     })
 	     	
 	     })

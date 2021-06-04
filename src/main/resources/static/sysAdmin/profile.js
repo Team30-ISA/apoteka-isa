@@ -60,7 +60,7 @@ var app = new Vue({
 			}
 			
 			if(!str){
-			JSAlert.alert("Enter only letters.");
+			JSAlert.alert("First name must contain only letters.");
 			con = false;
 			this.user.firstName = "";	
 			}
@@ -75,14 +75,14 @@ var app = new Vue({
 			}
 			
 			if(!str1){
-				JSAlert.alert("Enter only letters.");
+				JSAlert.alert("Last name must contain only letters.");
 				con1 = false;
 				this.user.lastName = "";			
 			}
 			
 			let con2 = true;
-			if(isNaN(this.user.phonenumber)){
-				JSAlert.alert("Enter only numbers!")
+			if(isNaN(this.user.phonenumber) || this.user.phonenumber < 0 ){
+				JSAlert.alert("The phone number must consist only of digits.")
 				con2 = false;
 				this.user.phonenumber = "";
 			}

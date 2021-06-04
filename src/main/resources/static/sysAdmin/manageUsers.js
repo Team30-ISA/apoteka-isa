@@ -46,7 +46,7 @@ new Vue({
         JSAlert.alert("You haven't filled in all the fields!");
       }
       try {
-		  let con = true;
+			let con = true;
 			let str = String(this.firstName);
 			for( let i = 0; i < str.length; i++){
 				if(!isNaN(str.charAt(i))){           
@@ -56,7 +56,7 @@ new Vue({
 			}
 			
 			if(!str){
-			JSAlert.alert("Enter only letters.");
+			JSAlert.alert("First name must contain only letters.");
 			con = false;
 			this.firstName = "";	
 			}
@@ -71,13 +71,13 @@ new Vue({
 			}
 			
 			if(!str1){
-				JSAlert.alert("Enter only letters.");
+				JSAlert.alert("Last name must contain only letters.");
 				con1 = false;
 				this.lastName = "";			
 			}
 			
 		if(this.firstName != "" && this.lastName != "" && con && con1 && this.email != "" && this.username != "" && this.password != "" && this.phonenumber != "" && this.addressString != ""){
-        if(isNaN(this.phonenumber) || !this.phonenumber){
+        if(isNaN(this.phonenumber) || this.phonenumber < 0 ){
 			JSAlert.alert("The phone number must consist only of digits!");
 			return;
 		}else if (this.password.length < 6) {

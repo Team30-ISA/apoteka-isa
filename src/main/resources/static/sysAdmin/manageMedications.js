@@ -23,7 +23,7 @@ new Vue({
 	sortKey: 'price',
 	reverse: 1,
 	loyaltyPoints: 1,
-	code: 1
+	code: null
   },
   methods: {
 	logout() {
@@ -76,7 +76,8 @@ new Vue({
 	},
     async createMedicine() {
       try {
-			if(this.name != "" && this.type != ""  && this.code != "" && this.form != "" && this.contraindications != "" && this.composition != "" && this.recommendedIntakePerDay != "" && this.manufacturer != ""){
+			if(this.name != "" && this.type != ""  && this.code != "" && this.code != null && this.code != undefined && this.form != "" && this.contraindications != "" && this.composition != "" && this.recommendedIntakePerDay != "" && this.manufacturer != ""){
+			if(this.code > 0){
 				await axios
 				.get('/api/medicine/searchMedicinesByName',{
 					headers: {
@@ -98,7 +99,25 @@ new Vue({
 		console.log(this.loyaltyPoints)
 		console.log(this.code)
 		
+			let con = true;
+			let str = String(this.name);
+			console.log(str)
+			for( let i = 0; i < str.length; i++){
+				if(!isNaN(str.charAt(i))){           
+					str = false;
+					continue;
+				}
+			}
+			
+			if(!str){
+			JSAlert.alert("Medicine name must contain only letters.");
+			con = false;
+			this.name = "";	
+			}
+		
 	    if (k === undefined){
+			if(this.loyaltyPoints !== null){
+				if(con){
         await axios.post(
           "/api/medicine",
           {
@@ -128,13 +147,19 @@ new Vue({
             	if(error.response.status == 400)
             		JSAlert.alert("Code must have unique, for example 1010");
              });
+				}
+			}else{
+				JSAlert.alert("points must have positive number!");
+			}
 		}
 		else{
 			JSAlert.alert("This medicine have in pharmacy!");
-			setTimeout(function () {
-                window.location.href = "/sysAdmin/manageMedications.html";
-              }, 3000);
+			this.name = "";
+			return
 		}
+				}else{
+					JSAlert.alert("Code must have positive number!");
+				}
 		}
 		else{
 			JSAlert.alert("You haven't filled in all the fields!");
