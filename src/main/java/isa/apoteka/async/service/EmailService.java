@@ -89,7 +89,7 @@ public class EmailService {
 
 	}
 	
-	//@Async
+	@Async
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
 	public void sendCounselingReservation(Counseling c, Patient p) throws MailException{
 		SimpleMailMessage mail = new SimpleMailMessage();
