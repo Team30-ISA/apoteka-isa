@@ -37,7 +37,37 @@ new Vue({
     },
     async submit() {
       try {
-		if(this.name != "" && this.address != "" && this.city != ""){
+		  let con = true;
+			let str = String(this.name);
+			for( let i = 0; i < str.length; i++){
+				if(!isNaN(str.charAt(i))){           
+					str = false;
+					continue;
+				}
+			}
+			
+			if(!str){
+			JSAlert.alert("Pharmacy name must contain only letters.");
+			con = false;
+			this.name = "";	
+			}
+			
+			let con1 = true;
+			let str1 = String(this.city);
+			for( let i = 0; i < str1.length; i++){
+				if(!isNaN(str1.charAt(i))){           
+					str1 = false;
+					continue;
+				}
+			}
+			
+			if(!str1){
+				JSAlert.alert("City must contain only letters.");
+				con1 = false;
+				this.city = "";			
+			}
+			
+		if(con && con1 && this.name != "" && this.address != "" && this.city != ""){
         await axios.post(
           "/api/pharmacy",
           {
@@ -86,15 +116,47 @@ new Vue({
         JSAlert.alert("You haven't filled in all the fields!");
       }
       try {
+		 
+			let con = true;
+			let str = String(this.firstName);
+			for( let i = 0; i < str.length; i++){
+				if(!isNaN(str.charAt(i))){           
+					str = false;
+					continue;
+				}
+			}
+			
+			if(!str){
+			JSAlert.alert("First name must contain only letters.");
+			con = false;
+			this.firstName = "";	
+			}
+			
+			let con1 = true;
+			let str1 = String(this.lastName);
+			for( let i = 0; i < str1.length; i++){
+				if(!isNaN(str1.charAt(i))){           
+					str1 = false;
+					continue;
+				}
+			}
+			
+			if(!str1){
+				JSAlert.alert("Last name must contain only letters.");
+				con1 = false;
+				this.lastName = "";			
+			}
+		 
 		if(this.firstName != "" && this.lastName != "" && this.email != "" && this.username != "" && this.password != "" && this.phonenumber != "" && this.addressString != ""){
-        if(isNaN(this.phonenumber) || !this.phonenumber){
-			JSAlert.alert("The phone number must consist only of digits!");
+        if(isNaN(this.phonenumber) || this.phonenumber < 0 ){
+			JSAlert.alert("The phone number must consist only of digits !");
 			return;
 		}else if (this.password.length < 6) {
 			JSAlert.alert("Password must have minimal 6 characters!");
 			this.password = "";
 			return;
 		} else{
+			if(con && con1){
         await axios.post(
           "/api/pharmacyAdmin", 
 		  {
@@ -135,6 +197,7 @@ new Vue({
         this.city = "";
         this.country = "";
         this.addressString = "";
+		}
 		}
 		}else{
 			JSAlert.alert("You haven't filled in all the fields!");

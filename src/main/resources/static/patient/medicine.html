@@ -135,6 +135,18 @@
 
         <main id="main" class="text-center">
             <div class="w-75 d-inline-block">
+				<div class="content">
+								<header>
+									<table class="table table-light" >
+										<tr class="table-light" style = "text-align:center">
+											<th class="table-light">Medicine name</a></th>
+										</tr>
+										<tr class="table-light"style = "text-align:center" v-for="(value, key) in listAllMedicines">
+											<td class="table-light">{{this.listAllMedicines[value].name}}</td>
+										</tr>
+									</table>
+								</header>
+				</div>
                 <div class="form-group">
                     <input class="form-control mt-5 mb-3" v-model="medicineName" type="text" placeholder="Medicine name">
                     <button class="btn" @click="search">Submit</button>

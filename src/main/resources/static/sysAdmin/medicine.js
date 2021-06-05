@@ -28,13 +28,30 @@ var app = new Vue({
         const { data } = await axios.get(
           `/api/medicine/allMedicine/${this.medicineName}`
         );
-		if(data.length == 0)
+		let uslov = false;
+		for(var key in this.listAllMedicines){
+			
+			console.log(this.listAllMedicines[key].name)
+			
+			if(data.length == 0 && this.medicineName == this.listAllMedicines[key].name && this.listAllMedicines[key].price == undefined && this.listAllMedicines[key].price == null){
+					uslov = true;
+					continue
+				}	
+		}
+		
+		if(uslov === true){
+			JSAlert.alert("Medicine exist in system, but pharmacy administrator must define price, before users can buy.")
+			this.medicineName = ""
+		}
+		
+		if(!uslov && data.length == 0)
 		{
-			JSAlert.alert("Medicine doesn't exist!")
+			JSAlert.alert("Medicine doesn't exist in pharmacy system!")
 			setTimeout(function () {
                 window.location.href = "/sysAdmin/medicine.html";
               }, 2000);
 		}
+		
         this.allMedicines = data;
 		this.medicines = data.filter((m) => m.pharmacy.grade >= this.minGrade || (m.medicine.form.name === this.filtForm && m.medicine.type.name === this.filtType));
 

@@ -10,5 +10,5 @@ public interface ComplaintService {
 
     List<ComplaintDTO> getAllComplaints();
 
-    ComplaintResponseDTO respond(ComplaintResponseDTO complaintResponseDTO) throws Exception;
+    ComplaintResponseDTO respond(ComplaintResponseDTO complaintResponseDTO);
 }

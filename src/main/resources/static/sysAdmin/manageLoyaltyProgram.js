@@ -33,7 +33,7 @@ new Vue({
           ...this.loyalty
         };
 		
-			
+		if(this.loyalty.silverMinPoints > 0 && this.loyalty.goldenMinPoints > 0 && this.loyalty.counselingPoints > 0 && this.loyalty.examinationPoints > 0 && this.loyalty.regularDiscount > 0 && this.loyalty.silverDiscount && this.loyalty.goldenDiscount > 0){
         axios
           .put(
             "/api/loyalty",
@@ -56,6 +56,12 @@ new Vue({
 				  }, 3000);
 
         });;
+		}else{
+			JSAlert.alert("Only positive number input!");
+			setTimeout(function () {
+					window.location.href = "/sysAdmin/manageLoyaltyProgram.html";
+				  }, 2000);
+			}
 		}
        else {
         this.changeData = true;

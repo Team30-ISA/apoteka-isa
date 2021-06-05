@@ -28,7 +28,7 @@ var app = new Vue({
     },
     async sendComplaint() {
       try {
-		if(this.complaint != ""){
+		if(this.complaint != "" && this.complaint != null && this.complaint != undefined && this.tab != "" && this.tab != null && this.tab != undefined && this.selected.id != null && this.selected.id != "" && this.selected.id != undefined ){
         await axios.post(
           "/api/complaint",
           {
@@ -51,7 +51,7 @@ var app = new Vue({
                 window.location.href = "/patient/complaint.html";
               }, 3000);
 		}else{
-			JSAlert.alert("You must input complaint before sent!");
+			JSAlert.alert("You must select tab and input complaint before sent!");
 		}
       } catch (err) {
         console.log(err);
