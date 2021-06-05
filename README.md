@@ -17,9 +17,8 @@ Napomene:
   3. Projekat je rađen u Java 11
   4. Email adresa je: apotekaa.isa2021@gmail.com
      Šifra za email: Apoteka.2021
-  5. Kod QR koda kad se izabere željena apoteka za kupovinu lekova treba sačekati procesiranje par sekundi u zavisnosti od brzine procesora(u slučaju da se desi ovo)
-  6. Greška: savetovanje i pregled su pomešani - te klasa Counseling se odnosi na dermatologa, a klasa Examination na farmaceuta
-  7. sonar.png je screenshot sonara i quality gate-a  
+  5. Greška: savetovanje i pregled su pomešani - te klasa Counseling se odnosi na dermatologa, a klasa Examination na farmaceuta
+  6. sonar.png je screenshot sonara i quality gate-a  
 
   Testovi:
 
