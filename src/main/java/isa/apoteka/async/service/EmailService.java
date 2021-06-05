@@ -15,6 +15,8 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import isa.apoteka.domain.Counseling;
 import isa.apoteka.domain.Offer;
@@ -88,6 +90,7 @@ public class EmailService {
 	}
 	
 	@Async
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
 	public void sendCounselingReservation(Counseling c, Patient p) throws MailException{
 		SimpleMailMessage mail = new SimpleMailMessage();
 		mail.setTo(p.getEmail());
