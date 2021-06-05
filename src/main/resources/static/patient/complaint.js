@@ -1,6 +1,7 @@
 var app = new Vue({
   el: "#complaints",
   data: {
+	patient: null,
     tab: "DERMATOLOGIST",
     pharmacies: [],
     dermatologists: [],
@@ -13,8 +14,21 @@ var app = new Vue({
     }
   },
   methods: {
+    logout() {
+      axios
+        .post("/auth/logout", null, {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("access_token")
+          }
+        })
+        .then(function () {
+          localStorage.clear();
+          window.location.href = "/login.html";
+        });
+    },
     async sendComplaint() {
       try {
+		if(this.complaint != ""){
         await axios.post(
           "/api/complaint",
           {
@@ -32,7 +46,13 @@ var app = new Vue({
             }
           }
         );
-        alert("Complaint created successfully");
+        JSAlert.alert("Complaint created successfully!");
+		setTimeout(function () {
+                window.location.href = "/patient/complaint.html";
+              }, 3000);
+		}else{
+			JSAlert.alert("You must input complaint before sent!");
+		}
       } catch (err) {
         console.log(err);
       }
@@ -49,6 +69,15 @@ var app = new Vue({
         if (response.data != "PATIENT") {
           window.location.href = "/login.html";
         }
+		axios
+		.get('/api/patient/getLoggedUser',{
+			  headers: {
+				    'Authorization': "Bearer " + localStorage.getItem('access_token')
+			  }
+	     })
+	    .then(response => {
+	     	this.patient = response.data;
+		})
       })
       .catch(function () {
         window.location.href = "/login.html";

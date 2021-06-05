@@ -3,7 +3,7 @@
 
 <head>
 	<meta charset="utf-8">
-	<title>Patient profile page</title>
+	<title>Offers</title>
 	<meta content="width=device-width, initial-scale=1.0" name="viewport">
 	<meta content="" name="keywords">
 	<meta content="" name="description">
@@ -71,20 +71,25 @@
 		<div v-if="errandPreview !== null"
 			style="position: absolute; width: 100vw; height: 100vh; background-color: rgba(0,0,0,0.2); z-index: 1000;"
 			@click="errandPreview = null">
-			<div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); background-color: white; width: 600px; min-height: 500px; padding-bottom: 100px;"
+			<div style="position: absolute; top: 50%;
+			left: 50%; transform: translate(-50%,-50%); background-color: white; width: 600px; min-height: 500px; padding-bottom: 100px;"
 				@click.stop>
 				<div style="position: absolute; top: 10px; right: 15px; cursor: pointer;" @click="errandPreview = null">
-					<i class="icon fa-times"></i></div>
+					<i class="icon fa-times"></i>
+				</div>
 				<ul class="list-group mt-5">
-					<li class="list-group-item text-center" style="display: flex; justify-content: space-between;"><span
-							style="flex-basis: 33%;">Medicine:</span><span style="flex-basis: 33%;">Required
-							quantity:</span><span style="flex-basis: 33%;">In stock:</span></li>
+					<li class="list-group-item text-center" style="display: flex; justify-content: space-between;">
+					<span style="flex-basis: 33%;">Medicine:</span>
+					<span style="flex-basis: 33%;">Required quantity:</span>
+					<span style="flex-basis: 33%;">In stock:</span>
+					</li>
 					<li class="list-group-item text-center" v-for="medicine in errands[errandPreview].medicineQuantity"
 						style="display: flex; justify-content: space-between;"
 						:style="{backgroundColor: findStockQuantity(medicine.medicineId) >= medicine.quantity ? 'rgba(135, 211, 124, 0.2)' : 'rgba(246, 71, 71, 0.2)'}">
-						<span style="flex-basis: 33%;">{{medicine.medicine}}</span><span
-							style="flex-basis: 33%;">{{medicine.quantity}}</span><span
-							style="flex-basis: 33%;">{{findStockQuantity(medicine.medicineId)}}</span></li>
+						<span style="flex-basis: 33%;">{{medicine.medicine}}</span>
+						<span style="flex-basis: 33%;">{{medicine.quantity}}</span>
+						<span style="flex-basis: 33%;">{{findStockQuantity(medicine.medicineId)}}</span>
+					</li>
 				</ul>
 				
 				<div style="position: absolute; bottom: 30px; left: 0; text-align: center; width: 100%;">
@@ -94,8 +99,8 @@
 							<input type="date" class="form-control" v-model="supplyDeadline">
 						</div>
 					</div>
-					<button
-						:disabled="invalidOffer" class="btn btn-primary d-inline-block" @click="submit">{{ offerExists() ? 'Edit' : 'Create Offer' }}</button></div>
+					<button :disabled="invalidOffer" class="btn btn-primary d-inline-block" @click="submit">{{ offerExists() ? 'Edit' : 'Create Offer' }}</button>
+				</div>
 			</div>
 		</div>
 
@@ -134,12 +139,13 @@
 
 				<nav id="nav-menu-container">
 					<ul class="nav-menu">
-						<li class="menu-active"><a href="home.html">Home</a></li>
+						<li class="menu-active"><a href="#">Home</a></li>
 						<li class="menu-has-children"><a href="#">Tools</a>
 							<ul>
 								<li><a href="offers.html">Offers & Errands</a></li>
 							</ul></li>
-						<li class="menu-has-children"><a href="#"><i class="icon fa-cog"></i></a>
+						<li class="menu-has-children"><a href="#">{{supplier.firstName}}
+								{{supplier.lastName}}</a>
 							<ul>
 								<li><a href="profile.html"><i class="icon fa-user"></i>&nbsp&nbsp&nbspProfile</a></li>
 								<li @click="logout"><a href="#"><i
@@ -209,6 +215,7 @@
 	<script src="../lib/owlcarousel/owl.carousel.min.js"></script>
 	<script src="../lib/magnific-popup/magnific-popup.min.js"></script>
 	<script src="../lib/sticky/sticky.js"></script>
+	<script src="https://npmcdn.com/js-alert/dist/jsalert.min.js"></script>
 
 	<!-- Contact Form JavaScript File -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.18/vue.min.js"></script>

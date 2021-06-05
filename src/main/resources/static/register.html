@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Reveal Bootstrap Template</title>
+  <title>Registration patient</title>
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <meta content="" name="keywords">
   <meta content="" name="description">
@@ -76,7 +76,7 @@
         <ul class="nav-menu">
           <li class="menu-active"><a href="index.html">Home</a></li>
           <li><a href="#about">Pharmacies</a></li>
-          <li><a href="#services">Medicine</a></li>
+          <li><a href="medicine.html">Medicine</a></li>
           <li><a href="register.html">Register</a></li>
           <li><a href="login.html">Login</a></li>
         </ul>
@@ -179,6 +179,23 @@
                               data-msg="Please enter at least 4 chars" />
                             <div class="validation d-block" v-if="validationErrors.confirmedPassword">{{
                               validationErrors.confirmedPassword }}</div>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+					<tr>
+                      <td>
+                        <h6 style="color:#50d8af;">Phone number</h6>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colspan="2">
+                        <div class="form-row">
+                          <div class="form-group col-md-12">
+                            <input v-model="phoneNumber" type="text" name="phoneNumber" class="form-control" id="phoneNumber"
+                              @keyup="validateForm" data-rule="minlen:4" data-msg="Please enter only number" />
+                            <div class="validation d-block" v-if="validationErrors.phoneNumber">{{
+                              validationErrors.phoneNumber }}</div>
                           </div>
                         </div>
                       </td>

@@ -15,8 +15,6 @@ import isa.apoteka.domain.Dermatologist;
 import isa.apoteka.domain.Medicine;
 import isa.apoteka.domain.Patient;
 import isa.apoteka.domain.Pharmacy;
-import isa.apoteka.dto.MedicineDTO;
-import isa.apoteka.dto.MedicineNameDTO;
 import isa.apoteka.service.CounselingService;
 import isa.apoteka.service.ExaminationService;
 import isa.apoteka.service.MedicineService;
@@ -131,6 +129,19 @@ public class MedicineContoller {
 		return new ResponseEntity<>(med, HttpStatus.OK);
 	}
 
+	@PostMapping(value = "/searchMedicine")
+	public ResponseEntity<List<FilteredMedicineDTO>> searchMedicineByName(@RequestBody SearchFilterMedicineDTO medicineDTO) {
+		try {
+			List<FilteredMedicineDTO> med = medicineService.searchMedicineByName(medicineDTO);
+			for (FilteredMedicineDTO d : med) {
+	            System.out.println(d.getMedicineName());
+	        }
+			return new ResponseEntity<>(med, HttpStatus.OK);
+		} catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+	}
+	
 	
 	@GetMapping(value = "/findAllMedicineNotInPharmacy")
 	@PreAuthorize("hasRole('ADMIN')")
@@ -176,6 +187,24 @@ public class MedicineContoller {
 		try {
 			medicineService.create(medicineDTO);
 			return new ResponseEntity<>(medicineDTO, HttpStatus.CREATED);
+		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+	}
+
+	@GetMapping(value="/allMedicine/{medicineName}")
+	public ResponseEntity<?> getAllMedicine(@PathVariable String medicineName) {
+		try {
+			return new ResponseEntity<>(medicineService.getAllMedicines(medicineName), HttpStatus.CREATED);
+		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+	}
+
+	@GetMapping(value = "/{id}")
+	public ResponseEntity<?> getMedicineDetails(@PathVariable Long id) {
+		try {
+			return new ResponseEntity<>(medicineService.getMedicine(id), HttpStatus.CREATED);
 		} catch (Exception e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}

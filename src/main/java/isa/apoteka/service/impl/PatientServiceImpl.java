@@ -19,6 +19,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import isa.apoteka.dto.PatientDTO;
+import isa.apoteka.repository.LoyaltyProgramRepository;
 import isa.apoteka.repository.PatientRepository;
 import isa.apoteka.service.PatientService;
 
@@ -37,6 +38,8 @@ public class PatientServiceImpl implements PatientService {
 
 	@Autowired
 	private DermatologistService dermatologistService;
+	@Autowired
+	private LoyaltyProgramRepository loyaltyProgramRepository;
 
 	@Override
 	public Patient findByUsername(String username) throws UsernameNotFoundException {
@@ -61,8 +64,9 @@ public class PatientServiceImpl implements PatientService {
 		p.setFirstName(puf.getName());
 		p.setLastName(puf.getSurname());
 		p.setEmail(puf.getEmail());
+		p.setPhonenumber(puf.getPhoneNumber());
 		
-		this.patientRepository.update(p.getFirstName(), p.getLastName(), p.getEmail(), p.getId());
+		this.patientRepository.update(p.getFirstName(), p.getLastName(), p.getEmail(), p.getPhonenumber(), p.getId());
 	}
 	
 	@Override
@@ -92,7 +96,12 @@ public class PatientServiceImpl implements PatientService {
 	@Override
 	public List<Medicine> searchReservedMedicineForPatient(Long id) {
 		List<Medicine> result = patientRepository.searchReservedMedicineForPatient(id);
-		return result;
+		List<Medicine> res = new ArrayList<Medicine>();
+		for(Medicine medicine : result) {
+			medicine.setPriceWithLoyalty(this.setPriceWithLoyaltyProgram(medicine.getPrice()));
+			res.add(medicine);
+		}
+		return res;
 	}
 	@Override
 	public void updateReservedMedicineForPatient(Long patId, Long medId, int quantity, Date date, String uid) {
@@ -187,5 +196,29 @@ public class PatientServiceImpl implements PatientService {
 
 		return complaintsListsDTO;
 	}
+	
+	private double setPriceWithLoyaltyProgram(double hasMedicationsPrice) {
+    	Patient patient = (Patient) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String status = patient.getLoyaltyCategory();
+        double newPrice = 0;
+
+        try {
+            LoyaltyProgram loyaltyProgram = loyaltyProgramRepository.findAll().get(0);
+            if(status.equals("REGULAR")) {
+                newPrice = hasMedicationsPrice - hasMedicationsPrice * (loyaltyProgram.getRegularDiscount()/1);
+            }
+            else if(status.equals("SILVER")) {
+                newPrice = hasMedicationsPrice - hasMedicationsPrice * (loyaltyProgram.getSilverDiscount()/1);
+            }
+            else if(status.equals("GOLD")) {
+                newPrice = hasMedicationsPrice -hasMedicationsPrice * (loyaltyProgram.getGoldenDiscount()/1);
+            }
+        }
+        catch(Exception e) {
+            return hasMedicationsPrice;
+        }
+
+        return newPrice;
+    }
 
 }

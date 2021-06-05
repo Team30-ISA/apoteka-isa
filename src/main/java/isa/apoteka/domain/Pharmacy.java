@@ -51,6 +51,10 @@ public class Pharmacy {
 	@JsonIgnore
 	@OneToMany(mappedBy = "medicine")
 	private List<MedicineInPharmacy> medicineInpharmacy;
+	//dodato
+	@JsonIgnore
+    @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<MedicinePrice> medicinePrices;
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
@@ -67,6 +71,9 @@ public class Pharmacy {
 	
 	@Column(unique = false, nullable = true)
 	double counselingprice;
+	
+	@Column(unique = false, nullable = true)
+	double counselingPriceWithDiscount;
 
 	public Pharmacy() {
 		super();
@@ -248,6 +255,22 @@ public class Pharmacy {
 	
 	public void setPromotions(List<Promotion> promotions) {
 		this.promotions = promotions;
+	}
+
+	public List<MedicinePrice> getMedicinePrices() {
+		return medicinePrices;
+	}
+
+	public void setMedicinePrices(List<MedicinePrice> medicinePrices) {
+		this.medicinePrices = medicinePrices;
+	}
+
+	public double getCounselingPriceWithDiscount() {
+		return counselingPriceWithDiscount;
+	}
+
+	public void setCounselingPriceWithDiscount(double counselingPriceWithDiscount) {
+		this.counselingPriceWithDiscount = counselingPriceWithDiscount;
 	}
 
 	

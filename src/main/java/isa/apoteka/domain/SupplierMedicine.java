@@ -1,6 +1,10 @@
 package isa.apoteka.domain;
 
+import java.util.List;
+
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class SupplierMedicine {
@@ -49,4 +53,6 @@ public class SupplierMedicine {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
+
+
 }

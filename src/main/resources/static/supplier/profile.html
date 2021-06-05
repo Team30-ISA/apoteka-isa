@@ -94,7 +94,7 @@
 
                 <div id="logo" class="pull-left">
 					<h1>
-						<a href="home.html" class="scrollto">Apote<span>ke</span></a>
+						<a href="#" class="scrollto">Apote<span>ke</span></a>
 					</h1>
 					<!-- Uncomment below if you prefer to use an image logo -->
 					<!-- <a href="#body"><img src="img/logo.png" alt="" title="" /></a>-->
@@ -102,12 +102,13 @@
 
 				<nav id="nav-menu-container">
 					<ul class="nav-menu">
-						<li class="menu-active"><a href="home.html">Home</a></li>
+						<li class="menu-active"><a href="#">Home</a></li>
 						<li class="menu-has-children"><a href="#">Tools</a>
 							<ul>
 								<li><a href="offers.html">Offers & Errands</a></li>
 							</ul></li>
-						<li class="menu-has-children"><a href="#"><i class="icon fa-cog"></i></a>
+						<li class="menu-has-children"><a href="#">{{supplier.firstName}}
+								{{supplier.lastName}}</a>
 							<ul>
 								<li><a href="profile.html"><i class="icon fa-user"></i>&nbsp&nbsp&nbspProfile</a></li>
 								<li @click="logout"><a href="#"><i
@@ -180,6 +181,16 @@
                                     </td>
                                     <td style="width: 100%;">
                                         <p style="width:170%"> {{user.email}}</p>
+                                    </td>
+                                </tr>
+								<tr>
+                                    <td style="width: 100%;">
+                                        <b>PHONE NUMBER &nbsp</b>
+                                    </td>
+                                    <td style="width: 100%;">
+										<input type="text" v-model="user.phonenumber"
+                                            :class="[changeData ? 'txtEnabled' : 'txtDisabled']"
+                                            :disabled="!changeData">
                                     </td>
                                 </tr>
                                 <tr>
@@ -255,6 +266,7 @@
     <script src="../lib/owlcarousel/owl.carousel.min.js"></script>
     <script src="../lib/magnific-popup/magnific-popup.min.js"></script>
     <script src="../lib/sticky/sticky.js"></script>
+	<script src="https://npmcdn.com/js-alert/dist/jsalert.min.js"></script>
 
     <!-- Contact Form JavaScript File -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.18/vue.min.js"></script>

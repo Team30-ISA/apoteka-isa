@@ -10,7 +10,9 @@ public interface PromotionService {
 
 	void subscribe(Long pharmacyId) throws Exception;
 
-	void unsubscribe(Long pharmacyId);
+	void unsubscribe(Long pharmacyId) throws Exception;
 
 	List<PharmacyDTO> findAllUserSubscribedPharmacies();
+	
+	
 }

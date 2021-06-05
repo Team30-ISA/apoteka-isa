@@ -1,6 +1,7 @@
 var app = new Vue({
   el: "#offers",
   data: {
+	supplier: null,
     filterTypes: ["ALL", "APPROVED", "PENDING", "REFUSED"],
     offers: [],
     errands: [],
@@ -35,6 +36,14 @@ var app = new Vue({
 
       return ind;
     },
+	formatDate(d){
+		let date = new Date(d)
+		return (date.getDate() - 1) + "." + (date.getMonth() + 1) + "." + date.getFullYear() + ".";
+	},
+	formatDateNew(d){
+		let date = new Date(d)
+		return (date.getDate()) + "." + (date.getMonth() + 1) + "." + date.getFullYear() + ".";
+	},
     async checkRole() {
       axios
         .get("/auth/getRole", {
@@ -57,6 +66,7 @@ var app = new Vue({
     },
     async submit() {
       try {
+		if(this.supplyDeadline < this.errands[this.errandPreview].deadline){
         await axios.post(
           "/api/offer",
           {
@@ -69,19 +79,28 @@ var app = new Vue({
               Authorization: "Bearer " + localStorage.getItem("access_token")
             }
           }
-        );
-        alert("Successfully created new offer");
-        this.errandPreview = null;
-        this.price = 1;
-        this.supplyDeadline = "";
-        const offers = await axios.get("/api/offer", {
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("access_token")
-          }
-        });
-        this.offers = offers.data;
+        ).then(response => {
+        	JSAlert.alert("Successfully created new offer!");
+			this.errandPreview = null;
+			this.price = 1;
+			this.supplyDeadline = "";
+        }).catch(error => {
+		            if (error.response.status == 401 || error.response.status == 400 || error.response.status == 500) {
+		                JSAlert.alert("Only date in future is accepted!");
+		            }		            
+		});
+		const offers = await axios.get("/api/offer", {
+				headers: {
+					Authorization: "Bearer " + localStorage.getItem("access_token")
+				}
+			});
+			this.offers = offers.data;
+	  }else{
+		  JSAlert.alert("Sorry, change offers are possible until the deadline defined by the pharmacy administrator when writing errands!")
+	  }
       } catch (err) {
-        alert(err);
+        console.log(err)
+		JSAlert.alert("Only date in future is accepted!")
       }
     },
     offerExists() {
@@ -91,6 +110,16 @@ var app = new Vue({
     }
   },
   async created() {
+	axios
+		.get('/api/supplier/getLoggedUser',{
+			  headers: {
+				    'Authorization': "Bearer " + localStorage.getItem('access_token')
+			  }
+	     })
+	     .then(response => {
+	     	this.supplier = response.data
+	     })
+	
     await this.checkRole();
     const errands = await axios.get("/api/offer/erands", {
       headers: {
@@ -104,6 +133,7 @@ var app = new Vue({
       }
     });
     this.offers = offers.data;
+	console.log(this.offers)
     this.allOffers = offers.data;
     const stock = await axios.get("/api/offer/stock", {
       headers: {
@@ -111,10 +141,12 @@ var app = new Vue({
       }
     });
     this.stock = stock.data;
+	console.log(this.stock)
   },
   watch: {
     errandPreview() {
       try {
+		  console.log(this.errandPreview)
         if (this.errandPreview !== null) {
           this.invalidOffer = this.errands[
             this.errandPreview
@@ -123,12 +155,17 @@ var app = new Vue({
             if (!med) return true;
             return e.quantity > med.quantity;
           });
+		  console.log(this.invalidOffer)
           const offer = this.offers.find(
             (o) => o.errandId === this.errands[this.errandPreview].id
           );
+		  console.log(offer)
           if (offer) {
             this.supplyDeadline = offer.supplyDeadline;
+			console.log(new Date())
+			console.log(this.supplyDeadline)
             this.price = offer.price;
+			console.log(this.price)
           }
         }
       } catch (err) {

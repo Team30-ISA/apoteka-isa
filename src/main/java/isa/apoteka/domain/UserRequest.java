@@ -32,6 +32,7 @@ public class UserRequest {
 		this.username = p.getUsername();
 		this.firstname = p.getFirstName();
 		this.lastname = p.getLastName();
+		this.phoneNumber = p.getPhonenumber();
 	}
 
     public void registerValidation() throws Exception {

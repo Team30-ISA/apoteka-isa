@@ -22,7 +22,7 @@ public class PharmacyDTO {
 
 	
 	public PharmacyDTO(Pharmacy pharmacy) {
-		this(pharmacy.getId(), pharmacy.getName(), pharmacy.getStreet(), pharmacy.getCity(), pharmacy.getDescription());
+		this(pharmacy.getId(), pharmacy.getName(), pharmacy.getStreet(), pharmacy.getCity(), pharmacy.getDescription(), pharmacy.getGrade());
 	}
 
 

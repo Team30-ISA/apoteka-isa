@@ -1,7 +1,5 @@
 package isa.apoteka.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import java.util.Date;
 
 import javax.persistence.Column;

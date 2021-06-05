@@ -1,5 +1,6 @@
 package isa.apoteka.service.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -7,11 +8,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.annotation.Propagation;
 
 import isa.apoteka.domain.MedicinePrice;
 import isa.apoteka.domain.PharmacyAdmin;
 import isa.apoteka.dto.ChangePriceDTO;
+import isa.apoteka.dto.ChoosenPharmacyDTO;
+import isa.apoteka.dto.QRcodeInformationDTO;
 import isa.apoteka.repository.MedicinePriceRepository;
+import isa.apoteka.service.LoyaltyProgramService;
 import isa.apoteka.service.MedicinePriceService;
 
 @Service
@@ -19,10 +24,12 @@ import isa.apoteka.service.MedicinePriceService;
 public class MedicinePriceServiceImpl implements MedicinePriceService{
 
 	private MedicinePriceRepository medPriceRepository;
+	private LoyaltyProgramService loyaltyProgramService;
 	
 	@Autowired
-	public MedicinePriceServiceImpl(MedicinePriceRepository medPriceRepository) {
+	public MedicinePriceServiceImpl(MedicinePriceRepository medPriceRepository, LoyaltyProgramService loyaltyProgramService) {
 		this.medPriceRepository = medPriceRepository;
+		this.loyaltyProgramService = loyaltyProgramService;
 	}
 	
 	
@@ -65,5 +72,46 @@ public class MedicinePriceServiceImpl implements MedicinePriceService{
 		if(mp == null)
 			return 0;
 		return mp.getPrice();
+	}
+	
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+    public Boolean updateMedicineQuantityEreceipt(ChoosenPharmacyDTO choosenPharmacy) {
+		Integer points = 0;
+        try {
+            List<MedicinePrice> pharmacyMedications = findByPharmacy(choosenPharmacy.getPharmacyId());
+            for (QRcodeInformationDTO medication : choosenPharmacy.getMedications()) {
+                for (MedicinePrice medicinePrice : pharmacyMedications) {
+                    if(medicinePrice.getMedicine().getCode().equals(medication.getMedicationCode())  &&
+                            medicinePrice.getMedicine().getName().equals(medication.getMedicationName())) {
+                        medicinePrice.setQuantity(medicinePrice.getQuantity()-medication.getQuantity());
+                        points += medicinePrice.getMedicine().getLoyaltyPoints();
+                        this.medPriceRepository.save(medicinePrice);
+                    }
+                }
+            }
+            loyaltyProgramService.updatePatientsLoyaltyPoints(points);
+            return true;
+        }
+        catch(Exception e) {return false;}
+    }
+	
+	public List<MedicinePrice> findByPharmacy(Long id){
+        List<MedicinePrice> medicinePrices =  new ArrayList<MedicinePrice>();
+           try {
+               for (MedicinePrice m : medPriceRepository.findAll()) {
+                   if (m.getPharmacy().getId().equals(id)) {
+                       medicinePrices.add(m);
+                   }
+               }
+               return medicinePrices;
+           }catch (Exception e){
+               return null;
+           }
+    }
+
+
+	@Override
+	public List<MedicinePrice> findAll() {
+		return medPriceRepository.findAll();
 	}
 }

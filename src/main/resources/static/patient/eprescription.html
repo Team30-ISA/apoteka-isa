@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>EPrescription</title>
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<meta content="" name="keywords">
+<meta content="" name="description">
+
+<!-- Favicons -->
+<link href="../img/favicon.png" rel="icon">
+<link href="../img/apple-touch-icon.png" rel="apple-touch-icon">
+
+<!-- Google Fonts -->
+<link
+	href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,700,700i|Raleway:300,400,500,700,800|Montserrat:300,400,700"
+	rel="stylesheet">
+
+<!-- Bootstrap CSS File -->
+<link href="../lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Libraries CSS Files -->
+<link href="../lib/font-awesome/css/font-awesome.min.css"
+	rel="stylesheet">
+<link href="../lib/animate/animate.min.css" rel="stylesheet">
+<link href="../lib/ionicons/css/ionicons.min.css" rel="stylesheet">
+<link href="../lib/owlcarousel/assets/owl.carousel.min.css"
+	rel="stylesheet">
+<link href="../lib/magnific-popup/magnific-popup.css" rel="stylesheet">
+<link href="../lib/ionicons/css/ionicons.min.css" rel="stylesheet">
+
+<!-- Main Stylesheet File -->
+<link href="../css/style.css" rel="stylesheet">
+
+
+<!-- =======================================================
+    Theme Name: Reveal
+    Theme URL: https://bootstrapmade.com/reveal-bootstrap-corporate-template/
+    Author: BootstrapMade.com
+    License: https://bootstrapmade.com/license/
+  ======================================================= -->
+</head>
+<body id="body">
+	<div id="eprescription">
+		<!--==========================
+    Top Bar
+  ============================-->
+		<section id="topbar" class="d-none d-lg-block">
+			<div class="container clearfix">
+				<div class="contact-info float-left">
+					<i class="fa fa-envelope-o"></i> <a
+						href="mailto:contact@example.com">contact@example.com</a> <i
+						class="fa fa-phone"></i> +1 5589 55488 55
+				</div>
+				<div class="social-links float-right">
+					<a href="#" class="twitter"><i class="fa fa-twitter"></i></a> <a
+						href="#" class="facebook"><i class="fa fa-facebook"></i></a> <a
+						href="#" class="instagram"><i class="fa fa-instagram"></i></a> <a
+						href="#" class="google-plus"><i class="fa fa-google-plus"></i></a>
+					<a href="#" class="linkedin"><i class="fa fa-linkedin"></i></a>
+				</div>
+			</div>
+		</section>
+
+		<!--==========================
+    Header
+  ============================-->
+		<header id="header">
+			<div class="container">
+
+				<div id="logo" class="pull-left">
+					<h1>
+						<a href="patientHomepage.html" class="scrollto">Apote<span>ke</span></a>
+					</h1>
+					<!-- Uncomment below if you prefer to use an image logo -->
+					<!-- <a href="#body"><img src="img/logo.png" alt="" title="" /></a>-->
+				</div>
+
+				<nav id="nav-menu-container">
+					<ul class="nav-menu">
+						<li class="menu-active"><a href="patientHomepage.html">Home</a></li>
+						<li><a href="#about">About Us</a></li>
+						<li class="menu-has-children"><a href="#">Tools</a>
+							<ul>
+								<li><a href="drugreservation.html">Reserve drug</a></li>
+								<li><a href="medicine.html">Medicine</a></li>
+								<li><a href="complaint.html">Complaints</a></li>
+								<li><a href="subscribedPharmacies.html">Promotion subscriptions</a></li>
+								<li><a href="eprescription.html">EPrescription</a></li>
+							</ul>
+						</li>
+						<li class="menu-has-children"><a href="#">{{patient.firstName}}
+								{{patient.lastName}}</a>
+							<ul>
+								<li><a href="/profile.html"><i class="icon fa-user"></i>&nbsp&nbsp&nbspProfile</a></li>
+								<li @click="logout"><a href="#"><i
+										class="icon fa-sign-out"></i>&nbsp&nbspLog out</a></li>
+							</ul></li>
+						<li><a href="#contact">Contact</a></li>
+					</ul>
+				</nav>
+				<!-- #nav-menu-container -->
+			</div>
+		</header>
+		<!-- #header -->
+
+		<!--==========================
+    Intro Section
+  ============================-->
+
+		<main id="main">
+
+			<!--==========================
+      About Section
+    ============================-->
+
+			<!--==========================
+      Services Section
+    ============================-->
+<section id="wrapper">
+	<div class="inner">
+			<header class="special">
+				<h2>Welcome {{patient.firstName}} {{patient.lastName}}</h2>
+			</header>
+					
+						
+	<div class="container">
+        <div class="row">
+ 
+            <div class = "col-4 align-top container-fluid align-left">
+                <h3 style="color: #0D184F;margin-bottom:20px">Filters</h3>
+                    <div class="form-row">
+                         <div class="row">
+                            <div class="form-group col d-flex justify-content-start">
+                                <label>Sort by grade:</label> 
+                            </div>
+                            <div class="custom-control custom-radio form-group col ">
+
+                                <input type="radio" class="custom-control-input" id="defaultGroupExample3" name="groupOfDefaultRadios2" v-on:click="gradeInreasing">
+                                <label class="custom-control-label" for="defaultGroupExample3">Increasing</label>
+                                
+                            </div> 
+                            <div class="custom-control custom-radio form-group col ">
+
+                                <input type="radio" class="custom-control-input" id="defaultGroupExample4" name="groupOfDefaultRadios2" v-on:click="gradeDecreasing">
+                                <label class="custom-control-label" for="defaultGroupExample4">Decreasing</label>
+                                
+                            </div> 
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="row">
+                            <div class="form-group col d-flex justify-content-start">
+                                <label >Sort by price:</label> 
+                            </div>
+                            <div class="custom-control custom-radio form-group col ">
+
+                                <input type="radio" class="custom-control-input" id="defaultGroupExample1" name="groupOfDefaultRadios" v-on:click="priceInreasing">
+                                <label class="custom-control-label" for="defaultGroupExample1">Increasing</label>
+                                
+                            </div> 
+                            <div class="custom-control custom-radio form-group col ">
+
+                                <input type="radio" class="custom-control-input" id="defaultGroupExample2" name="groupOfDefaultRadios" v-on:click="priceDecreasing">
+                                <label class="custom-control-label" for="defaultGroupExample2">Decreasing</label>
+                                
+                            </div> 
+                        </div>
+                    
+                    </div>
+					<div class="form-row">
+						 <div class="row">
+                         <div class="form-group col d-flex justify-content-start">
+                                <label>Sort by name:</label> 
+                         </div>
+                            <div class="custom-control custom-radio form-group col ">
+
+                                <input type="radio" class="custom-control-input" id="defaultGroupExample5" name="groupOfDefaultRadios3" v-on:click="nameInreasing">
+                                <label class="custom-control-label" for="defaultGroupExample5">Increasing</label>
+                                
+                            </div> 
+                            <div class="custom-control custom-radio form-group col ">
+
+                                <input type="radio" class="custom-control-input" id="defaultGroupExample6" name="groupOfDefaultRadios3" v-on:click="nameDecreasing">
+                                <label class="custom-control-label" for="defaultGroupExample6">Decreasing</label>
+                                
+                            </div> 
+						</div>
+                </div>
+               
+                <div class="form-row">
+					<div class="row">
+                            <div class="form-group col d-flex justify-content-start">
+                                <label>Sort by city:</label> 
+                            </div>
+                            <div class="custom-control custom-radio form-group col ">
+
+                                <input type="radio" class="custom-control-input" id="defaultGroupExample9" name="groupOfDefaultRadios5" v-on:click="townInreasing">
+                                <label class="custom-control-label" for="defaultGroupExample9">Increasing</label>
+                                
+                            </div> 
+                            <div class="custom-control custom-radio form-group col ">
+
+                                <input type="radio" class="custom-control-input" id="defaultGroupExample10" name="groupOfDefaultRadios5" v-on:click="townDecreasing">
+                                <label class="custom-control-label" for="defaultGroupExample10">Decreasing</label>
+                                
+                            </div> 
+					</div>
+                </div>
+				
+				<div class="form-row">
+					<div class="row">
+                         <div class="form-group col d-flex justify-content-start">
+                                <label>Sort by street:</label> 
+                            </div>
+                            <div class="custom-control custom-radio form-group col ">
+
+                                <input type="radio" class="custom-control-input" id="defaultGroupExample7" name="groupOfDefaultRadios4" v-on:click="streetInreasing">
+                                <label class="custom-control-label" for="defaultGroupExample7">Increasing</label>
+                                
+                            </div> 
+                            <div class="custom-control custom-radio form-group col ">
+
+                                <input type="radio" class="custom-control-input" id="defaultGroupExample8" name="groupOfDefaultRadios4" v-on:click="streetDecreasing">
+                                <label class="custom-control-label" for="defaultGroupExample8">Decreasing</label>
+                                
+                            </div> 
+					</div>
+                </div>
+            </div>
+                    
+            
+       
+            <div class = "col-8">
+                <div style = "background-color:lightgray; margin: auto; border: 3px solid #0D184F;padding: 10px;">
+                            <h3 style="color: #0D184F;margin-bottom:20px">Upload QR code</h3>
+                        <div class="form-group">
+                            <div class="row">
+                                    <div class="col">
+                                        <input type="file" id="file" ref="file" v-on:change="handleFileUpload()"/>
+                                    </div> 
+                                    <div class="col">
+                                        <button  class="btn btn-primary" v-on:click="submitFile()">Check availability in pharmacies</button>
+                                    </div>
+									
+                            </div>
+                        </div>
+                </div>
+				
+				<table class="table table-light" >
+					<tr class="table-light" style = "text-align:center">
+						<th class="table-light">Pharmacy name</a></th>
+						<th class="table-light">Address</a></th>
+						<th class="table-light">Pharmacy average grade</a></th>
+						<th class="table-light">Total price</a></th>
+						<th class="table-light">Price with discount</a></th>
+						<th class="table-light">Buy</a></th>
+					</tr>
+					<tr class="table-light"style = "text-align:center" v-for="(value, key) in pharmacyListFilter"  v-bind:key="pharmacy.pharmacyId">
+						<td class="table-light">{{this.pharmacyListFilter[value].pharmacyName}}</td>
+						<td class="table-light">{{this.pharmacyListFilter[value].city}}, {{this.pharmacyListFilter[value].street}}</td>
+						<td class="table-light">{{this.pharmacyListFilter[value].grade}}</td>
+						<td class="table-light" >{{this.pharmacyListFilter[value].price}}</td>
+						<td class="table-light" >{{this.pharmacyListFilter[value].priceWithLoyalty}}</td>
+						<td><button  class="btn btn-primary" v-on:click="choosePharmacy($event,this.pharmacyListFilter[value].pharmacyId)">Choose this pharmacy</button></td>
+					</tr>
+				</table>
+				
+                
+            </div>
+        </div>
+	</div>
+	
+
+<div style="color:#00FA9A;font-size:25px;font-style:italic;font-weight:bold;text-align:center " >My EPrescriptions</div>
+<div style="background-color: #FFFFFF; border: 3px solid #FAF0E6;  width:1000px; margin-left:150px; margin-top: 20px" v-for="(value, key) in myEPrescriptions">
+
+<table class="table table-light">
+            <tr class="table-light" style = "text-align:center">
+                <th class="table-light">Pharmacy name</a></th>
+                <th class="table-light">Medicine Name</a></th>
+                <th class="table-light">Quantity</a></th>
+                <th class="table-light">Date</a></th>
+            </tr>
+            <tr class="table-light"style = "text-align:center">
+                <td class="table-light">{{this.myEPrescriptions[value].pharmacyName}}</td>
+                <td class="table-light">{{this.myEPrescriptions[value].medicineName}}</td>
+                <td class="table-light">{{this.myEPrescriptions[value].quantity}}</td>
+                <td class="table-light" >{{this.myEPrescriptions[value].date.slice(0, 10)}}</td>
+            </tr>
+</table>
+
+    </div>
+	</div>
+</section>
+			<!-- #services -->
+
+
+		</main>
+
+		<a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
+	</div>
+	<!-- JavaScript Libraries -->
+	<script src="../lib/jquery/jquery.min.js"></script>
+	<script src="../lib/jquery/jquery-migrate.min.js"></script>
+	<script src="../lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+	<script src="../lib/easing/easing.min.js"></script>
+	<script src="../lib/superfish/hoverIntent.js"></script>
+	<script src="../lib/superfish/superfish.min.js"></script>
+	<script src="../lib/wow/wow.min.js"></script>
+	<script src="../lib/owlcarousel/owl.carousel.min.js"></script>
+	<script src="../lib/magnific-popup/magnific-popup.min.js"></script>
+	<script src="../lib/sticky/sticky.js"></script>
+	<script src="https://npmcdn.com/js-alert/dist/jsalert.min.js"></script>
+	
+
+
+	<!-- Contact Form JavaScript File -->
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.18/vue.min.js"></script>
+	<!-- Template Main Javascript File -->
+	<script src="../js/main.js"></script>
+	<script src="../axios.js"></script>
+	<script src="eprescription.js"></script>
+
+</body>
+</html>

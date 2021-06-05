@@ -36,6 +36,8 @@ public class Medicine {
 	private String composition;
 	@Column
 	private String recommendedIntakePerDay;
+	@Column(name = "code", unique=true, nullable = true)
+    private Long code;
 
 	@JsonIgnore
 	@ManyToMany
@@ -49,7 +51,12 @@ public class Medicine {
 	private DrugIssuanceRegime regime;
 	@Column
 	private String notes;
-	
+	@Column
+	private Double price;
+	@Column
+	private Double priceWithLoyalty;
+	@Column
+	private Integer loyaltyPoints;
 	@JsonIgnore
 	@OneToMany(mappedBy = "medicine")
 	private List<MedicineInPharmacy> medicineInpharmacy;
@@ -90,8 +97,15 @@ public class Medicine {
 		this.contraindications = medicineDTO.getContraindications();
 		this.recommendedIntakePerDay = medicineDTO.getRecommendedIntakePerDay();
 		this.manufacturer = medicineDTO.getManufacturer();
+		this.loyaltyPoints = medicineDTO.getLoyaltyPoints();
+		this.code = medicineDTO.getCode();
 	}
 
+	public Medicine(Long id, String name, Long code) {
+        this.id = id;
+        this.name = name;
+        this.code = code;
+    }
 
 	public Long getId() {
 		return id;
@@ -153,6 +167,16 @@ public class Medicine {
 	}
 
 
+	public Long getCode() {
+		return code;
+	}
+
+
+	public void setCode(Long code) {
+		this.code = code;
+	}
+
+
 	public void setId(Long id) {
 		this.id = id;
 	}
@@ -210,6 +234,36 @@ public class Medicine {
 
 	public void setMedicineInpharmacy(List<MedicineInPharmacy> medicineInpharmacy) {
 		this.medicineInpharmacy = medicineInpharmacy;
+	}
+
+
+	public Double getPrice() {
+		return price;
+	}
+
+
+	public void setPrice(Double price) {
+		this.price = price;
+	}
+
+
+	public Double getPriceWithLoyalty() {
+		return priceWithLoyalty;
+	}
+
+
+	public void setPriceWithLoyalty(Double priceWithLoyalty) {
+		this.priceWithLoyalty = priceWithLoyalty;
+	}
+
+
+	public Integer getLoyaltyPoints() {
+		return loyaltyPoints;
+	}
+
+
+	public void setLoyaltyPoints(Integer loyaltyPoints) {
+		this.loyaltyPoints = loyaltyPoints;
 	}
 	
 }

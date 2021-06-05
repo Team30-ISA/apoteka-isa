@@ -16,7 +16,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import isa.apoteka.repository.MedicineRepository;
-import isa.apoteka.service.MedicineService;
 import isa.apoteka.service.impl.MedicineServiceImpl;
 
 @RunWith(SpringRunner.class)

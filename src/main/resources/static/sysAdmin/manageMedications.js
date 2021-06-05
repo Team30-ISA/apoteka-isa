@@ -1,6 +1,7 @@
 new Vue({
   el: "#manageMedications",
   data: {
+	admin: null,
     name: "",
     type: "",
     form: "",
@@ -8,10 +9,21 @@ new Vue({
     composition: "",
     recommendedIntakePerDay: "",
     manufacturer: "",
+	medicationName: "",
     forms: [],
     types: [],
     medicines: [],
-    substitutes: []
+    substitutes: [],
+	medications: [],
+	allMedicines: [],
+	columns: ['name', 'city'],
+	columns2: ['name', 'manufacturer'],
+	tableh: ['Name', 'City'],
+	tableh2: ['Name', 'Manufacturer'],
+	sortKey: 'price',
+	reverse: 1,
+	loyaltyPoints: 1,
+	code: 1
   },
   methods: {
 	logout() {
@@ -26,8 +38,67 @@ new Vue({
           window.location.href = "/login.html";
         });
     },
+	sortBy(sortKey) {
+      		this.reverse = -this.reverse;
+      		this.rev = !this.rev;
+      		this.sortKey = sortKey;
+      		console.log(this.reverse)
+      		console.log(this.sortKey)
+    	},
+	searchMedication(){
+			console.log(this.medicationName)
+			if(this.medicationName == ""){
+				axios
+				.get('/api/medicine/getAll',{
+					headers: {
+						    			'Authorization': "Bearer " + localStorage.getItem('access_token')
+					  			},
+					}).then(response => {
+						this.allMedicines = response.data
+						console.log(this.allMedicines)
+				})
+			}
+			else{
+				axios
+				.get('/api/medicine/searchMedicinesByName',{
+					headers: {
+					    'Authorization': "Bearer " + localStorage.getItem('access_token')
+				  	},
+				  	params: {
+				  		name: this.medicationName,
+				  	}
+				})
+				.then(response => {
+					this.allMedicines = response.data
+					console.log(response.data)
+				})
+			}
+	},
     async createMedicine() {
       try {
+			if(this.name != "" && this.type != ""  && this.code != "" && this.form != "" && this.contraindications != "" && this.composition != "" && this.recommendedIntakePerDay != "" && this.manufacturer != ""){
+				await axios
+				.get('/api/medicine/searchMedicinesByName',{
+					headers: {
+					    'Authorization': "Bearer " + localStorage.getItem('access_token')
+				  	},
+				  	params: {
+				  		name: this.name
+				  	}
+				})
+				.then(response => {
+					this.medications = response.data
+					console.log(response.data)
+				})
+		var k;
+		for (var key in this.medications) {
+			  console.log(key, this.medications[key].name);
+			  k = key;
+		}
+		console.log(this.loyaltyPoints)
+		console.log(this.code)
+		
+	    if (k === undefined){
         await axios.post(
           "/api/medicine",
           {
@@ -38,17 +109,39 @@ new Vue({
             composition: this.composition,
             recommendedIntakePerDay: this.recommendedIntakePerDay,
             substitutes: this.substitutes,
-            manufacturer: this.manufacturer
+            manufacturer: this.manufacturer,
+			loyaltyPoints: this.loyaltyPoints,
+			code : this.code
           },
           {
             headers: {
               Authorization: "Bearer " + localStorage.getItem("access_token")
             }
           }
-        );
-        alert("Successfully added new drug");
+        ).then(response => {
+            	 JSAlert.alert("Successfully added new drug");
+				 setTimeout(function () {
+                window.location.href = "/sysAdmin/manageMedications.html";
+              }, 3000);
+            })
+            .catch(error => {
+            	if(error.response.status == 400)
+            		JSAlert.alert("Code must have unique, for example 1010");
+             });
+		}
+		else{
+			JSAlert.alert("This medicine have in pharmacy!");
+			setTimeout(function () {
+                window.location.href = "/sysAdmin/manageMedications.html";
+              }, 3000);
+		}
+		}
+		else{
+			JSAlert.alert("You haven't filled in all the fields!");
+		}
       } catch (error) {
-        console.log(error);
+        JSAlert.alert("Dear" + admin.firstName + " code must have unique!");
+		
       }
     }
   },
@@ -72,8 +165,27 @@ new Vue({
         }
       });
       this.medicines = resp.data;
+	  axios
+			.get('/api/medicine/getAll',{
+			headers: {
+				    			'Authorization': "Bearer " + localStorage.getItem('access_token')
+			  			},
+			}).then(response => {
+				this.allMedicines = response.data
+				console.log(this.allMedicines)
+			});
+	   axios
+		.get('/api/sys-admin/getLoggedUser',{
+			  headers: {
+				    'Authorization': "Bearer " + localStorage.getItem('access_token')
+			  }
+	     })
+	     .then(response => {
+	     	this.admin = response.data
+	     })
+	  
     } catch (err) {
       console.log(err);
-    }
+      }
   }
 });

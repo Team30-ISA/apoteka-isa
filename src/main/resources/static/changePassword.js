@@ -14,7 +14,7 @@ var app = new Vue({
     changeState() {
       if (this.user.username == this.newPass) {
         JSAlert.alert("Password must not be the same as the username!");
-      } else if (this.newPass == this.repeatPass) {
+      } else if (this.newPass == this.repeatPass && this.newPass.length > 5 && this.repeatPass.length > 5) {
         axios
           .post(
             "/auth/change-password",
@@ -46,7 +46,10 @@ var app = new Vue({
             }
           });
       } else {
-        JSAlert.alert("New password and confirmed password are not the same!");
+        JSAlert.alert("New password and confirmed password are not the same OR new password doesn't have minimal 6 characters!");
+		setTimeout(function () {
+            window.location.href = "/changePassword.html";
+        }, 3000);
       }
     }
   },

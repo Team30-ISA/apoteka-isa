@@ -1,6 +1,7 @@
 var app = new Vue({
   el: "#sysAdminProfile",
   data: {
+	admin:null,
     user: null,
     changeData: false,
     oldPass: "",
@@ -48,7 +49,45 @@ var app = new Vue({
             }
           }
         };
-
+		
+			let con = true;
+			let str = String(this.user.firstName);
+			for( let i = 0; i < str.length; i++){
+				if(!isNaN(str.charAt(i))){           
+					str = false;
+					continue;
+				}
+			}
+			
+			if(!str){
+			JSAlert.alert("Enter only letters.");
+			con = false;
+			this.user.firstName = "";	
+			}
+			
+			let con1 = true;
+			let str1 = String(this.user.lastName);
+			for( let i = 0; i < str1.length; i++){
+				if(!isNaN(str1.charAt(i))){           
+					str1 = false;
+					continue;
+				}
+			}
+			
+			if(!str1){
+				JSAlert.alert("Enter only letters.");
+				con1 = false;
+				this.user.lastName = "";			
+			}
+			
+			let con2 = true;
+			if(isNaN(this.user.phonenumber)){
+				JSAlert.alert("Enter only numbers!")
+				con2 = false;
+				this.user.phonenumber = "";
+			}
+				
+		if(con && con1 && con2){
         axios
           .put(
             "/api/sys-admin",
@@ -58,7 +97,8 @@ var app = new Vue({
               cityId: this.selectedCity.id,
               stateId: this.selectedCountry.id,
               firstname: this.user.firstName,
-              lastname: this.user.lastName
+              lastname: this.user.lastName,
+			  phoneNumber: this.user.phonenumber
             },
             {
               headers: {
@@ -69,15 +109,9 @@ var app = new Vue({
           .then((response) => {
             localStorage.setItem("user", JSON.stringify(user));
             this.user = user;
-            alert(
-              "Novo ime: " +
-                this.user.firstName +
-                "\nNovo prezime: " +
-                this.user.lastName +
-                "\nNov email: " +
-                this.user.email
-            );
+            JSAlert.alert("You have successfully changed your details.");
           });
+		}
       } else {
         this.changeData = true;
       }
@@ -116,6 +150,15 @@ var app = new Vue({
       .catch(function () {
         window.location.href = "/login.html";
       });
+	  axios
+		.get('/api/sys-admin/getLoggedUser',{
+			  headers: {
+				    'Authorization': "Bearer " + localStorage.getItem('access_token')
+			  }
+	     })
+	     .then(response => {
+	     	this.admin = response.data
+	     })
     const user = JSON.parse(localStorage.getItem("user"));
     this.user = user;
     this.selectedCity = user.address.city.id;

@@ -56,7 +56,7 @@ public class ErrandController {
 		} catch (JsonProcessingException e) {
 			System.out.println("greska");
 		}
-		System.out.println(dto.size());
+		System.out.println(dto);
 
 		return medicineQuantityService.insert(dto);
 	}
@@ -64,13 +64,39 @@ public class ErrandController {
 	
 	@PostMapping("/newErrand")
 	@PreAuthorize("hasRole('ADMIN')")
-	public Boolean newErrand(@RequestBody @Valid ErrandDTO dto) throws ParseException {
-		return errandService.save(dto.getDeadline());
+	public Long newErrand(@RequestBody @Valid ErrandDTO dto) throws ParseException {
+		try {
+			return errandService.save(dto.getDeadline());
+        } catch (Exception e) {
+            return (long)1;
+        }
 	}
 	
 	@GetMapping("/findAllErrands")
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<List<ShowErrandDTO>> findallErrands(Boolean approved) {
+		List<ShowErrandDTO> errands = new ArrayList<ShowErrandDTO>();
+		List<Errand> list = errandService.findAllErrands();
+		for(Errand e : list) {
+			if(e.getFinished().equals(approved)) {
+				ShowErrandDTO dto = new ShowErrandDTO();
+				List<MedicineForSupplyDTO> medicines = medicineQuantityService.getMedicineForErrand(e.getId());
+				List<SupplierDTO> suppliers = offerService.findAllOffersForErrand(e.getId());
+				dto.setMedicines(medicines);
+				dto.setSuppliers(suppliers);
+				dto.setId(e.getId());
+				dto.setDeadline(e.getDeadline());
+				dto.setStart(e.getCreationTime());
+				dto.setFinished(e.getFinished());
+				
+				errands.add(dto);
+			}
+		}
+		return new ResponseEntity<>(errands, HttpStatus.OK);
+	}
+	
+	@GetMapping("/findAllErrand")
+	public ResponseEntity<List<ShowErrandDTO>> findAllErrands(Boolean approved) {
 		List<ShowErrandDTO> errands = new ArrayList<ShowErrandDTO>();
 		List<Errand> list = errandService.findAllErrands();
 		for(Errand e : list) {

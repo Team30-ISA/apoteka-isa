@@ -21,23 +21,24 @@ import isa.apoteka.service.PharmacyService;
 
 @Service
 public class PharmacyAdminServiceImpl implements PharmacyAdminService {
-
-    @Autowired
     private PharmacyAdminRepository pharmacyAdminRepository;
-
-    @Autowired
     private PharmacyService pharmacyService;
-
-    @Autowired
     private CityService cityService;
-
-    @Autowired
     private AddressService addressService;
-
-    @Autowired
     private AuthorityService authorityService;
+    
+    @Autowired
+    public PharmacyAdminServiceImpl(PharmacyAdminRepository pharmacyAdminRepository, PharmacyService pharmacyService,
+			CityService cityService, AddressService addressService, AuthorityService authorityService) {
+		super();
+		this.pharmacyAdminRepository = pharmacyAdminRepository;
+		this.pharmacyService = pharmacyService;
+		this.cityService = cityService;
+		this.addressService = addressService;
+		this.authorityService = authorityService;
+	}
 
-    @Override
+	@Override
     public void update(String firstName, String lastName, Long id) {
         pharmacyAdminRepository.update(firstName, lastName, id);
     }

@@ -5,10 +5,13 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
+import javax.validation.constraints.FutureOrPresent;
+
 public class OfferDTO {
 
     private Long errandId;
-
+    
+    @FutureOrPresent(message="Only date in future is accepted!")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date supplyDeadline;
 

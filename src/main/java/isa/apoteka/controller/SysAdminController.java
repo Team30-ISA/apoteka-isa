@@ -1,32 +1,39 @@
 package isa.apoteka.controller;
 
-import isa.apoteka.domain.Authority;
-import isa.apoteka.domain.User;
+import isa.apoteka.domain.SystemAdmin;
 import isa.apoteka.domain.UserRequest;
 import isa.apoteka.dto.ComplaintResponseDTO;
 import isa.apoteka.dto.PharmacistDTO;
-import isa.apoteka.service.AuthorityService;
 import isa.apoteka.service.ComplaintService;
 import isa.apoteka.service.SysAdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 @RequestMapping(value = "api/sys-admin")
 public class SysAdminController {
 
-    @Autowired
     private SysAdminService sysAdminService;
-
-    @Autowired
     private ComplaintService complaintService;
-
-    @PutMapping
+    
+    @Autowired
+    public SysAdminController(SysAdminService sysAdminService, ComplaintService complaintService) {
+		this.sysAdminService = sysAdminService;
+		this.complaintService = complaintService;
+	}
+    
+    @GetMapping("/getLoggedUser")
+	@PreAuthorize("hasRole('SYS_ADMIN')")
+	public SystemAdmin getLoggedUser() {
+		return (SystemAdmin) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	}
+    
+	@PutMapping
     @PreAuthorize("hasRole('SYS_ADMIN')")
     public ResponseEntity<?> update(@RequestBody UserRequest userRequest) {
         try {

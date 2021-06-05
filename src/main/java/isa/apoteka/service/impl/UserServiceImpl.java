@@ -5,6 +5,7 @@ import java.util.List;
 import isa.apoteka.async.service.EmailService;
 import isa.apoteka.domain.*;
 import isa.apoteka.dto.UserVerificationDTO;
+import isa.apoteka.repository.LoyaltyProgramRepository;
 import isa.apoteka.repository.PatientRepository;
 import isa.apoteka.service.AddressService;
 import isa.apoteka.service.CityService;
@@ -42,6 +43,9 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private CityService cityService;
+	
+	@Autowired
+	private LoyaltyProgramRepository lyaltyProgramRepository;
 
 	@Override
 	public User findByUsername(String username) throws UsernameNotFoundException {
@@ -66,16 +70,27 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User save(UserRequest userRequest) {
 		Patient patient = new Patient(userRequest);
-
+		patient.setPhonenumber(userRequest.getPhoneNumber());
 		patient.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+	
 		City city = this.cityService.findCityById(userRequest.getCityId().longValue());
 		Address address = new Address(userRequest.getAddress(), city);
 		patient.setAddress(address);
 		this.addressService.insertNewAddress(address);
+		try {
+			LoyaltyProgram loyaltyProgram = this.lyaltyProgramRepository.findAll().get(0);
+			patient.setDiscount(loyaltyProgram.getRegularDiscount());
+		} catch (Exception e) {
+			patient.setDiscount(0.0);
+		}
+		patient.setLoyaltyCategory("REGULAR");
+		patient.setPoints(0);
 		List<Authority> auth = authService.findByname("ROLE_PATIENT");
 		patient.setAuthorities(auth);
+		
 		this.patientRepository.save(patient);
-
+		
+		
 		emailService.sendVerificationEmail(patient, passwordEncoder.encode(patient.getEmail()));
 
 		return patient;

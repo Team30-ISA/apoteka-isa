@@ -21,8 +21,8 @@ public interface PatientRepository extends JpaRepository<Patient, Long> {
     
     @Modifying
     @Transactional
-    @Query("update Patient p set p.firstName = ?1, p.lastName = ?2, p.email = ?3 where p.id = ?4")
-    void update(String firstName, String lastName, String email, Long id);
+    @Query("update Patient p set p.firstName = ?1, p.lastName = ?2, p.email = ?3, p.phonenumber = ?4 where p.id = ?5")
+    void update(String firstName, String lastName, String email, String phonenumber, Long id);
     
     @Modifying
     @Transactional
@@ -48,5 +48,7 @@ public interface PatientRepository extends JpaRepository<Patient, Long> {
     
     @Query("from Patient p where LOWER(p.firstName) like %:firstName% and LOWER(p.lastName) like %:lastName%")
 	List<Patient> findAllByName(String firstName, String lastName);
+    
+    
     
 }

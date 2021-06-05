@@ -2,10 +2,8 @@ package isa.apoteka.dto;
 
 import javax.persistence.Column;
 
-import isa.apoteka.domain.DrugForm;
-import isa.apoteka.domain.DrugIssuanceRegime;
-import isa.apoteka.domain.DrugType;
-import isa.apoteka.domain.Pharmacy;
+import isa.apoteka.domain.*;
+
 import java.util.Date;
 
 
@@ -25,15 +23,6 @@ public class MedicineDTO {
 	private Date startOfPrice;
 	private Date endOfPrice;
 
-	/*public PharmacyDTO(Long id, String name, String address) {
-		this.name = name;
-		this.id = id;
-		this.address = address;
-	}
-	
-	public PharmacyDTO(Pharmacy pharmacy) {
-		this(pharmacy.getId(), pharmacy.getName(), pharmacy.getAddress());
-	}*/
 	
 	public MedicineDTO() {
 		super();
@@ -47,6 +36,23 @@ public class MedicineDTO {
 		this.startOfPrice = startOfPrice;
 		this.endOfPrice = endOfPrice;
 	}
+
+	public MedicineDTO(Medicine medicine, int quantity, int price) {
+		this.id = medicine.getId();
+		this.name = medicine.getName();
+		this.quantity = quantity;
+		this.price = price;
+	}
+	
+	public MedicineDTO(Medicine medicine, int quantity, int price, DrugType type, DrugForm form) {
+		this.id = medicine.getId();
+		this.name = medicine.getName();
+		this.quantity = quantity;
+		this.price = price;
+		this.type = type;
+		this.form = form;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -83,7 +89,68 @@ public class MedicineDTO {
 	public void setEndOfPrice(Date endOfPrice) {
 		this.endOfPrice = endOfPrice;
 	}
-	
-	
-	
+
+	public DrugType getType() {
+		return type;
+	}
+
+	public void setType(DrugType type) {
+		this.type = type;
+	}
+
+	public DrugForm getForm() {
+		return form;
+	}
+
+	public void setForm(DrugForm form) {
+		this.form = form;
+	}
+
+	public String getContradictions() {
+		return contradictions;
+	}
+
+	public void setContradictions(String contradictions) {
+		this.contradictions = contradictions;
+	}
+
+	public String getComposition() {
+		return composition;
+	}
+
+	public void setComposition(String composition) {
+		this.composition = composition;
+	}
+
+	public String getRecommendedIntakePerDay() {
+		return recommendedIntakePerDay;
+	}
+
+	public void setRecommendedIntakePerDay(String recommendedIntakePerDay) {
+		this.recommendedIntakePerDay = recommendedIntakePerDay;
+	}
+
+	public String getManufacturer() {
+		return manufacturer;
+	}
+
+	public void setManufacturer(String manufacturer) {
+		this.manufacturer = manufacturer;
+	}
+
+	public DrugIssuanceRegime getRegime() {
+		return regime;
+	}
+
+	public void setRegime(DrugIssuanceRegime regime) {
+		this.regime = regime;
+	}
+
+	public String getNotes() {
+		return notes;
+	}
+
+	public void setNotes(String notes) {
+		this.notes = notes;
+	}
 }

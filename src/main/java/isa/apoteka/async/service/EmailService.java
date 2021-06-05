@@ -2,6 +2,7 @@ package isa.apoteka.async.service;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import javax.mail.internet.MimeMessage;
 
@@ -12,6 +13,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import isa.apoteka.domain.Counseling;
@@ -21,6 +23,8 @@ import isa.apoteka.domain.PharmacistWorkCalendar;
 import isa.apoteka.domain.Promotion;
 import isa.apoteka.domain.ReservedMedicine;
 import isa.apoteka.domain.User;
+
+import isa.apoteka.dto.QRcodeInformationDTO;
 
 
 @Service
@@ -51,7 +55,7 @@ public class EmailService {
 		try {
 			MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 			mimeMessage.setContent(
-					"<p>Verify your account bt clicking on the following link: <a href=\"/verifiedAccount.html?userId=" + user.getId()
+					"<p>Verify your account bt clicking on the following link: <a href=\"http://localhost:8081/verifiedAccount.html?userId=" + user.getId()
 							+ "&hash=" + hashedEmail +"\">Verify my account</a></p>", "text/html");
 			MimeMessageHelper mail = new MimeMessageHelper(mimeMessage, "utf-8");
 			mail.setTo(user.getEmail());
@@ -157,5 +161,32 @@ public class EmailService {
 		mail.setSubject("Odgovor na zalbu");
 		mail.setText("Odgovor na Vasu zalbu za " + recipientName + ". \n" + response);
 		javaMailSender.send(mail);
+    }
+	
+	@Async
+    public Boolean informPatientAboutEreceipt(List<QRcodeInformationDTO> medications) {
+        try {
+
+            Patient patient = (Patient) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            
+            SimpleMailMessage mail = new SimpleMailMessage();
+            mail.setTo(patient.getEmail());
+            if(env.getProperty("spring.mail.username") == null) {
+    			return false;
+    		}
+            mail.setSubject("EPrescription");
+            mail.setFrom(env.getProperty("spring.mail.username"));
+            StringBuilder text = new StringBuilder();
+            for (QRcodeInformationDTO medication:medications) {
+                text.append(medication.getMedicationName() + ", quantity: " + medication.getQuantity() + "\n");
+            }
+            mail.setText("Thank you for buying medicines with ePrescription!\n\nList of medicines:\n" +text.toString());
+
+            javaMailSender.send(mail);
+            return true;
+        }
+        catch(Exception e) {
+            return false;
+        }
     }
 }

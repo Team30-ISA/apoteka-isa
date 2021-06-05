@@ -17,7 +17,7 @@ public class MedicineQuantityDTO {
 		this.name = name;
 		this.quantity = quantity;
 	}
-
+	
 	public Long getId() {
 		return id;
 	}

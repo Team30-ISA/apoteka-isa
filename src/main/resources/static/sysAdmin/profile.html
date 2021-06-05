@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>user profile page</title>
+    <title>System admin profile page</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -103,15 +103,17 @@
 				<nav id="nav-menu-container">
 					<ul class="nav-menu">
 						<li class="menu-active"><a href="home.html">Home</a></li>
+						<li><a href="medicine.html">Medicine</a></li>
 						<li class="menu-has-children"><a href="#">Tools</a>
 							<ul>
 								<li><a href="pharmacies.html">Pharmacies</a></li>
 								<li><a href="manageUsers.html">Manage Users</a></li>
 								<li><a href="manageMedications.html">Medicines</a></li>
-								<li><a href="manageComplaints.html">Complaints</a></li>
+								<li><a href="complaint.html">Complaints</a></li>
                                 <li><a href="manageLoyaltyProgram.html">Loyalty program</a></li>
 							</ul></li>
-						<li class="menu-has-children"><a href="#"><i class="icon fa-cog"></i></a>
+						<li class="menu-has-children"><a href="#">{{admin.firstName}}
+								{{admin.lastName}}</a>
 							<ul>
 								<li><a href="profile.html"><i class="icon fa-user"></i>&nbsp&nbsp&nbspProfile</a></li>
 								<li @click="logout"><a href="#"><i
@@ -184,6 +186,16 @@
                                     </td>
                                     <td style="width: 100%;">
                                         <p style="width:170%"> {{user.email}}</p>
+                                    </td>
+                                </tr>
+								<tr>
+                                    <td style="width: 100%;">
+                                        <b>PHONE NUMBER &nbsp</b>
+                                    </td>
+                                    <td style="width: 100%;">
+										<input type="text" v-model="user.phonenumber"
+                                            :class="[changeData ? 'txtEnabled' : 'txtDisabled']"
+                                            :disabled="!changeData">
                                     </td>
                                 </tr>
                                 <tr>
@@ -259,6 +271,8 @@
     <script src="../lib/owlcarousel/owl.carousel.min.js"></script>
     <script src="../lib/magnific-popup/magnific-popup.min.js"></script>
     <script src="../lib/sticky/sticky.js"></script>
+	<script src="https://npmcdn.com/js-alert/dist/jsalert.min.js"></script>
+
 
     <!-- Contact Form JavaScript File -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.18/vue.min.js"></script>

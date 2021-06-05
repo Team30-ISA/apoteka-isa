@@ -45,7 +45,6 @@ public class ExamintaionServiceTest {
 		Examination examination = examinationService.getNearestExamintaion(PHARMACIST_ID, NOW, true);
 
 		assertNull(examination);
-
 	}
 
 	@Test
