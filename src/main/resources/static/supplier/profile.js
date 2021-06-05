@@ -80,10 +80,13 @@ var app = new Vue({
 			}
 			
 			let con2 = true;
-			if(isNaN(this.user.phonenumber)){
-				JSAlert.alert("Enter only numbers!")
+			if(isNaN(this.user.phonenumber) || this.user.phonenumber < 0 ){
+				JSAlert.alert("The phone number must consist only of digits and phone number must be positive!")
 				con2 = false;
 				this.user.phonenumber = "";
+				setTimeout(function () {
+                window.location.href = "/supplier/profile.html";
+              }, 2000);
 			}
 				
 		if(con && con1 && con2){

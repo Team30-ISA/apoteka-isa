@@ -11,7 +11,7 @@ public class MedicineDisplay {
 
 	public MedicineDisplay(Long id, String Name, int quantity) {
 		this.id = id;
-		this.name = name;
+		this.name = Name;
 		this.quantity = quantity;
 	}
 	

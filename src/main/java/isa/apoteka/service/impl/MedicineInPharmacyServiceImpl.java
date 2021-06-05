@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import isa.apoteka.domain.MedicineInPharmacy;
-import isa.apoteka.domain.MedicinePrice;
 import isa.apoteka.domain.ReservedMedicine;
 import isa.apoteka.repository.MedicineInPharmacyRepository;
 import isa.apoteka.service.MedicineInPharmacyService;

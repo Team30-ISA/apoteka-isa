@@ -109,6 +109,7 @@ public class EPrescriptionController {
     }
     
     @PostMapping("/uploadFile")
+    @PreAuthorize("hasRole('PATIENT')")
     ResponseEntity<EPrescriptionAllInfoDTO> uploadFile(@RequestParam("file") MultipartFile file) {
 
         if (!file.isEmpty()) {

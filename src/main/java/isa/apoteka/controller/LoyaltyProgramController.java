@@ -40,6 +40,7 @@ public class LoyaltyProgramController {
 	}
 	
 	@RequestMapping(path = "/define", method = RequestMethod.POST)
+	@PreAuthorize("hasRole('SYS_ADMIN')")
     public ResponseEntity<?> defineLoyaltyProgram(@RequestBody LoyaltyProgramDTO loyaltyProgram) {
 		
 		try {
@@ -50,6 +51,7 @@ public class LoyaltyProgramController {
     }
 	
 	@PutMapping
+	@PreAuthorize("hasRole('SYS_ADMIN')")
 	public ResponseEntity<?> update(@RequestBody LoyaltyProgramDTO loyaltyProgramDTO) {
 		try {
 			return new ResponseEntity<>(loyaltyProgramService.update(loyaltyProgramDTO), HttpStatus.OK);
