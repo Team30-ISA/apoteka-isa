@@ -11,6 +11,7 @@ Korišćene tehnologije:
   1. Spring Boot
   2. PostgreSQL
 
+
 Napomene:
   1. Password za sve korisnike u bazi je adminadmin
   2. Pre pokretanja potrebno je kreirati bazu pod nazivom apoteka
@@ -27,3 +28,4 @@ Napomene:
   Student 3 - ExamintaionServiceTest, CounselingServiceTest i prvih pet testova u IntegrationTest
 
   Student 4 - UnitTests i poslednjih pet testova u IntegrationTest
+

@@ -325,4 +325,3 @@ insert into medicine_eprescription (id, name, code, quantity, e_prescription_med
 insert into medicine_eprescription (id, name, code, quantity, e_prescription_medicine) VALUES (25, 'Tetafex', 777, 8, 12);
 
 insert into loyalty_program (id, counseling_points, examination_points, golden_discount, golden_min_points, regular_discount, regular_min_points, silver_discount, silver_min_points) values (100,10,15,0.6,150,0.2,0,0.4,70);
-
