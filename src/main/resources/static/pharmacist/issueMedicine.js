@@ -43,7 +43,7 @@ var app = new Vue({
 		},
 		formatDate(date){
 			date = new Date(date);
-			let ret = date.getDate() + "." + date.getMonth()+1 + "." + date.getFullYear() + ". " + this.getStartTime(date);
+			let ret = date.getDate() + "." + (date.getMonth()+1) + "." + date.getFullYear() + ". " + this.getStartTime(date);
 			return ret;
 		},
 		getStartTime(date){

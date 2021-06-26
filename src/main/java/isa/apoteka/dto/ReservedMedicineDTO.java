@@ -25,7 +25,7 @@ public class ReservedMedicineDTO {
 		this.pharmacyId = rm.getPharmacy().getId();
 		this.pharmacyName = rm.getPharmacy().getName();
 		this.patientId = rm.getPatient().getId();
-		this.patientName = rm.getPatient().getFirstName() + " " + rm.getPatient().getLastName();
+		this.patientName = rm.getPatientName();
 		this.medicineId = rm.getMedicine().getId();
 		this.medicineName = rm.getMedicine().getName();
 		this.date = rm.getDate();

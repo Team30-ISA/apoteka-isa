@@ -72,9 +72,7 @@ public class MedicineReservationServiceImpl implements MedicineReservationServic
 		if(rm == null)
 			return;
 		mrRepository.approveReservation(uid);
-		emailService.issuedMedicineReservation(uid, rm.getPatient());
-		
-		
+		//emailService.issuedMedicineReservation(uid, rm.getPatient());		
 	}
 
 	@Override

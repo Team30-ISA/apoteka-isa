@@ -23,7 +23,8 @@ public class ReservedMedicine implements Serializable{
 	
     @ManyToOne
     Patient patient;
-
+    
+    private String patientName;
     
 	private int quantity;
     
@@ -36,13 +37,22 @@ public class ReservedMedicine implements Serializable{
 		super();
 	}
 
-	public ReservedMedicine(Medicine medicine, Patient patient, int quantity, Date date, String uid) {
+	public ReservedMedicine(Medicine medicine, Patient patient, int quantity, Date date, String uid, String patientName) {
 		this.medicine = medicine;
 		this.patient = patient;
 		this.quantity = quantity;
 		this.date = date;
 		this.uid = uid;
 		this.approved = false;
+		this.patientName = patientName;
+	}
+
+	public String getPatientName() {
+		return patientName;
+	}
+
+	public void setPatientName(String patientName) {
+		this.patientName = patientName;
 	}
 
 	public Medicine getMedicine() {
