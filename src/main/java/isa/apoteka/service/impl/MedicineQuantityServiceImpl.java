@@ -14,6 +14,7 @@ import isa.apoteka.domain.PharmacyAdmin;
 import isa.apoteka.dto.MedicineForSupplyDTO;
 import isa.apoteka.dto.MedicineQuantityDTO;
 import isa.apoteka.repository.MedicineQuantityRepository;
+import isa.apoteka.repository.PharmacyAdminRepository;
 import isa.apoteka.service.MedicineInPharmacyService;
 import isa.apoteka.service.MedicineQuantityService;
 
@@ -23,16 +24,18 @@ public class MedicineQuantityServiceImpl implements MedicineQuantityService{
 
 	private MedicineQuantityRepository medQuantityReposiotry;
 	private MedicineInPharmacyService medInPharmacyService;
+	private PharmacyAdminRepository pharmacyAdminRepository;
 	@Autowired
-	public MedicineQuantityServiceImpl(MedicineQuantityRepository medQuantityReposiotry, MedicineInPharmacyService medInPharmacyService) {
+	public MedicineQuantityServiceImpl(MedicineQuantityRepository medQuantityReposiotry, MedicineInPharmacyService medInPharmacyService, PharmacyAdminRepository pharmacyAdminRepository) {
 		this.medQuantityReposiotry = medQuantityReposiotry;
 		this.medInPharmacyService = medInPharmacyService;
+		this.pharmacyAdminRepository = pharmacyAdminRepository;
 	}
 	@Override
 	@Transactional(readOnly = false)
 	public Boolean insert(List<MedicineQuantityDTO> dto) {
-		System.out.println("*");
-		PharmacyAdmin admin = (PharmacyAdmin) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		//PharmacyAdmin admin = (PharmacyAdmin) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		PharmacyAdmin admin = pharmacyAdminRepository.getOne(Long.valueOf(11));
 		for(MedicineQuantityDTO mq : dto) {
 			medQuantityReposiotry.insertNew(mq.getId(),mq.getErrandId(),mq.getQuantity());
 			medInPharmacyService.addMedicine(mq.getId(), admin.getPharmacy().getId());

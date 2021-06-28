@@ -142,7 +142,7 @@ var app = new Vue({
 					JSAlert.alert("You have successfully created an order!");
 					console.log(this.orderedMedication)
 					setTimeout(function () {
-						window.location.href = '/pharmacyAdmin/newOrder.html';
+						//window.location.href = '/pharmacyAdmin/newOrder.html';
 					}, 2000);
 				}).catch(error => {
 		            if (error.response.status == 401 || error.response.status == 400 || error.response.status == 500) {

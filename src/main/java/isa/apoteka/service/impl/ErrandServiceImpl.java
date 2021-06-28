@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import isa.apoteka.domain.Errand;
 import isa.apoteka.domain.PharmacyAdmin;
 import isa.apoteka.repository.ErrandRepository;
+import isa.apoteka.repository.PharmacyAdminRepository;
 import isa.apoteka.service.ErrandService;
 import isa.apoteka.service.MedicineQuantityService;
 
@@ -24,11 +25,13 @@ public class ErrandServiceImpl implements ErrandService{
 
 	private ErrandRepository errandRepository;
 	private MedicineQuantityService medicineQuantityService;
+	private PharmacyAdminRepository pharmacyAdminRepository;
 	
-	@Autowired
-	public ErrandServiceImpl(ErrandRepository errandRepository, MedicineQuantityService medicineQuantityService) {
+	
+	public ErrandServiceImpl(ErrandRepository errandRepository, MedicineQuantityService medicineQuantityService, PharmacyAdminRepository pharmacyAdminRepository) {
 		this.errandRepository = errandRepository;
 		this.medicineQuantityService = medicineQuantityService;
+		this.pharmacyAdminRepository = pharmacyAdminRepository;
 	}
 	
 	@Override
@@ -36,7 +39,8 @@ public class ErrandServiceImpl implements ErrandService{
 	public Long save(Date deadline) {
 		
 		try {
-			PharmacyAdmin admin = (PharmacyAdmin) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			//PharmacyAdmin admin = (PharmacyAdmin) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			PharmacyAdmin admin = pharmacyAdminRepository.getOne(Long.valueOf(11));
 			Errand errand = new Errand();
 			Calendar calendar = new GregorianCalendar();
 			calendar.setTime(deadline);
@@ -54,7 +58,7 @@ public class ErrandServiceImpl implements ErrandService{
 			errand = errandRepository.save(errand);
 			return (long)errand.getId();
 		}catch(Exception e) {
-			return (long)1;
+			return (long)-1;
 		}
 	}
 

@@ -36,16 +36,19 @@ import isa.apoteka.service.OfferService;
 @RequestMapping(value = "api/errand")
 public class ErrandController {
 
+	@Autowired
 	private ErrandService errandService;
+	@Autowired
 	private MedicineQuantityService medicineQuantityService;
+	@Autowired
 	private OfferService offerService;
 	
-	@Autowired
+	/*@Autowired
 	public ErrandController(ErrandService errandService, MedicineQuantityService medicineQuantityService, OfferService offerService) {
 		this.errandService = errandService;
 		this.medicineQuantityService = medicineQuantityService;
 		this.offerService = offerService;
-	}
+	}*/
 	@PostMapping("/errandMedication")
 	@PreAuthorize("hasRole('ADMIN')")
 	public Boolean errandMedication(@RequestBody Map<String, Object> params) throws ParseException {

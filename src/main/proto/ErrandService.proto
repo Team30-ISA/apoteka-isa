@@ -1,0 +1,30 @@
+syntax = "proto3";
+option java_multiple_files = true;
+
+message ErrandRequest {
+    string deadline = 1;
+}
+
+message ErrandResponse {
+    int32 id = 1;
+}
+
+message ErrandMedication {
+	int32 id = 1;
+	string name = 2;
+	int32 quantity = 3;
+	int32 errandId = 4;
+}
+
+message ErrandMedicationRequest {
+    repeated ErrandMedication errandMedications = 1;
+}
+
+message ErrandMedicationResponse {
+    bool response = 1;
+}
+
+service ErrandService {
+    rpc newErrand(ErrandRequest) returns (ErrandResponse);
+    rpc errandMedication(ErrandMedicationRequest) returns (ErrandMedicationResponse);
+}
