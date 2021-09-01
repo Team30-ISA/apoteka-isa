@@ -10,7 +10,9 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.UUID;
+import javax.validation.Valid;
 
+import isa.apoteka.dto.ChangeDataDTO;
 import isa.apoteka.dto.ComplaintsListsDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,9 +22,12 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import isa.apoteka.domain.Dermatologist;
 import isa.apoteka.domain.Medicine;
 import isa.apoteka.domain.Patient;
 import isa.apoteka.domain.PatientUpdateForm;
@@ -32,13 +37,14 @@ import isa.apoteka.dto.PatientDTO;
 
 import isa.apoteka.service.MedicineReservationService;
 import isa.apoteka.service.MedicineService;
-
+import isa.apoteka.service.AddressService;
 import isa.apoteka.service.CounselingService;
 import isa.apoteka.service.ExaminationService;
 
 import isa.apoteka.service.PatientService;
 
 
+// Primer kontrolera cijim metodama mogu pristupiti samo autorizovani korisnici
 @RestController
 @RequestMapping(value = "/api", produces = MediaType.APPLICATION_JSON_VALUE)
 public class PatientController {
@@ -49,11 +55,16 @@ public class PatientController {
 	private MedicineService medicineService;
 	@Autowired
 	private MedicineReservationService mrService;
-	@Autowired
+	
 	private CounselingService counselingService;
 	@Autowired
 	private ExaminationService examinationService;
+	@Autowired
+	private AddressService addressService;
 
+	// Za pristup ovoj metodi neophodno je da ulogovani korisnik ima ADMIN ulogu
+	// Ukoliko nema, server ce vratiti gresku 403 Forbidden
+	// Korisnik jeste autentifikovan, ali nije autorizovan da pristupi resursu
 	@GetMapping("/patient/{userId}")
 	//@PreAuthorize("hasRole('PATIENT')")
 	public User loadById(@PathVariable Long userId) {
@@ -91,11 +102,13 @@ public class PatientController {
 		return (Patient) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 	}
 	
-	@GetMapping("/patient/updatePatient")
+	@PostMapping(value = "/patient/updatePatient", consumes = "application/json")
 	@PreAuthorize("hasRole('PATIENT')")
-	public String updatePatient(PatientUpdateForm puf) {
-		this.patientService.update(puf);
-		return puf.getName();
+	public ResponseEntity<PatientUpdateForm> updatePatient(@RequestBody @Valid PatientUpdateForm puf) {
+		Patient pat = (Patient) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		patientService.update(puf);
+		addressService.update(puf.getStreet(), puf.getCityId(), pat.getAddress().getId());
+		return new ResponseEntity<>(puf, HttpStatus.CREATED);
 	}
 	
 	@GetMapping("/patient/updatePassword")
@@ -160,23 +173,5 @@ public class PatientController {
 		return new ResponseEntity<>(false, HttpStatus.OK);
 	}
 	
-	@GetMapping("/patient/findAllDTO")
-	@PreAuthorize("hasRole('DERM') || hasRole('PHARM')")
-	public List<PatientDTO> findAllDTO() {
-		return this.patientService.findAllDTO();
-	}
-	
-	@GetMapping("/patient/findAllByName")
-	@PreAuthorize("hasRole('DERM') || hasRole('PHARM')")
-	public List<PatientDTO> findAllByName(String firstName, String lastName) {
-		return patientService.findAllByName(firstName, lastName);
-	}
-
-	@GetMapping("/patient/complaint-data")
-	@PreAuthorize("hasRole('PATIENT')")
-	public ComplaintsListsDTO user() {
-		return this.patientService.findAllEntitiesToComplain();
-	}
-
 
 }

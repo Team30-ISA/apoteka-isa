@@ -66,7 +66,7 @@ public class PatientServiceImpl implements PatientService {
 		p.setEmail(puf.getEmail());
 		p.setPhonenumber(puf.getPhoneNumber());
 		
-		this.patientRepository.update(p.getFirstName(), p.getLastName(), p.getEmail(), p.getPhonenumber(), p.getId());
+		this.patientRepository.update(p.getFirstName(), p.getLastName(), p.getEmail(), p.getId());
 	}
 	
 	@Override

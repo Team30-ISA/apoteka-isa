@@ -1,5 +1,8 @@
 package isa.apoteka.domain;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 public class PatientUpdateForm {
 
 	private Long id;
@@ -19,6 +22,11 @@ public class PatientUpdateForm {
 	private Address address;
 	
 	private String phonenumber;
+	
+	@Size(min=2, max=50)
+	private String street;
+	@NotNull
+	private Long cityId;
 
 	public String getPhoneNumber() {
 		return phonenumber;
@@ -89,6 +97,21 @@ public class PatientUpdateForm {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+	public String getStreet() {
+		return street;
+	}
+
+	public void setStreet(String street) {
+		this.street = street;
+	}
+
+	public Long getCityId() {
+		return cityId;
+	}
+
+	public void setCityId(Long cityId) {
+		this.cityId = cityId;
 	}
 
 }

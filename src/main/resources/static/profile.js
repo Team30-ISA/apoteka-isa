@@ -1,6 +1,62 @@
+/*var app = new Vue({
+	el: '#profile',
+	data: {
+		patients: null,
+		oldpass: "",
+		newpass: "",
+		name: "",
+		surname: "",
+		reservedMedications: [],
+	},
+	methods: {
+		changepass() {
+		axios.get('/api/patient/updatePassword',{
+		headers: {
+				    'Authorization': "Bearer " + localStorage.getItem('access_token')
+			  },
+		params:{
+			oldpass: this.oldpass,
+			newpass: this.newpass,
+			id: this.patients.id,
+			}
+		}).then(response => {
+					alert('Lozinka je uspesno promenjena.')
+			})
+		},
+		changedata(){
+		axios.get('/api/patient/updatePatient',{
+		headers: {
+				    'Authorization': "Bearer " + localStorage.getItem('access_token')
+			  },
+		params:{
+			name: this.name,
+			surname: this.surname,
+			id: this.patients.id,
+			}
+		}).then(response => {
+					alert('Novo ime: ' + this.name + '\nNovo prezime: ' + this.surname)
+			})
+		}
+	},
+	created() {
+		axios
+		.get('/api/patient/getLoggedUser',{
+			  headers: {
+				    'Authorization': "Bearer " + localStorage.getItem('access_token')
+			  }
+	     }).then(response => {
+					this.patients = response.data
+					this.name = this.patients.firstName
+					this.surname = this.patients.lastName
+			})
+		
+	}
+})*/
+
 var app = new Vue({
 	el: '#patientProfile',
 	data: {
+		role: "",
 		patient: null,
 		changePass: false,
 		changeData: false,
@@ -17,9 +73,6 @@ var app = new Vue({
 		idCity: 0,
 		idAddress: 0,
 		reservedMedications: [],
-		examinations: [],
-		columns: ['name', 'manufacturer', 'price', 'priceWithLoyalty'],
-		phonenumber: ""
 	},
 	methods: {
 		logout(){
@@ -38,6 +91,7 @@ var app = new Vue({
 			if(this.changePass == true){
 				this.changePass = false;
 				//axios za izmenu passworda
+				
 				axios.get('/api/patient/updatePassword',{
 					headers: {
 				    	'Authorization': "Bearer " + localStorage.getItem('access_token')
@@ -66,21 +120,32 @@ var app = new Vue({
 			if(this.changeData == true){
 				this.changeData = false;
 				//axios za izmenu podataka
-				axios.get('/api/patient/updatePatient',{
-		headers: {
-				    'Authorization': "Bearer " + localStorage.getItem('access_token')
-			  },
-		params:{
-			name: this.name,
-			surname: this.surname,
-			email: this.email,
-			phonenumber: this.phonenumber,
-			id: this.patient.id
-			}
+				axios.post('/api/patient/updatePatient',
+				{
+				        		name: this.name,
+								surname: this.surname,
+								email: this.email,
+								id: this.patient.id,
+								street: this.patient.address.street,
+								cityId: this.selectedCity.id
+				            },{
+				        	
+				    		headers: {
+								'Authorization': "Bearer " + localStorage.getItem('access_token'),
+							    "Content-Type": "application/json"
+							  }
 		}).then(response => {
-					JSAlert.alert('Novo ime: ' + this.name + '\nNovo prezime: ' + this.surname + '\nNov email: ' + this.email + '\nNov broj: ' + this.phonenumber)
-			})
+					JSAlert.alert('Novo ime: ' + this.name + '\nNovo prezime: ' + this.surname + '\nNov email: ' + this.email + '\nNov broj: ' + this.phonenumber + '\nNova adresa: ' + this.patient.address.street + '\nNova city: ' + this.selectedCity.id + 'ID' + this.patient.id)
+			}).catch(error => {
+				            if (error.response.status == 401 || error.response.status == 400 || error.response.status == 500) {
+				                JSAlert.alert("Fields cannot be empty. Please try again.");
+								JSAlert.alert("ID pacijenta: " + this.patient.id);
+				                this.changeData = false;
+				        		this.getLoogedUser();
+				            }
+				        })
 				}
+				
 			else{
 				this.changeData = true;
 			}
@@ -131,7 +196,18 @@ var app = new Vue({
 	     })
 		},
 		findAddresses(){
-			
+			axios
+			.get('/api/address/getAllAddressesForCity',{
+				headers: {
+				 'Authorization': "Bearer " + localStorage.getItem('access_token')
+				},
+				params:{
+					id: this.selectedCity.id,
+				}
+	     })
+	     .then(response => {
+	     	this.addresses = response.data
+	     })
 		}
 	},
 	created() {
@@ -157,16 +233,15 @@ var app = new Vue({
 	     })
 	     .then(response => {
 	     	this.patient = response.data
-	     	console.log(response.data)
 	     	this.name = this.patient.firstName
 	     	this.surname = this.patient.lastName
 	     	this.email = this.patient.email
-			this.phonenumber = this.patient.phonenumber
-	     	this.idCountry = this.patient.address.city.country
+	     	this.idCountry = this.patient.address.city.country.country
 	     	this.selectedCountry = this.patient.address.city.country.id
 	     	this.selectedCity = this.patient.address.city.id
 	     	this.selectedAddress = this.patient.address.id
 	     	//console.log('Selected Address pri kreiranju str: ' + this.selectedAddress)
+			console.log("AAA" + this.patient.phonenumber)
 	     	
 	     		     axios
 		.get('/api/patient/findAllReservedMedicine',{
@@ -179,28 +254,7 @@ var app = new Vue({
 	     })
 	     .then(response => {
 	     	this.reservedMedications = response.data
-	     	console.log(this.reservedMedications);
-			for (var key in this.reservedMedications) {
-			  console.log(this.reservedMedications[key].id);
-			  console.log(this.reservedMedications[key].type);
-			  console.log(this.reservedMedications[key].priceWithLoyaltyProgram);  
-			}
-	     })
-	     
-	     axios
-		.get('/api/examination/getExaminationsForPatient',{
-			  headers: {
-				    'Authorization': "Bearer " + localStorage.getItem('access_token')
-			  },
-	     })
-	     .then(response => {
-	     	this.examinations = response.data
-	     	console.log('AAAAAAA' + this.examinations)
-			/*for (var key in this.examinations) {
-			  console.log(this.examinations[key].id);
-			  console.log(this.examinations[key].duration);
-			  console.log(this.examinations[key].price);  
-			}*/
+	     	console.log(this.reservedMedications)
 	     })
 	     	
 	     })
