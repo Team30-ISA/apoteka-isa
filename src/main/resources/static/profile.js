@@ -73,6 +73,8 @@ var app = new Vue({
 		idCity: 0,
 		idAddress: 0,
 		reservedMedications: [],
+		phonenumber: "",
+		columns: ['name', 'composition', 'manufacturer', 'price', 'priceWithLoyalty'],
 	},
 	methods: {
 		logout(){
@@ -127,7 +129,8 @@ var app = new Vue({
 								email: this.email,
 								id: this.patient.id,
 								street: this.patient.address.street,
-								cityId: this.selectedCity.id
+								cityId: this.selectedCity.id,
+								phonenumber: this.phonenumber,
 				            },{
 				        	
 				    		headers: {
@@ -139,7 +142,6 @@ var app = new Vue({
 			}).catch(error => {
 				            if (error.response.status == 401 || error.response.status == 400 || error.response.status == 500) {
 				                JSAlert.alert("Fields cannot be empty. Please try again.");
-								JSAlert.alert("ID pacijenta: " + this.patient.id);
 				                this.changeData = false;
 				        		this.getLoogedUser();
 				            }
@@ -161,6 +163,14 @@ var app = new Vue({
 		     })
 		     .then(response => {
 		     	this.patient = response.data
+			this.name = this.patient.firstName
+	     	this.surname = this.patient.lastName
+	     	this.email = this.patient.email
+	     	this.idCountry = this.patient.address.city.country.country
+	     	this.selectedCountry = this.patient.address.city.country.id
+	     	this.selectedCity = this.patient.address.city.id
+	     	this.selectedAddress = this.patient.address.id
+			this.phonenumber = this.patient.phonenumber
 		     })
 		},
 		setAddress(){
@@ -240,8 +250,9 @@ var app = new Vue({
 	     	this.selectedCountry = this.patient.address.city.country.id
 	     	this.selectedCity = this.patient.address.city.id
 	     	this.selectedAddress = this.patient.address.id
+			this.phonenumber = this.patient.phonenumber
+			console.log(this.phonenumber)
 	     	//console.log('Selected Address pri kreiranju str: ' + this.selectedAddress)
-			console.log("AAA" + this.patient.phonenumber)
 	     	
 	     		     axios
 		.get('/api/patient/findAllReservedMedicine',{

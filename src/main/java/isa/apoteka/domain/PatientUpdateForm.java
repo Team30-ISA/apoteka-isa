@@ -28,11 +28,11 @@ public class PatientUpdateForm {
 	@NotNull
 	private Long cityId;
 
-	public String getPhoneNumber() {
+	public String getPhonenumber() {
 		return phonenumber;
 	}
 
-	public void setPhoneNumber(String phoneNumber) {
+	public void setPhonenumber(String phoneNumber) {
 		this.phonenumber = phoneNumber;
 	}
 

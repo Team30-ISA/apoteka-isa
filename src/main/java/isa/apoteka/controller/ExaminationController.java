@@ -230,7 +230,8 @@ public class ExaminationController {
 	public List<Examination> getExaminationsForPatient(){
 		Patient patient = (Patient) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		Long patientId = patient.getId();
-		List<Examination> ret = examintaionService.getExaminationsForPatient(patientId);
+		Date now = new Date();
+		List<Examination> ret = examintaionService.getExaminationsForPatient(patientId, now);
 		return ret;
 	}
 	

@@ -23,7 +23,7 @@ public interface ExaminationService {
 	//Boolean createExamination(Date start, int duration, Long patientId, Long pwcId, Long pharmacistId);
 	List<Pharmacy> getAvailablePharmacies(Date start);
 	List<Pharmacist> getAvailablePharmacistsByPharmIdAndDate(Long pharmId, Date start);
-	List<Examination> getExaminationsForPatient(Long patId);
+	List<Examination> getExaminationsForPatient(Long patId, Date start);
 	void cancelAppointment(Long examId);
 	
 	//Boolean createExamination(Date start, int duration, Patient patient, Long pwcId, Long pharmacistId) throws Exception;

@@ -348,8 +348,8 @@ public class ExaminationServiceImpl implements ExaminationService {
 	}
 	
 	@Override
-	public List<Examination> getExaminationsForPatient(Long patId){
-		return examinationRepository.getExaminationsForPatient(patId);
+	public List<Examination> getExaminationsForPatient(Long patId, Date start){
+		return examinationRepository.getExaminationsForPatient(patId, start);
 	}
 	
 	@Override
